@@ -244,6 +244,28 @@
         </widget>
        </item>
        <item>
+        <widget class="QFrame" name="frame_medium">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QFrame" name="frame_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -270,7 +292,7 @@
      <x>0</x>
      <y>0</y>
      <width>809</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

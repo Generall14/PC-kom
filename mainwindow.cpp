@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "src/Factory.hpp"
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->setWindowTitle(Factory::WindowName());
+    this->setWindowIcon(QIcon("ikona.ico"));
+
     RS = new QtRSWrapper();
     connect(this, SIGNAL(HALT()), RS, SLOT(Stop()));
     connect(RS, SIGNAL(Closed()), this, SLOT(Disconnected()));
@@ -22,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     on_pushButton_refresh_clicked();
     Disconnected();
+
+    mediumUI = Factory::newMediumUI(ui->frame_medium);
+    //....connects
+    mediumUI->Init();
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +42,9 @@ MainWindow::~MainWindow()
         delete RS;
         RS = 0;
     }
+
+    delete mediumUI;
+
     delete ui;
 }
 
@@ -87,4 +100,8 @@ void MainWindow::on_pushButton_clear_clicked()
 void MainWindow::ErrorMessage(QString er)
 {
     QMessageBox::critical(this, "NEIN! NEIN! NEIN! NEIN! NEIN!", er);
+}
+
+void MainWindow::on_pushButton_zapisz_clicked()
+{
 }

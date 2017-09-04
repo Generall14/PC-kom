@@ -10,6 +10,7 @@
 #include <iostream>
 #include <QSerialPortInfo>
 #include <QMessageBox>
+#include "src/MediumUI.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,8 @@ private:
 
     QtRSWrapper* RS;
 
+    MediumUI* mediumUI = NULL;
+
 public slots:
     void Connected();
     void Disconnected();
@@ -44,6 +47,7 @@ private slots:
     void on_pushButton_connect_clicked();
     void on_pushButton_refresh_clicked();
     void on_pushButton_clear_clicked();
+    void on_pushButton_zapisz_clicked();
 };
 
 #endif // MAINWINDOW_H
