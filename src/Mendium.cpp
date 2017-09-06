@@ -3,9 +3,7 @@
 
 Mendium::Mendium()
 {
-    readTimeout = Factory::readTimeout();
-    writeTimeout = Factory::writeTimeout();
-    frameLength = Factory::frameLength();
+
 }
 
 void Mendium::run()
@@ -15,7 +13,6 @@ void Mendium::run()
         this->Run();
     }
     Close();
-
 }
 
 void Mendium::Stop()

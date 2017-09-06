@@ -12,28 +12,25 @@ public:
     Mendium();
     virtual ~Mendium(){}
 
-    void run();
+    void run() final;
 
 public slots:
     void Stop();
     bool isOpened();
     virtual void Open(QString desc) = 0;
     virtual void Close() = 0;
+    virtual void Write(QByteArray data) = 0;
+    virtual void Flush() = 0;
 
 protected:
     virtual void Run() = 0;
 
     bool opened = false;
 
-    int readTimeout;
-    int writeTimeout;
-    int frameLength;
-
 signals:
     void Opened();
     void Closed();
     void Readed(QByteArray);
-    void FatalReaded(QByteArray);
     void Error(QString);
 
 private:
@@ -41,10 +38,3 @@ private:
 };
 
 #endif
-
-
-//#include <QSerialPort>
-//#include <QTimer>
-//private:
-//    QSerialPort port;
-//    QTimer timer;

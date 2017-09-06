@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QTimer>
+#include <QMutexLocker>
+#include <QMutex>
 
 class MendiumRS : public Mendium
 {
@@ -16,13 +18,16 @@ public:
 public slots:
     virtual void Open(QString desc);
     virtual void Close();
+    virtual void Write(QByteArray data);
+    virtual void Flush();
 
 protected:
     virtual void Run();
 
 private:
     QSerialPort port;
-    QTimer timer;
+    QMutex mutex;
+    QByteArray writeByffer;
 };
 
 #endif

@@ -3,6 +3,8 @@
 #include "src/Factory.hpp"
 #include <QIcon>
 
+#include "src/Mendium_imp/MendiumRS.hpp"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -30,6 +32,18 @@ MainWindow::MainWindow(QWidget *parent) :
     Disconnected();
 
     mediumUI = Factory::newMediumUI(ui->frame_medium);
+    mendium = Factory::newMendium();
+
+    connect(mediumUI, SIGNAL(ConnectRequest(QString)), mendium, SLOT(Open(QString)));
+    connect(mediumUI, SIGNAL(DisconnectRequest()), mendium, SLOT(Close()));
+    connect(mediumUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    connect(mendium, SIGNAL(Opened()), mediumUI, SLOT(Connected()));
+    connect(mendium, SIGNAL(Closed()), mediumUI, SLOT(Disconnected()));
+    connect(mendium, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    mendium->start(QThread::HighPriority);
+
     //....connects
     mediumUI->Init();
 }
@@ -41,6 +55,13 @@ MainWindow::~MainWindow()
         RS->terminate();
         delete RS;
         RS = 0;
+    }
+
+    if(mendium)                                                             //Oczekiwanie na zakończenie działania zewnętrznego wątku
+    {
+        mendium->terminate();
+        delete mendium;
+        mendium = 0;
     }
 
     delete mediumUI;

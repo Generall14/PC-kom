@@ -1,10 +1,10 @@
 #include "MendiumRS.hpp"
 #include <QString>
+#include <QDebug>
 
 MendiumRS::MendiumRS():
     Mendium()
 {
-    timer.setSingleShot(true);
     port.setDataBits(QSerialPort::Data8);
     port.setFlowControl(QSerialPort::NoFlowControl);
     port.setStopBits(QSerialPort::OneStop);
@@ -12,6 +12,7 @@ MendiumRS::MendiumRS():
 
 void MendiumRS::Open(QString desc)
 {
+    qDebug() << "MendiumRS::Open(QString desc)";
     if(!opened)
     {
         QStringList params = desc.split(";");
@@ -35,6 +36,17 @@ void MendiumRS::Open(QString desc)
     }
 }
 
+void MendiumRS::Write(QByteArray data)
+{
+    QMutexLocker lock(&mutex);
+    writeByffer.append(data);
+}
+
+void MendiumRS::Flush()
+{
+
+}
+
 void MendiumRS::Close()
 {
     port.close();
@@ -44,15 +56,18 @@ void MendiumRS::Close()
 
 void MendiumRS::Run()
 {
-    timer.start(readTimeout);
-    while(timer.isActive())
-    {
-        if(port.bytesAvailable()>=frameLength)
-        {
-            emit Readed(port.read(frameLength));
-            continue;
-        }
-    }
-    if((port.bytesAvailable()<frameLength)&&(port.bytesAvailable()>0))
+    if(port.bytesAvailable())
         emit Readed(port.readAll());
+    if(!writeByffer.isEmpty())
+    {
+        int sended = 0;
+        QMutexLocker lock(&mutex);
+        sended = port.write(writeByffer);
+        if(sended<0)
+            emit Error("Błąd wysyłania danych do portu RS.");
+        else if(sended>0)
+            writeByffer.remove(0, sended);
+        lock.unlock();
+    }
+    QThread::msleep(15);
 }

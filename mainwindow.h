@@ -11,6 +11,7 @@
 #include <QSerialPortInfo>
 #include <QMessageBox>
 #include "src/MediumUI.hpp"
+#include "src/Mendium.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -29,7 +30,8 @@ private:
 
     QtRSWrapper* RS;
 
-    MediumUI* mediumUI = NULL;
+    MediumUI* mediumUI = NULL; // ok
+    Mendium* mendium = NULL; // ok
 
 public slots:
     void Connected();
