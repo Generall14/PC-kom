@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     src/MediumUI_imp/MediumUIRS.cpp \
     src/Mendium.cpp \
     src/Mendium_imp/MendiumRS.cpp \
-    src/Mendium_imp/MendiumEmpty.cpp
+    src/Mendium_imp/MendiumEmpty.cpp \
+    src/Frame_imp/FrameTransparent.cpp
 
 HEADERS  += mainwindow.h \
     qtrswrapper.h \
@@ -40,6 +41,7 @@ HEADERS  += mainwindow.h \
     src/MediumUI_imp/MediumUIRS.hpp \
     src/Mendium.hpp \
     src/Mendium_imp/MendiumRS.hpp \
-    src/Mendium_imp/MendiumEmpty.hpp
+    src/Mendium_imp/MendiumEmpty.hpp \
+    src/Frame_imp/FrameTransparent.hpp
 
 FORMS    += mainwindow.ui

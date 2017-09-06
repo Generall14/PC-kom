@@ -2,25 +2,10 @@
 
 Frame::Frame(QByteArray data)
 {
-    this->FromQByteArray(data);
+    pck = data;
 }
 
-void Frame::FromQByteArray(QByteArray ba)
+QByteArray Frame::pureData()
 {
-    pck = ba;
-}
-
-int Frame::ReadTimeout()
-{
-    return rTimeout;
-}
-
-int Frame::WriteTimeout()
-{
-    return wTimeout;
-}
-
-int Frame::FrameLength()
-{
-    return frameLength;
+    return pck;
 }

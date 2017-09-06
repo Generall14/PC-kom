@@ -1,6 +1,7 @@
 #include "Factory.hpp"
 
 #include "Frame_imp/FrameEmpty.hpp"
+#include "Frame_imp/FrameTransparent.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -29,6 +30,8 @@ Frame* Factory::newFrame(QByteArray ba)
         return NULL;
     case Factory::frameEmpty:
         return new FrameEmpty(ba);
+    case Factory::frameTransparent:
+        return new FrameTransparent(ba);
     case Factory::frameSG1:
         return NULL;//-----------------------------------------------
     }
@@ -61,30 +64,6 @@ Mendium* Factory::newMendium()
         return new MendiumRS();
     }
     return NULL;
-}
-
-int Factory::readTimeout()
-{
-    Frame* temp = Factory::newFrame(QByteArray());
-    int tempv = temp->ReadTimeout();
-    delete temp;
-    return tempv;
-}
-
-int Factory::writeTimeout()
-{
-    Frame* temp = Factory::newFrame(QByteArray());
-    int tempv = temp->WriteTimeout();
-    delete temp;
-    return tempv;
-}
-
-int Factory::frameLength()
-{
-    Frame* temp = Factory::newFrame(QByteArray());
-    int tempv = temp->FrameLength();
-    delete temp;
-    return tempv;
 }
 
 QString Factory::WindowName()

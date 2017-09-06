@@ -3,7 +3,7 @@
 #include "src/Factory.hpp"
 #include <QIcon>
 
-#include "src/Mendium_imp/MendiumRS.hpp"
+#include "src/Factory.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -46,6 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //....connects
     mediumUI->Init();
+
+    QByteArray btemp = "dupa";
+    btemp.append(QChar(0x0A));
+    Frame* asd = Factory::newFrame(btemp);
+    qDebug() << asd->toQString();
+    delete asd;
 }
 
 MainWindow::~MainWindow()
