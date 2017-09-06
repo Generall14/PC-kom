@@ -12,14 +12,16 @@
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
+Factory::logicUiFormat Factory::logicUi = Factory::logicUiNone;
 QString Factory::windowName = "XXX";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, QString name)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, QString name)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
     Factory::mendium = mf;
     Factory::windowName = name;
+    Factory::logicUi = lui;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -48,6 +50,18 @@ MediumUI* Factory::newMediumUI(QFrame *fr)
         return new MediumUiEmpty(fr);
     case Factory::mediumUIRS:
         return new MediumUiRS(fr);
+    }
+    return NULL;
+}
+
+LogicUI* Factory::newLogicUI(QFrame *fr)
+{
+    switch (logicUi)
+    {
+    case Factory::logicUiNone:
+        return NULL;
+    case Factory::logicUiEmpty:
+        return NULL; // ---------------------------------------
     }
     return NULL;
 }

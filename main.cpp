@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    Factory::Config(Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, "dupa");
+    Factory::Config(Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, Factory::logicUiEmpty, "dupa");
 
     QApplication a(argc, argv);
     MainWindow w;

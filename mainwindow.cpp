@@ -4,6 +4,7 @@
 #include <QIcon>
 
 #include "src/Factory.hpp"
+#include <QSharedPointer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -49,9 +50,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QByteArray btemp = "dupa";
     btemp.append(QChar(0x0A));
-    Frame* asd = Factory::newFrame(btemp);
+    //Frame* asd = Factory::newFrame(btemp);
+    QSharedPointer<Frame> asd = QSharedPointer<Frame>(Factory::newFrame(btemp));
     qDebug() << asd->toQString();
-    delete asd;
+    //delete asd;
 }
 
 MainWindow::~MainWindow()

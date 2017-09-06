@@ -9,7 +9,7 @@ class Frame
     Frame(){}
 public:
     Frame(QByteArray data);
-    virtual ~Frame(){}
+    virtual ~Frame();
 
     virtual bool isValid() = 0;
     virtual QString toQString() = 0;
