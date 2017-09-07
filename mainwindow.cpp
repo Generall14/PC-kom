@@ -31,22 +31,28 @@ MainWindow::MainWindow(QWidget *parent) :
 
     on_pushButton_refresh_clicked();
     Disconnected();
-
+//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     mediumUI = Factory::newMediumUI(ui->frame_medium);
     mendium = Factory::newMendium();
+    logicUI = Factory::newLogicUI(ui->frame_logicUI);
 
     connect(mediumUI, SIGNAL(ConnectRequest(QString)), mendium, SLOT(Open(QString)));
     connect(mediumUI, SIGNAL(DisconnectRequest()), mendium, SLOT(Close()));
     connect(mediumUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 
     connect(mendium, SIGNAL(Opened()), mediumUI, SLOT(Connected()));
+    connect(mendium, SIGNAL(Opened()), logicUI, SLOT(Connected()));
     connect(mendium, SIGNAL(Closed()), mediumUI, SLOT(Disconnected()));
+    connect(mendium, SIGNAL(Closed()), logicUI, SLOT(Disconnected()));
     connect(mendium, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    connect(logicUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    mediumUI->Init();
+    logicUI->Init();
 
     mendium->start(QThread::HighPriority);
 
-    //....connects
-    mediumUI->Init();
 
     QByteArray btemp = "dupa";
     btemp.append(QChar(0x0A));
@@ -73,6 +79,8 @@ MainWindow::~MainWindow()
     }
 
     delete mediumUI;
+    delete mendium;
+    delete logicUI;
 
     delete ui;
 }

@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include "src/MediumUI.hpp"
 #include "src/Mendium.hpp"
+#include "src/LogicUI.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,7 @@ private:
 
     MediumUI* mediumUI = NULL; // ok
     Mendium* mendium = NULL; // ok
+    LogicUI* logicUI = NULL; // ok
 
 public slots:
     void Connected();

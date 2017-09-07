@@ -15,8 +15,6 @@ public:
 public slots:
     virtual void Connected();
     virtual void Disconnected();
-
-private:
 };
 
 #endif

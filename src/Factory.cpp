@@ -9,6 +9,8 @@
 #include "Mendium_imp/MendiumEmpty.hpp"
 #include "Mendium_imp/MendiumRS.hpp"
 
+#include "LogicUI_imp/LogicUIEmpty.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
@@ -61,7 +63,7 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
     case Factory::logicUiNone:
         return NULL;
     case Factory::logicUiEmpty:
-        return NULL; // ---------------------------------------
+        return new LogicUIEmpty(fr);
     }
     return NULL;
 }

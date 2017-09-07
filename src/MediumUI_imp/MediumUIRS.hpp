@@ -19,7 +19,7 @@ public slots:
     virtual void Connected();
     virtual void Disconnected();
 
-private:
+protected:
     QComboBox* portBox = NULL;
     QComboBox* speedBox = NULL;
     QPushButton* refreshButton = NULL;

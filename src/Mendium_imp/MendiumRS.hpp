@@ -24,7 +24,6 @@ public slots:
 protected:
     virtual void Run();
 
-private:
     QSerialPort port;
     QMutex mutex;
     QByteArray writeByffer;
