@@ -47,7 +47,7 @@ public:
         frameBuilderEmpty
     };
 
-    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, QString name = "Komunikator SG-2");
+    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, QString name = "Chuje muje dzikie węże");
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);

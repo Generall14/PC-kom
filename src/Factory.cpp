@@ -11,6 +11,8 @@
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 
+#include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
@@ -18,13 +20,14 @@ Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
 Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 QString Factory::windowName = "XXX";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, QString name)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, QString name)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
     Factory::mendium = mf;
     Factory::windowName = name;
     Factory::logicUi = lui;
+    Factory::frameBuilder = fb;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -90,7 +93,7 @@ FrameBuilder* Factory::newFrameBuilder()
     case frameBuilderNone:
         return NULL;
     case frameBuilderEmpty:
-        return NULL; //=============================================================
+        return new FrameBuilderEmpty;
     }
     return NULL;
 }
