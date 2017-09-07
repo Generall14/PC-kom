@@ -22,8 +22,9 @@ Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
 Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
 QString Factory::windowName = "XXX";
+QString Factory::icoPath = "ikona.ico";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name, QString ico)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
@@ -32,6 +33,7 @@ void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logi
     Factory::logicUi = lui;
     Factory::frameBuilder = fb;
     Factory::logUI = lgui;
+    Factory::icoPath = ico;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -117,4 +119,9 @@ LogUI* Factory::newLogUI(QFrame* fr)
 QString Factory::WindowName()
 {
     return windowName;
+}
+
+QString Factory::IcoPath()
+{
+    return icoPath;
 }

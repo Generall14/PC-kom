@@ -17,8 +17,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qtrswrapper.cpp \
-    sg1frame.cpp \
     src/Factory.cpp \
     src/Frame.cpp \
     src/Frame_imp/FrameEmpty.cpp \
@@ -37,8 +35,6 @@ SOURCES += main.cpp\
     src/LogUI_imp/LogUIEmpty.cpp
 
 HEADERS  += mainwindow.h \
-    qtrswrapper.h \
-    sg1frame.h \
     src/Factory.hpp \
     src/Frame.hpp \
     src/Frame_imp/FrameEmpty.hpp \

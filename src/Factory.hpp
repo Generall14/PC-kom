@@ -54,7 +54,9 @@ public:
         logUIEmpty
     };
 
-    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name = "Chuje muje dzikie węże");
+    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
+                       logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
+                       QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
@@ -64,6 +66,7 @@ public:
     static LogUI* newLogUI(QFrame* fr);
 
     static QString WindowName();
+    static QString IcoPath();
 
 private:
     static frameFormat frame;
@@ -72,7 +75,9 @@ private:
     static logicUiFormat logicUi;
     static frameBuilderFormat frameBuilder;
     static logUIFormat logUI;
+
     static QString windowName;
+    static QString icoPath;
 };
 
 #endif
