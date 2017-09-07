@@ -1,0 +1,36 @@
+#include "LogUIEmpty.hpp"
+#include <QLayout>
+#include <QDebug>
+#include "../Factory.hpp"
+
+LogUIEmpty::LogUIEmpty(QFrame* parent):
+    LogUI(parent)
+{
+
+}
+
+void LogUIEmpty::Init()
+{
+    QVBoxLayout* mainLay = new QVBoxLayout(cParent);
+
+    mainLay->addWidget(new QLabel("Prymitywny log. Ostatnie dane:"));
+
+    inLabel = new QLabel();
+    mainLay->addWidget(inLabel);
+
+    outLabel = new QLabel();
+    mainLay->addWidget(outLabel);
+}
+
+void LogUIEmpty::FrameWrite(QByteArray ba)
+{
+    QSharedPointer<Frame> frame = QSharedPointer<Frame>(Factory::newFrame(ba));
+    qDebug() << "Logowanie zapisu";
+    outLabel->setText("Out: "+frame->toQString());
+}
+
+void LogUIEmpty::FrameReaded(QSharedPointer<Frame> frame)
+{
+    qDebug() << "Logowanie odczytu";
+    inLabel->setText("In: "+frame->toQString());
+}

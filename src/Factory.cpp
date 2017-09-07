@@ -13,6 +13,8 @@
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 
+#include "LogUI_imp/LogUIEmpty.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
@@ -107,7 +109,7 @@ LogUI* Factory::newLogUI(QFrame* fr)
     case logUINone:
         return NULL;
     case logUIEmpty:
-        return NULL; //---------------------------
+        return new LogUIEmpty(fr);
     }
     return NULL;
 }

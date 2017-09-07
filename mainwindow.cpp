@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mendium = Factory::newMendium();
     logicUI = Factory::newLogicUI(ui->frame_logicUI);
     frameBuilder = Factory::newFrameBuilder();
+    logUI = Factory::newLogUI(ui->frame_log);
 
     connect(mediumUI, SIGNAL(ConnectRequest(QString)), mendium, SLOT(Open(QString)));
     connect(mediumUI, SIGNAL(DisconnectRequest()), mendium, SLOT(Close()));
@@ -53,14 +54,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(logicUI, SIGNAL(WritePureData(QByteArray)), frameBuilder, SLOT(PureDataWrite(QByteArray)));
 
     connect(frameBuilder, SIGNAL(Write(QByteArray)), mendium, SLOT(Write(QByteArray)));
+    connect(frameBuilder, SIGNAL(Write(QByteArray)), logUI, SLOT(FrameWrite(QByteArray)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 
     mendium->start(QThread::HighPriority);
     frameBuilder->start(QThread::HighPriority);
 
     mediumUI->Init();
     logicUI->Init();
+    logUI->Init();
 
     QByteArray btemp = "dupa";
     btemp.append(QChar(0x0A));
@@ -96,6 +102,7 @@ MainWindow::~MainWindow()
     delete mediumUI;
     delete mendium;
     delete logicUI;
+    delete logUI;
 
     delete ui;
 }

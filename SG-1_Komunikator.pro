@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/LogicUIEmpty.cpp \
     src/FrameBuilder.cpp \
     src/FrameBuilder_imp/FrameBuilderEmpty.cpp \
-    src/LogUI.cpp
+    src/LogUI.cpp \
+    src/LogUI_imp/LogUIEmpty.cpp
 
 HEADERS  += mainwindow.h \
     qtrswrapper.h \
@@ -52,6 +53,7 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/LogicUIEmpty.hpp \
     src/FrameBuilder.hpp \
     src/FrameBuilder_imp/FrameBuilderEmpty.hpp \
-    src/LogUI.hpp
+    src/LogUI.hpp \
+    src/LogUI_imp/LogUIEmpty.hpp
 
 FORMS    += mainwindow.ui

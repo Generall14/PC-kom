@@ -14,6 +14,7 @@
 #include "src/Mendium.hpp"
 #include "src/LogicUI.hpp"
 #include "src/FrameBuilder.hpp"
+#include "src/LogUI.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,7 @@ private:
     Mendium* mendium = NULL; // ok
     LogicUI* logicUI = NULL; // ok
     FrameBuilder* frameBuilder = NULL; // ok
+    LogUI* logUI = NULL; // ok
 
 public slots:
     void Connected();
