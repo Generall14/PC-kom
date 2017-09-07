@@ -18,9 +18,10 @@ Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
 Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
 Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
+Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
 QString Factory::windowName = "XXX";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, QString name)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
@@ -28,6 +29,7 @@ void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logi
     Factory::windowName = name;
     Factory::logicUi = lui;
     Factory::frameBuilder = fb;
+    Factory::logUI = lgui;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -94,6 +96,18 @@ FrameBuilder* Factory::newFrameBuilder()
         return NULL;
     case frameBuilderEmpty:
         return new FrameBuilderEmpty;
+    }
+    return NULL;
+}
+
+LogUI* Factory::newLogUI(QFrame* fr)
+{
+    switch (logUI)
+    {
+    case logUINone:
+        return NULL;
+    case logUIEmpty:
+        return NULL; //---------------------------
     }
     return NULL;
 }

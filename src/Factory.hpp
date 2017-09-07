@@ -8,6 +8,7 @@
 #include "Mendium.hpp"
 #include "LogicUI.hpp"
 #include "FrameBuilder.hpp"
+#include "LogUI.hpp"
 
 class Factory
 {
@@ -47,13 +48,20 @@ public:
         frameBuilderEmpty
     };
 
-    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, QString name = "Chuje muje dzikie węże");
+    enum logUIFormat
+    {
+        logUINone,
+        logUIEmpty
+    };
+
+    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name = "Chuje muje dzikie węże");
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
     static Mendium* newMendium();
     static LogicUI* newLogicUI(QFrame *fr);
     static FrameBuilder* newFrameBuilder();
+    static LogUI* newLogUI(QFrame* fr);
 
     static QString WindowName();
 
@@ -63,6 +71,7 @@ private:
     static mendiumFormat mendium;
     static logicUiFormat logicUi;
     static frameBuilderFormat frameBuilder;
+    static logUIFormat logUI;
     static QString windowName;
 };
 
