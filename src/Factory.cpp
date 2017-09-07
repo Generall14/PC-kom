@@ -14,7 +14,8 @@
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
-Factory::logicUiFormat Factory::logicUi = Factory::logicUiNone;
+Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
+Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 QString Factory::windowName = "XXX";
 
 void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, QString name)
@@ -78,6 +79,18 @@ Mendium* Factory::newMendium()
         return new MendiumEmpty();
     case Factory::mendiumRS:
         return new MendiumRS();
+    }
+    return NULL;
+}
+
+FrameBuilder* Factory::newFrameBuilder()
+{
+    switch (frameBuilder)
+    {
+    case frameBuilderNone:
+        return NULL;
+    case frameBuilderEmpty:
+        return NULL; //=============================================================
     }
     return NULL;
 }

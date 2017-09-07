@@ -7,6 +7,7 @@
 #include "MediumUI.hpp"
 #include "Mendium.hpp"
 #include "LogicUI.hpp"
+#include "FrameBuilder.hpp"
 
 class Factory
 {
@@ -40,12 +41,19 @@ public:
         logicUiEmpty
     };
 
+    enum frameBuilderFormat
+    {
+        frameBuilderNone,
+        frameBuilderEmpty
+    };
+
     static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, QString name = "Komunikator SG-2");
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
     static Mendium* newMendium();
     static LogicUI* newLogicUI(QFrame *fr);
+    static FrameBuilder* newFrameBuilder();
 
     static QString WindowName();
 
@@ -54,6 +62,7 @@ private:
     static mediumUiFormat mediumui;
     static mendiumFormat mendium;
     static logicUiFormat logicUi;
+    static frameBuilderFormat frameBuilder;
     static QString windowName;
 };
 
