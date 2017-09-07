@@ -17,7 +17,7 @@ public:
     virtual void Init() = 0;
 
 public slots:
-    virtual void FrameWrite(QByteArray ba) = 0;
+    virtual void FrameWrite(QSharedPointer<Frame> frame) = 0;
     virtual void FrameReaded(QSharedPointer<Frame> frame) = 0;
 
 signals:

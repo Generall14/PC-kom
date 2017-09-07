@@ -14,12 +14,12 @@ void FrameBuilderEmpty::ByteReaded(QByteArray ba)
 
 void FrameBuilderEmpty::FrameWrite(QSharedPointer<Frame> fr)
 {
-    emit Write(fr->pureData());
+    emit Write(fr);
 }
 
 void FrameBuilderEmpty::PureDataWrite(QByteArray ba)
 {
-    emit Write(ba);
+    emit Write(QSharedPointer<Frame>(Factory::newFrame(ba)));
 }
 
 void FrameBuilderEmpty::Run()

@@ -26,7 +26,7 @@ protected:
     virtual void Run() = 0;
 
 signals:
-    void Write(QByteArray);
+    void Write(QSharedPointer<Frame>);
     void FrameReaded(QSharedPointer<Frame>);
     void Error(QString);
 

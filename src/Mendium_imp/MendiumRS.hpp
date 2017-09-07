@@ -18,7 +18,7 @@ public:
 public slots:
     virtual void Open(QString desc);
     virtual void Close();
-    virtual void Write(QByteArray data);
+    virtual void Write(QSharedPointer<Frame> frame);
     virtual void Flush();
 
 protected:

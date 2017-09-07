@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QThread>
 #include <QByteArray>
+#include "Frame.hpp"
+#include <QSharedPointer>
 
 class Mendium : public QThread
 {
@@ -19,7 +21,7 @@ public slots:
     bool isOpened();
     virtual void Open(QString desc) = 0;
     virtual void Close() = 0;
-    virtual void Write(QByteArray data) = 0;
+    virtual void Write(QSharedPointer<Frame> frame) = 0;
     virtual void Flush() = 0;
 
 protected:

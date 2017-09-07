@@ -18,7 +18,7 @@ void MendiumEmpty::Close()
     emit Closed();
 }
 
-void MendiumEmpty::Write(QByteArray)
+void MendiumEmpty::Write(QSharedPointer<Frame>)
 {
 
 }

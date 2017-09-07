@@ -1,6 +1,7 @@
 #include "MendiumRS.hpp"
 #include <QString>
 #include <QDebug>
+#include "../Frame.hpp"
 
 MendiumRS::MendiumRS():
     Mendium()
@@ -36,10 +37,10 @@ void MendiumRS::Open(QString desc)
     }
 }
 
-void MendiumRS::Write(QByteArray data)
+void MendiumRS::Write(QSharedPointer<Frame> frame)
 {
     QMutexLocker lock(&mutex);
-    writeByffer.append(data);
+    writeByffer.append(frame->pureData());
 }
 
 void MendiumRS::Flush()

@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(logicUI, SIGNAL(WriteFrame(QSharedPointer<Frame>)), frameBuilder, SLOT(FrameWrite(QSharedPointer<Frame>)));
     connect(logicUI, SIGNAL(WritePureData(QByteArray)), frameBuilder, SLOT(PureDataWrite(QByteArray)));
 
-    connect(frameBuilder, SIGNAL(Write(QByteArray)), mendium, SLOT(Write(QByteArray)));
-    connect(frameBuilder, SIGNAL(Write(QByteArray)), logUI, SLOT(FrameWrite(QByteArray)));
+    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), mendium, SLOT(Write(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logUI, SLOT(FrameWrite(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));

@@ -22,9 +22,8 @@ void LogUIEmpty::Init()
     mainLay->addWidget(outLabel);
 }
 
-void LogUIEmpty::FrameWrite(QByteArray ba)
+void LogUIEmpty::FrameWrite(QSharedPointer<Frame> frame)
 {
-    QSharedPointer<Frame> frame = QSharedPointer<Frame>(Factory::newFrame(ba));
     qDebug() << "Logowanie zapisu";
     outLabel->setText("Out: "+frame->toQString());
 }
