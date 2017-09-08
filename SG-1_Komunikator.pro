@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     src/FrameBuilder.cpp \
     src/FrameBuilder_imp/FrameBuilderEmpty.cpp \
     src/LogUI.cpp \
-    src/LogUI_imp/LogUIEmpty.cpp
+    src/LogUI_imp/LogUIEmpty.cpp \
+    src/LogUI_imp/LogUITerm.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -50,6 +51,7 @@ HEADERS  += mainwindow.h \
     src/FrameBuilder.hpp \
     src/FrameBuilder_imp/FrameBuilderEmpty.hpp \
     src/LogUI.hpp \
-    src/LogUI_imp/LogUIEmpty.hpp
+    src/LogUI_imp/LogUIEmpty.hpp \
+    src/LogUI_imp/LogUITerm.hpp
 
 FORMS    += mainwindow.ui

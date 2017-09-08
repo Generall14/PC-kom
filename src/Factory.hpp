@@ -51,7 +51,8 @@ public:
     enum logUIFormat
     {
         logUINone,
-        logUIEmpty
+        logUIEmpty,
+        logUITerm
     };
 
     static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
