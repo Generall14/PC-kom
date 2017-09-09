@@ -46,7 +46,8 @@ public:
     enum frameBuilderFormat
     {
         frameBuilderNone,
-        frameBuilderEmpty
+        frameBuilderEmpty,
+        frameBuilderSG1
     };
 
     enum logUIFormat

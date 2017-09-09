@@ -2,6 +2,7 @@
 
 #include "Frame_imp/FrameEmpty.hpp"
 #include "Frame_imp/FrameTransparent.hpp"
+#include "Frame_imp/FrameSG1.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -13,6 +14,7 @@
 #include "LogicUI_imp/LogicUISG-1.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
+#include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -49,7 +51,7 @@ Frame* Factory::newFrame(QByteArray ba)
     case Factory::frameTransparent:
         return new FrameTransparent(ba);
     case Factory::frameSG1:
-        return NULL;//-----------------------------------------------
+        return new FrameSG1(ba);
     }
     return NULL;
 }
@@ -104,6 +106,8 @@ FrameBuilder* Factory::newFrameBuilder()
         return NULL;
     case frameBuilderEmpty:
         return new FrameBuilderEmpty;
+    case frameBuilderSG1:
+        return new FrameBuilderSG1;
     }
     return NULL;
 }

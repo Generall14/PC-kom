@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     src/LogUI_imp/LogUIEmpty.cpp \
     src/LogUI_imp/LogUITerm.cpp \
     src/LogicUI_imp/LogicUISG-1.cpp \
-    src/EQThread.cpp
+    src/EQThread.cpp \
+    src/Frame_imp/FrameSG1.cpp \
+    src/FrameBuilder_imp/FrameBuilderSG1.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -56,6 +58,8 @@ HEADERS  += mainwindow.h \
     src/LogUI_imp/LogUIEmpty.hpp \
     src/LogUI_imp/LogUITerm.hpp \
     src/LogicUI_imp/LogicUISG-1.hpp \
-    src/EQThread.hpp
+    src/EQThread.hpp \
+    src/Frame_imp/FrameSG1.hpp \
+    src/FrameBuilder_imp/FrameBuilderSG1.hpp
 
 FORMS    += mainwindow.ui
