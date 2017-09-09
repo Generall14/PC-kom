@@ -9,6 +9,7 @@ MendiumRS::MendiumRS():
     port.setDataBits(QSerialPort::Data8);
     port.setFlowControl(QSerialPort::NoFlowControl);
     port.setStopBits(QSerialPort::OneStop);
+    port.setParity(QSerialPort::NoParity);
 }
 
 void MendiumRS::Open(QString desc)

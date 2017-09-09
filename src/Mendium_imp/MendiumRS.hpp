@@ -16,7 +16,7 @@ public:
     virtual ~MendiumRS(){}
 
 public slots:
-    virtual void Open(QString desc);
+    virtual void Open(QString desc);//port;prędkość
     virtual void Close();
     virtual void Write(QSharedPointer<Frame> frame);
     virtual void Flush();
