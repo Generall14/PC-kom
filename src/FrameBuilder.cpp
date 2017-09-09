@@ -1,19 +1,7 @@
 #include "FrameBuilder.hpp"
 
-FrameBuilder::FrameBuilder()
+FrameBuilder::FrameBuilder():
+    EQThread()
 {
 
-}
-
-void FrameBuilder::run()
-{
-    while(!stopRequest)
-    {
-        this->Run();
-    }
-}
-
-void FrameBuilder::Stop()
-{
-    stopRequest = true;
 }

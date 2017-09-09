@@ -1,23 +1,16 @@
 #include "Mendium.hpp"
 #include "Factory.hpp"
 
-Mendium::Mendium()
+Mendium::Mendium():
+    EQThread()
 {
 
-}
-
-void Mendium::run()
-{
-    while(!stopRequest)
-    {
-        this->Run();
-    }
-    Close();
 }
 
 void Mendium::Stop()
 {
     stopRequest = true;
+    Close();
 }
 
 bool Mendium::isOpened()
