@@ -39,7 +39,8 @@ public:
     enum logicUiFormat
     {
         logicUiNone,
-        logicUiEmpty
+        logicUiEmpty,
+        logicUiSG1
     };
 
     enum frameBuilderFormat

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>809</width>
+    <width>1155</width>
     <height>690</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <item>
      <widget class="QFrame" name="frame_log">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>5</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -57,7 +57,7 @@
          <property name="minimumSize">
           <size>
            <width>20</width>
-           <height>20</height>
+           <height>65</height>
           </size>
          </property>
          <property name="frameShape">
@@ -94,7 +94,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>809</width>
+     <width>1155</width>
      <height>19</height>
     </rect>
    </property>

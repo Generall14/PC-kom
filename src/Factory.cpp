@@ -10,6 +10,7 @@
 #include "Mendium_imp/MendiumRS.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
+#include "LogicUI_imp/LogicUISG-1.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 
@@ -75,6 +76,8 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return NULL;
     case Factory::logicUiEmpty:
         return new LogicUIEmpty(fr);
+    case Factory::logicUiSG1:
+        return new LogicUISG1(fr);
     }
     return NULL;
 }
