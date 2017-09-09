@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mediumUI->Init();
     logicUI->Init();
     logUI->Init();
+
+    connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));
+    emit FakeDiscinnect();
 }
 
 MainWindow::~MainWindow()

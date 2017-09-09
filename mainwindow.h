@@ -33,6 +33,8 @@ private:
 public slots:
     void ErrorMessage(QString er);
 
+signals:
+    void FakeDiscinnect();
 };
 
 #endif // MAINWINDOW_H
