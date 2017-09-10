@@ -33,7 +33,8 @@ public:
     {
         mendiumNone,
         mendiumEmpty,
-        mendiumRS
+        mendiumRS,
+        mendiumFakeGS1
     };
 
     enum logicUiFormat

@@ -9,6 +9,7 @@
 
 #include "Mendium_imp/MendiumEmpty.hpp"
 #include "Mendium_imp/MendiumRS.hpp"
+#include "Mendium_imp/MendiumFakeSG1.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
@@ -94,6 +95,8 @@ Mendium* Factory::newMendium()
         return new MendiumEmpty();
     case Factory::mendiumRS:
         return new MendiumRS();
+    case Factory::mendiumFakeGS1:
+        return new MendiumFakeSG1();
     }
     return NULL;
 }
