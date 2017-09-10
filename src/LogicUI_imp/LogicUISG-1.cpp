@@ -42,7 +42,7 @@ void LogicUISG1::InitDebug()
     btnHello = new QPushButton("Hello");
     bbbhello->addWidget(btnHello);
     btnHello->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    lblHello = new QLabel("Prot. vX.XXt, prog. vX.XXt");
+    lblHello = new QLabel("prog. vX.XXx, prot. vX.XXx");
     bbbhello->addWidget(lblHello);
     lblHello->setAlignment(Qt::AlignRight);
 
@@ -257,61 +257,31 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
 {
     if(!frame->isValid())
         return;
+
     QByteArray pck = frame->pureData();
-    if(pck.length()<5)
-        return;
-
-    const float timeres = 0.5, kb=3.3/1024.0;
-    float voltage;
-    int mlv=0, llv=0, pga, pgb, pra, prb;
-    QString pgt, prt;
-
-    int val = 0;
-    val |= (pck[1]<<16)&0xFF0000;
-    val |= (pck[2]<<8)&0xFF00;
-    val |= pck[3]&0xFF;
 
     switch (pck.at(0))
     {
     case 'C':                           //Pomiar
-        lblCounts->setText(QString::number(val/timeres)+" imp/s");
+        lblCounts->setText(frame->toShortQString());
         return;
     case 'T':                           //Temperatura
-        lblTemp->setText(QString("%1 ADC").arg(val, 8, 10));
+        lblTemp->setText(frame->toShortQString());
         return;
     case 'Z':                           //Zatkanie
-        lblZatk->setText(QString("%1 ADC").arg(val, 8, 10));
+        lblZatk->setText(frame->toShortQString());
         return;
     case 'L':                           //Poziomy
-        mlv=0;
-        llv=0;
-        mlv |= pck[2]&0xFF;
-        llv |= pck[3]&0xFF;
-        llv = 8-llv;
-        lblLevels->setText(QString("%1/%2").arg(mlv, 0, 10).arg(llv, 0, 10));
+        lblLevels->setText(frame->toShortQString());
         return;
     case 'D':                           //Napięcie SiPM
-        lblVSiPM->setText(QString("%1 DAC").arg(val, 0, 10));
+        lblVSiPM->setText(frame->toShortQString());
         return;
-//    case 'H':                           //Hello
-//        pga=0;
-//        pga=(pck[3]>>4)&0x07;
-//        pgb=0;
-//        pgb=(pck[3]&0x0F);
-//        pra=0;
-//        pra=(pck[2]>>4)&0x07;
-//        prb=0;
-//        prb=(pck[2]&0x0F);
-//        pgt = "";
-//        prt = "";
-//        if(pck[3]&0x80)
-//            pgt="t";
-//        if(pck[2]&0x80)
-//            prt="t";
-//        return QString("Hello: program v%1.%2").arg(pga, 0, 10).arg(pgb, 0, 10)+pgt+QString(", protokół v%1.%2").arg(pra, 0, 10).arg(prb, 0, 10)+prt+".";
+    case 'H':                           //Hello
+        lblHello->setText(frame->toShortQString());
+        return;
     case 'V':                           //napięcie baterii
-        voltage = (float)val*kb;
-        lblVBat->setText(QString::number(voltage)+" V");
+        lblVBat->setText(frame->toShortQString());
         return;
     }
 }

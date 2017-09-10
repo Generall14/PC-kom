@@ -13,6 +13,7 @@ public:
 
     virtual bool isValid() = 0;
     virtual QString toQString() = 0;
+    virtual QString toShortQString() = 0;
 
     QByteArray pureData();
 

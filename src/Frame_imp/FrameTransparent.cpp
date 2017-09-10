@@ -19,3 +19,8 @@ QString FrameTransparent::toQString()
     temp = temp.replace("X", "x");
     return temp;
 }
+
+QString FrameTransparent::toShortQString()
+{
+    return "XXX";
+}

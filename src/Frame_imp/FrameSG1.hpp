@@ -13,6 +13,7 @@ public:
 
     virtual bool isValid();
     virtual QString toQString();
+    virtual QString toShortQString();
 
 protected:
     QString InvalidString();
