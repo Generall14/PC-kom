@@ -26,23 +26,37 @@ QString FrameSG1::toQString()
 
     switch (pck.at(0))
     {
+    case 'c':                           //Pomiar
+        return QString("Zapytanie o zliczenia");
     case 'C':                           //Pomiar
         return QString("Raport: pomiar: ")+toShortQString();
     case 'A':                           //Licznik kalibracji
         return QString("Raport: pomiar autokalibracji: ")+toShortQString();
+    case 't':                           //Temperatura
+        return QString("Zapytanie o temperature");
     case 'T':                           //Temperatura
         return QString("Raport: temperatura: ")+toShortQString();
+    case 'z':                           //Zatkanie
+        return QString("Zapytanie o zatkanie.");
     case 'Z':                           //Zatkanie
         return QString("Raport: pomiar zatkania: ")+toShortQString();
+    case 'l':                           //Poziomy
+        return QString("Zapytanie o poziomy.");
     case 'L':                           //Poziomy
         return QString("Raport: poziomy progów: ")+toShortQString();
+    case 'd':                           //Napięcie SiPM
+        return QString("Zapytanie o napięcie SiPM.");
     case 'D':                           //Napięcie SiPM
         return QString("Raport: napięcie SiPM: ")+toShortQString();
+    case 'h':                           //Hello
+        return QString("Zapytanie hello.");
     case 'H':                           //Hello
         return QString("Hello: ")+toShortQString();
     case 'B':                           //Zatkanie bufora
         return QString("Raport: zatkanie bufora odczytu!");
-    case 'V':                           //napięcie baterii
+    case 'v':                           //Napięcie baterii
+        return QString("Zapytanie o napięcie baterii.");
+    case 'V':                           //Napięcie baterii
         return QString("Napięcie zasilania: ")+toShortQString();
     }
 
@@ -116,7 +130,7 @@ QString FrameSG1::toShortQString()
         return QString("%1/%2").arg(mlv, 0, 10).arg(llv, 0, 10);
     case 'D':                           //Napięcie SiPM
         voltage = (float)result*k;
-        return QString("%1 DAC, ").arg(result, 0, 10) +QString::number(voltage)+" V";
+        return QString("%1 DAC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
     case 'H':                           //Hello
         pga=0;
         pga=(pck[3]>>4)&0x07;
@@ -133,9 +147,9 @@ QString FrameSG1::toShortQString()
         if(pck[2]&0x80)
             prt="t";
         return QString("prog. v%1.%2").arg(pga, 0, 10).arg(pgb, 0, 10)+pgt+QString(", prot. v%1.%2").arg(pra, 0, 10).arg(prb, 0, 10)+prt+".";
-    case 'V':                           //napięcie baterii
+    case 'V':                           //Napięcie baterii
         voltage = (float)result*kb;
-        return QString::number(voltage)+" V";
+        return QString::number(voltage, 'f', 2)+" V";
     }
 
     return "XXX";

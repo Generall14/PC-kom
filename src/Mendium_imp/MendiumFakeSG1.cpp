@@ -18,9 +18,35 @@ void MendiumFakeSG1::Close()
     emit Closed();
 }
 
-void MendiumFakeSG1::Write(QSharedPointer<Frame>)
+void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
 {
+    if(!frame->isValid())
+        return;
 
+    switch(frame->pureData().at(0))
+    {
+    case 'h':
+        helloreq = true;
+        return;
+    case 'v':
+        battreq = true;
+        return;
+    case 'c':
+        rrep |= 1<<shiftCnt;
+        return;
+    case 'd':
+        rrep |= 1<<shiftDAC;
+        return;
+    case 't':
+        rrep |= 1<<shiftTemp;
+        return;
+    case 'z':
+        rrep |= 1<<shiftZatk;
+        return;
+    case 'l':
+        rrep |= 1<<shiftLevels;
+        return;
+    }
 }
 
 void MendiumFakeSG1::Flush()
@@ -33,6 +59,11 @@ void MendiumFakeSG1::Run()
     QThread::msleep(500);
     if(opened)
     {
+        if(helloreq)
+            SendFrame('H', helloresp);
+        if(battreq)
+            SendFrame('V', qrand()%1024);
+
         if(  ((arep>>shiftCnt)&0x01)  ||  ((rrep>>shiftCnt)&0x01)  )
             SendFrame('C', qrand()%10);
         if(  ((arep>>shiftACal)&0x01)  ||  ((rrep>>shiftACal)&0x01)  )
@@ -46,6 +77,8 @@ void MendiumFakeSG1::Run()
         if(  ((arep>>shiftLevels)&0x01)  ||  ((rrep>>shiftLevels)&0x01)  )
             SendFrame('L', 0x000106);
         rrep = 0;
+        helloreq = false;
+        battreq = false;
     }
 }
 

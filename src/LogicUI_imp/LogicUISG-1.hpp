@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QSpinBox>
+#include "../Factory.hpp"
 
 class LogicUISG1 : public LogicUI
 {
@@ -24,6 +25,7 @@ public slots:
     virtual void FrameReaded(QSharedPointer<Frame> frame);
 
 private slots:
+    void SendFrame(char header, int val = 0);
 
 protected:
     void InitDebug();
@@ -31,13 +33,6 @@ protected:
     QFrame* dbgFrame = NULL;
     QFrame* calFrame = NULL;
 
-    QPushButton* btnHello = NULL;
-    QPushButton* btnCounts = NULL;
-    QPushButton* btnTemp = NULL;
-    QPushButton* btnZatk = NULL;
-    QPushButton* btnLevels = NULL;
-    QPushButton* btnVSiPM = NULL;
-    QPushButton* btnVBat = NULL;
     QLabel* lblHello = NULL;
     QLabel* lblCounts = NULL;
     QLabel* lblTemp = NULL;

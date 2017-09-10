@@ -39,63 +39,70 @@ void LogicUISG1::InitDebug()
 
     QHBoxLayout* bbbhello = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbhello);
-    btnHello = new QPushButton("Hello");
+    QPushButton* btnHello = new QPushButton("Hello");
     bbbhello->addWidget(btnHello);
     btnHello->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnHello, &QPushButton::clicked, [=](){SendFrame('h');});
     lblHello = new QLabel("prog. vX.XXx, prot. vX.XXx");
     bbbhello->addWidget(lblHello);
     lblHello->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbbcounts = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbcounts);
-    btnCounts = new QPushButton("Zliczenia");
+    QPushButton* btnCounts = new QPushButton("Zliczenia");
     bbbcounts->addWidget(btnCounts);
     btnCounts->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnCounts, &QPushButton::clicked, [=](){SendFrame('c');});
     lblCounts = new QLabel("XXX imp/s");
     bbbcounts->addWidget(lblCounts);
     lblCounts->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbblevels = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbblevels);
-    btnLevels = new QPushButton("Poziomy");
+    QPushButton* btnLevels = new QPushButton("Poziomy");
     bbblevels->addWidget(btnLevels);
     btnLevels->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnLevels, &QPushButton::clicked, [=](){SendFrame('l');});
     lblLevels = new QLabel("X/X");
     bbblevels->addWidget(lblLevels);
     lblLevels->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbbzatk = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbzatk);
-    btnZatk = new QPushButton("Zatkanie");
+    QPushButton* btnZatk = new QPushButton("Zatkanie");
     bbbzatk->addWidget(btnZatk);
     btnZatk->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnZatk, &QPushButton::clicked, [=](){SendFrame('z');});
     lblZatk = new QLabel("XXX ADC");
     bbbzatk->addWidget(lblZatk);
     lblZatk->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbbtemp = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbtemp);
-    btnTemp = new QPushButton("Temp.");
+    QPushButton* btnTemp = new QPushButton("Temp.");
     bbbtemp->addWidget(btnTemp);
     btnTemp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnTemp, &QPushButton::clicked, [=](){SendFrame('t');});
     lblTemp = new QLabel("XXX ADC");
     bbbtemp->addWidget(lblTemp);
     lblTemp->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbbvsipm = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbvsipm);
-    btnVSiPM = new QPushButton("V SiPM");
+    QPushButton* btnVSiPM = new QPushButton("V SiPM");
     bbbvsipm->addWidget(btnVSiPM);
     btnVSiPM->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnVSiPM, &QPushButton::clicked, [=](){SendFrame('d');});
     lblVSiPM = new QLabel("XXX DAC");
     bbbvsipm->addWidget(lblVSiPM);
     lblVSiPM->setAlignment(Qt::AlignRight);
 
     QHBoxLayout* bbbvbat = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbvbat);
-    btnVBat = new QPushButton("V Bat.");
+    QPushButton* btnVBat = new QPushButton("V Bat.");
     bbbvbat->addWidget(btnVBat);
     btnVBat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnVBat, &QPushButton::clicked, [=](){SendFrame('v');});
     lblVBat = new QLabel("XXX V");
     bbbvbat->addWidget(lblVBat);
     lblVBat->setAlignment(Qt::AlignRight);
@@ -280,8 +287,19 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     case 'H':                           //Hello
         lblHello->setText(frame->toShortQString());
         return;
-    case 'V':                           //napięcie baterii
+    case 'V':                           //Napięcie baterii
         lblVBat->setText(frame->toShortQString());
         return;
     }
+}
+
+void LogicUISG1::SendFrame(char header, int val)
+{
+    QByteArray temp;
+    temp.append(header);
+    temp.append((val>>16)&0xFF);
+    temp.append((val>>8)&0xFF);
+    temp.append((val>>0)&0xFF);
+    temp.append(((int)header)^0xFF);
+    emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
