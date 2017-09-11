@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     src/EQThread.cpp \
     src/Frame_imp/FrameSG1.cpp \
     src/FrameBuilder_imp/FrameBuilderSG1.cpp \
-    src/Mendium_imp/MendiumFakeSG1.cpp
+    src/Mendium_imp/MendiumFakeSG1.cpp \
+    src/LogicUI_imp/utils/Worker.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -62,6 +63,8 @@ HEADERS  += mainwindow.h \
     src/EQThread.hpp \
     src/Frame_imp/FrameSG1.hpp \
     src/FrameBuilder_imp/FrameBuilderSG1.hpp \
-    src/Mendium_imp/MendiumFakeSG1.hpp
+    src/Mendium_imp/MendiumFakeSG1.hpp \
+    src/LogicUI_imp/utils/Transaction.hpp \
+    src/LogicUI_imp/utils/Worker.hpp
 
 FORMS    += mainwindow.ui

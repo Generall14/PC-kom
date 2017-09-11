@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QGroupBox>
 #include <QSpacerItem>
+#include "utils/Transaction.hpp"
+#include "utils/Worker.hpp"
 
 LogicUISG1::LogicUISG1(QFrame* parent):
     LogicUI(parent)
@@ -211,6 +213,7 @@ void LogicUISG1::InitDebug()
     QPushButton* kalreadall = new QPushButton("Read all");
     kkkread->addWidget(kalreadall);
     kalreadall->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(kalreadall, &QPushButton::clicked, this, &LogicUISG1::ReadAll);
 
     QHBoxLayout* kkkread2 = new QHBoxLayout();
     mainKalibracjaLay->addLayout(kkkread2);
@@ -251,6 +254,8 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     if(!frame->isValid())
         return;
 
+    emit InternalFrameReaded(frame);
+
     QByteArray pck = frame->pureData();
 
     int ival=0;
@@ -287,7 +292,12 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     }
 }
 
-void LogicUISG1::SendFrame(char header, int val)
+void LogicUISG1::SendFrame(uchar header, int val)
+{
+    emit WriteFrame(MakeFrame(header, val));
+}
+
+QSharedPointer<Frame> LogicUISG1::MakeFrame(uchar header, int val)
 {
     QByteArray temp;
     temp.append(header);
@@ -295,7 +305,7 @@ void LogicUISG1::SendFrame(char header, int val)
     temp.append((val>>8)&0xFF);
     temp.append((val>>0)&0xFF);
     temp.append(((int)header)^0xFF);
-    emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
+    return QSharedPointer<Frame>(Factory::newFrame(temp));
 }
 
 void LogicUISG1::SendAutoReportConfig()
@@ -329,4 +339,19 @@ void LogicUISG1::WriteSingleCal()
     int header = 0x20;
     header += sbwnumber->value();
     SendFrame(header&0xFF, sbwvalue->value());
+}
+
+void LogicUISG1::ReadAll()
+{
+    transaction tran(MakeFrame('h'), QByteArray("g"), 1000, 3);
+    Worker* wk = new Worker(tran);
+    connect(this, SIGNAL(InternalFrameReaded(QSharedPointer<Frame>)), wk, SLOT(RecievedFrame(QSharedPointer<Frame>)));
+    connect(wk, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
+    connect(wk, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    wk->start(QThread::HighPriority);
+}
+
+void LogicUISG1::InternalWriteFrame(QByteArray frame)
+{
+    emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(frame)));
 }

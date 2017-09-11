@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QSharedPointer>
 #include "../Factory.hpp"
 
 class LogicUISG1 : public LogicUI
@@ -25,10 +26,13 @@ public slots:
     virtual void FrameReaded(QSharedPointer<Frame> frame);
 
 protected slots:
-    void SendFrame(char header, int val = 0);
+    QSharedPointer<Frame> MakeFrame(uchar header, int val = 0);
+    void SendFrame(uchar header, int val = 0);
     void SendAutoReportConfig();
     void ReadSingleCal();
     void WriteSingleCal();
+    void ReadAll();
+    void InternalWriteFrame(QByteArray frame);
 
 protected:
     void InitDebug();
@@ -55,6 +59,9 @@ protected:
     QSpinBox* sbrnumber = NULL;
     QSpinBox* sbwnumber = NULL;
     QSpinBox* sbwvalue = NULL;
+
+signals:
+    void InternalFrameReaded(QSharedPointer<Frame>);
 };
 
 #endif

@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     frameBuilder = Factory::newFrameBuilder();
     logUI = Factory::newLogUI(ui->frame_log);
 
+    connect(this, SIGNAL(HALT()), mendium, SLOT(Stop()));
+    connect(this, SIGNAL(HALT()), frameBuilder, SLOT(Stop()));
+
     connect(mediumUI, SIGNAL(ConnectRequest(QString)), mendium, SLOT(Open(QString)));
     connect(mediumUI, SIGNAL(DisconnectRequest()), mendium, SLOT(Close()));
     connect(mediumUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
@@ -55,19 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    if(mendium)
-    {
-        mendium->terminate();
-        delete mendium;
-        mendium = 0;
-    }
-
-    if(frameBuilder)
-    {
-        frameBuilder->terminate();
-        delete frameBuilder;
-        frameBuilder = 0;
-    }
+    emit HALT();
 
     delete mediumUI;
     delete mendium;

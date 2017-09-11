@@ -35,6 +35,7 @@ public slots:
 
 signals:
     void FakeDiscinnect();
+    void HALT();
 };
 
 #endif // MAINWINDOW_H
