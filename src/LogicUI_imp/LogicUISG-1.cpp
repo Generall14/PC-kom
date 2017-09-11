@@ -5,7 +5,7 @@
 #include <QGroupBox>
 #include <QSpacerItem>
 #include "utils/Transaction.hpp"
-#include "utils/Worker.hpp"
+#include "utils/WorkerManager.hpp"
 
 LogicUISG1::LogicUISG1(QFrame* parent):
     LogicUI(parent)
@@ -254,7 +254,7 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     if(!frame->isValid())
         return;
 
-    emit InternalFrameReaded(frame);
+    emit InternalFrameReaded(frame->pureData());
 
     QByteArray pck = frame->pureData();
 
@@ -343,12 +343,16 @@ void LogicUISG1::WriteSingleCal()
 
 void LogicUISG1::ReadAll()
 {
-    transaction tran(MakeFrame('h'), QByteArray("g"), 1000, 3);
-    Worker* wk = new Worker(tran);
-    connect(this, SIGNAL(InternalFrameReaded(QSharedPointer<Frame>)), wk, SLOT(RecievedFrame(QSharedPointer<Frame>)));
-    connect(wk, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
-    connect(wk, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
-    wk->start(QThread::HighPriority);
+    QVector<transaction> vec;
+    for(int i=0;i<12;++i)
+        vec.append(transaction(MakeFrame((0x00|i)&0xFF), QByteArray(1, (0x10|i)&0xFF), 1000, 3));
+
+    WorkerManager* man = new WorkerManager(vec, 7);
+    connect(this, SIGNAL(InternalFrameReaded(QByteArray)), man, SLOT(RecievedFrame(QByteArray)));
+    connect(man, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
+    connect(man, SIGNAL(Fail(QString)), this, SIGNAL(Error(QString)));
+    connect(man, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    man->start(QThread::HighPriority);
 }
 
 void LogicUISG1::InternalWriteFrame(QByteArray frame)

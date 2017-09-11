@@ -61,7 +61,7 @@ protected:
     QSpinBox* sbwvalue = NULL;
 
 signals:
-    void InternalFrameReaded(QSharedPointer<Frame>);
+    void InternalFrameReaded(QByteArray);
 };
 
 #endif

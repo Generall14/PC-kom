@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     src/Frame_imp/FrameSG1.cpp \
     src/FrameBuilder_imp/FrameBuilderSG1.cpp \
     src/Mendium_imp/MendiumFakeSG1.cpp \
-    src/LogicUI_imp/utils/Worker.cpp
+    src/LogicUI_imp/utils/Worker.cpp \
+    src/LogicUI_imp/utils/WorkerManager.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -65,6 +66,7 @@ HEADERS  += mainwindow.h \
     src/FrameBuilder_imp/FrameBuilderSG1.hpp \
     src/Mendium_imp/MendiumFakeSG1.hpp \
     src/LogicUI_imp/utils/Transaction.hpp \
-    src/LogicUI_imp/utils/Worker.hpp
+    src/LogicUI_imp/utils/Worker.hpp \
+    src/LogicUI_imp/utils/WorkerManager.hpp
 
 FORMS    += mainwindow.ui

@@ -40,7 +40,6 @@ void LogUITerm::Init()
 
 void LogUITerm::FrameWrite(QSharedPointer<Frame> frame)
 {
-    qDebug() << "Logowanie zapisu";
     QString temps = "<font face=\"Hack\" color=#6666ff><b>PC ---> DEV ";
     temps += QTime::currentTime().toString("HH:mm:ss");
     temps += ": </b></font>";
@@ -54,7 +53,6 @@ void LogUITerm::FrameWrite(QSharedPointer<Frame> frame)
 
 void LogUITerm::FrameReaded(QSharedPointer<Frame> frame)
 {
-    qDebug() << "Logowanie odczytu";
     QString temps = "<font face=\"Hack\" color=#b3b300><b>PC &#60;--- DEV ";
     temps += QTime::currentTime().toString("HH:mm:ss");
     temps += ": </b></font>";

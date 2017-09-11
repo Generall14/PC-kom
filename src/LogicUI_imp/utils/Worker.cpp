@@ -1,16 +1,15 @@
 #include "Worker.hpp"
+#include "../../Factory.hpp"
 #include <QDebug>
 
 Worker::Worker(transaction req):
     EQThread(),
     transactionRequest(req)
 {
-    qDebug() << "konstruntor worker";
 }
 
 Worker::~Worker()
 {
-    qDebug() << "destruktor worker";
 }
 
 void Worker::Run()
@@ -28,9 +27,10 @@ void Worker::Run()
     }
 }
 
-void Worker::RecievedFrame(QSharedPointer<Frame> frame)
+void Worker::RecievedFrame(QByteArray frame)
 {
-    if(frame->magicNumbers()==transactionRequest.requestedMagisNumber)
+    QSharedPointer<Frame> temp = QSharedPointer<Frame>(Factory::newFrame(frame));
+    if(temp->magicNumbers()==transactionRequest.requestedMagisNumber)
     {
         emit Done(frame);
         done = true;

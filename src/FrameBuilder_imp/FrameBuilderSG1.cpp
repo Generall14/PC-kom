@@ -49,8 +49,6 @@ void FrameBuilderSG1::Run()
 
 void FrameBuilderSG1::TimeoutedReciev()
 {
-    qDebug() << "AAAAAAAAAAAAAAAAAAAA";
-    qDebug() << recievedbuf;
     emit FrameReaded(QSharedPointer<Frame>(Factory::newFrame(recievedbuf)));
     recievedbuf.clear();
 }

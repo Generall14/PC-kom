@@ -15,7 +15,7 @@ public:
     virtual ~Worker();
 
 public slots:
-    void RecievedFrame(QSharedPointer<Frame> frame);
+    void RecievedFrame(QByteArray frame);
 
 protected:
     virtual void Run();
@@ -24,7 +24,7 @@ protected:
     bool done = false;
 
 signals:
-    void Done(QSharedPointer<Frame>);
+    void Done(QByteArray);
     void SendFrame(QByteArray);
     void Fail();
     void Error(QString);
