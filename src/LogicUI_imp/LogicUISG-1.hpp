@@ -24,8 +24,11 @@ public slots:
     virtual void Disconnected();
     virtual void FrameReaded(QSharedPointer<Frame> frame);
 
-private slots:
+protected slots:
     void SendFrame(char header, int val = 0);
+    void SendAutoReportConfig();
+    void ReadSingleCal();
+    void WriteSingleCal();
 
 protected:
     void InitDebug();
@@ -41,10 +44,6 @@ protected:
     QLabel* lblVSiPM = NULL;
     QLabel* lblVBat = NULL;
 
-    QPushButton* btnRst = NULL;
-    QPushButton* btnACal = NULL;
-
-    QPushButton* btnARep = NULL;
     QCheckBox* chkCounts = NULL;
     QCheckBox* chkTemp = NULL;
     QCheckBox* chkZatk = NULL;
@@ -52,21 +51,7 @@ protected:
     QCheckBox* chkVSiPM = NULL;
     QCheckBox* chkACal = NULL;
 
-    QLabel* k00 = NULL;
-    QLabel* k01 = NULL;
-    QLabel* k02 = NULL;
-    QLabel* k10 = NULL;
-    QLabel* k11 = NULL;
-    QLabel* k12 = NULL;
-    QLabel* k20 = NULL;
-    QLabel* k21 = NULL;
-    QLabel* k22 = NULL;
-    QLabel* k30 = NULL;
-    QLabel* k31 = NULL;
-    QLabel* k32 = NULL;
-    QPushButton* kalread = NULL;
-    QPushButton* kalreadall = NULL;
-    QPushButton* kalwrite = NULL;
+    QVector<QLabel*> calV;
     QSpinBox* sbrnumber = NULL;
     QSpinBox* sbwnumber = NULL;
     QSpinBox* sbwvalue = NULL;

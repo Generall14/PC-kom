@@ -23,6 +23,10 @@ QString FrameSG1::toQString()
 
     if((pck[0]&0xF0)==0x10)
         return QString("Odczyt zmiennej kalibracjyjnej nr. ")+toShortQString();
+    if((pck[0]&0xF0)==0x00)
+        return QString("Żądanie odczytu zmiennej kalibracjyjnej nr. ")+toShortQString();
+    if((pck[0]&0xF0)==0x20)
+        return QString("Żądanie zapisu zmiennej kalibracjyjnej nr. ")+toShortQString();
 
     switch (pck.at(0))
     {
@@ -58,6 +62,12 @@ QString FrameSG1::toQString()
         return QString("Zapytanie o napięcie baterii.");
     case 'V':                           //Napięcie baterii
         return QString("Napięcie zasilania: ")+toShortQString();
+    case 'a':                           //Autokalibracja
+        return QString("Wymuszenie autokalibracji.");
+    case 'r':                           //Reset
+        return QString("Wymuszenie resetu.");
+    case 's':                           //Reset
+        return QString("Zapis konfiguracji automatycznych raportów: ")+toShortQString();
     }
 
     QString temp;
@@ -104,11 +114,13 @@ QString FrameSG1::toShortQString()
     result |= (pck[2]<<8)&0xFF00;
     result |= pck[3]&0xFF;
 
+    int calNr = pck[0]&0x0F;
     if((pck[0]&0xF0)==0x10)
-    {
-        int calNr = pck[0]&0x0F;
         return QString("%1: %2").arg(calNr, 2, 10).arg(result, 8, 10);
-    }
+    if((pck[0]&0xF0)==0x00)
+        return QString("%1").arg(calNr, 2, 10);
+    if((pck[0]&0xF0)==0x20)
+        return QString("%1: %2").arg(calNr, 2, 10).arg(result, 8, 10);
 
     switch (pck.at(0))
     {
@@ -150,6 +162,8 @@ QString FrameSG1::toShortQString()
     case 'V':                           //Napięcie baterii
         voltage = (float)result*kb;
         return QString::number(voltage, 'f', 2)+" V";
+    case 's':                           //Zapis autoraportów
+        return QString("0x%1 ").arg((int)(result&0xFF), 2, 16, QChar('0')).toUpper().replace("X", "x");
     }
 
     return "XXX";

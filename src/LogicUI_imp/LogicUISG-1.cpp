@@ -112,15 +112,17 @@ void LogicUISG1::InitDebug()
     mainDbgLay->addWidget(groupBoxWymuszenia);
     QHBoxLayout* mainWymuszeniaLay = new QHBoxLayout(groupBoxWymuszenia);
 
-    btnACal = new QPushButton("A. kal.");
+    QPushButton* btnACal = new QPushButton("A. kal.");
     mainWymuszeniaLay->addWidget(btnACal);
     btnACal->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnACal, &QPushButton::clicked, [=](){SendFrame('a');});
 
     mainWymuszeniaLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
-    btnRst = new QPushButton("Reset");
+    QPushButton* btnRst = new QPushButton("Reset");
     mainWymuszeniaLay->addWidget(btnRst);
     btnRst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnRst, &QPushButton::clicked, [=](){SendFrame('r');});
 
     //=======================Grupa raporty========================================================
     QGroupBox* groupBoxRaporty = new QGroupBox("Raporty");
@@ -150,9 +152,10 @@ void LogicUISG1::InitDebug()
 
     QVBoxLayout* chklay3 = new QVBoxLayout();
     chklay->addLayout(chklay3);
-    btnARep = new QPushButton("Zapisz");
+    QPushButton* btnARep = new QPushButton("Zapisz");
     chklay3->addWidget(btnARep);
     btnARep->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnARep, &QPushButton::clicked, this, &LogicUISG1::SendAutoReportConfig);
 
 
     QHBoxLayout* chklayb = new QHBoxLayout();
@@ -161,6 +164,11 @@ void LogicUISG1::InitDebug()
 
 
     //=======================Grupa kalibracja=====================================================
+    for(int i=0;i<12;++i)
+    {
+        calV.push_back(new QLabel("XXX"));
+        calV.at(i)->setAlignment(Qt::AlignCenter);
+    }
     QGroupBox* groupBoxKalibracja = new QGroupBox("Kalibracja");
     mainDbgLay->addWidget(groupBoxKalibracja);
     QVBoxLayout* mainKalibracjaLay = new QVBoxLayout(groupBoxKalibracja);
@@ -170,48 +178,24 @@ void LogicUISG1::InitDebug()
 
     QVBoxLayout* kallay1 = new QVBoxLayout();
     kallay->addLayout(kallay1);
-    k00 = new QLabel("XXX");
-    k00->setAlignment(Qt::AlignCenter);
-    kallay1->addWidget(k00);
-    k10 = new QLabel("XXX");
-    k10->setAlignment(Qt::AlignCenter);
-    kallay1->addWidget(k10);
-    k20 = new QLabel("XXX");
-    k20->setAlignment(Qt::AlignCenter);
-    kallay1->addWidget(k20);
-    k30 = new QLabel("XXX");
-    k30->setAlignment(Qt::AlignCenter);
-    kallay1->addWidget(k30);
+    kallay1->addWidget(calV.at(0));
+    kallay1->addWidget(calV.at(3));
+    kallay1->addWidget(calV.at(6));
+    kallay1->addWidget(calV.at(9));
 
     QVBoxLayout* kallay2 = new QVBoxLayout();
     kallay->addLayout(kallay2);
-    k01 = new QLabel("XXX");
-    k01->setAlignment(Qt::AlignCenter);
-    kallay2->addWidget(k01);
-    k11 = new QLabel("XXX");
-    k11->setAlignment(Qt::AlignCenter);
-    kallay2->addWidget(k11);
-    k21 = new QLabel("XXX");
-    k21->setAlignment(Qt::AlignCenter);
-    kallay2->addWidget(k21);
-    k31 = new QLabel("XXX");
-    k31->setAlignment(Qt::AlignCenter);
-    kallay2->addWidget(k31);
+    kallay2->addWidget(calV.at(1));
+    kallay2->addWidget(calV.at(4));
+    kallay2->addWidget(calV.at(7));
+    kallay2->addWidget(calV.at(10));
 
     QVBoxLayout* kallay3 = new QVBoxLayout();
     kallay->addLayout(kallay3);
-    k02 = new QLabel("XXX");
-    k02->setAlignment(Qt::AlignCenter);
-    kallay3->addWidget(k02);
-    k12 = new QLabel("XXX");
-    k12->setAlignment(Qt::AlignCenter);
-    kallay3->addWidget(k12);
-    k22 = new QLabel("XXX");
-    k22->setAlignment(Qt::AlignCenter);
-    kallay3->addWidget(k22);
-    k32 = new QLabel("XXX");
-    k32->setAlignment(Qt::AlignCenter);
-    kallay3->addWidget(k32);
+    kallay3->addWidget(calV.at(2));
+    kallay3->addWidget(calV.at(5));
+    kallay3->addWidget(calV.at(8));
+    kallay3->addWidget(calV.at(11));
 
     QHBoxLayout* kkkread = new QHBoxLayout();
     mainKalibracjaLay->addLayout(kkkread);
@@ -219,11 +203,12 @@ void LogicUISG1::InitDebug()
     kkkread->addWidget(sbrnumber);
     sbrnumber->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     sbrnumber->setMaximum(11);
-    kalread = new QPushButton("Read");
+    QPushButton* kalread = new QPushButton("Read");
     kkkread->addWidget(kalread);
     kalread->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     kkkread->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    kalreadall = new QPushButton("Read all");
+    connect(kalread, &QPushButton::clicked, this, &LogicUISG1::ReadSingleCal);
+    QPushButton* kalreadall = new QPushButton("Read all");
     kkkread->addWidget(kalreadall);
     kalreadall->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -238,9 +223,10 @@ void LogicUISG1::InitDebug()
     sbwvalue->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     sbwvalue->setMaximum(120000);
     kkkread2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    kalwrite = new QPushButton("Zapisz");
+    QPushButton* kalwrite = new QPushButton("Zapisz");
     kkkread2->addWidget(kalwrite);
     kalwrite->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(kalwrite, &QPushButton::clicked, this, &LogicUISG1::WriteSingleCal);
 
 
 
@@ -266,6 +252,14 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
         return;
 
     QByteArray pck = frame->pureData();
+
+    int ival=0;
+    int inum=pck.at(0)&0x0F;
+    ival |= (pck.at(1)<<16)&0xFF0000;
+    ival |= (pck.at(2)<<8)&0x00FF00;
+    ival |= (pck.at(3)<<0)&0x0000FF;
+    if((pck[0]&0xF0)==0x10)
+        return calV.at(inum)->setText(QString::number(ival));
 
     switch (pck.at(0))
     {
@@ -302,4 +296,37 @@ void LogicUISG1::SendFrame(char header, int val)
     temp.append((val>>0)&0xFF);
     temp.append(((int)header)^0xFF);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
+}
+
+void LogicUISG1::SendAutoReportConfig()
+{
+    int tval = 0;
+    if(chkCounts->isChecked())
+        tval |= 1<<0;
+    if(chkACal->isChecked())
+        tval |= 1<<2;
+    if(chkVSiPM->isChecked())
+        tval |= 1<<3;
+    if(chkTemp->isChecked())
+        tval |= 1<<4;
+    if(chkLevels->isChecked())
+        tval |= 1<<5;
+    if(chkZatk->isChecked())
+        tval |= 1<<6;
+
+    SendFrame('s', tval);
+}
+
+void LogicUISG1::ReadSingleCal()
+{
+    int header = 0x00;
+    header += sbrnumber->value();
+    SendFrame(header&0xFF);
+}
+
+void LogicUISG1::WriteSingleCal()
+{
+    int header = 0x20;
+    header += sbwnumber->value();
+    SendFrame(header&0xFF, sbwvalue->value());
 }
