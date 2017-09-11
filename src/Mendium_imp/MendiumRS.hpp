@@ -25,8 +25,6 @@ protected:
     virtual void Run();
 
     QSerialPort port;
-    QMutex mutex;
-    QByteArray writeByffer;
 };
 
 #endif

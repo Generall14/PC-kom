@@ -40,8 +40,7 @@ void MendiumRS::Open(QString desc)
 
 void MendiumRS::Write(QSharedPointer<Frame> frame)
 {
-    QMutexLocker lock(&mutex);
-    writeByffer.append(frame->pureData());
+    port.write(frame->pureData());
 }
 
 void MendiumRS::Flush()
@@ -60,16 +59,5 @@ void MendiumRS::Run()
 {
     if(port.bytesAvailable())
         emit Readed(port.readAll());
-    if(!writeByffer.isEmpty())
-    {
-        int sended = 0;
-        QMutexLocker lock(&mutex);
-        sended = port.write(writeByffer);
-        if(sended<0)
-            emit Error("Błąd wysyłania danych do portu RS.");
-        else if(sended>0)
-            writeByffer.remove(0, sended);
-        lock.unlock();
-    }
     QThread::msleep(15);
 }
