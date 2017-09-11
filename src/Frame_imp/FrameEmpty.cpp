@@ -18,3 +18,8 @@ QString FrameEmpty::toShortQString()
 {
     return "XXX";
 }
+
+QByteArray FrameEmpty::magicNumbers()
+{
+    return "XXX";
+}

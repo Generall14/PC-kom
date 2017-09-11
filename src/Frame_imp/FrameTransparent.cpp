@@ -24,3 +24,8 @@ QString FrameTransparent::toShortQString()
 {
     return "XXX";
 }
+
+QByteArray FrameTransparent::magicNumbers()
+{
+    return "XXX";
+}

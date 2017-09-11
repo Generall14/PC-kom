@@ -154,3 +154,11 @@ QString FrameSG1::toShortQString()
 
     return "XXX";
 }
+
+QByteArray FrameSG1::magicNumbers()
+{
+    if(pck.length()>0)
+        return pck.left(1);
+    else
+        return QByteArray();
+}
