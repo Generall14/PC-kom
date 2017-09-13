@@ -23,7 +23,31 @@ void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
     if(!frame->isValid())
         return;
 
-    switch(frame->pureData().at(0))
+    QByteArray pck = frame->pureData();
+
+    if((pck[0]&0xF0)==0x00)
+    {
+        int nr = pck.at(0)&0x0F;
+        if(nr>11)
+            return;
+        if(vReadReq.indexOf(nr)!=-1)
+            return;
+        vReadReq.append(nr);
+    }
+
+    if((pck[0]&0xF0)==0x20)
+    {
+        int nr = pck.at(0)&0x0F;
+        if(nr>11)
+            return;
+        int tempval = 0;
+        tempval |= (pck.at(1)<<16)&0xFF0000;
+        tempval |= (pck.at(2)<<8)&0x00FF00;
+        tempval |= (pck.at(3)<<0)&0x0000FF;
+        vConfig[nr] = tempval;
+    }
+
+    switch(pck.at(0))
     {
     case 'h':
         helloreq = true;
@@ -45,6 +69,9 @@ void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
         return;
     case 'l':
         rrep |= 1<<shiftLevels;
+        return;
+    case 's':
+        arep = pck.at(3);
         return;
     }
 }
@@ -79,6 +106,11 @@ void MendiumFakeSG1::Run()
         rrep = 0;
         helloreq = false;
         battreq = false;
+        while(!vReadReq.isEmpty())
+        {
+            SendFrame(vReadReq.at(0)|0x10, vConfig.at(vReadReq.at(0)));
+            vReadReq.remove(0);
+        }
     }
 }
 

@@ -66,7 +66,7 @@ QString FrameSG1::toQString()
         return QString("Wymuszenie autokalibracji.");
     case 'r':                           //Reset
         return QString("Wymuszenie resetu.");
-    case 's':                           //Reset
+    case 's':                           //Konfiguracja autoraportów
         return QString("Zapis konfiguracji automatycznych raportów: ")+toShortQString();
     case 'E':                           //Error
         return QString("Błąd urządzenia: ")+toShortQString();

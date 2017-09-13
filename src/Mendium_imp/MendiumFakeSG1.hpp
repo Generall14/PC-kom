@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QMutexLocker>
 #include <QMutex>
+#include <QVector>
 
 class MendiumFakeSG1 : public Mendium
 {
@@ -37,6 +38,9 @@ protected:
 
     bool helloreq = false;
     bool battreq = false;
+
+    QVector<int> vReadReq;
+    QVector<int> vConfig = {0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 8};
 };
 
 #endif
