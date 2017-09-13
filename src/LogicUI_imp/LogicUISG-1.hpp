@@ -10,6 +10,10 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QSharedPointer>
+#include <QRadioButton>
+#include <QProgressBar>
+#include <QListWidget>
+#include <QComboBox>
 #include "../Factory.hpp"
 
 class LogicUISG1 : public LogicUI
@@ -36,10 +40,14 @@ protected slots:
 
 protected:
     void InitDebug();
+    void InitCal();
+
+    int errorCounter = 0;
 
     QFrame* dbgFrame = NULL;
     QFrame* calFrame = NULL;
 
+    //debug:
     QLabel* lblHello = NULL;
     QLabel* lblCounts = NULL;
     QLabel* lblTemp = NULL;
@@ -64,7 +72,20 @@ protected:
     QPalette errorPalette;
     QPalette standardPalette;
 
-    int errorCounter = 0;
+    //kalibracja:
+    QSpinBox* chkProbki = NULL;
+    QRadioButton* rbtImp = NULL;
+    QRadioButton* rbtRap = NULL;
+    QCheckBox* chkContin = NULL;
+
+    QLabel* mPomiar = NULL;
+    QLabel* sPomiar = NULL;
+    QProgressBar* progressBar = NULL;
+
+    QListWidget* lstKal = NULL;
+
+    QVector<QSpinBox*> calDst;
+    QComboBox* cmbMetoda = NULL;
 
 signals:
     void InternalFrameReaded(QByteArray);

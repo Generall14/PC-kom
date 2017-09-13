@@ -35,6 +35,7 @@ void LogicUISG1::Init()
 
     calFrame = new QFrame();
     tw->addTab(calFrame, "Kalibracja");
+    InitCal();
 }
 
 void LogicUISG1::InitDebug()
@@ -240,8 +241,162 @@ void LogicUISG1::InitDebug()
 
 
 
-
     mainDbgLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+}
+
+void LogicUISG1::InitCal()
+{
+    QVBoxLayout* mainCalLay = new QVBoxLayout(calFrame);
+
+    //=======================Zbieranie danych=====================================================
+    QGroupBox* groupBoxZbieranie = new QGroupBox("Zbieranie danych");
+    mainCalLay->addWidget(groupBoxZbieranie);
+    QVBoxLayout* mainZbieranieLay = new QVBoxLayout(groupBoxZbieranie);
+
+    QHBoxLayout* bbbzlierajz = new QHBoxLayout();
+    mainZbieranieLay->addLayout(bbbzlierajz);
+    QVBoxLayout* xxx1 = new QVBoxLayout();
+    bbbzlierajz->addLayout(xxx1);
+    QLabel* tlab0 = new QLabel("Zbieraj z ");
+    xxx1->addWidget(tlab0);
+    QVBoxLayout* xxx2 = new QVBoxLayout();
+    bbbzlierajz->addLayout(xxx2);
+    chkProbki = new QSpinBox();
+    chkProbki->setMinimum(2);
+    chkProbki->setMaximum(100000);
+    chkProbki->setValue(120);
+    xxx2->addWidget(chkProbki);
+    QVBoxLayout* xxx3 = new QVBoxLayout();
+    bbbzlierajz->addLayout(xxx3);
+    rbtRap = new QRadioButton("raportów");
+    xxx3->addWidget(rbtRap);
+    rbtImp = new QRadioButton("impulsów");
+    xxx3->addWidget(rbtImp);
+    rbtRap->setChecked(true);
+
+    chkContin = new QCheckBox("Pomiar ciągły");
+    mainZbieranieLay->addWidget(chkContin);
+
+
+    QHBoxLayout* bbbblierajz = new QHBoxLayout();
+    mainZbieranieLay->addLayout(bbbblierajz);
+
+    QPushButton* btnStop = new QPushButton("Stop");
+    bbbblierajz->addWidget(btnStop);
+    btnStop->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    bbbblierajz->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    QPushButton* btnStart = new QPushButton("Start");
+    bbbblierajz->addWidget(btnStart);
+    btnStart->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+
+    //=======================Pomiar===============================================================
+    QFrame* mFrame = new QFrame();
+    QPalette tempp = mFrame->palette();
+    tempp.setColor(QPalette::WindowText, QColor(240, 180, 0));
+    tempp.setColor(QPalette::Window, QColor(0, 120, 0));
+    mFrame->setAutoFillBackground(true);
+    mFrame->setPalette(tempp);
+    mainCalLay->addWidget(mFrame);
+    QVBoxLayout* mFramelayout = new QVBoxLayout(mFrame);
+
+    mPomiar = new QLabel("- cps");
+    QFont temp = mPomiar->font();
+    temp.setPointSize(28);
+    temp.setBold(true);
+    mPomiar->setFont(temp);
+    mPomiar->setAlignment(Qt::AlignCenter);
+    mFramelayout->addWidget(mPomiar);
+
+    sPomiar = new QLabel("- ADC");
+    sPomiar->setAlignment(Qt::AlignRight);
+    mFramelayout->addWidget(sPomiar);
+
+    progressBar = new QProgressBar();
+    progressBar->setMaximum(1000);
+    progressBar->setValue(0);
+    mFramelayout->addWidget(progressBar);
+
+    //=======================Punkty kontrolne=====================================================
+    QGroupBox* groupBoxPunkty = new QGroupBox("Punkty kalibracyjne");
+    mainCalLay->addWidget(groupBoxPunkty);
+    QHBoxLayout* mainPunktyLay = new QHBoxLayout(groupBoxPunkty);
+
+    QVBoxLayout* bbbklierajz = new QVBoxLayout();
+    mainPunktyLay->addLayout(bbbklierajz);
+
+    QPushButton* btnUsun = new QPushButton("Usuń");
+    bbbklierajz->addWidget(btnUsun);
+    btnUsun->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    QPushButton* btnDodaj = new QPushButton("Dodaj");
+    bbbklierajz->addWidget(btnDodaj);
+    btnDodaj->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    bbbklierajz->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    lstKal = new QListWidget();
+    lstKal->setMaximumWidth(150);
+    lstKal->setMaximumHeight(150);
+    lstKal->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    mainPunktyLay->addWidget(lstKal);
+
+    //=======================Punkty docelowe======================================================
+    QVector<int> defaultTrs = {0, 100, 1000, 2, 10, 100, 10, 100, 500, 80, 300, 1000};
+    for(int i=0;i<12;++i)
+    {
+        calDst.push_back(new QSpinBox());
+        calDst.at(i)->setMaximum(1100);
+        calDst.at(i)->setValue(defaultTrs.at(i));
+    }
+    QGroupBox* groupBoxDst = new QGroupBox("Progi docelowe [uSv/h]");
+    mainCalLay->addWidget(groupBoxDst);
+    QHBoxLayout* mainDstLay = new QHBoxLayout(groupBoxDst);
+
+    QVBoxLayout* kallay1 = new QVBoxLayout();
+    mainDstLay->addLayout(kallay1);
+    kallay1->addWidget(calDst.at(0));
+    kallay1->addWidget(calDst.at(3));
+    kallay1->addWidget(calDst.at(6));
+    kallay1->addWidget(calDst.at(9));
+
+    QVBoxLayout* kallay2 = new QVBoxLayout();
+    mainDstLay->addLayout(kallay2);
+    kallay2->addWidget(calDst.at(1));
+    kallay2->addWidget(calDst.at(4));
+    kallay2->addWidget(calDst.at(7));
+    kallay2->addWidget(calDst.at(10));
+
+    QVBoxLayout* kallay3 = new QVBoxLayout();
+    mainDstLay->addLayout(kallay3);
+    kallay3->addWidget(calDst.at(2));
+    kallay3->addWidget(calDst.at(5));
+    kallay3->addWidget(calDst.at(8));
+    kallay3->addWidget(calDst.at(11));
+
+
+    //=======================Dane kalibracyjne====================================================
+    QGroupBox* groupBoxDane = new QGroupBox("Parametry kalibracyjne");
+    mainCalLay->addWidget(groupBoxDane);
+    QVBoxLayout* mainDaneLay = new QVBoxLayout(groupBoxDane);
+
+    QHBoxLayout* bbbzdane = new QHBoxLayout();
+    mainDaneLay->addLayout(bbbzdane);
+    QLabel* tlab1 = new QLabel("Metoda: ");
+    bbbzdane->addWidget(tlab1);
+    cmbMetoda = new QComboBox();
+    bbbzdane->addWidget(cmbMetoda);
+
+    QHBoxLayout* bbbzdanez = new QHBoxLayout();
+    mainDaneLay->addLayout(bbbzdanez);
+    QPushButton* megabutton = new QPushButton("Wygeneruj dane i zapisz do SG-1");
+    bbbzdanez->addWidget(megabutton);
+
+
+
+    mainCalLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
 void LogicUISG1::Connected()
