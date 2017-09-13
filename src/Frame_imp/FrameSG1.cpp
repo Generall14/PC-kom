@@ -68,6 +68,8 @@ QString FrameSG1::toQString()
         return QString("Wymuszenie resetu.");
     case 's':                           //Reset
         return QString("Zapis konfiguracji automatycznych raportów: ")+toShortQString();
+    case 'E':                           //Error
+        return QString("Błąd urządzenia: ")+toShortQString();
     }
 
     QString temp;
@@ -161,9 +163,12 @@ QString FrameSG1::toShortQString()
         return QString("prog. v%1.%2").arg(pga, 0, 10).arg(pgb, 0, 10)+pgt+QString(", prot. v%1.%2").arg(pra, 0, 10).arg(prb, 0, 10)+prt+".";
     case 'V':                           //Napięcie baterii
         voltage = (float)result*kb;
-        return QString::number(voltage, 'f', 2)+" V";
+        return QString("%1 ADC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
     case 's':                           //Zapis autoraportów
         return QString("0x%1 ").arg((int)(result&0xFF), 2, 16, QChar('0')).toUpper().replace("X", "x");
+    case 'E':                           //Error
+        voltage = (float)result*k;
+        return QString("0x%1 ").arg((int)(pck[3]), 2, 16, QChar('0'));
     }
 
     return "XXX";
