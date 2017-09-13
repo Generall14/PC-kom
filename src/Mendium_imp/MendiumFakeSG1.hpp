@@ -38,9 +38,11 @@ protected:
 
     bool helloreq = false;
     bool battreq = false;
+    bool errreq = false;
 
     QVector<int> vReadReq;
     QVector<int> vConfig = {0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 8};
+    QVector<int> errNumbers = {0x3A, 0xFF, 0x01, 0x02, 0x03, 0x04};
 };
 
 #endif

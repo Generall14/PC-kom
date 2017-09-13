@@ -74,6 +74,7 @@ void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
         arep = pck.at(3);
         return;
     }
+    errreq = true;
 }
 
 void MendiumFakeSG1::Flush()
@@ -111,6 +112,9 @@ void MendiumFakeSG1::Run()
             SendFrame(vReadReq.at(0)|0x10, vConfig.at(vReadReq.at(0)));
             vReadReq.remove(0);
         }
+        if(errreq)
+            SendFrame('E', errNumbers.at(qrand()%errNumbers.size()));
+        errreq = false;
     }
 }
 

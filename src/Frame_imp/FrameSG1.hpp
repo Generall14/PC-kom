@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 #include <QTimer>
+#include <QMap>
 #include "../Frame.hpp"
 
 class FrameSG1 : public Frame
@@ -18,6 +19,7 @@ public:
 
 protected:
     QString InvalidString();
+    QMap<int, QString> errorNumbers;
 };
 
 #endif

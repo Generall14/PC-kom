@@ -2,7 +2,13 @@
 
 FrameSG1::FrameSG1(QByteArray ba)
     :Frame(ba)
-{}
+{
+    errorNumbers.insert(0x3A, "ERROR_TEST");
+    errorNumbers.insert(0x01, "ACAL_UNEXPECTED_NOISE");
+    errorNumbers.insert(0x02, "ACAL_OUT_OF_VOLTAGE");
+    errorNumbers.insert(0x03, "NO_SIGNAL_ON_CDETECT");
+    errorNumbers.insert(0x04, "UNIVERSAL_ERROR");
+}
 
 bool FrameSG1::isValid()
 {
@@ -168,7 +174,7 @@ QString FrameSG1::toShortQString()
         return QString("0x%1 ").arg((int)(result&0xFF), 2, 16, QChar('0')).toUpper().replace("X", "x");
     case 'E':                           //Error
         voltage = (float)result*k;
-        return QString("0x%1 ").arg((int)(pck[3]), 2, 16, QChar('0'));
+        return QString("0x%1 - ").arg((int)(pck[3]&0xFF), 2, 16, QChar('0')).toUpper().replace("X", "x")+errorNumbers.value(pck.at(3), "Nieznany błąd");
     }
 
     return "XXX";
