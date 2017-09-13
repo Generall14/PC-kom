@@ -60,6 +60,12 @@ protected:
     QSpinBox* sbwnumber = NULL;
     QSpinBox* sbwvalue = NULL;
 
+    QLabel* errorLabel = NULL;
+    QPalette errorPalette;
+    QPalette standardPalette;
+
+    int errorCounter = 0;
+
 signals:
     void InternalFrameReaded(QByteArray);
 };

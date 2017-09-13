@@ -20,11 +20,18 @@ void LogicUISG1::Init()
     QTabWidget* tw = new QTabWidget();
     mainLay->addWidget(tw);
 
+    errorLabel = new QLabel("");
+    standardPalette = errorLabel->palette();
+    errorPalette = standardPalette;
+    errorPalette.setColor(QPalette::WindowText, Qt::black);
+    errorPalette.setColor(QPalette::Window, Qt::red);
+    errorLabel->setAutoFillBackground(true);
+    cParent->setAutoFillBackground(true);
+    mainLay->addWidget(errorLabel);
 
     dbgFrame = new QFrame();
     tw->addTab(dbgFrame, "Debug");
     InitDebug();
-
 
     calFrame = new QFrame();
     tw->addTab(calFrame, "Kalibracja");
@@ -254,6 +261,15 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     if(!frame->isValid())
         return;
 
+    if(errorCounter)
+        errorCounter--;
+    else
+    {
+        errorLabel->setPalette(standardPalette);
+        cParent->setPalette(standardPalette);
+        errorLabel->setText("");
+    }
+
     emit InternalFrameReaded(frame->pureData());
 
     QByteArray pck = frame->pureData();
@@ -288,6 +304,12 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
         return;
     case 'V':                           //Napięcie baterii
         lblVBat->setText(frame->toShortQString());
+        return;
+    case 'E':                           //Błąd
+        errorLabel->setPalette(errorPalette);
+        cParent->setPalette(errorPalette);
+        errorLabel->setText("ERROR: "+frame->toShortQString());
+        errorCounter = 1;
         return;
     }
 }

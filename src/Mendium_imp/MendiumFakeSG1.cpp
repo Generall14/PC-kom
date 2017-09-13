@@ -33,6 +33,7 @@ void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
         if(vReadReq.indexOf(nr)!=-1)
             return;
         vReadReq.append(nr);
+        return;
     }
 
     if((pck[0]&0xF0)==0x20)
@@ -45,6 +46,7 @@ void MendiumFakeSG1::Write(QSharedPointer<Frame> frame)
         tempval |= (pck.at(2)<<8)&0x00FF00;
         tempval |= (pck.at(3)<<0)&0x0000FF;
         vConfig[nr] = tempval;
+        return;
     }
 
     switch(pck.at(0))
