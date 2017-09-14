@@ -6,6 +6,7 @@
 #include <QSpacerItem>
 #include "utils/Transaction.hpp"
 #include "utils/WorkerManager.hpp"
+#include "utils_SG1/DataCollector.hpp"
 
 LogicUISG1::LogicUISG1(QFrame* parent):
     LogicUI(parent)
@@ -264,7 +265,7 @@ void LogicUISG1::InitCal()
     chkProbki = new QSpinBox();
     chkProbki->setMinimum(2);
     chkProbki->setMaximum(100000);
-    chkProbki->setValue(120);
+    chkProbki->setValue(20);
     xxx2->addWidget(chkProbki);
     QVBoxLayout* xxx3 = new QVBoxLayout();
     bbbzlierajz->addLayout(xxx3);
@@ -275,21 +276,25 @@ void LogicUISG1::InitCal()
     rbtRap->setChecked(true);
 
     chkContin = new QCheckBox("Pomiar ciągły");
+    chkContin->setChecked(true);
     mainZbieranieLay->addWidget(chkContin);
 
 
     QHBoxLayout* bbbblierajz = new QHBoxLayout();
     mainZbieranieLay->addLayout(bbbblierajz);
 
-    QPushButton* btnStop = new QPushButton("Stop");
+    btnStop = new QPushButton("Stop");
     bbbblierajz->addWidget(btnStop);
     btnStop->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    btnStop->setEnabled(false);
+    connect(btnStop, &QPushButton::clicked, [=](){emit InternalHalt();});
 
     bbbblierajz->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
-    QPushButton* btnStart = new QPushButton("Start");
+    btnStart = new QPushButton("Start");
     bbbblierajz->addWidget(btnStart);
     btnStart->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnStart, SIGNAL(clicked(bool)), this, SLOT(StartCollectingData()));
 
 
     //=======================Pomiar===============================================================
@@ -310,9 +315,21 @@ void LogicUISG1::InitCal()
     mPomiar->setAlignment(Qt::AlignCenter);
     mFramelayout->addWidget(mPomiar);
 
+    QHBoxLayout* pomLay = new QHBoxLayout();
+    mFramelayout->addLayout(pomLay);
+
+    oPomiar = new QLabel("- imp/s");
+    oPomiar->setAlignment(Qt::AlignLeft);
+    pomLay->addWidget(oPomiar);
+
+    pPomiar = new QLabel("zbieranie danych...");
+    pPomiar->setAlignment(Qt::AlignCenter);
+    pPomiar->setVisible(false);
+    pomLay->addWidget(pPomiar);
+
     sPomiar = new QLabel("- ADC");
     sPomiar->setAlignment(Qt::AlignRight);
-    mFramelayout->addWidget(sPomiar);
+    pomLay->addWidget(sPomiar);
 
     progressBar = new QProgressBar();
     progressBar->setMaximum(1000);
@@ -441,6 +458,7 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     {
     case 'C':                           //Pomiar
         lblCounts->setText(frame->toShortQString());
+        oPomiar->setText(frame->toShortQString());
         return;
     case 'T':                           //Temperatura
         lblTemp->setText(frame->toShortQString());
@@ -535,4 +553,47 @@ void LogicUISG1::ReadAll()
 void LogicUISG1::InternalWriteFrame(QByteArray frame)
 {
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(frame)));
+}
+
+void LogicUISG1::StartCollectingData()
+{
+    SendFrame('h', 0x41);
+    SendFrame('s', 0x41);
+    DataCollector* dcol = new DataCollector(chkProbki->value(), chkContin->isChecked()?DataCollector::metRap:DataCollector::metImp, chkContin->isChecked());
+    connect(this, SIGNAL(InternalFrameReaded(QByteArray)), dcol, SLOT(RecievedFrame(QByteArray)));
+    connect(dcol, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
+    connect(dcol, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(dcol, SIGNAL(Done()), this, SLOT(StoppedCollectingData()));
+    connect(dcol, SIGNAL(SendStatus(float,int,int)), this, SLOT(UpdateCollectingData(float,int,int)));
+    connect(this, SIGNAL(InternalHalt()), dcol, SLOT(Stop()));
+    dcol->start(QThread::NormalPriority);
+
+    dbgFrame->setEnabled(false);
+    btnStop->setEnabled(true);
+    btnStart->setEnabled(false);
+    chkProbki->setEnabled(false);
+    rbtImp->setEnabled(false);
+    rbtRap->setEnabled(false);
+    chkContin->setEnabled(false);
+    pPomiar->setVisible(true);
+}
+
+void LogicUISG1::StoppedCollectingData()
+{
+    dbgFrame->setEnabled(true);
+    btnStop->setEnabled(false);
+    btnStart->setEnabled(true);
+    chkProbki->setEnabled(true);
+    rbtImp->setEnabled(true);
+    rbtRap->setEnabled(true);
+    chkContin->setEnabled(true);
+    progressBar->setValue(0);
+    pPomiar->setVisible(false);
+}
+
+void LogicUISG1::UpdateCollectingData(float mval, int madc, int prog)
+{
+    mPomiar->setText(QString::number(mval, 'f', 2)+" cps");
+    sPomiar->setText(QString::number(madc)+" ADC");
+    progressBar->setValue(prog);
 }

@@ -38,6 +38,10 @@ protected slots:
     void ReadAll();
     void InternalWriteFrame(QByteArray frame);
 
+    void StartCollectingData();
+    void StoppedCollectingData();
+    void UpdateCollectingData(float mval, int madc, int prog);
+
 protected:
     void InitDebug();
     void InitCal();
@@ -77,9 +81,13 @@ protected:
     QRadioButton* rbtImp = NULL;
     QRadioButton* rbtRap = NULL;
     QCheckBox* chkContin = NULL;
+    QPushButton* btnStop = NULL;
+    QPushButton* btnStart = NULL;
 
     QLabel* mPomiar = NULL;
     QLabel* sPomiar = NULL;
+    QLabel* oPomiar = NULL;
+    QLabel* pPomiar = NULL;
     QProgressBar* progressBar = NULL;
 
     QListWidget* lstKal = NULL;
@@ -89,6 +97,7 @@ protected:
 
 signals:
     void InternalFrameReaded(QByteArray);
+    void InternalHalt();
 };
 
 #endif

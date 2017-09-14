@@ -1,5 +1,7 @@
 #include "FrameSG1.hpp"
 
+float FrameSG1::timeres = 0.5;
+
 FrameSG1::FrameSG1(QByteArray ba)
     :Frame(ba)
 {
@@ -112,7 +114,7 @@ QString FrameSG1::toShortQString()
     if(!isValid())
         return "XXX";
 
-    const float timeres = 0.5, k = 3.3*(560.0+6200.0)/(560.0)/256, kb=3.3/1024.0;
+    const float k = 3.3*(560.0+6200.0)/(560.0)/256, kb=3.3/1024.0;
     float voltage;
     int result, mlv=0, llv=0, pga, pgb, pra, prb;
     QString pgt, prt;
@@ -186,4 +188,9 @@ QByteArray FrameSG1::magicNumbers()
         return pck.left(1);
     else
         return QByteArray();
+}
+
+float FrameSG1::TimeRes()
+{
+    return timeres;
 }

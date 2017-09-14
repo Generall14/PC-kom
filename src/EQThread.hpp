@@ -18,6 +18,7 @@ public slots:
 
 protected:
     virtual void Run() = 0;
+    virtual void OnStop();
     volatile bool stopRequest = false;
 };
 

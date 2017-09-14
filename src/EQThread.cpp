@@ -12,9 +12,15 @@ void EQThread::run()
     {
         this->Run();
     }
+    OnStop();
 }
 
 void EQThread::Stop()
 {
     stopRequest = true;
+}
+
+void EQThread::OnStop()
+{
+
 }

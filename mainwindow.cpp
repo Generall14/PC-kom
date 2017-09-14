@@ -59,6 +59,10 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     emit HALT();
+    while(mendium->isRunning()){}
+    while(frameBuilder->isRunning()){}
+//    mendium->terminate();
+//    frameBuilder->terminate();
 
     delete mediumUI;
     delete mendium;

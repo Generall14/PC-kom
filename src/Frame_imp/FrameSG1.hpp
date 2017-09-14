@@ -16,10 +16,12 @@ public:
     virtual QString toQString();
     virtual QString toShortQString();
     virtual QByteArray magicNumbers();
+    static float TimeRes();
 
 protected:
     QString InvalidString();
     QMap<int, QString> errorNumbers;
+    static float timeres;
 };
 
 #endif
