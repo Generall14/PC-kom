@@ -6,10 +6,11 @@ FrameSG1::FrameSG1(QByteArray ba)
     :Frame(ba)
 {
     errorNumbers.insert(0x3A, "ERROR_TEST");
-    errorNumbers.insert(0x01, "ACAL_UNEXPECTED_NOISE");
-    errorNumbers.insert(0x02, "ACAL_OUT_OF_VOLTAGE");
-    errorNumbers.insert(0x03, "NO_SIGNAL_ON_CDETECT");
-    errorNumbers.insert(0x04, "UNIVERSAL_ERROR");
+    errorNumbers.insert(0x01, "UNIVERSAL_ERROR");
+    errorNumbers.insert(0x02, "ACAL_UNEXPECTED_NOISE");
+    errorNumbers.insert(0x03, "ACAL_OUT_OF_VOLTAGE");
+    errorNumbers.insert(0x04, "NO_SIGNAL_ON_CDETECT");
+    errorNumbers.insert(0x05, "LOST_SIPM_SIGNAL");
 }
 
 bool FrameSG1::isValid()
