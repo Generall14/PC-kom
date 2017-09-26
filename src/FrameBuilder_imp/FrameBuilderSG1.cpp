@@ -29,7 +29,7 @@ void FrameBuilderSG1::ByteReaded(QByteArray ba)
     }
 
     if(recievedbuf.length()>0)
-        timer->start(666);
+        timer->start(100);
 }
 
 void FrameBuilderSG1::FrameWrite(QSharedPointer<Frame> fr)

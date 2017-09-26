@@ -6,10 +6,18 @@
 MendiumRS::MendiumRS():
     Mendium()
 {
-    port.setDataBits(QSerialPort::Data8);
-    port.setFlowControl(QSerialPort::NoFlowControl);
-    port.setStopBits(QSerialPort::OneStop);
-    port.setParity(QSerialPort::NoParity);
+    port = new QSerialPort();
+    port->setDataBits(QSerialPort::Data8);
+    port->setFlowControl(QSerialPort::NoFlowControl);
+    port->setStopBits(QSerialPort::OneStop);
+    port->setParity(QSerialPort::NoParity);
+    connect(port, SIGNAL(readyRead()), this, SLOT(readyRead()));
+}
+
+MendiumRS::~MendiumRS()
+{
+    this->Close();
+    delete port;
 }
 
 void MendiumRS::Open(QString desc)
@@ -24,9 +32,9 @@ void MendiumRS::Open(QString desc)
             emit Error("ERROR! Nie można otworzyć portu "+desc+"!");
             emit Closed();
         }
-        port.setPortName(params.at(0));
-        port.setBaudRate(QString(params.at(1)).toInt());
-        if(port.open(QIODevice::ReadWrite))
+        port->setPortName(params.at(0));
+        port->setBaudRate(QString(params.at(1)).toInt());
+        if(port->open(QIODevice::ReadWrite))
         {
             opened = true;
             emit Opened();
@@ -40,7 +48,7 @@ void MendiumRS::Open(QString desc)
 
 void MendiumRS::Write(QSharedPointer<Frame> frame)
 {
-    port.write(frame->pureData());
+    port->write(frame->pureData());
 }
 
 void MendiumRS::Flush()
@@ -50,14 +58,28 @@ void MendiumRS::Flush()
 
 void MendiumRS::Close()
 {
-    port.close();
+    port->close();
     opened = false;
     emit Closed();
 }
 
 void MendiumRS::Run()
 {
-    if(port.bytesAvailable())
-        emit Readed(port.readAll());
-    QThread::msleep(15);
+//    QByteArray temp;
+//    int tint = port.bytesAvailable();
+//    if(tint)
+//        temp = port.readAll();
+//    if(!temp.isEmpty())
+//        emit Readed(temp);
+    QThread::msleep(500);
+}
+
+void MendiumRS::readyRead()
+{
+    QByteArray temp;
+    int tint = port->bytesAvailable();
+    if(tint)
+        temp = port->readAll();
+    if(!temp.isEmpty())
+        emit Readed(temp);
 }

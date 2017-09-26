@@ -13,7 +13,7 @@ class MendiumRS : public Mendium
     Q_OBJECT
 public:
     MendiumRS();
-    virtual ~MendiumRS(){}
+    virtual ~MendiumRS();
 
 public slots:
     virtual void Open(QString desc);//"port;prędkość"
@@ -21,10 +21,13 @@ public slots:
     virtual void Write(QSharedPointer<Frame> frame);
     virtual void Flush();
 
+protected slots:
+    void readyRead();
+
 protected:
     virtual void Run();
 
-    QSerialPort port;
+    QSerialPort* port;
 };
 
 #endif
