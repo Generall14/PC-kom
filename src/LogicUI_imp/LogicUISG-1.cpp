@@ -121,19 +121,38 @@ void LogicUISG1::InitDebug()
     //=======================Grupa wymuszenia=====================================================
     QGroupBox* groupBoxWymuszenia = new QGroupBox("Wymuszenia");
     mainDbgLay->addWidget(groupBoxWymuszenia);
-    QHBoxLayout* mainWymuszeniaLay = new QHBoxLayout(groupBoxWymuszenia);
+    QVBoxLayout* mainWymuszeniaLay = new QVBoxLayout(groupBoxWymuszenia);
+
+    QHBoxLayout* mainWymuszeniaLayX = new QHBoxLayout();
+    mainWymuszeniaLay->addLayout(mainWymuszeniaLayX);
 
     QPushButton* btnACal = new QPushButton("A. kal.");
-    mainWymuszeniaLay->addWidget(btnACal);
+    mainWymuszeniaLayX->addWidget(btnACal);
     btnACal->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(btnACal, &QPushButton::clicked, [=](){SendFrame('a');});
 
-    mainWymuszeniaLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    mainWymuszeniaLayX->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
     QPushButton* btnRst = new QPushButton("Reset");
-    mainWymuszeniaLay->addWidget(btnRst);
+    mainWymuszeniaLayX->addWidget(btnRst);
     btnRst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(btnRst, &QPushButton::clicked, [=](){SendFrame('r');});
+
+    QHBoxLayout* mainWymuszeniaLayY = new QHBoxLayout();
+    mainWymuszeniaLay->addLayout(mainWymuszeniaLayY);
+
+    mainWymuszeniaLayY->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    chkDAC = new QSpinBox();
+    chkDAC->setMinimum(100);
+    chkDAC->setMaximum(254);
+    chkDAC->setValue(167);
+    mainWymuszeniaLayY->addWidget(chkDAC);
+
+    QPushButton* btnsDAC = new QPushButton("Ustaw DAC");
+    mainWymuszeniaLayY->addWidget(btnsDAC);
+    btnsDAC->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnsDAC, &QPushButton::clicked, [=](){SendFrame('e', chkDAC->value());});
 
     //=======================Grupa raporty========================================================
     QGroupBox* groupBoxRaporty = new QGroupBox("Raporty");

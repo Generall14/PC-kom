@@ -76,6 +76,8 @@ protected:
     QPalette errorPalette;
     QPalette standardPalette;
 
+    QSpinBox* chkDAC = NULL;
+
     //kalibracja:
     QSpinBox* chkProbki = NULL;
     QRadioButton* rbtImp = NULL;

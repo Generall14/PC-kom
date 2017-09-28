@@ -79,6 +79,8 @@ QString FrameSG1::toQString()
         return QString("Zapis konfiguracji automatycznych raportów: ")+toShortQString();
     case 'E':                           //Error
         return QString("Błąd urządzenia: ")+toShortQString();
+    case 'e':                           //Wymuszenie napięcia SiPM
+        return QString("Wymuszenie napięcia SiPM: ")+toShortQString();
     }
 
     QString temp;
@@ -152,6 +154,9 @@ QString FrameSG1::toShortQString()
         llv = 8-llv;
         return QString("%1/%2").arg(mlv, 0, 10).arg(llv, 0, 10);
     case 'D':                           //Napięcie SiPM
+        voltage = (float)result*k;
+        return QString("%1 DAC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
+    case 'e':                           //Wymuszenie napięcia SiPM
         voltage = (float)result*k;
         return QString("%1 DAC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
     case 'H':                           //Hello
