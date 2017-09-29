@@ -146,7 +146,7 @@ void LogicUISG1::InitDebug()
     chkDAC = new QSpinBox();
     chkDAC->setMinimum(100);
     chkDAC->setMaximum(254);
-    chkDAC->setValue(167);
+    chkDAC->setValue(245);
     mainWymuszeniaLayY->addWidget(chkDAC);
 
     QPushButton* btnsDAC = new QPushButton("Ustaw DAC");

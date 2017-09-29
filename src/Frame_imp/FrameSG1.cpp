@@ -117,7 +117,7 @@ QString FrameSG1::toShortQString()
     if(!isValid())
         return "XXX";
 
-    const float k = 3.3*(560.0+6200.0)/(560.0)/256, kb=3.3/1024.0;
+    const float k = 3.3*(620.0+4700.0)/(620.0)/256, kb=3.3/1024.0;
     float voltage;
     int result, mlv=0, llv=0, pga, pgb, pra, prb;
     QString pgt, prt;
