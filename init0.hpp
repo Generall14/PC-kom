@@ -1,1 +1,1 @@
-Factory::Config(Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, Factory::logicUiEmpty, Factory::frameBuilderEmpty, Factory::logUITerm);
+Factory::Config(DEFAULT_EMPTY);

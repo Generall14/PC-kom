@@ -3,6 +3,7 @@
 
 #include "src/Factory.hpp"
 
+#include "devices.hpp"
 
 int main(int argc, char *argv[])
 {
