@@ -13,6 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!cdir.exists())
         cdir.mkpath(".");
 
+    cdir.setPath("./logs/");
+    if (!cdir.exists())
+        cdir.mkpath(".");
+
     ui->setupUi(this);
 
     this->setWindowTitle(Factory::WindowName());
@@ -23,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     logicUI = Factory::newLogicUI(ui->frame_logicUI);
     frameBuilder = Factory::newFrameBuilder();
     logUI = Factory::newLogUI(ui->frame_log);
+    logFile = Factory::newLogFile();
 
     connect(this, SIGNAL(HALT()), mendium, SLOT(Stop()));
     connect(this, SIGNAL(HALT()), frameBuilder, SLOT(Stop()));
@@ -44,8 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), mendium, SLOT(Write(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logUI, SLOT(FrameWrite(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logFile, SLOT(FrameWrite(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logFile, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 
     connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));

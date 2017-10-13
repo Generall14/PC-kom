@@ -24,16 +24,19 @@
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
 
+#include "LogFile_imp/LogFileEmpty.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
 Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
 Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
+Factory::logFileFormat Factory::logFile = Factory::logFileEmpty;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, QString name, QString ico)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, logFileFormat lff, QString name, QString ico)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
@@ -43,6 +46,7 @@ void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logi
     Factory::frameBuilder = fb;
     Factory::logUI = lgui;
     Factory::icoPath = ico;
+    Factory::logFile = lff;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -137,6 +141,20 @@ LogUI* Factory::newLogUI(QFrame* fr)
         return new LogUIEmpty(fr);
     case logUITerm:
         return new LogUITerm(fr);
+    }
+    return NULL;
+}
+
+LogFile* Factory::newLogFile()
+{
+    switch (logFile)
+    {
+    case logFileNone:
+        return NULL;
+    case logFileEmpty:
+        return new LogFileEmpty();
+    case logFileDefault:
+        return new LogFileEmpty();
     }
     return NULL;
 }

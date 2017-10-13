@@ -45,7 +45,9 @@ SOURCES += main.cpp\
     src/Mendium_imp/MendiumFakeStawrow.cpp \
     src/Frame_imp/FrameStawrov.cpp \
     src/FrameBuilder_imp/FrameBuilderStawrov.cpp \
-    src/LogicUI_imp/LogicUIStawrov.cpp
+    src/LogicUI_imp/LogicUIStawrov.cpp \
+    src/LogFile.cpp \
+    src/LogFile_imp/LogFileEmpty.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -78,6 +80,9 @@ HEADERS  += mainwindow.h \
     src/Mendium_imp/MendiumFakeStawrow.hpp \
     src/Frame_imp/FrameStawrov.hpp \
     src/FrameBuilder_imp/FrameBuilderStawrov.hpp \
-    src/LogicUI_imp/LogicUIStawrov.hpp
+    src/LogicUI_imp/LogicUIStawrov.hpp \
+    devices.hpp \
+    src/LogFile.hpp \
+    src/LogFile_imp/LogFileEmpty.hpp
 
 FORMS    += mainwindow.ui

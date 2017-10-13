@@ -9,6 +9,7 @@
 #include "LogicUI.hpp"
 #include "FrameBuilder.hpp"
 #include "LogUI.hpp"
+#include "LogFile.hpp"
 
 class Factory
 {
@@ -62,8 +63,16 @@ public:
         logUITerm
     };
 
+    enum logFileFormat
+    {
+        logFileNone,
+        logFileEmpty,
+        logFileDefault
+    };
+
     static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
                        logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
+                       logFileFormat lff, \
                        QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
 
     static Frame* newFrame(QByteArray ba);
@@ -72,6 +81,7 @@ public:
     static LogicUI* newLogicUI(QFrame *fr);
     static FrameBuilder* newFrameBuilder();
     static LogUI* newLogUI(QFrame* fr);
+    static LogFile* newLogFile();
 
     static QString WindowName();
     static QString IcoPath();
@@ -83,6 +93,7 @@ private:
     static logicUiFormat logicUi;
     static frameBuilderFormat frameBuilder;
     static logUIFormat logUI;
+    static logFileFormat logFile;
 
     static QString windowName;
     static QString icoPath;
