@@ -37,7 +37,6 @@ void LogicUIEmpty::Disconnected()
 
 void LogicUIEmpty::FrameReaded(QSharedPointer<Frame> frame)
 {
-    qDebug() << "Otrzymałem ramkę";
     frame.isNull();
 }
 

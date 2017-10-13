@@ -3,6 +3,7 @@
 #include "Frame_imp/FrameEmpty.hpp"
 #include "Frame_imp/FrameTransparent.hpp"
 #include "Frame_imp/FrameSG1.hpp"
+#include "Frame_imp/FrameStawrov.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -10,12 +11,15 @@
 #include "Mendium_imp/MendiumEmpty.hpp"
 #include "Mendium_imp/MendiumRS.hpp"
 #include "Mendium_imp/MendiumFakeSG1.hpp"
+#include "Mendium_imp/MendiumFakeStawrow.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
+#include "LogicUI_imp/LogicUIStawrov.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
+#include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -53,6 +57,8 @@ Frame* Factory::newFrame(QByteArray ba)
         return new FrameTransparent(ba);
     case Factory::frameSG1:
         return new FrameSG1(ba);
+    case Factory::frameStawrov:
+        return new FrameStawrov(ba);
     }
     return NULL;
 }
@@ -81,6 +87,8 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return new LogicUIEmpty(fr);
     case Factory::logicUiSG1:
         return new LogicUISG1(fr);
+    case Factory::logicUIStawrov:
+        return new LogicUIStawrov(fr);
     }
     return NULL;
 }
@@ -97,6 +105,8 @@ Mendium* Factory::newMendium()
         return new MendiumRS();
     case Factory::mendiumFakeGS1:
         return new MendiumFakeSG1();
+    case Factory::mendiumFakeStawrow:
+        return new MendiumFakeStawrow();
     }
     return NULL;
 }
@@ -111,6 +121,8 @@ FrameBuilder* Factory::newFrameBuilder()
         return new FrameBuilderEmpty;
     case frameBuilderSG1:
         return new FrameBuilderSG1;
+    case frameBuilderStawrov:
+        return new FrameBuilderStawrov;
     }
     return NULL;
 }

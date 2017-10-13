@@ -19,7 +19,8 @@ public:
         frameNone,
         frameEmpty,
         frameTransparent,
-        frameSG1
+        frameSG1,
+        frameStawrov
     };
 
     enum mediumUiFormat
@@ -34,21 +35,24 @@ public:
         mendiumNone,
         mendiumEmpty,
         mendiumRS,
-        mendiumFakeGS1
+        mendiumFakeGS1,
+        mendiumFakeStawrow
     };
 
     enum logicUiFormat
     {
         logicUiNone,
         logicUiEmpty,
-        logicUiSG1
+        logicUiSG1,
+        logicUIStawrov
     };
 
     enum frameBuilderFormat
     {
         frameBuilderNone,
         frameBuilderEmpty,
-        frameBuilderSG1
+        frameBuilderSG1,
+        frameBuilderStawrov
     };
 
     enum logUIFormat

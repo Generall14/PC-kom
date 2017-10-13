@@ -41,7 +41,11 @@ SOURCES += main.cpp\
     src/Mendium_imp/MendiumFakeSG1.cpp \
     src/LogicUI_imp/utils/Worker.cpp \
     src/LogicUI_imp/utils/WorkerManager.cpp \
-    src/LogicUI_imp/utils_SG1/DataCollector.cpp
+    src/LogicUI_imp/utils_SG1/DataCollector.cpp \
+    src/Mendium_imp/MendiumFakeStawrow.cpp \
+    src/Frame_imp/FrameStawrov.cpp \
+    src/FrameBuilder_imp/FrameBuilderStawrov.cpp \
+    src/LogicUI_imp/LogicUIStawrov.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -70,6 +74,10 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils/Worker.hpp \
     src/LogicUI_imp/utils/WorkerManager.hpp \
     src/LogicUI_imp/utils_SG1/DataCollector.hpp \
-    init.hpp
+    init.hpp \
+    src/Mendium_imp/MendiumFakeStawrow.hpp \
+    src/Frame_imp/FrameStawrov.hpp \
+    src/FrameBuilder_imp/FrameBuilderStawrov.hpp \
+    src/LogicUI_imp/LogicUIStawrov.hpp
 
 FORMS    += mainwindow.ui
