@@ -12,6 +12,7 @@ class MediumUiRS : public MediumUI
     Q_OBJECT
 public:
     MediumUiRS(QFrame* parent);
+    virtual ~MediumUiRS();
 
     virtual void Init();
 
@@ -25,6 +26,8 @@ protected:
     QPushButton* refreshButton = NULL;
     QPushButton* connectButton = NULL;
     QPushButton* disconnectButton = NULL;
+
+    void LoadConfigs();
 
 private slots:
     void Refresh();

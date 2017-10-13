@@ -13,6 +13,7 @@ class LogicUIStawrov : public LogicUI
     Q_OBJECT
 public:
     LogicUIStawrov(QFrame* parent);
+    virtual ~LogicUIStawrov();
 
     virtual void Init();
 
@@ -27,6 +28,7 @@ private slots:
 
 protected:
     void InitTests();
+    void LoadConfigs();
 
     QVBoxLayout* mainLay = NULL;
 

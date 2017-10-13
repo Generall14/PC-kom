@@ -3,11 +3,16 @@
 #include "src/Factory.hpp"
 #include <QIcon>
 #include <QSharedPointer>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    QDir cdir("./configs/");
+    if (!cdir.exists())
+        cdir.mkpath(".");
+
     ui->setupUi(this);
 
     this->setWindowTitle(Factory::WindowName());

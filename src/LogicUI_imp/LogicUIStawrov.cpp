@@ -3,11 +3,40 @@
 #include "../Frame_imp/FrameStawrov.hpp"
 #include <QLabel>
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
 {
 
+}
+
+LogicUIStawrov::~LogicUIStawrov()
+{
+    QFile config1File;
+    QTextStream out(&config1File);
+
+    config1File.setFileName("configs/LogicUIStawrovAdr.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << leAdr->text();
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovHeader.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << leHeader->text();
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovData.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << leData->text();
+        config1File.close();
+    }
 }
 
 void LogicUIStawrov::Init()
@@ -24,6 +53,8 @@ void LogicUIStawrov::Init()
     btnE = new QPushButton("Wygeneruj bezsensowny błąd");
     mainLay->addWidget(btnE);
     connect(btnE, SIGNAL(clicked(bool)), this, SLOT(makeStupidError()));
+
+    LoadConfigs();
 }
 
 void LogicUIStawrov::InitTests()
@@ -66,6 +97,32 @@ void LogicUIStawrov::InitTests()
 
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+}
+
+void LogicUIStawrov::LoadConfigs()
+{
+    QFile config1File;
+
+    config1File.setFileName("configs/LogicUIStawrovAdr.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        leAdr->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovHeader.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        leHeader->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovData.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        leData->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
 }
 
 void LogicUIStawrov::Connected()
