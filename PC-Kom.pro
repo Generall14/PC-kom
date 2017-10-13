@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     src/FrameBuilder_imp/FrameBuilderStawrov.cpp \
     src/LogicUI_imp/LogicUIStawrov.cpp \
     src/LogFile.cpp \
-    src/LogFile_imp/LogFileEmpty.cpp
+    src/LogFile_imp/LogFileEmpty.cpp \
+    src/LogFile_imp/LogFileDefault.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -83,6 +84,7 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/LogicUIStawrov.hpp \
     devices.hpp \
     src/LogFile.hpp \
-    src/LogFile_imp/LogFileEmpty.hpp
+    src/LogFile_imp/LogFileEmpty.hpp \
+    src/LogFile_imp/LogFileDefault.hpp
 
 FORMS    += mainwindow.ui

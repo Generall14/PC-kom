@@ -25,6 +25,7 @@
 #include "LogUI_imp/LogUITerm.hpp"
 
 #include "LogFile_imp/LogFileEmpty.hpp"
+#include "LogFile_imp/LogFileDefault.hpp"
 
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
@@ -154,7 +155,7 @@ LogFile* Factory::newLogFile()
     case logFileEmpty:
         return new LogFileEmpty();
     case logFileDefault:
-        return new LogFileEmpty();
+        return new LogFileDefault();
     }
     return NULL;
 }

@@ -13,10 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!cdir.exists())
         cdir.mkpath(".");
 
-    cdir.setPath("./logs/");
-    if (!cdir.exists())
-        cdir.mkpath(".");
-
     ui->setupUi(this);
 
     this->setWindowTitle(Factory::WindowName());
@@ -73,13 +69,12 @@ MainWindow::~MainWindow()
     emit HALT();
     while(mendium->isRunning()){}
     while(frameBuilder->isRunning()){}
-//    mendium->terminate();
-//    frameBuilder->terminate();
 
     delete mediumUI;
     delete mendium;
     delete logicUI;
     delete logUI;
+    delete logFile;
 
     delete ui;
 }
