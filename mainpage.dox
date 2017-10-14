@@ -1,0 +1,36 @@
+/**
+\mainpage The mainpage documentation
+
+Autor: <b>Wojciech Kogut</b> \n
+Data utworzenia projektu: 2017.09.04 \n
+
+\par Punkt wejściowy
+Główna klasa zbierająca wszystkie śmieci: MainWindow.\n
+Fabryka abstrakcyjna generująca obiekty na podstawie konfiguracji: Factory.
+\endpar
+
+\par Konfiguracja
+Konfiguracja wykorzystanych podzespołów odbywa się za pomocą statycznej metody Factory::Config(...), w której wskazać wybrane implementacje obiektów.\n
+Wywołanie tej funkcji jest wyciągnięte do pliku init.hpp będącego wykuczonym z pod kontroli Git (można utrzymywać różne konfiguracje w różnych repozytoriach projektów i nie będą się gryźć podczas pushowania i pullowania do 
+głównego repozytorium). Zbiór przygotowanych grup argumentów jest zebrany w pliku devices.hpp.
+\endpar
+*/
+
+\note
+--wskazówka--
+
+\warning
+--ostrzeżenie--
+
+\refitem --item--			\\odnośnik
+\ref --item-- "--tekst--"	\\odnośnik z tekstem
+
+\par --par--
+--tekst--
+\endpar
+
+\code{.cpp}
+--kod--
+\endcode
+
+http://www.stack.nl/~dimitri/doxygen/manual/commands.html

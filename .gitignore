@@ -2,3 +2,4 @@
 *.ico
 *.user*
 init.hpp
+doc_doxygen/
