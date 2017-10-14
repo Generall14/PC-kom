@@ -22,16 +22,10 @@ void LogUIEmpty::Init()
     mainLay->addWidget(outLabel);
 }
 
-void LogUIEmpty::FrameWrite(QSharedPointer<Frame> frame)
+void LogUIEmpty::LogString(QString str, bool dirin)
 {
-    qDebug() << "Logowanie zapisu";
-    outLabel->setText("Out: "+frame->toQString());
-    emit LogString(frame->toQString());
-}
-
-void LogUIEmpty::FrameReaded(QSharedPointer<Frame> frame)
-{
-    qDebug() << "Logowanie odczytu";
-    inLabel->setText("In: "+frame->toQString());
-    emit LogString(frame->toQString());
+    if(dirin)
+        inLabel->setText(str);
+    else
+        outLabel->setText(str);
 }

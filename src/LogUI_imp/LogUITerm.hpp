@@ -18,8 +18,7 @@ public:
     virtual void Init();
 
 public slots:
-    virtual void FrameWrite(QSharedPointer<Frame> frame);
-    virtual void FrameReaded(QSharedPointer<Frame> frame);
+    virtual void LogString(QString str, bool);
 
 protected:
     QTextEdit* tedit = NULL;
@@ -32,7 +31,7 @@ protected:
     void AppendLog(QString str);
 
     static const int LINES_CUT_TR = 400;
-    static const int LINES_CUT_SAVE_LINES = 200;
+    static const int LINES_CUT_SAVE_LINES = 100;
 
 protected slots:
     void Clear();

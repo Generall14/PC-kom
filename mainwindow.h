@@ -10,6 +10,7 @@
 #include "src/FrameBuilder.hpp"
 #include "src/LogUI.hpp"
 #include "src/LogFile.hpp"
+#include "src/LogFormater.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,7 @@ private:
     FrameBuilder* frameBuilder = NULL;
     LogUI* logUI = NULL;
     LogFile* logFile = NULL;
+    LogFormater* logFormater = NULL;
 
 public slots:
     void ErrorMessage(QString er);

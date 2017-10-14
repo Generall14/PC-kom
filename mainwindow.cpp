@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     frameBuilder = Factory::newFrameBuilder();
     logUI = Factory::newLogUI(ui->frame_log);
     logFile = Factory::newLogFile();
+    logFormater = Factory::newLogFormater();
 
     connect(this, SIGNAL(HALT()), mendium, SLOT(Stop()));
     connect(this, SIGNAL(HALT()), frameBuilder, SLOT(Stop()));
@@ -44,15 +45,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(logicUI, SIGNAL(WritePureData(QByteArray)), frameBuilder, SLOT(PureDataWrite(QByteArray)));
 
     connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), mendium, SLOT(Write(QSharedPointer<Frame>)));
-    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logUI, SLOT(FrameWrite(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logFormater, SLOT(FrameWrite(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
-    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
+    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logFormater, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 
     connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
-    connect(logUI, SIGNAL(LogString(QString)), logFile, SLOT(LogString(QString)));
 
     connect(logFile, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
+    connect(logFormater, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+    connect(logFormater, SIGNAL(LogFileString(QString)), logFile, SLOT(LogString(QString)));
+    connect(logFormater, SIGNAL(LogUIString(QString,bool)), logUI, SLOT(LogString(QString,bool)));
 
     mendium->start(QThread::HighPriority);
     frameBuilder->start(QThread::HighPriority);
@@ -76,6 +80,7 @@ MainWindow::~MainWindow()
     delete logicUI;
     delete logUI;
     delete logFile;
+    delete logFormater;
 
     delete ui;
 }

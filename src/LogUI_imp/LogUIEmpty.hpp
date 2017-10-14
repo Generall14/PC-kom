@@ -16,8 +16,7 @@ public:
     virtual void Init();
 
 public slots:
-    virtual void FrameWrite(QSharedPointer<Frame> frame);
-    virtual void FrameReaded(QSharedPointer<Frame> frame);
+    virtual void LogString(QString str, bool dirin);
 
 protected:
     QLabel* inLabel = NULL;

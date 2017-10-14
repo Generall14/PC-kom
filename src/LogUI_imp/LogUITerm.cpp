@@ -38,38 +38,9 @@ void LogUITerm::Init()
     selectionLayout->addWidget(btnsve);
 }
 
-void LogUITerm::FrameWrite(QSharedPointer<Frame> frame)
+void LogUITerm::LogString(QString str, bool)
 {
-    QString temps = "<font face=\"Hack\" color=#6666ff><b>PC ---> DEV ";
-    QString templ = QTime::currentTime().toString("HH:mm:ss");
-    temps += templ;
-    templ.insert(0, "PC ---> DEV ");
-    temps += ": </b></font>";
-    if(!frame->isValid())
-        temps += "<font face=\"Hack\" color=\"red\">";
-    temps += frame->toQString();
-    templ.append("  " + frame->toQString());
-    if(!frame->isValid())
-        temps += "</font>";
-    AppendLog(temps);
-    emit LogString(templ);
-}
-
-void LogUITerm::FrameReaded(QSharedPointer<Frame> frame)
-{
-    QString temps = "<font face=\"Hack\" color=#b3b300><b>PC &#60;--- DEV ";
-    QString templ = QTime::currentTime().toString("HH:mm:ss");
-    temps += templ;
-    templ.insert(0, "PC <--- DEV ");
-    temps += ": </b></font>";
-    if(!frame->isValid())
-        temps += "<font face=\"Hack\" color=\"red\">";
-    temps += frame->toQString();
-    templ.append("  " + frame->toQString());
-    if(!frame->isValid())
-        temps += "</font>";
-    AppendLog(temps);
-    emit LogString(templ);
+    AppendLog(str);
 }
 
 void LogUITerm::AppendLog(QString str)

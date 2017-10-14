@@ -27,6 +27,9 @@
 #include "LogFile_imp/LogFileEmpty.hpp"
 #include "LogFile_imp/LogFileDefault.hpp"
 
+#include "LogFormater_imp/LogFormaterEmpty.hpp"
+#include "LogFormater_imp/LogFormaterHtml.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
@@ -34,10 +37,12 @@ Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
 Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
 Factory::logFileFormat Factory::logFile = Factory::logFileEmpty;
+Factory::logFormaterFormat Factory::logFormater = Factory::logFormaterEmpty;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, logFileFormat lff, QString name, QString ico)
+void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
+                     logFileFormat lff, logFormaterFormat lf, QString name, QString ico)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
@@ -48,6 +53,7 @@ void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logi
     Factory::logUI = lgui;
     Factory::icoPath = ico;
     Factory::logFile = lff;
+    Factory::logFormater = lf;
 }
 
 Frame* Factory::newFrame(QByteArray ba)
@@ -156,6 +162,20 @@ LogFile* Factory::newLogFile()
         return new LogFileEmpty();
     case logFileDefault:
         return new LogFileDefault();
+    }
+    return NULL;
+}
+
+LogFormater* Factory::newLogFormater()
+{
+    switch (logFormater)
+    {
+    case logFormaterNone:
+        return NULL;
+    case logFormaterEmpty:
+        return new LogFormaterEmpty();
+    case logFormaterHtml:
+        return new LogFormaterHtml();
     }
     return NULL;
 }

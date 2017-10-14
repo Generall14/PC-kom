@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     src/Frame_imp/FrameTransparent.cpp \
     src/LogicUI.cpp \
     src/LogicUI_imp/LogicUIEmpty.cpp \
-    src/FrameBuilder.cpp \
     src/FrameBuilder_imp/FrameBuilderEmpty.cpp \
     src/LogUI.cpp \
     src/LogUI_imp/LogUIEmpty.cpp \
@@ -46,9 +45,10 @@ SOURCES += main.cpp\
     src/Frame_imp/FrameStawrov.cpp \
     src/FrameBuilder_imp/FrameBuilderStawrov.cpp \
     src/LogicUI_imp/LogicUIStawrov.cpp \
-    src/LogFile.cpp \
     src/LogFile_imp/LogFileEmpty.cpp \
-    src/LogFile_imp/LogFileDefault.cpp
+    src/LogFile_imp/LogFileDefault.cpp \
+    src/LogFormater_imp/LogFormaterEmpty.cpp \
+    src/LogFormater_imp/LogFormaterHtml.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -85,6 +85,9 @@ HEADERS  += mainwindow.h \
     devices.hpp \
     src/LogFile.hpp \
     src/LogFile_imp/LogFileEmpty.hpp \
-    src/LogFile_imp/LogFileDefault.hpp
+    src/LogFile_imp/LogFileDefault.hpp \
+    src/LogFormater.hpp \
+    src/LogFormater_imp/LogFormaterEmpty.hpp \
+    src/LogFormater_imp/LogFormaterHtml.hpp
 
 FORMS    += mainwindow.ui

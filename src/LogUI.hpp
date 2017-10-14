@@ -4,8 +4,6 @@
 #include <QFrame>
 #include <QString>
 #include <QObject>
-#include <QSharedPointer>
-#include "Frame.hpp"
 
 class LogUI : public QObject
 {
@@ -17,12 +15,10 @@ public:
     virtual void Init() = 0;
 
 public slots:
-    virtual void FrameWrite(QSharedPointer<Frame> frame) = 0;
-    virtual void FrameReaded(QSharedPointer<Frame> frame) = 0;
+    virtual void LogString(QString str, bool dirin) = 0;
 
 signals:
     void Error(QString msg);
-    void LogString(QString msg);
 
 protected:
     QFrame* cParent=NULL;

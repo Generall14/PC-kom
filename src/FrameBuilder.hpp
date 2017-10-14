@@ -11,7 +11,7 @@ class FrameBuilder : public EQThread
 {
     Q_OBJECT
 public:
-    FrameBuilder();
+    FrameBuilder(){}
     virtual ~FrameBuilder(){}
 
 public slots:

@@ -10,6 +10,7 @@
 #include "FrameBuilder.hpp"
 #include "LogUI.hpp"
 #include "LogFile.hpp"
+#include "LogFormater.hpp"
 
 class Factory
 {
@@ -70,9 +71,16 @@ public:
         logFileDefault
     };
 
+    enum logFormaterFormat
+    {
+        logFormaterNone,
+        logFormaterEmpty,
+        logFormaterHtml
+    };
+
     static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
                        logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
-                       logFileFormat lff, \
+                       logFileFormat lff, logFormaterFormat lf, \
                        QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
 
     static Frame* newFrame(QByteArray ba);
@@ -82,6 +90,7 @@ public:
     static FrameBuilder* newFrameBuilder();
     static LogUI* newLogUI(QFrame* fr);
     static LogFile* newLogFile();
+    static LogFormater* newLogFormater();
 
     static QString WindowName();
     static QString IcoPath();
@@ -94,6 +103,7 @@ private:
     static frameBuilderFormat frameBuilder;
     static logUIFormat logUI;
     static logFileFormat logFile;
+    static logFormaterFormat logFormater;
 
     static QString windowName;
     static QString icoPath;
