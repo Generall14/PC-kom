@@ -1,10 +1,18 @@
 #ifndef FRAME_HPP
 #define FRAME_HPP
+
 /**
-* @class Frame
-*
-* Interfejs klas przechwujących pakiety.
-*/
+ * \class Frame
+ * @brief Interfejs klas przechowujących pakiety.
+ *
+ * Klasa przechowuje dane pakietów oraz tłumaczy je na opis tekstowy (metody QString toQString(), QString toShortQString()) i wartość przenoszoną jeżeli taka istnieje (magicNumbers() ).
+ * Sprawdza również w metodzie isValid() czy pakiet jest poprawny.
+ *
+ * Jedynym slotem klasy jest LogString(QString) na który są przesyłane sygnały od LogFormater z przygotowanym tekstem do zapisu. Zadaniem klasy jest zapis komunikatów do plików
+ * (lub w razie potrzeby do czegokolwiek zasadnego).
+ *
+ * Sygnalizacja wszelkich błędów odbywa się za pomocą sygnału Error(QString).
+ */
 
 #include <QString>
 #include <QByteArray>

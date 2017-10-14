@@ -43,7 +43,7 @@ public slots:
 
 protected:
     virtual void Run() = 0;
-    bool opened = false;
+    bool opened = false;                                                                /**<Status połączony/rozłączony*/
 
 signals:
     void Opened();                                                                      /**<Otwarto medium*/

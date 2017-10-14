@@ -25,7 +25,7 @@ class MediumUI : public QObject
 {
     Q_OBJECT
 public:
-    MediumUI(QFrame* parent);
+    MediumUI(QFrame* parent);                                                           /**<Konstruktor. @param parent - wskaźnik na widget na którym będzie zbudowany interfejs*/
     virtual ~MediumUI(){}
 
     virtual void Init() = 0;                                                            /**<Inicjalizacja interfejsu użytkownika*/
