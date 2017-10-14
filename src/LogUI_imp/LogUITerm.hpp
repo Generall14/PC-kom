@@ -27,6 +27,13 @@ protected:
     QPushButton* btnsve = NULL;
     QCheckBox* chb = NULL;
 
+    int lineCounter = 0;
+
+    void AppendLog(QString str);
+
+    static const int LINES_CUT_TR = 400;
+    static const int LINES_CUT_SAVE_LINES = 200;
+
 protected slots:
     void Clear();
     void WrapSelect(bool sel);

@@ -51,7 +51,7 @@ void LogUITerm::FrameWrite(QSharedPointer<Frame> frame)
     templ.append("  " + frame->toQString());
     if(!frame->isValid())
         temps += "</font>";
-    tedit->append(temps);
+    AppendLog(temps);
     emit LogString(templ);
 }
 
@@ -68,13 +68,29 @@ void LogUITerm::FrameReaded(QSharedPointer<Frame> frame)
     templ.append("  " + frame->toQString());
     if(!frame->isValid())
         temps += "</font>";
-    tedit->append(temps);
+    AppendLog(temps);
     emit LogString(templ);
+}
+
+void LogUITerm::AppendLog(QString str)
+{
+    tedit->append(str);
+    lineCounter++;
+
+    if(lineCounter>=LINES_CUT_TR)
+    {
+        QStringList tlist = tedit->toHtml().split("\n");
+        tedit->clear();
+        for(int i=tlist.size()-LINES_CUT_SAVE_LINES;i<tlist.size();++i)
+            tedit->append(tlist.at(i));
+        lineCounter = LINES_CUT_SAVE_LINES;
+    }
 }
 
 void LogUITerm::Clear()
 {
     tedit->clear();
+    lineCounter = 0;
 }
 
 void LogUITerm::WrapSelect(bool sel)
