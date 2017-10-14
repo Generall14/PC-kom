@@ -22,6 +22,7 @@ public slots:
 
 signals:
     void Error(QString msg);
+    void LogString(QString msg);
 
 protected:
     QFrame* cParent=NULL;

@@ -13,8 +13,7 @@ public:
     LogFileDefault();
 
 public slots:
-    virtual void FrameWrite(QSharedPointer<Frame>);
-    virtual void FrameReaded(QSharedPointer<Frame>);
+    virtual void LogString(QString str);
 };
 
 #endif

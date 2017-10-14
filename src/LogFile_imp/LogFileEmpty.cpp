@@ -6,12 +6,7 @@ LogFileEmpty::LogFileEmpty()
 
 }
 
-void LogFileEmpty::FrameWrite(QSharedPointer<Frame>)
-{
-
-}
-
-void LogFileEmpty::FrameReaded(QSharedPointer<Frame>)
+void LogFileEmpty::LogString(QString)
 {
 
 }

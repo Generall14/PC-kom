@@ -45,13 +45,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), mendium, SLOT(Write(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logUI, SLOT(FrameWrite(QSharedPointer<Frame>)));
-    connect(frameBuilder, SIGNAL(Write(QSharedPointer<Frame>)), logFile, SLOT(FrameWrite(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
-    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logFile, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 
     connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+    connect(logUI, SIGNAL(LogString(QString)), logFile, SLOT(LogString(QString)));
 
     mendium->start(QThread::HighPriority);
     frameBuilder->start(QThread::HighPriority);

@@ -10,12 +10,7 @@ LogFileDefault::LogFileDefault()
         cdir.mkpath(".");
 }
 
-void LogFileDefault::FrameWrite(QSharedPointer<Frame>)
-{
-
-}
-
-void LogFileDefault::FrameReaded(QSharedPointer<Frame>)
+void LogFileDefault::LogString(QString str)
 {
 
 }
