@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
     connect(logUI, SIGNAL(LogString(QString)), logFile, SLOT(LogString(QString)));
 
+    connect(logFile, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+
     mendium->start(QThread::HighPriority);
     frameBuilder->start(QThread::HighPriority);
 

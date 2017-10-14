@@ -14,6 +14,9 @@ public:
 
 public slots:
     virtual void LogString(QString str) = 0;
+
+signals:
+    void Error(QString msg);
 };
 
 #endif
