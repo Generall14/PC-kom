@@ -32,7 +32,8 @@ public:
         frameEmpty,                                                                     /**<Implementacja FrameEmpty*/
         frameTransparent,                                                               /**<Implementacja FrameTransparent*/
         frameSG1,                                                                       /**<Implementacja FrameSG1*/
-        frameStawrov                                                                    /**<Implementacja FrameStawrov*/
+        frameStawrov,                                                                   /**<Implementacja FrameStawrov*/
+        frameZR3                                                                        /**<Implementacja FrameZR3*/
     };
 
     enum mediumUiFormat                                                                 /**Określa implementację klasy MediumUI*/
@@ -48,7 +49,8 @@ public:
         mendiumEmpty,                                                                   /**<Implementacja MendiumEmpty*/
         mendiumRS,                                                                      /**<Implementacja MendiumRS*/
         mendiumFakeGS1,                                                                 /**<Implementacja MendiumFakeSG1*/
-        mendiumFakeStawrow                                                              /**<Implementacja MendiumFakeStawrow*/
+        mendiumFakeStawrow,                                                             /**<Implementacja MendiumFakeStawrow*/
+        mendiumFakeZR3                                                                  /**<Implementacja MendiumFakeZR3*/
     };
 
     enum logicUiFormat                                                                  /**Określa implementację klasy LogicUI*/
@@ -56,7 +58,8 @@ public:
         logicUiNone,                                                                    /**<Wskaźnik NULL*/
         logicUiEmpty,                                                                   /**<Implementacja LogicUIEmpty*/
         logicUiSG1,                                                                     /**<Implementacja LogicUISG1*/
-        logicUIStawrov                                                                  /**<Implementacja LogicUIStawrov*/
+        logicUIStawrov,                                                                 /**<Implementacja LogicUIStawrov*/
+        logicUIZR3                                                                      /**<Implementacja LogicUIZR3*/
     };
 
     enum frameBuilderFormat                                                             /**Określa implementację klasy FrameBuilder*/
@@ -64,7 +67,8 @@ public:
         frameBuilderNone,                                                               /**<Wskaźnik NULL*/
         frameBuilderEmpty,                                                              /**<Implementacja FrameBuilderEmpty*/
         frameBuilderSG1,                                                                /**<Implementacja FrameBuilderSG1*/
-        frameBuilderStawrov                                                             /**<Implementacja FrameBuilderStawrov*/
+        frameBuilderStawrov,                                                            /**<Implementacja FrameBuilderStawrov*/
+        frameBuilderZR3                                                                 /**<Implementacja FrameBuilderZR3*/
     };
 
     enum logUIFormat                                                                    /**Określa implementację klasy LogUI*/

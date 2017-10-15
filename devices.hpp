@@ -8,5 +8,5 @@ typedef Factory f;
 #define RS_STAWROV f::frameStawrov, f::mediumUIRS, f::mendiumRS, f::logicUIStawrov, f::frameBuilderStawrov, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "Grzegorzowy komunikator"
 #define FAKE_STAWROV f::frameStawrov, f::mediumUIRS, f::mendiumFakeStawrow, f::logicUIStawrov, f::frameBuilderStawrov, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "Grzegorzowy komunikator"
 
-#define RS_ZR_3 f::frameTransparent, f::mediumUIRS, f::mendiumEmpty, f::logicUiEmpty, f::frameBuilderEmpty, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"
-#define FAKE_ZR_3 f::frameTransparent, f::mediumUIRS, f::mendiumEmpty, f::logicUiEmpty, f::frameBuilderEmpty, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"
+#define RS_ZR_3 f::frameZR3, f::mediumUIRS, f::mendiumRS, f::logicUIZR3, f::frameBuilderZR3, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"
+#define FAKE_ZR_3 f::frameZR3, f::mediumUIRS, f::mendiumFakeZR3, f::logicUIZR3, f::frameBuilderZR3, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"

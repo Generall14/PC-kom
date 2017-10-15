@@ -114,6 +114,7 @@ void MainWindow::InitGUI()
 
     frameMedium = new QFrame(this);
     frameMedium->setFrameShape(QFrame::StyledPanel);
+    frameMedium->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     rightLay->addWidget(frameMedium);
 
     frameLogicUI = new QFrame(this);
