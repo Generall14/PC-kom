@@ -96,10 +96,12 @@ void MainWindow::InitGUI()
     this->setCentralWidget(centralWidget);
 
     QHBoxLayout* mainLay = new QHBoxLayout();
-    mainLay->setMargin(6);
+    mainLay->setContentsMargins(2, 6, 2, 2);
+    mainLay->setSpacing(3);
     this->centralWidget()->setLayout(mainLay);
 
     frameLogUI = new QFrame(this);
+    frameLogUI->setFrameShape(QFrame::StyledPanel);
     mainLay->addWidget(frameLogUI);
 
     QFrame* rightFrame = new QFrame(this);
@@ -111,9 +113,11 @@ void MainWindow::InitGUI()
     rightFrame->setLayout(rightLay);
 
     frameMedium = new QFrame(this);
+    frameMedium->setFrameShape(QFrame::StyledPanel);
     rightLay->addWidget(frameMedium);
 
     frameLogicUI = new QFrame(this);
+    frameLogicUI->setFrameShape(QFrame::StyledPanel);
     rightLay->addWidget(frameLogicUI);
 }
 
