@@ -1,10 +1,12 @@
-#define DEFAULT_EMPTY Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, Factory::logicUiEmpty, Factory::frameBuilderEmpty, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml
+typedef Factory f;
 
-#define RS_SG_1 Factory::frameSG1, Factory::mediumUIRS, Factory::mendiumRS, Factory::logicUiSG1, Factory::frameBuilderSG1, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml
-#define FAKE_SG_1 Factory::frameSG1, Factory::mediumUIRS, Factory::mendiumFakeGS1, Factory::logicUiSG1, Factory::frameBuilderSG1, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml
+#define DEFAULT_EMPTY f::frameTransparent, f::mediumUIRS, f::mendiumEmpty, f::logicUiEmpty, f::frameBuilderEmpty, f::logUITerm, f::logFileDefault, f::logFormaterHtml
 
-#define RS_STAWROV Factory::frameStawrov, Factory::mediumUIRS, Factory::mendiumRS, Factory::logicUIStawrov, Factory::frameBuilderStawrov, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml, "Grzegorzowy komunikator"
-#define FAKE_STAWROV Factory::frameStawrov, Factory::mediumUIRS, Factory::mendiumFakeStawrow, Factory::logicUIStawrov, Factory::frameBuilderStawrov, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml, "Grzegorzowy komunikator"
+#define RS_SG_1 f::frameSG1, f::mediumUIRS, f::mendiumRS, f::logicUiSG1, f::frameBuilderSG1, f::logUITerm, f::logFileDefault, f::logFormaterHtml
+#define FAKE_SG_1 f::frameSG1, f::mediumUIRS, f::mendiumFakeGS1, f::logicUiSG1, f::frameBuilderSG1, f::logUITerm, f::logFileDefault, f::logFormaterHtml
 
-#define RS_ZR_3 Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, Factory::logicUiEmpty, Factory::frameBuilderEmpty, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml, "ZR-3: PC-tester"
-#define FAKE_ZR_3 Factory::frameTransparent, Factory::mediumUIRS, Factory::mendiumEmpty, Factory::logicUiEmpty, Factory::frameBuilderEmpty, Factory::logUITerm, Factory::logFileDefault, Factory::logFormaterHtml, "ZR-3: PC-tester"
+#define RS_STAWROV f::frameStawrov, f::mediumUIRS, f::mendiumRS, f::logicUIStawrov, f::frameBuilderStawrov, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "Grzegorzowy komunikator"
+#define FAKE_STAWROV f::frameStawrov, f::mediumUIRS, f::mendiumFakeStawrow, f::logicUIStawrov, f::frameBuilderStawrov, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "Grzegorzowy komunikator"
+
+#define RS_ZR_3 f::frameTransparent, f::mediumUIRS, f::mendiumEmpty, f::logicUiEmpty, f::frameBuilderEmpty, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"
+#define FAKE_ZR_3 f::frameTransparent, f::mediumUIRS, f::mendiumEmpty, f::logicUiEmpty, f::frameBuilderEmpty, f::logUITerm, f::logFileDefault, f::logFormaterHtml, "ZR-3: PC-tester"

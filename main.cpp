@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-#include "init.hpp"
+    #include "init.hpp"
 
     QApplication a(argc, argv);
     MainWindow w;
