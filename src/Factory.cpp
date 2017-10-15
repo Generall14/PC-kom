@@ -41,6 +41,10 @@ Factory::logFormaterFormat Factory::logFormater = Factory::logFormaterEmpty;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 
+/**
+ * Funkcja służy do określenia które konkretne implementacje będą zwracane w metodach fabryki abstrakcyjnej. Dodatkowo wskazuje nazwę dla głównego okna programu
+ * i adres do ikony.
+ */
 void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
                      logFileFormat lff, logFormaterFormat lf, QString name, QString ico)
 {
@@ -56,6 +60,10 @@ void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logi
     Factory::logFormater = lf;
 }
 
+/**
+ * Zwraca obiekt pochodny po Frame w zależności od konfiguracji frameFormat.
+ * @param ba - dane dla obiektu Frame.
+ */
 Frame* Factory::newFrame(QByteArray ba)
 {
     switch (frame)
@@ -74,6 +82,10 @@ Frame* Factory::newFrame(QByteArray ba)
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po MediumUI w zależności od konfiguracji mediumUiFormat.
+ * @param fr - wskaźnik do widgetu na którym zbudowany zostanie interfejs.
+ */
 MediumUI* Factory::newMediumUI(QFrame *fr)
 {
     switch (mediumui)
@@ -88,6 +100,10 @@ MediumUI* Factory::newMediumUI(QFrame *fr)
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po LogicUI w zależności od konfiguracji logicUiFormat.
+ * @param fr - wskaźnik do widgetu na którym zbudowany zostanie interfejs.
+ */
 LogicUI* Factory::newLogicUI(QFrame *fr)
 {
     switch (logicUi)
@@ -104,6 +120,9 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po Mendium w zależności od konfiguracji mendiumFormat.
+ */
 Mendium* Factory::newMendium()
 {
     switch (mendium)
@@ -122,6 +141,9 @@ Mendium* Factory::newMendium()
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po FrameBuilder w zależności od konfiguracji frameBuilderFormat.
+ */
 FrameBuilder* Factory::newFrameBuilder()
 {
     switch (frameBuilder)
@@ -138,6 +160,10 @@ FrameBuilder* Factory::newFrameBuilder()
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po LogUI w zależności od konfiguracji logUIFormat.
+ * @param fr - wskaźnik do widgetu na którym zbudowany zostanie interfejs.
+ */
 LogUI* Factory::newLogUI(QFrame* fr)
 {
     switch (logUI)
@@ -152,6 +178,9 @@ LogUI* Factory::newLogUI(QFrame* fr)
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po LogFile w zależności od konfiguracji logFileFormat.
+ */
 LogFile* Factory::newLogFile()
 {
     switch (logFile)
@@ -166,6 +195,9 @@ LogFile* Factory::newLogFile()
     return NULL;
 }
 
+/**
+ * Zwraca obiekt pochodny po LogFormater w zależności od konfiguracji logFormaterFormat.
+ */
 LogFormater* Factory::newLogFormater()
 {
     switch (logFormater)
@@ -180,11 +212,17 @@ LogFormater* Factory::newLogFormater()
     return NULL;
 }
 
+/**
+ * Zwraca nazwę głównego okna w zależności od konfiguracji.
+ */
 QString Factory::WindowName()
 {
     return windowName;
 }
 
+/**
+ * Zwraca adres do ikony programu w zależności od konfiguracji.
+ */
 QString Factory::IcoPath()
 {
     return icoPath;

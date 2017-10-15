@@ -1,6 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+/**
+ * \class MainWindow
+ * @brief Klasa zbierająca i łącząca cały ambaras.
+ *
+ * Klasa wyłuskuje z fabryki abstrakcyjnej Factory konkretne implementacje poszczególnych klas abstrakcyjnych, następnie łączy je sygnałami i slotami według ustalonej strukturt (patrz
+ * mainpage.dox). Generuje również szkielet GUI.
+ */
+
 #include <QMainWindow>
 #include <QDebug>
 #include <QMessageBox>

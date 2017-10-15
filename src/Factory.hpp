@@ -1,6 +1,16 @@
 #ifndef FACTORY_HPP
 #define FACTORY_HPP
 
+/**
+ * \class Factory
+ * @brief Globalna fabryka abstrakcyjna.
+ *
+ * Fabryka udostępnia statyczne metody zwracające implementacje danej klasy abstrakcyjnej (newFrame(QByteArray) itp.) w zależności od aktualnej konfiguracji. Poza obiektami zwraca
+ * również tekst dla okna (WindowName() ) i adres ikony (QString IcoPath() ).
+ *
+ * Konfiguracja zestawu obiektów odbywa się poprzez metodę statyczną void Config(...).
+ */
+
 #include <QByteArray>
 #include <QFrame>
 #include "Frame.hpp"
@@ -16,66 +26,66 @@ class Factory
 {
     Factory(){}
 public:
-    enum frameFormat
+    enum frameFormat                                                                    /**Określa implementację klasy Frame*/
     {
-        frameNone,
-        frameEmpty,
-        frameTransparent,
-        frameSG1,
-        frameStawrov
+        frameNone,                                                                      /**<Wskaźnik NULL*/
+        frameEmpty,                                                                     /**<Implementacja FrameEmpty*/
+        frameTransparent,                                                               /**<Implementacja FrameTransparent*/
+        frameSG1,                                                                       /**<Implementacja FrameSG1*/
+        frameStawrov                                                                    /**<Implementacja FrameStawrov*/
     };
 
-    enum mediumUiFormat
+    enum mediumUiFormat                                                                 /**Określa implementację klasy MediumUI*/
     {
-        mediumUINone,
-        mediumUIEmpty,
-        mediumUIRS
+        mediumUINone,                                                                   /**<Wskaźnik NULL*/
+        mediumUIEmpty,                                                                  /**<Implementacja MediumUiEmpty*/
+        mediumUIRS                                                                      /**<Implementacja MediumUiRS*/
     };
 
-    enum mendiumFormat
+    enum mendiumFormat                                                                  /**Określa implementację klasy Mendium*/
     {
-        mendiumNone,
-        mendiumEmpty,
-        mendiumRS,
-        mendiumFakeGS1,
-        mendiumFakeStawrow
+        mendiumNone,                                                                    /**<Wskaźnik NULL*/
+        mendiumEmpty,                                                                   /**<Implementacja MendiumEmpty*/
+        mendiumRS,                                                                      /**<Implementacja MendiumRS*/
+        mendiumFakeGS1,                                                                 /**<Implementacja MendiumFakeSG1*/
+        mendiumFakeStawrow                                                              /**<Implementacja MendiumFakeStawrow*/
     };
 
-    enum logicUiFormat
+    enum logicUiFormat                                                                  /**Określa implementację klasy LogicUI*/
     {
-        logicUiNone,
-        logicUiEmpty,
-        logicUiSG1,
-        logicUIStawrov
+        logicUiNone,                                                                    /**<Wskaźnik NULL*/
+        logicUiEmpty,                                                                   /**<Implementacja LogicUIEmpty*/
+        logicUiSG1,                                                                     /**<Implementacja LogicUISG1*/
+        logicUIStawrov                                                                  /**<Implementacja LogicUIStawrov*/
     };
 
-    enum frameBuilderFormat
+    enum frameBuilderFormat                                                             /**Określa implementację klasy FrameBuilder*/
     {
-        frameBuilderNone,
-        frameBuilderEmpty,
-        frameBuilderSG1,
-        frameBuilderStawrov
+        frameBuilderNone,                                                               /**<Wskaźnik NULL*/
+        frameBuilderEmpty,                                                              /**<Implementacja FrameBuilderEmpty*/
+        frameBuilderSG1,                                                                /**<Implementacja FrameBuilderSG1*/
+        frameBuilderStawrov                                                             /**<Implementacja FrameBuilderStawrov*/
     };
 
-    enum logUIFormat
+    enum logUIFormat                                                                    /**Określa implementację klasy LogUI*/
     {
-        logUINone,
-        logUIEmpty,
-        logUITerm
+        logUINone,                                                                      /**<Wskaźnik NULL*/
+        logUIEmpty,                                                                     /**<Implementacja LogUIEmpty*/
+        logUITerm                                                                       /**<Implementacja LogUITerm*/
     };
 
-    enum logFileFormat
+    enum logFileFormat                                                                  /**Określa implementację klasy LogFile*/
     {
-        logFileNone,
-        logFileEmpty,
-        logFileDefault
+        logFileNone,                                                                    /**<Wskaźnik NULL*/
+        logFileEmpty,                                                                   /**<Implementacja LogFileEmpty*/
+        logFileDefault                                                                  /**<Implementacja LogFileDefault*/
     };
 
-    enum logFormaterFormat
+    enum logFormaterFormat                                                              /**Określa implementację klasy LogFormater*/
     {
-        logFormaterNone,
-        logFormaterEmpty,
-        logFormaterHtml
+        logFormaterNone,                                                                /**<Wskaźnik NULL*/
+        logFormaterEmpty,                                                               /**<Implementacja LogFormaterEmpty*/
+        logFormaterHtml                                                                 /**<Implementacja LogFormaterHtml*/
     };
 
     static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \

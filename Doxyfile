@@ -364,7 +364,7 @@ EXTERNAL_SEARCH_ID     =
 
 EXTRA_SEARCH_MAPPINGS  =
 
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 
 LATEX_OUTPUT           = latex
 
