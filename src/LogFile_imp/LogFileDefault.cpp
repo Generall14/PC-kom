@@ -35,6 +35,9 @@ QString LogFileDefault::GenerateFileName()
 
 void LogFileDefault::Flush()
 {
+    if(buffor.isEmpty())
+        return;
+
     if(lastFile.open(QIODevice::Append | QIODevice::Text | QIODevice::WriteOnly))
     {
         QTextStream out(&lastFile);
