@@ -8,14 +8,11 @@
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)//,
-//    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
     QDir cdir("./configs/");
     if (!cdir.exists())
         cdir.mkpath(".");
-
-//    ui->setupUi(this);
 
     this->InitGUI();
     this->InitStructure();
@@ -36,8 +33,6 @@ MainWindow::~MainWindow()
     delete logUI;
     delete logFile;
     delete logFormater;
-
-//    delete ui;
 }
 
 void MainWindow::InitStructure()

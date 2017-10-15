@@ -13,10 +13,6 @@
 #include "src/LogFile.hpp"
 #include "src/LogFormater.hpp"
 
-//namespace Ui {
-//class MainWindow;
-//}
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -25,7 +21,6 @@ public:
     ~MainWindow();
 
 private:
-//    Ui::MainWindow *ui;
     QFrame* frameMedium = NULL;
     QFrame* frameLogicUI = NULL;
     QFrame* frameLogUI = NULL;
