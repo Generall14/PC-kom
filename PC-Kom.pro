@@ -89,5 +89,3 @@ HEADERS  += mainwindow.h \
     src/LogFormater.hpp \
     src/LogFormater_imp/LogFormaterEmpty.hpp \
     src/LogFormater_imp/LogFormaterHtml.hpp
-
-FORMS    += mainwindow.ui

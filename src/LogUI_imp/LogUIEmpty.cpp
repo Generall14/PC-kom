@@ -12,6 +12,7 @@ LogUIEmpty::LogUIEmpty(QFrame* parent):
 void LogUIEmpty::Init()
 {
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
+    mainLay->setMargin(0);
 
     mainLay->addWidget(new QLabel("Prymitywny log. Ostatnie dane:"));
 

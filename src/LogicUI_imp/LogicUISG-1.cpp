@@ -17,6 +17,7 @@ LogicUISG1::LogicUISG1(QFrame* parent):
 void LogicUISG1::Init()
 {
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
+    mainLay->setMargin(0);
 
     QTabWidget* tw = new QTabWidget();
     mainLay->addWidget(tw);
