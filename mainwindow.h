@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QMessageBox>
+#include <QFrame>
 #include "src/MediumUI.hpp"
 #include "src/Mendium.hpp"
 #include "src/LogicUI.hpp"
@@ -12,9 +13,9 @@
 #include "src/LogFile.hpp"
 #include "src/LogFormater.hpp"
 
-namespace Ui {
-class MainWindow;
-}
+//namespace Ui {
+//class MainWindow;
+//}
 
 class MainWindow : public QMainWindow
 {
@@ -24,7 +25,10 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+//    Ui::MainWindow *ui;
+    QFrame* frameMedium = NULL;
+    QFrame* frameLogicUI = NULL;
+    QFrame* frameLogUI = NULL;
 
     MediumUI* mediumUI = NULL;
     Mendium* mendium = NULL;
@@ -33,6 +37,9 @@ private:
     LogUI* logUI = NULL;
     LogFile* logFile = NULL;
     LogFormater* logFormater = NULL;
+
+    void InitGUI();
+    void InitStructure();
 
 public slots:
     void ErrorMessage(QString er);

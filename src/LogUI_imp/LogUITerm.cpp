@@ -14,6 +14,7 @@ LogUITerm::LogUITerm(QFrame* parent):
 void LogUITerm::Init()
 {
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
+    mainLay->setMargin(0);
 
     tedit = new QTextEdit();
     mainLay->addWidget(tedit);

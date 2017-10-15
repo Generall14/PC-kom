@@ -38,6 +38,7 @@ MediumUiRS::~MediumUiRS()
 void MediumUiRS::Init()
 {
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
+    mainLay->setMargin(0);
 
     QHBoxLayout* portSelectionLayout = new QHBoxLayout();
     mainLay->addLayout(portSelectionLayout);

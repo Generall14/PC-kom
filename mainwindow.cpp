@@ -4,25 +4,49 @@
 #include <QIcon>
 #include <QSharedPointer>
 #include <QDir>
+#include <QLayout>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)//,
+//    ui(new Ui::MainWindow)
 {
     QDir cdir("./configs/");
     if (!cdir.exists())
         cdir.mkpath(".");
 
-    ui->setupUi(this);
+//    ui->setupUi(this);
 
-    this->setWindowTitle(Factory::WindowName());
-    this->setWindowIcon(QIcon(Factory::IcoPath()));
+    this->InitGUI();
+    this->InitStructure();
 
-    mediumUI = Factory::newMediumUI(ui->frame_medium);
+    connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));
+    emit FakeDiscinnect();
+}
+
+MainWindow::~MainWindow()
+{
+    emit HALT();
+    while(mendium->isRunning()){}
+    while(frameBuilder->isRunning()){}
+
+    delete mediumUI;
+    delete mendium;
+    delete logicUI;
+    delete logUI;
+    delete logFile;
+    delete logFormater;
+
+//    delete ui;
+}
+
+void MainWindow::InitStructure()
+{
+    mediumUI = Factory::newMediumUI(frameMedium);
     mendium = Factory::newMendium();
-    logicUI = Factory::newLogicUI(ui->frame_logicUI);
+    logicUI = Factory::newLogicUI(frameLogicUI);
     frameBuilder = Factory::newFrameBuilder();
-    logUI = Factory::newLogUI(ui->frame_log);
+    logUI = Factory::newLogUI(frameLogUI);
     logFile = Factory::newLogFile();
     logFormater = Factory::newLogFormater();
 
@@ -64,25 +88,38 @@ MainWindow::MainWindow(QWidget *parent) :
     mediumUI->Init();
     logicUI->Init();
     logUI->Init();
-
-    connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));
-    emit FakeDiscinnect();
 }
 
-MainWindow::~MainWindow()
+void MainWindow::InitGUI()
 {
-    emit HALT();
-    while(mendium->isRunning()){}
-    while(frameBuilder->isRunning()){}
+    this->setWindowTitle(Factory::WindowName());
+    this->setWindowIcon(QIcon(Factory::IcoPath()));
 
-    delete mediumUI;
-    delete mendium;
-    delete logicUI;
-    delete logUI;
-    delete logFile;
-    delete logFormater;
+    this->setGeometry(QRect(this->pos(), QPoint(1100, 690)));
 
-    delete ui;
+    QWidget* centralWidget = new QWidget(this);
+    this->setCentralWidget(centralWidget);
+
+    QHBoxLayout* mainLay = new QHBoxLayout();
+    mainLay->setMargin(6);
+    this->centralWidget()->setLayout(mainLay);
+
+    frameLogUI = new QFrame(this);
+    mainLay->addWidget(frameLogUI);
+
+    QFrame* rightFrame = new QFrame(this);
+    rightFrame->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    mainLay->addWidget(rightFrame);
+
+    QVBoxLayout* rightLay = new QVBoxLayout();
+    rightLay->setMargin(0);
+    rightFrame->setLayout(rightLay);
+
+    frameMedium = new QFrame(this);
+    rightLay->addWidget(frameMedium);
+
+    frameLogicUI = new QFrame(this);
+    rightLay->addWidget(frameLogicUI);
 }
 
 void MainWindow::ErrorMessage(QString er)
