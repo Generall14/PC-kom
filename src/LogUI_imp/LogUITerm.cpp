@@ -4,11 +4,38 @@
 #include "../Factory.hpp"
 #include <QTime>
 #include <QSpacerItem>
+#include <QFile>
+#include <QTextStream>
 
 LogUITerm::LogUITerm(QFrame* parent):
     LogUI(parent)
 {
 
+}
+
+LogUITerm::~LogUITerm()
+{
+    QFile config1File;
+    QTextStream out(&config1File);
+
+    config1File.setFileName("configs/LogUITermWrapLines.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << (int)(chb->isChecked());
+        config1File.close();
+    }
+}
+
+void LogUITerm::LoadConfigs()
+{
+    QFile config1File;
+
+    config1File.setFileName("configs/LogUITermWrapLines.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        chb->setChecked(QString(config1File.readLine()).toInt());
+        config1File.close();
+    }
 }
 
 void LogUITerm::Init()
@@ -34,8 +61,7 @@ void LogUITerm::Init()
     selectionLayout->addWidget(btnclr);
     connect(btnclr, SIGNAL(clicked(bool)), this, SLOT(Clear()));
 
-    btnsve = new QPushButton("Zapisz");
-    selectionLayout->addWidget(btnsve);
+    LoadConfigs();
 }
 
 void LogUITerm::LogString(QString str, bool)

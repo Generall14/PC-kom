@@ -14,6 +14,7 @@ class LogUITerm : public LogUI
     Q_OBJECT
 public:
     LogUITerm(QFrame* parent);
+    ~LogUITerm();
 
     virtual void Init();
 
@@ -23,12 +24,12 @@ public slots:
 protected:
     QTextEdit* tedit = NULL;
     QPushButton* btnclr = NULL;
-    QPushButton* btnsve = NULL;
     QCheckBox* chb = NULL;
 
     int lineCounter = 0;
 
     void AppendLog(QString str);
+    void LoadConfigs();
 
     static const int LINES_CUT_TR = 400;
     static const int LINES_CUT_SAVE_LINES = 100;
