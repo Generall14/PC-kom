@@ -14,6 +14,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = PC-Kom
 TEMPLATE = app
 
+GIT_VERSION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags)
+DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -53,7 +56,8 @@ SOURCES += main.cpp\
     src/Frame_imp/FrameZR3.cpp \
     src/FrameBuilder_imp/FrameBuilderZR3.cpp \
     src/LogicUI_imp/LogicUIZR3.cpp \
-    src/Utils/Desc.cpp
+    src/Utils/Desc.cpp \
+    src/Utils/About.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -98,4 +102,5 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/FrameZR3.hpp \
     src/FrameBuilder_imp/FrameBuilderZR3.hpp \
     src/LogicUI_imp/LogicUIZR3.hpp \
-    src/Utils/Desc.hpp
+    src/Utils/Desc.hpp \
+    src/Utils/About.hpp

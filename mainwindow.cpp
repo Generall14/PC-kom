@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "src/Factory.hpp"
+#include "src/Utils/About.hpp"
 #include <QIcon>
 #include <QSharedPointer>
 #include <QDir>
@@ -86,8 +87,11 @@ void MainWindow::InitStructure()
 
 void MainWindow::InitGUI()
 {
-    this->setWindowTitle(Factory::WindowName());
     this->setWindowIcon(QIcon(Factory::IcoPath()));
+    if(Factory::IsFake())
+        this->setWindowTitle(Factory::WindowName() + " <Fake>");
+    else
+        this->setWindowTitle(Factory::WindowName());
 
     this->resize(1100, 690);
 
@@ -124,4 +128,16 @@ void MainWindow::InitGUI()
 void MainWindow::ErrorMessage(QString er)
 {
     QMessageBox::critical(this, "NEIN! NEIN! NEIN! NEIN! NEIN!", er);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_F1)
+    {
+        About* about = new About(mediumUI->Description(), logicUI->Description(), logUI->Description(), this);
+        about->exec();
+        about->deleteLater();
+    }
+    else
+        QMainWindow::keyPressEvent(event);
 }

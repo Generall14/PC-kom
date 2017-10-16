@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFrame>
+#include <QKeyEvent>
 #include "src/MediumUI.hpp"
 #include "src/Mendium.hpp"
 #include "src/LogicUI.hpp"
@@ -43,6 +44,7 @@ private:
 
     void InitGUI();
     void InitStructure();
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public slots:
     void ErrorMessage(QString er);

@@ -4,5 +4,5 @@ MediumUI::MediumUI(QFrame* parent):
     QObject()
 {
     cParent = parent;
-//    Desc::description = "Czysta abstrakcja MediumUI";
+    Desc::description = "Czysta abstrakcja MediumUI";
 }
