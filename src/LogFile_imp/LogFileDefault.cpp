@@ -30,7 +30,7 @@ void LogFileDefault::LogString(QString str)
 
 QString LogFileDefault::GenerateFileName()
 {
-    return "./logs/LogFileDefault_" + QDate::currentDate().toString("yyyy-MM-dd") + QTime::currentTime().toString("_HH:mm:ss") + ".log";
+    return "logs/LogFileDefault_" + QDate::currentDate().toString("yyyy-MM-dd") + QTime::currentTime().toString("_HH-mm-ss") + ".log";
 }
 
 void LogFileDefault::Flush()
@@ -42,7 +42,7 @@ void LogFileDefault::Flush()
     {
         QTextStream out(&lastFile);
         for(QString sstr: buffor)
-            out << sstr + "\r\n";
+            out << sstr + "\n";
         lastFile.close();
     }
     else

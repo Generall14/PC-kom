@@ -42,7 +42,7 @@ LogicUIStawrov::~LogicUIStawrov()
 void LogicUIStawrov::Init()
 {
     mainLay = new QVBoxLayout(cParent);
-    mainLay->setMargin(0);
+    mainLay->setMargin(2);
 
     InitTests();
 

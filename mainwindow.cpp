@@ -90,7 +90,7 @@ void MainWindow::InitGUI()
     this->setWindowTitle(Factory::WindowName());
     this->setWindowIcon(QIcon(Factory::IcoPath()));
 
-    this->setGeometry(QRect(this->pos(), QPoint(1100, 690)));
+    this->resize(1100, 690);
 
     QWidget* centralWidget = new QWidget(this);
     this->setCentralWidget(centralWidget);

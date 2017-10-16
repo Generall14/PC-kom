@@ -12,7 +12,7 @@ LogicUIEmpty::LogicUIEmpty(QFrame* parent):
 void LogicUIEmpty::Init()
 {
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
-    mainLay->setMargin(0);
+    mainLay->setMargin(2);
 
     QLabel* tempLabel = new QLabel("Nic tu nie ma");
     mainLay->addWidget(tempLabel);
