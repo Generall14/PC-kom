@@ -2,7 +2,9 @@
 
 FrameStawrov::FrameStawrov(QByteArray ba)
     :Frame(ba)
-{}
+{
+    Desc::description = "FrameStawrov";
+}
 
 bool FrameStawrov::isValid()
 {

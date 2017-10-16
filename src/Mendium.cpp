@@ -4,7 +4,7 @@
 Mendium::Mendium():
     EQThread()
 {
-
+    Desc::description = "Czysta abstrakcja Mendium";
 }
 
 void Mendium::Stop()

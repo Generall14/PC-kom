@@ -12,7 +12,7 @@
 MediumUiRS::MediumUiRS(QFrame* parent):
     MediumUI(parent)
 {
-
+    Desc::description = "MediumUiRS";
 }
 
 MediumUiRS::~MediumUiRS()

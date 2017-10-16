@@ -2,7 +2,9 @@
 
 FrameTransparent::FrameTransparent(QByteArray ba)
     :Frame(ba)
-{}
+{
+    Desc::description = "FrameTransparent";
+}
 
 bool FrameTransparent::isValid()
 {

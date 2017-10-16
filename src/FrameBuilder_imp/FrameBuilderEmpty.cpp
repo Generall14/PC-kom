@@ -3,7 +3,7 @@
 
 FrameBuilderEmpty::FrameBuilderEmpty()
 {
-
+    Desc::description = "FrameBuilderEmpty";
 }
 
 void FrameBuilderEmpty::ByteReaded(QByteArray ba)

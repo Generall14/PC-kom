@@ -6,9 +6,9 @@
  * @brief Globalna fabryka abstrakcyjna.
  *
  * Fabryka udostępnia statyczne metody zwracające implementacje danej klasy abstrakcyjnej (newFrame(QByteArray) itp.) w zależności od aktualnej konfiguracji. Poza obiektami zwraca
- * również tekst dla okna (WindowName() ) i adres ikony (QString IcoPath() ).
+ * również tekst dla okna (WindowName() ), adres ikony (QString IcoPath() ), opis konfiguracji (ConfigDescription() ) oraz wskaźnik wersji udawanej (IsFake() ).
  *
- * Konfiguracja zestawu obiektów odbywa się poprzez metodę statyczną void Config(...).
+ * Konfiguracja zestawu obiektów odbywa się poprzez metody statyczne void ConfigIml(...), ConfigDesc(...), MakeFake(...).
  */
 
 #include <QByteArray>
@@ -92,10 +92,11 @@ public:
         logFormaterHtml                                                                 /**<Implementacja LogFormaterHtml*/
     };
 
-    static void Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
+    static void ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
                        logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
-                       logFileFormat lff, logFormaterFormat lf, \
-                       QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
+                       logFileFormat lff, logFormaterFormat lf);
+    static void ConfigDesc(QString desc, QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
+    static void MakeFake(mendiumFormat mf);
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
@@ -108,6 +109,8 @@ public:
 
     static QString WindowName();
     static QString IcoPath();
+    static QString ConfigDescription();
+    static bool IsFake();
 
 private:
     static frameFormat frame;
@@ -121,6 +124,8 @@ private:
 
     static QString windowName;
     static QString icoPath;
+    static QString descConfig;
+    static bool fakeVer;
 };
 
 #endif

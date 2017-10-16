@@ -2,7 +2,9 @@
 
 FrameZR3::FrameZR3(QByteArray ba)
     :Frame(ba)
-{}
+{
+    Desc::description = "FrameZR3";
+}
 
 bool FrameZR3::isValid()
 {

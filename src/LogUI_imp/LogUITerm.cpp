@@ -10,7 +10,7 @@
 LogUITerm::LogUITerm(QFrame* parent):
     LogUI(parent)
 {
-
+    Desc::description = "LogUITerm";
 }
 
 LogUITerm::~LogUITerm()

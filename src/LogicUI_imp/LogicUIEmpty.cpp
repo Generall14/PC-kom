@@ -6,7 +6,7 @@
 LogicUIEmpty::LogicUIEmpty(QFrame* parent):
     LogicUI(parent)
 {
-
+    Desc::description = "LogicUIEmpty";
 }
 
 void LogicUIEmpty::Init()

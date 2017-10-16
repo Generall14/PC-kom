@@ -14,12 +14,13 @@
 #include <QFrame>
 #include <QString>
 #include <QObject>
+#include "Utils/Desc.hpp"
 
-class LogFile : public QObject
+class LogFile : public QObject, public Desc
 {
     Q_OBJECT
 public:
-    LogFile(){}
+    LogFile(){Desc::description = "Czysta abstrakcja LogFile";}
     virtual ~LogFile(){}
 
 public slots:

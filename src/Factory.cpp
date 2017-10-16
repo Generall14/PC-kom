@@ -44,24 +44,43 @@ Factory::logFileFormat Factory::logFile = Factory::logFileEmpty;
 Factory::logFormaterFormat Factory::logFormater = Factory::logFormaterEmpty;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
+QString Factory::descConfig = "brak opisu";
+bool Factory::fakeVer = false;
 
 /**
  * Funkcja służy do określenia które konkretne implementacje będą zwracane w metodach fabryki abstrakcyjnej. Dodatkowo wskazuje nazwę dla głównego okna programu
  * i adres do ikony.
  */
-void Factory::Config(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
-                     logFileFormat lff, logFormaterFormat lf, QString name, QString ico)
+void Factory::ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
+                     logFileFormat lff, logFormaterFormat lf)
 {
     Factory::frame = ff;
     Factory::mediumui = muif;
     Factory::mendium = mf;
-    Factory::windowName = name;
     Factory::logicUi = lui;
     Factory::frameBuilder = fb;
     Factory::logUI = lgui;
-    Factory::icoPath = ico;
     Factory::logFile = lff;
     Factory::logFormater = lf;
+}
+
+/**
+ * Funkcja ustawia adres ikony, nazwę głównego okna oraz opis konfiguracji.
+ */
+void Factory::ConfigDesc(QString desc, QString name, QString ico)
+{
+    Factory::descConfig = desc;
+    Factory::windowName = name;
+    Factory::icoPath = ico;
+}
+
+/**
+ * Funkcja określa implementację klasy Mendium i ustawia znacznik udawanej konfiguracji.
+ */
+void Factory::MakeFake(mendiumFormat mf)
+{
+    Factory::mendium = mf;
+    Factory::fakeVer = true;
 }
 
 /**
@@ -238,4 +257,20 @@ QString Factory::WindowName()
 QString Factory::IcoPath()
 {
     return icoPath;
+}
+
+/**
+ * Zwraca opis konfiguracji.
+ */
+QString Factory::ConfigDescription()
+{
+    return descConfig;
+}
+
+/**
+ * Zwraca znacznik udawanej konfiguracji.
+ */
+bool Factory::IsFake()
+{
+    return fakeVer;
 }

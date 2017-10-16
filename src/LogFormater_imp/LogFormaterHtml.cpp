@@ -3,7 +3,7 @@
 
 LogFormaterHtml::LogFormaterHtml()
 {
-
+    Desc::description = "LogFormaterHtml";
 }
 
 void LogFormaterHtml::FrameWrite(QSharedPointer<Frame> frame)

@@ -2,7 +2,7 @@
 
 LogFormaterEmpty::LogFormaterEmpty()
 {
-
+    Desc::description = "LogFormaterEmpty";
 }
 
 void LogFormaterEmpty::FrameWrite(QSharedPointer<Frame> frame)

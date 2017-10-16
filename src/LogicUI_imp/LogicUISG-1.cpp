@@ -11,7 +11,7 @@
 LogicUISG1::LogicUISG1(QFrame* parent):
     LogicUI(parent)
 {
-
+    Desc::description = "LogicUISG1";
 }
 
 void LogicUISG1::Init()

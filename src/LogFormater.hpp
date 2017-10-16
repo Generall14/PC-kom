@@ -16,12 +16,13 @@
 #include <QString>
 #include <QObject>
 #include "Frame.hpp"
+#include "Utils/Desc.hpp"
 
-class LogFormater : public QObject
+class LogFormater : public QObject, public Desc
 {
     Q_OBJECT
 public:
-    LogFormater(){}
+    LogFormater(){Desc::description = "Czysta abstrakcja LogFormater";}
     virtual ~LogFormater(){}
 
 public slots:

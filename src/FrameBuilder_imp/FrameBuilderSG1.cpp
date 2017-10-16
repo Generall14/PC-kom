@@ -6,6 +6,8 @@
 FrameBuilderSG1::FrameBuilderSG1():
     FrameBuilder()
 {
+    Desc::description = "FrameBuilderSG1";
+
     timer = new QTimer();
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(TimeoutedReciev()));

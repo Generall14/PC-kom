@@ -16,8 +16,9 @@
 
 #include <QString>
 #include <QByteArray>
+#include "Utils/Desc.hpp"
 
-class Frame
+class Frame : public Desc
 {
     Frame(){}
 public:

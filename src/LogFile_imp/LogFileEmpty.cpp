@@ -3,7 +3,7 @@
 
 LogFileEmpty::LogFileEmpty()
 {
-
+    Desc::description = "LogFileEmpty";
 }
 
 void LogFileEmpty::LogString(QString)

@@ -3,7 +3,7 @@
 
 MendiumFakeSG1::MendiumFakeSG1()
 {
-
+    Desc::description = "MendiumFakeSG1";
 }
 
 void MendiumFakeSG1::Open(QString)

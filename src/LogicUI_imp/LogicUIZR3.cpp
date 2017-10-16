@@ -6,7 +6,7 @@
 LogicUIZR3::LogicUIZR3(QFrame* parent):
     LogicUI(parent)
 {
-
+    Desc::description = "LogicUIZR3";
 }
 
 void LogicUIZR3::Init()

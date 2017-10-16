@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSharedPointer>
-#include "../../EQThread.hpp"
+#include "../../Utils/EQThread.hpp"
 #include "Transaction.hpp"
 #include "../../Frame.hpp"
 

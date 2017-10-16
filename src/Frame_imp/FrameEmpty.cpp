@@ -2,7 +2,9 @@
 
 FrameEmpty::FrameEmpty(QByteArray ba)
     :Frame(ba)
-{}
+{
+    Desc::description = "FrameEmpty";
+}
 
 bool FrameEmpty::isValid()
 {

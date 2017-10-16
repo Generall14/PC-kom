@@ -3,6 +3,8 @@
 
 FrameBuilderStawrov::FrameBuilderStawrov()
 {
+    Desc::description = "FrameBuilderStawrov";
+
     timer = new QTimer();
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(TimeoutedReciev()));

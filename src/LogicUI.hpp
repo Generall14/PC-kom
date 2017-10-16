@@ -21,8 +21,9 @@
 #include <QObject>
 #include <QSharedPointer>
 #include "Frame.hpp"
+#include "Utils/Desc.hpp"
 
-class LogicUI : public QObject
+class LogicUI : public QObject, public Desc
 {
     Q_OBJECT
 public:

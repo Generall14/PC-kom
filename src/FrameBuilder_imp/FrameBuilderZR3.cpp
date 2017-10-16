@@ -3,7 +3,7 @@
 
 FrameBuilderZR3::FrameBuilderZR3()
 {
-
+    Desc::description = "FrameBuilderZR3";
 }
 
 void FrameBuilderZR3::ByteReaded(QByteArray ba)

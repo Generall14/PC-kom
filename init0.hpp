@@ -1,1 +1,3 @@
-Factory::Config(DEFAULT_EMPTY);
+Factory::ConfigIml(IMPL_EMPTY);
+Factory::ConfigDesc(DESC_EMPTY);
+Factory::MakeFake(FAKE_EMPTY);

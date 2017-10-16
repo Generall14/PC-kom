@@ -3,7 +3,7 @@
 
 MendiumEmpty::MendiumEmpty()
 {
-
+    Desc::description = "MendiumEmpty";
 }
 
 void MendiumEmpty::Open(QString)

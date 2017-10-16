@@ -6,6 +6,8 @@
 MendiumRS::MendiumRS():
     Mendium()
 {
+    Desc::description = "MendiumRS";
+
     port = new QSerialPort();
     port->setDataBits(QSerialPort::Data8);
     port->setFlowControl(QSerialPort::NoFlowControl);

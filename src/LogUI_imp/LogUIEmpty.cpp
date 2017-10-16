@@ -6,7 +6,7 @@
 LogUIEmpty::LogUIEmpty(QFrame* parent):
     LogUI(parent)
 {
-
+    Desc::description = "LogUIEmpty";
 }
 
 void LogUIEmpty::Init()

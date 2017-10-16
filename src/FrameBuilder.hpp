@@ -22,16 +22,17 @@
  */
 
 #include <QObject>
-#include "EQThread.hpp"
+#include "Utils/EQThread.hpp"
 #include <QByteArray>
 #include <QSharedPointer>
 #include "Frame.hpp"
+#include "Utils/Desc.hpp"
 
-class FrameBuilder : public EQThread
+class FrameBuilder : public EQThread, public Desc
 {
     Q_OBJECT
 public:
-    FrameBuilder(){}
+    FrameBuilder(){Desc::description = "Czysta abstrakcja FrameBuilder";}
     virtual ~FrameBuilder(){}
 
 public slots:

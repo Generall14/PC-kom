@@ -9,6 +9,8 @@
 
 LogFileDefault::LogFileDefault()
 {
+    Desc::description = "LogFileDefault";
+
     QDir cdir("./logs/");
     if (!cdir.exists())
         cdir.mkpath(".");

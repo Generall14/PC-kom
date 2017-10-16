@@ -4,6 +4,8 @@
 
 MendiumFakeStawrow::MendiumFakeStawrow()
 {
+    Desc::description = "MendiumFakeStawrow";
+
     sdata.clear();
     sdata.append(0xFF);
     sdata.append(0xFF);

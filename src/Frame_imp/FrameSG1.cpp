@@ -5,6 +5,8 @@ float FrameSG1::timeres = 0.5;
 FrameSG1::FrameSG1(QByteArray ba)
     :Frame(ba)
 {
+    Desc::description = "FrameSG1";
+
     errorNumbers.insert(0x3A, "ERROR_TEST");
     errorNumbers.insert(0x01, "UNIVERSAL_ERROR");
     errorNumbers.insert(0x02, "ACAL_UNEXPECTED_NOISE");

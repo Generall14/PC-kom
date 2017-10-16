@@ -16,8 +16,9 @@
 #include <QFrame>
 #include <QString>
 #include <QObject>
+#include "Utils/Desc.hpp"
 
-class LogUI : public QObject
+class LogUI : public QObject, public Desc
 {
     Q_OBJECT
 public:

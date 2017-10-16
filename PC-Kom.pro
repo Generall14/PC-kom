@@ -34,7 +34,7 @@ SOURCES += main.cpp\
     src/LogUI_imp/LogUIEmpty.cpp \
     src/LogUI_imp/LogUITerm.cpp \
     src/LogicUI_imp/LogicUISG-1.cpp \
-    src/EQThread.cpp \
+    src/Utils/EQThread.cpp \
     src/Frame_imp/FrameSG1.cpp \
     src/FrameBuilder_imp/FrameBuilderSG1.cpp \
     src/Mendium_imp/MendiumFakeSG1.cpp \
@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     src/Mendium_imp/MendiumFakeZR3.cpp \
     src/Frame_imp/FrameZR3.cpp \
     src/FrameBuilder_imp/FrameBuilderZR3.cpp \
-    src/LogicUI_imp/LogicUIZR3.cpp
+    src/LogicUI_imp/LogicUIZR3.cpp \
+    src/Utils/Desc.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -73,7 +74,7 @@ HEADERS  += mainwindow.h \
     src/LogUI_imp/LogUIEmpty.hpp \
     src/LogUI_imp/LogUITerm.hpp \
     src/LogicUI_imp/LogicUISG-1.hpp \
-    src/EQThread.hpp \
+    src/Utils/EQThread.hpp \
     src/Frame_imp/FrameSG1.hpp \
     src/FrameBuilder_imp/FrameBuilderSG1.hpp \
     src/Mendium_imp/MendiumFakeSG1.hpp \
@@ -96,4 +97,5 @@ HEADERS  += mainwindow.h \
     src/Mendium_imp/MendiumFakeZR3.hpp \
     src/Frame_imp/FrameZR3.hpp \
     src/FrameBuilder_imp/FrameBuilderZR3.hpp \
-    src/LogicUI_imp/LogicUIZR3.hpp
+    src/LogicUI_imp/LogicUIZR3.hpp \
+    src/Utils/Desc.hpp

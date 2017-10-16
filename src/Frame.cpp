@@ -4,6 +4,7 @@
 Frame::Frame(QByteArray data)
 {
     pck = data;
+    Desc::description = "Czysta abstrakcja Frame";
 }
 
 Frame::~Frame()

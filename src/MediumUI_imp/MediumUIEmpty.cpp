@@ -5,7 +5,7 @@
 MediumUiEmpty::MediumUiEmpty(QFrame* parent):
     MediumUI(parent)
 {
-
+    description = "MediumUiEmpty";
 }
 
 void MediumUiEmpty::Init()

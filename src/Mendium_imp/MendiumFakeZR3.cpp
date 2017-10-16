@@ -3,7 +3,7 @@
 
 MendiumFakeZR3::MendiumFakeZR3()
 {
-
+    Desc::description = "MendiumFakeZR3";
 }
 
 void MendiumFakeZR3::Open(QString)

@@ -20,8 +20,9 @@
 #include <QFrame>
 #include <QString>
 #include <QObject>
+#include "Utils/Desc.hpp"
 
-class MediumUI : public QObject
+class MediumUI : public QObject, public Desc
 {
     Q_OBJECT
 public:

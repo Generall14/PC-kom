@@ -9,7 +9,7 @@
 LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
 {
-
+    Desc::description = "LogicUIStawrov";
 }
 
 LogicUIStawrov::~LogicUIStawrov()

@@ -21,12 +21,13 @@
  */
 
 #include <QObject>
-#include "EQThread.hpp"
+#include "Utils/EQThread.hpp"
 #include <QByteArray>
 #include "Frame.hpp"
 #include <QSharedPointer>
+#include "Utils/Desc.hpp"
 
-class Mendium : public EQThread
+class Mendium : public EQThread, public Desc
 {
     Q_OBJECT
 public:

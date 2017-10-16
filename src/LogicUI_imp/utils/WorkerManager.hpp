@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QVector>
-#include "../../EQThread.hpp"
+#include "../../Utils/EQThread.hpp"
 #include "Transaction.hpp"
 #include "../../Frame.hpp"
 #include "Worker.hpp"
