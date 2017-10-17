@@ -9,6 +9,7 @@
 #include "../FrameBuilder.hpp"
 #include "../LogFormater.hpp"
 #include "../LogFile.hpp"
+#include "../BusDevice.hpp"
 
 About::About(QString mediumUI, QString logicUI, QString logUI, QWidget* parent):
     QDialog(parent),
@@ -117,4 +118,12 @@ void About::InitWidgets()
     l5 = new QLabel("LogUI -> " + _logUI, this);
     l5->setAlignment(Qt::AlignCenter);
     txtLay->addWidget(l5);
+
+    BusDevice* temp6 = Factory::newBusDevice(QByteArray());
+    l5 = new QLabel("BusDevice -> NULL", this);
+    if(temp6)
+        l5->setText("BusDevice -> " + temp6->Description());
+    l5->setAlignment(Qt::AlignCenter);
+    txtLay->addWidget(l5);
+    delete temp6;
 }

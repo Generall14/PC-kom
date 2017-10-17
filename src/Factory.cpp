@@ -13,7 +13,7 @@
 #include "Mendium_imp/MendiumRS.hpp"
 #include "Mendium_imp/MendiumFakeSG1.hpp"
 #include "Mendium_imp/MendiumFakeStawrow.hpp"
-#include "Mendium_imp/MendiumFakeZR3.hpp"
+#include "Mendium_imp/MendiumBusConnector.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
@@ -34,6 +34,8 @@
 #include "LogFormater_imp/LogFormaterEmpty.hpp"
 #include "LogFormater_imp/LogFormaterHtml.hpp"
 
+#include "BusDevice_imp/BusDeviceUMP.hpp"
+
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
 Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
@@ -42,6 +44,7 @@ Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
 Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
 Factory::logFileFormat Factory::logFile = Factory::logFileEmpty;
 Factory::logFormaterFormat Factory::logFormater = Factory::logFormaterEmpty;
+Factory::busDeviceFormat Factory::busDFormat = Factory::busDeviceNone;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 QString Factory::descConfig = "brak opisu";
@@ -77,10 +80,11 @@ void Factory::ConfigDesc(QString desc, QString name, QString ico)
 /**
  * Funkcja określa implementację klasy Mendium i ustawia znacznik udawanej konfiguracji.
  */
-void Factory::MakeFake(mendiumFormat mf)
+void Factory::MakeFake(mendiumFormat mf, busDeviceFormat bdf)
 {
     Factory::mendium = mf;
     Factory::fakeVer = true;
+    busDFormat = bdf;
 }
 
 /**
@@ -164,8 +168,8 @@ Mendium* Factory::newMendium()
         return new MendiumFakeSG1();
     case Factory::mendiumFakeStawrow:
         return new MendiumFakeStawrow();
-    case Factory::mendiumFakeZR3:
-        return new MendiumFakeZR3();
+    case Factory::mandiumBusConnector:
+        return new MendiumBusConnector();
     }
     return NULL;
 }
@@ -239,6 +243,21 @@ LogFormater* Factory::newLogFormater()
         return new LogFormaterEmpty();
     case logFormaterHtml:
         return new LogFormaterHtml();
+    }
+    return NULL;
+}
+
+/**
+ * Zwraca obiekt pochodny po BusDevice w zależności od konfiguracji busDeviceFormat.
+ */
+BusDevice* Factory::newBusDevice(QByteArray arg)
+{
+    switch (busDFormat)
+    {
+    case busDeviceNone:
+        return NULL;
+    case busDeviceUMP:
+        return new BusDeviceUMP(arg);
     }
     return NULL;
 }

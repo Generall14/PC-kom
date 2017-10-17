@@ -52,12 +52,13 @@ SOURCES += main.cpp\
     src/LogFile_imp/LogFileDefault.cpp \
     src/LogFormater_imp/LogFormaterEmpty.cpp \
     src/LogFormater_imp/LogFormaterHtml.cpp \
-    src/Mendium_imp/MendiumFakeZR3.cpp \
     src/Frame_imp/FrameZR3.cpp \
     src/FrameBuilder_imp/FrameBuilderZR3.cpp \
     src/LogicUI_imp/LogicUIZR3.cpp \
     src/Utils/Desc.cpp \
-    src/Utils/About.cpp
+    src/Utils/About.cpp \
+    src/Mendium_imp/MendiumBusConnector.cpp \
+    src/BusDevice_imp/BusDeviceUMP.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -98,9 +99,11 @@ HEADERS  += mainwindow.h \
     src/LogFormater.hpp \
     src/LogFormater_imp/LogFormaterEmpty.hpp \
     src/LogFormater_imp/LogFormaterHtml.hpp \
-    src/Mendium_imp/MendiumFakeZR3.hpp \
     src/Frame_imp/FrameZR3.hpp \
     src/FrameBuilder_imp/FrameBuilderZR3.hpp \
     src/LogicUI_imp/LogicUIZR3.hpp \
     src/Utils/Desc.hpp \
-    src/Utils/About.hpp
+    src/Utils/About.hpp \
+    src/Mendium_imp/MendiumBusConnector.hpp \
+    src/BusDevice.hpp \
+    src/BusDevice_imp/BusDeviceUMP.hpp

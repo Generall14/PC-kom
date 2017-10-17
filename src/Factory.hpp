@@ -21,6 +21,7 @@
 #include "LogUI.hpp"
 #include "LogFile.hpp"
 #include "LogFormater.hpp"
+#include "BusDevice.hpp"
 
 class Factory
 {
@@ -50,7 +51,7 @@ public:
         mendiumRS,                                                                      /**<Implementacja MendiumRS*/
         mendiumFakeGS1,                                                                 /**<Implementacja MendiumFakeSG1*/
         mendiumFakeStawrow,                                                             /**<Implementacja MendiumFakeStawrow*/
-        mendiumFakeZR3                                                                  /**<Implementacja MendiumFakeZR3*/
+        mandiumBusConnector                                                             /**<Implementacja MendiumBusConnector*/
     };
 
     enum logicUiFormat                                                                  /**Określa implementację klasy LogicUI*/
@@ -92,11 +93,17 @@ public:
         logFormaterHtml                                                                 /**<Implementacja LogFormaterHtml*/
     };
 
+    enum busDeviceFormat                                                                /**Określa implementację klasy BusDevice*/
+    {
+        busDeviceNone,                                                                  /**<Wskaźnik NULL*/
+        busDeviceUMP                                                                    /**<Implementacja BusDeviceUMP*/
+    };
+
     static void ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
                        logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
                        logFileFormat lff, logFormaterFormat lf);
     static void ConfigDesc(QString desc, QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
-    static void MakeFake(mendiumFormat mf);
+    static void MakeFake(mendiumFormat mf, busDeviceFormat bdf = busDeviceNone);
 
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
@@ -106,6 +113,7 @@ public:
     static LogUI* newLogUI(QFrame* fr);
     static LogFile* newLogFile();
     static LogFormater* newLogFormater();
+    static BusDevice* newBusDevice(QByteArray arg);
 
     static QString WindowName();
     static QString IcoPath();
@@ -121,6 +129,7 @@ private:
     static logUIFormat logUI;
     static logFileFormat logFile;
     static logFormaterFormat logFormater;
+    static busDeviceFormat busDFormat;
 
     static QString windowName;
     static QString icoPath;
