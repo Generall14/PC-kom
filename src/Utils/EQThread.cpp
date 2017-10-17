@@ -8,6 +8,7 @@ EQThread::EQThread(QObject* parent):
 
 void EQThread::run()
 {
+    OnStart();
     while(!stopRequest)
     {
         this->Run();
@@ -21,6 +22,11 @@ void EQThread::Stop()
 }
 
 void EQThread::OnStop()
+{
+
+}
+
+void EQThread::OnStart()
 {
 
 }

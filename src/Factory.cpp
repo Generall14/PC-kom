@@ -250,7 +250,7 @@ LogFormater* Factory::newLogFormater()
 /**
  * Zwraca obiekt pochodny po BusDevice w zależności od konfiguracji busDeviceFormat.
  */
-BusDevice* Factory::newBusDevice(QByteArray arg)
+BusDevice* Factory::newBusDevice(QString arg)
 {
     switch (busDFormat)
     {

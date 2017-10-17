@@ -18,7 +18,7 @@ class BusDevice : public EQThread, public Desc
 {
     Q_OBJECT
 public:
-    BusDevice(QByteArray arg):_arg(arg){Desc::description = "Czysta abstrakcja BusDevice";}
+    BusDevice(QString arg):_arg(arg){Desc::description = "Czysta abstrakcja BusDevice";}
     virtual ~BusDevice(){}
 
 public slots:
@@ -29,7 +29,7 @@ signals:
     void Error(QString);                                                                /**<Informowanie o błędzie*/
 
 protected:
-    QByteArray _arg;
+    QString _arg;
 };
 
 #endif

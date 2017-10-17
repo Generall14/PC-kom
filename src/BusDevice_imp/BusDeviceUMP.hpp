@@ -10,13 +10,15 @@ class BusDeviceUMP : public BusDevice
 {
     Q_OBJECT
 public:
-    BusDeviceUMP(QByteArray arg);
+    BusDeviceUMP(QString arg);
     virtual ~BusDeviceUMP(){}
 
 public slots:
     virtual void ByteReaded(QByteArray ba);
 
 protected:
+    virtual void OnStart();
+    virtual void OnStop();
     virtual void Run();
 };
 

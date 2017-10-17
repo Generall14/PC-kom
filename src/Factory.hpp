@@ -113,7 +113,7 @@ public:
     static LogUI* newLogUI(QFrame* fr);
     static LogFile* newLogFile();
     static LogFormater* newLogFormater();
-    static BusDevice* newBusDevice(QByteArray arg);
+    static BusDevice* newBusDevice(QString arg);
 
     static QString WindowName();
     static QString IcoPath();
