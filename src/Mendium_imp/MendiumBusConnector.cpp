@@ -22,7 +22,7 @@ void MendiumBusConnector::OnStart()
             BusDevice* temp = Factory::newBusDevice(in.readLine());
             devicesVector.push_back(temp);
             connect(temp, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
-            connect(temp, &BusDevice::Write, [=](QByteArray ba){emit Readed(ba);});
+            connect(temp, SIGNAL(Write(QByteArray)), this, SLOT(ByteWrite(QByteArray)));
             connect(this, SIGNAL(HALT()), temp, SLOT(Stop()));
             connect(this, &MendiumBusConnector::Readed, temp, &BusDevice::ByteReaded);
             temp->start(QThread::NormalPriority);
@@ -57,9 +57,13 @@ void MendiumBusConnector::Close()
 void MendiumBusConnector::Write(QSharedPointer<Frame> fr)
 {
     QMutexLocker locker(&mutex);
-//    emit Readed(fr->pureData());
     gtemp.append(fr->pureData());
+}
 
+void MendiumBusConnector::ByteWrite(QByteArray ar)
+{
+    QMutexLocker locker(&mutex);
+    gtemp.append(ar);
 }
 
 void MendiumBusConnector::Flush()

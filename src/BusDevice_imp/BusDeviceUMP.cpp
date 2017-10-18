@@ -10,7 +10,6 @@ BusDeviceUMP::BusDeviceUMP(QString arg):
 
 void BusDeviceUMP::ByteReaded(QByteArray ba)
 {
-//    emit toFrameByteReaded(ba);
     QMutexLocker locker(&mutex);
     gtemp.append(ba);
 }
@@ -56,7 +55,7 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
     connect(this, SIGNAL(Halt()), frameBuilder, SLOT(Stop()));
-    connect(frameBuilder, &FrameBuilderZR3::Write, [=](QSharedPointer<Frame> fr){emit Write(fr->pureData());});
+    connect(frameBuilder, &FrameBuilderZR3::Write, [=](QSharedPointer<Frame> fr){emit Write(fr->pureData());qDebug() << "ddddddddddd" + fr->pureData();});
     frameBuilder->start(QThread::NormalPriority);
 }
 

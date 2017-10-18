@@ -23,6 +23,8 @@ public slots:
     virtual void Write(QSharedPointer<Frame> fr);
     virtual void Flush();
 
+    void ByteWrite(QByteArray ar);
+
 protected:
     virtual void Run();
     virtual void OnStart();

@@ -31,6 +31,9 @@ protected:
     QByteArray tokenFrame;
     QTimer* tokenTimer = NULL;
 
+
+    QTimer* testtimer = NULL;
+
     QTimer* timer = NULL;
     QByteArray recievedbuf;
     QMutex recievedBufMutex;
@@ -51,6 +54,8 @@ protected:
 protected slots:
     void TimeoutedReciev();
     void TokenTimerTimeout();
+
+    void TestTimerSlot();
 };
 
 #endif
