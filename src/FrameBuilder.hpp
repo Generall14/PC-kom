@@ -43,6 +43,7 @@ public slots:
 signals:
     void Write(QSharedPointer<Frame>);                                                  /**<Sygnał z żadaniem wysłania pakietu*/
     void FrameReaded(QSharedPointer<Frame>);                                            /**<Sygnał z odebranym pakietem*/
+    void IgnoredFrame(QSharedPointer<Frame>);                                           /**<Sygnał z odebranym ale zignorowanym pakietem*/
     void Error(QString);                                                                /**<Informowanie o błędzie*/
 };
 

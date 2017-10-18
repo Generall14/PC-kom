@@ -28,6 +28,7 @@ public:
 public slots:
     virtual void FrameWrite(QSharedPointer<Frame> frame) = 0;                           /**<Pakiet został wysłany przez medium transmisyjne*/
     virtual void FrameReaded(QSharedPointer<Frame> frame) = 0;                          /**<Pakiet został odebrany z medium transmisyjnego*/
+    virtual void FrameIgnored(QSharedPointer<Frame> frame) = 0;                         /**<Pakiet został odebrany ale zignorowany na poziomie aplikacji*/
 
 signals:
     void Error(QString msg);                                                            /**<Informowanie o błędzie*/

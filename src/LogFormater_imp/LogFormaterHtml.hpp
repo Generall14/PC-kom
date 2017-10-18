@@ -15,6 +15,7 @@ public:
 public slots:
     virtual void FrameWrite(QSharedPointer<Frame> frame);
     virtual void FrameReaded(QSharedPointer<Frame> frame);
+    virtual void FrameIgnored(QSharedPointer<Frame> frame);
 };
 
 #endif

@@ -68,6 +68,7 @@ void MainWindow::InitStructure()
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logicUI, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), logFormater, SLOT(FrameReaded(QSharedPointer<Frame>)));
     connect(frameBuilder, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
+    connect(frameBuilder, SIGNAL(IgnoredFrame(QSharedPointer<Frame>)), logFormater, SLOT(FrameIgnored(QSharedPointer<Frame>)));
 
     connect(logUI, SIGNAL(Error(QString)), this, SLOT(ErrorMessage(QString)));
 

@@ -28,10 +28,11 @@ void FrameBuilderZR3::PureDataWrite(QByteArray ba)
 
 void FrameBuilderZR3::Run()
 {
-    QThread::msleep(4000);
+    QThread::msleep(2000);
     QByteArray temp;
     temp.append(_myAdr);
     temp.append(QChar(0x00));
     temp.append(_nextAdr);
     emit Write(QSharedPointer<Frame>(Factory::newFrame(temp)));
+    emit IgnoredFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
