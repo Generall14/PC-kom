@@ -56,6 +56,7 @@ void MendiumBusConnector::Close()
 
 void MendiumBusConnector::Write(QSharedPointer<Frame> fr)
 {
+    qDebug() << fr->pureData();
     emit Readed(fr->pureData());
 }
 

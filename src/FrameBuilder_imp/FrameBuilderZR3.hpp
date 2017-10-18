@@ -10,7 +10,7 @@ class FrameBuilderZR3 : public FrameBuilder
 {
     Q_OBJECT
 public:
-    FrameBuilderZR3();
+    FrameBuilderZR3(uchar myAdr=0xFE, uchar nextAdr=0x01, bool slw=true);
     virtual ~FrameBuilderZR3(){}
 
 public slots:
@@ -20,6 +20,9 @@ public slots:
 
 protected:
     virtual void Run();
+    uchar _myAdr;
+    uchar _nextAdr;
+    bool _slowly;
 };
 
 #endif

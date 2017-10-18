@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QSharedPointer>
+#include "src/Frame.hpp"
 
 #include "src/Factory.hpp"
 
@@ -7,6 +9,8 @@
 
 int main(int argc, char *argv[])
 {
+    qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
+
     #include "init.hpp"
 
     QApplication a(argc, argv);

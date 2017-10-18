@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <QSharedPointer>
 #include "../BusDevice.hpp"
+#include "../FrameBuilder_imp/FrameBuilderZR3.hpp"
 
 class BusDeviceUMP : public BusDevice
 {
@@ -20,6 +21,17 @@ protected:
     virtual void OnStart();
     virtual void OnStop();
     virtual void Run();
+
+    uchar myADr;
+    uchar nextAdr;
+    FrameBuilderZR3* frameBuilder = NULL;
+
+    void ParseConfigFile(QByteArray data);
+
+signals:
+    void toFrameByteReaded(QByteArray);
+    void Halt();
+
 };
 
 #endif

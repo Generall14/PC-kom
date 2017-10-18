@@ -16,6 +16,7 @@
 
 #include <QString>
 #include <QByteArray>
+#include <QSharedPointer>
 #include "Utils/Desc.hpp"
 
 class Frame : public Desc
