@@ -28,6 +28,10 @@ protected:
 
     void ParseConfigFile(QByteArray data);
 
+    QMutex mutex;
+    QByteArray gtemp;
+//    QByteArray gotemp;
+
 signals:
     void toFrameByteReaded(QByteArray);
     void Halt();

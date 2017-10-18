@@ -30,6 +30,9 @@ protected:
 
     QVector<BusDevice*> devicesVector;
 
+    QMutex mutex;
+    QByteArray gtemp;
+
 signals:
     void HALT();
 };

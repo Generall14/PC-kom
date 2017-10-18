@@ -10,12 +10,20 @@ BusDeviceUMP::BusDeviceUMP(QString arg):
 
 void BusDeviceUMP::ByteReaded(QByteArray ba)
 {
-    emit toFrameByteReaded(ba);
+//    emit toFrameByteReaded(ba);
+    QMutexLocker locker(&mutex);
+    gtemp.append(ba);
 }
 
 void BusDeviceUMP::Run()
 {
-    QThread::msleep(2000);
+    QThread::msleep(10);
+    if(!gtemp.isEmpty())
+    {
+        QMutexLocker locker(&mutex);
+        emit toFrameByteReaded(gtemp);
+        gtemp.clear();
+    }
 }
 
 void BusDeviceUMP::OnStart()
