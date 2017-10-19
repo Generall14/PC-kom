@@ -62,14 +62,12 @@ void FrameBuilderZR3::ByteReaded(QByteArray ba)
 
 void FrameBuilderZR3::TimeoutedReciev()
 {
-    qDebug() << _myAdr << " timeouted";
     emit IgnoredFrame(QSharedPointer<Frame>(Factory::newFrame(recievedbuf)));
     recievedbuf.clear();
 }
 
 void FrameBuilderZR3::TokenTimerTimeout()
 {
-    qDebug() << _myAdr << " timeouted token send";
     emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
 }
 
@@ -113,17 +111,33 @@ void FrameBuilderZR3::ReadInputBuffer()
         if((uchar)(frame->pureData().at(2))==_myAdr)
         {
             emit FrameReaded(frame);
+            char val = frame->pureData().at(1)&0x1f;
             if(frame->pureData().at(1)&0x80)
-            {
                 haveToken = true;
-//                qDebug() << _myAdr << " get token " << frame->pureData();
+
+            QMutexLocker locker(&outBufforMutex);
+            QByteArray temp;
+            switch(val)
+            {
+            case (char)0x01://protHELLO
+                temp.push_back(0xFF);
+                temp.push_back((char)0x00);
+                temp.push_back(frame->pureData().at(3));
+                temp.push_back(_myAdr);
+                temp.push_back((char)0x00);
+                FrameZR3::AppendLRC(temp);
+                outBuffor.push_back(Factory::newFrame(temp));
+                break;
+            case (char)0x02://protSET_ADR
+                _myAdr = frame->pureData().at(5);
+                break;
+            case (char)0x03://protSET_NEXT_ADR
+                _nextAdr = frame->pureData().at(5);
+                break;
             }
         }
         else
-        {
             emit IgnoredFrame(frame);
-//            qDebug() << _myAdr << " not my adress " << frame->pureData();
-        }
     }
 }
 
@@ -143,7 +157,6 @@ void FrameBuilderZR3::sendOutputBuffer()
         {
             timeLeftUs -= outBuffor.first()->pureData().size()*BYTE_TIME_US;
             emit Write(QSharedPointer<Frame>(outBuffor.first()));
-//                qDebug() << _myAdr << " sending " << outBuffor.first()->pureData();
             outBuffor.pop_front();
         }
         else
@@ -157,14 +170,12 @@ void FrameBuilderZR3::sendOutputBuffer()
         {
             emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
             skipSlowly = false;
-            qDebug() << _myAdr << " skipSlowly ";
         }
         else
             tokenTimer->start(SLOWLY_TOKEN_TIME_MS);
     }
     else
         emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
-//    qDebug() << _myAdr << " sending token " << tokenFrame;
 }
 
 void FrameBuilderZR3::Run()

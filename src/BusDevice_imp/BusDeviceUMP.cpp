@@ -30,7 +30,6 @@ void BusDeviceUMP::OnStart()
         ParseConfigFile(config1File.readAll());
         config1File.close();
     }
-    qDebug() << "on start" + QString(_arg);
 }
 
 void BusDeviceUMP::ParseConfigFile(QByteArray data)
@@ -61,5 +60,4 @@ void BusDeviceUMP::OnStop()
     {
         while(frameBuilder->isRunning()){}
     }
-    qDebug() << "on stop" + QString(_arg);
 }
