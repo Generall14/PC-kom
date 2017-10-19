@@ -28,6 +28,7 @@ protected:
     uchar _nextAdr;
     bool _slowly;
     bool haveToken = false;
+    bool skipSlowly = false;
 
     QByteArray tokenFrame;
     QTimer* tokenTimer = NULL;
