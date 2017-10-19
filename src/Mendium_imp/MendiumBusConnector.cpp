@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
+#include <QCoreApplication>
 #include "../Factory.hpp"
 
 MendiumBusConnector::MendiumBusConnector()
@@ -22,7 +23,7 @@ void MendiumBusConnector::OnStart()
             BusDevice* temp = Factory::newBusDevice(in.readLine());
             devicesVector.push_back(temp);
             connect(temp, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
-            connect(temp, SIGNAL(Write(QByteArray)), this, SLOT(ByteWrite(QByteArray)));
+            connect(temp, &BusDevice::Write, [=](QByteArray ba){emit Readed(ba);});
             connect(this, SIGNAL(HALT()), temp, SLOT(Stop()));
             connect(this, &MendiumBusConnector::Readed, temp, &BusDevice::ByteReaded);
             temp->start(QThread::NormalPriority);
@@ -56,14 +57,7 @@ void MendiumBusConnector::Close()
 
 void MendiumBusConnector::Write(QSharedPointer<Frame> fr)
 {
-    QMutexLocker locker(&mutex);
-    gtemp.append(fr->pureData());
-}
-
-void MendiumBusConnector::ByteWrite(QByteArray ar)
-{
-    QMutexLocker locker(&mutex);
-    gtemp.append(ar);
+    emit Readed(fr->pureData());
 }
 
 void MendiumBusConnector::Flush()
@@ -74,14 +68,5 @@ void MendiumBusConnector::Flush()
 void MendiumBusConnector::Run()
 {
     QThread::msleep(10);
-    if(!gtemp.isEmpty())
-    {
-        QMutexLocker locker(&mutex);
-        emit Readed(gtemp);
-        gtemp.clear();
-    }
-    if(opened)
-    {
-
-    }
+    QCoreApplication::processEvents();
 }

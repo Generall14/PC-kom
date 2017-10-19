@@ -28,16 +28,12 @@ protected:
     uchar _nextAdr;
     bool _slowly;
     bool haveToken = false;
+
     QByteArray tokenFrame;
     QTimer* tokenTimer = NULL;
 
-
-    QTimer* testtimer = NULL;
-
     QTimer* timer = NULL;
     QByteArray recievedbuf;
-    QMutex recievedBufMutex;
-    void ReadDataInput();
 
     QList<Frame*> inBuffor;
     QMutex inBufforMutex;
@@ -54,8 +50,6 @@ protected:
 protected slots:
     void TimeoutedReciev();
     void TokenTimerTimeout();
-
-    void TestTimerSlot();
 };
 
 #endif

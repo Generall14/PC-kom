@@ -23,17 +23,12 @@ public slots:
     virtual void Write(QSharedPointer<Frame> fr);
     virtual void Flush();
 
-    void ByteWrite(QByteArray ar);
-
 protected:
     virtual void Run();
     virtual void OnStart();
     virtual void OnStop();
 
     QVector<BusDevice*> devicesVector;
-
-    QMutex mutex;
-    QByteArray gtemp;
 
 signals:
     void HALT();

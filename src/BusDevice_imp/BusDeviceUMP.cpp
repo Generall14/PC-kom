@@ -1,6 +1,7 @@
 #include "BusDeviceUMP.hpp"
 #include <QDebug>
 #include <QFile>
+#include <QCoreApplication>
 
 BusDeviceUMP::BusDeviceUMP(QString arg):
     BusDevice(arg)
@@ -10,19 +11,13 @@ BusDeviceUMP::BusDeviceUMP(QString arg):
 
 void BusDeviceUMP::ByteReaded(QByteArray ba)
 {
-    QMutexLocker locker(&mutex);
-    gtemp.append(ba);
+    emit toFrameByteReaded(ba);
 }
 
 void BusDeviceUMP::Run()
 {
     QThread::msleep(10);
-    if(!gtemp.isEmpty())
-    {
-        QMutexLocker locker(&mutex);
-        emit toFrameByteReaded(gtemp);
-        gtemp.clear();
-    }
+    QCoreApplication::processEvents();
 }
 
 void BusDeviceUMP::OnStart()
@@ -55,7 +50,7 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
     connect(this, SIGNAL(Halt()), frameBuilder, SLOT(Stop()));
-    connect(frameBuilder, &FrameBuilderZR3::Write, [=](QSharedPointer<Frame> fr){emit Write(fr->pureData());qDebug() << "ddddddddddd" + fr->pureData();});
+    connect(frameBuilder, &FrameBuilderZR3::Write, [=](QSharedPointer<Frame> fr){emit Write(fr->pureData());});
     frameBuilder->start(QThread::NormalPriority);
 }
 

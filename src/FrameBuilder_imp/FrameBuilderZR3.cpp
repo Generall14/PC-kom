@@ -31,10 +31,6 @@ void FrameBuilderZR3::OnStart()
     tokenTimer = new QTimer(0);
     tokenTimer->setSingleShot(true);
     connect(tokenTimer, SIGNAL(timeout()), this, SLOT(TokenTimerTimeout()));
-
-    testtimer = new QTimer(0);
-    connect(testtimer, SIGNAL(timeout()), this, SLOT(TestTimerSlot()));
-
 }
 
 FrameBuilderZR3::~FrameBuilderZR3()
@@ -45,17 +41,7 @@ FrameBuilderZR3::~FrameBuilderZR3()
 
 void FrameBuilderZR3::ByteReaded(QByteArray ba)
 {
-    QMutexLocker locker(&outBufforMutex);
     recievedbuf.append(ba);
-    qDebug() << _myAdr << " readed";
-}
-
-void FrameBuilderZR3::ReadDataInput()
-{
-    if(recievedbuf.isEmpty())
-        return;
-
-    QMutexLocker locker(&outBufforMutex);
 
     if(recievedbuf.length()>=5)
     {
@@ -68,14 +54,9 @@ void FrameBuilderZR3::ReadDataInput()
             recievedbuf.remove(0, 6+recievedbuf.at(4));
         }
     }
-    else
-        qDebug() << _myAdr << "awiting";
 
     if((recievedbuf.length()>0)&&(!timer->isActive()))
-    {
-        qDebug() << _myAdr << " starting timer?";
-        timer->start(100);
-    }
+        timer->start(10);
 }
 
 void FrameBuilderZR3::TimeoutedReciev()
@@ -160,19 +141,10 @@ void FrameBuilderZR3::sendOutputBuffer()
     qDebug() << _myAdr << " sending token " << tokenFrame;
 }
 
-void FrameBuilderZR3::TestTimerSlot()
-{
-    ReadDataInput();
-    ReadInputBuffer();
-    sendOutputBuffer();
-    qDebug() << QThread::currentThreadId();
-}
-
 void FrameBuilderZR3::Run()
 {
     QThread::msleep(10);
     QCoreApplication::processEvents();
-    ReadDataInput();
     ReadInputBuffer();
     sendOutputBuffer();
 }
