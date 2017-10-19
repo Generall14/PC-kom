@@ -153,16 +153,11 @@ void FrameBuilderZR3::sendOutputBuffer()
     }
 
     haveToken = false;
-//    if(_slowly)
-    qDebug() << _myAdr << " starting timer";
-//        tokenTimer->moveToThread(QThread::currentThread());
-        tokenTimer->start(100);
-        qDebug() << QThread::currentThreadId();
-        qDebug() << tokenTimer->timerId();
-    qDebug() << _myAdr << " ending timer";
-//    else
-//        emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
-//    qDebug() << _myAdr << " sending token " << tokenFrame;
+    if(_slowly)
+        tokenTimer->start(SLOWLY_TOKEN_TIME_MS);
+    else
+        emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
+    qDebug() << _myAdr << " sending token " << tokenFrame;
 }
 
 void FrameBuilderZR3::TestTimerSlot()
@@ -175,39 +170,9 @@ void FrameBuilderZR3::TestTimerSlot()
 
 void FrameBuilderZR3::Run()
 {
-    QThread::msleep(100);
+    QThread::msleep(10);
     QCoreApplication::processEvents();
     ReadDataInput();
     ReadInputBuffer();
     sendOutputBuffer();
-    if(_slowly)
-        qDebug() << QThread::currentThreadId();
-
-//    if(_slowly)
-//    {
-//    qDebug() << "a " << QThread::currentThreadId();
-////    testtimer->moveToThread(this);
-//    qDebug() << "b " << testtimer->timerId();
-//    }
-//    testtimer->start(100);
-//    while(1)
-//    {
-//        QCoreApplication::processEvents();
-//    }
-//    tokenTimer->start(100);
-//    QThread::exec();
-//    QThread::msleep(100);
-//    ReadDataInput();
-//    ReadInputBuffer();
-//    sendOutputBuffer();
-
-//    if(_slowly)
-//    {
-//        tokenTimer->moveToThread(QThread::currentThread());
-//        tokenTimer->setSingleShot(true);
-//        tokenTimer->start(10);
-//    qDebug() << tokenTimer->isActive();
-//    qDebug() << QThread::currentThreadId();
-//    }
-
 }
