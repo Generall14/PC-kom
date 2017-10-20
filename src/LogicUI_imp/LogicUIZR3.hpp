@@ -23,14 +23,18 @@ public slots:
     virtual void Disconnected();
     virtual void FrameReaded(QSharedPointer<Frame> frame);
 
-private slots:
+protected slots:
     void makeStupidMessage();
     void makeStupidError();
+
+    void ZR3UIFrameAdrChanged(uchar adr);
 
     void AdrAdd();
     void AdrDelete();
     void AdrOpen();
+    void AdrOpenAll();
     void AdrFromFile();
+
 
 protected:
     QPushButton* btn = NULL;
@@ -44,6 +48,8 @@ protected:
     QList<QFrame*> tabsList;
 
     bool connected = false;
+
+    void AddZR3Dev(QString str);
 
 signals:
     void InternalFrame(QSharedPointer<Frame> frame);

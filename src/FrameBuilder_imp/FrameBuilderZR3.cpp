@@ -12,15 +12,21 @@ FrameBuilderZR3::FrameBuilderZR3(uchar myAdr, uchar nextAdr, bool slw):
 {
     Desc::description = "FrameBuilderZR3";
 
+    InitTokenFrame();
+
+    if(slw)
+        haveToken = true;
+}
+
+void FrameBuilderZR3::InitTokenFrame()
+{
+    tokenFrame.clear();
     tokenFrame.append(0xff);
     tokenFrame.append(0x80);
     tokenFrame.append(_nextAdr);
     tokenFrame.append(_myAdr);
     tokenFrame.append(QChar(0x00));
     FrameZR3::AppendLRC(tokenFrame);
-
-    if(slw)
-        haveToken = true;
 }
 
 void FrameBuilderZR3::OnStart()
@@ -32,12 +38,17 @@ void FrameBuilderZR3::OnStart()
     tokenTimer = new QTimer(0);
     tokenTimer->setSingleShot(true);
     connect(tokenTimer, SIGNAL(timeout()), this, SLOT(TokenTimerTimeout()));
+
+    timerTokenMiss = new QTimer(0);
+    timer->setSingleShot(true);
+    connect(timerTokenMiss, SIGNAL(timeout()), this, SLOT(TokenMiss()));
 }
 
 FrameBuilderZR3::~FrameBuilderZR3()
 {
     delete timer;
     delete tokenTimer;
+    delete timerTokenMiss;
 }
 
 void FrameBuilderZR3::ByteReaded(QByteArray ba)
@@ -69,6 +80,12 @@ void FrameBuilderZR3::TimeoutedReciev()
 void FrameBuilderZR3::TokenTimerTimeout()
 {
     emit Write(QSharedPointer<Frame>(Factory::newFrame(tokenFrame)));
+}
+
+void FrameBuilderZR3::TokenMiss()
+{
+    if(_slowly)
+        haveToken = true;
 }
 
 void FrameBuilderZR3::FrameWrite(QSharedPointer<Frame> fr)
@@ -128,11 +145,13 @@ void FrameBuilderZR3::ReadInputBuffer()
                 FrameZR3::AppendLRC(temp);
                 outBuffor.push_back(Factory::newFrame(temp));
                 break;
-            case (char)0x02://protSET_ADR
+            case(char)0x02://protSET_ADR
                 _myAdr = frame->pureData().at(5);
+                InitTokenFrame();
                 break;
-            case (char)0x03://protSET_NEXT_ADR
+            case(char)0x03://protSET_NEXT_ADR
                 _nextAdr = frame->pureData().at(5);
+                InitTokenFrame();
                 break;
             }
         }
@@ -164,6 +183,7 @@ void FrameBuilderZR3::sendOutputBuffer()
     }
 
     haveToken = false;
+    timerTokenMiss->start(2500);
     if(_slowly)
     {
         if(skipSlowly)

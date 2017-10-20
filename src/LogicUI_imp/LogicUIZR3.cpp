@@ -23,6 +23,7 @@ void LogicUIZR3::Init()
     mainLay->setMargin(1);
 
     qtw = new QTabWidget();
+    qtw->setMinimumWidth(300);
     mainLay->addWidget(qtw);
 
     dbgFrame = new QFrame();
@@ -45,6 +46,11 @@ void LogicUIZR3::Init()
     connect(btnrun, SIGNAL(clicked(bool)), this, SLOT(AdrOpen()));
     rrLay->addWidget(btnrun);
 
+    btnrun = new QPushButton("Open all");
+    btnrun->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnrun, SIGNAL(clicked(bool)), this, SLOT(AdrOpenAll()));
+    rrLay->addWidget(btnrun);
+
     btnrun = new QPushButton("Dodaj");
     btnrun->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(btnrun, SIGNAL(clicked(bool)), this, SLOT(AdrAdd()));
@@ -60,6 +66,7 @@ void LogicUIZR3::Init()
     connect(btnrun, SIGNAL(clicked(bool)), this, SLOT(AdrFromFile()));
     rrLay->addWidget(btnrun);
 
+    littleLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
 
 
@@ -75,6 +82,20 @@ void LogicUIZR3::Init()
     btnE = new QPushButton("Wygeneruj bezsensowny błąd");
     mainDbgLay->addWidget(btnE);
     connect(btnE, SIGNAL(clicked(bool)), this, SLOT(makeStupidError()));
+}
+
+void LogicUIZR3::ZR3UIFrameAdrChanged(uchar adr)
+{
+    ZR3UIFrame* zr = qobject_cast<ZR3UIFrame*>(sender());
+    int idx = devsList.indexOf(zr);
+    if(idx>=0)
+    {
+        QString nadr = QString::number(adr, 16).toUpper();
+        while(nadr.length()<2)
+            nadr.insert(0, '0');
+        nadr.insert(0, "0x");
+        qtw->setTabText(idx+1, nadr);
+    }
 }
 
 void LogicUIZR3::AdrAdd()
@@ -110,8 +131,21 @@ void LogicUIZR3::AdrOpen()
     if(adrLw->currentIndex().row()<0)
         return;
 
+    AddZR3Dev(adrLw->currentItem()->text());
+}
+
+void LogicUIZR3::AdrOpenAll()
+{
+    QListWidgetItem* item;
+    int row = 0;
+    while(item = adrLw->item(row++))
+        AddZR3Dev(item->text());
+}
+
+void LogicUIZR3::AddZR3Dev(QString str)
+{
     bool ok;
-    uchar nadr = adrLw->currentItem()->text().toInt(&ok, 16);
+    uchar nadr = str.toInt(&ok, 16);
     if(!ok)
         return;
 
@@ -122,12 +156,13 @@ void LogicUIZR3::AdrOpen()
     }
 
     QFrame* newFrame = new QFrame();
-    qtw->addTab(newFrame, adrLw->currentItem()->text());
+    qtw->addTab(newFrame, str);
     ZR3UIFrame* newzr3 = new ZR3UIFrame(newFrame, nadr);
     if(!connected)
         newFrame->setEnabled(false);
     connect(newzr3, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
     connect(newzr3, SIGNAL(FrameToMendium(QSharedPointer<Frame>)), this, SIGNAL(WriteFrame(QSharedPointer<Frame>)));
+    connect(newzr3, SIGNAL(AdresChanged(uchar)), this,SLOT(ZR3UIFrameAdrChanged(uchar)));
     connect(this, SIGNAL(InternalFrame(QSharedPointer<Frame>)), newzr3, SLOT(FrameToUI(QSharedPointer<Frame>)));
     devsList.push_back(newzr3);
     tabsList.append(newFrame);

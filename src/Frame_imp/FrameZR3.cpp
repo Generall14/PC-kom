@@ -105,10 +105,10 @@ QString FrameZR3::ProtString()
             temp.append("protHELLO ");
             break;
         case protSET_ADR:
-            temp.append("protSET_ADR: 0x%1 ").arg(((int)(pck.at(5)))&0xFF, 2, 16, QChar('0'));
+            temp.append(QString("protSET_ADR: 0x%1 ").arg(((int)(pck.at(5)))&0xFF, 2, 16, QChar('0')));
             break;
         case protSET_NEXT_ADR:
-            temp.append("protSET_NEXT_ADR: 0x%1 ").arg(((int)(pck.at(5)))&0xFF, 2, 16, QChar('0'));
+            temp.append(QString("protSET_NEXT_ADR: 0x%1 ").arg(((int)(pck.at(5)))&0xFF, 2, 16, QChar('0')));
             break;
         case protDATA:
             temp.append("protDATA ");

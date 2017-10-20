@@ -32,6 +32,7 @@ protected:
 
     QByteArray tokenFrame;
     QTimer* tokenTimer = NULL;
+    QTimer* timerTokenMiss = NULL;
 
     QTimer* timer = NULL;
     QByteArray recievedbuf;
@@ -44,6 +45,8 @@ protected:
     QMutex outBufforMutex;
     void sendOutputBuffer();
 
+    void InitTokenFrame();
+
     static const int STANDARD_TOKEN_TIME_MS = 10;
     static const int SLOWLY_TOKEN_TIME_MS = 1000;
     static const int BYTE_TIME_US = 87;
@@ -51,6 +54,7 @@ protected:
 protected slots:
     void TimeoutedReciev();
     void TokenTimerTimeout();
+    void TokenMiss();
 };
 
 #endif

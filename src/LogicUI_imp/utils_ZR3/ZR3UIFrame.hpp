@@ -7,6 +7,7 @@
 #include <QTabWidget>
 #include <QStackedWidget>
 #include <QListWidget>
+#include <QLineEdit>
 #include "../../Frame.hpp"
 
 class ZR3UIFrame : public QObject
@@ -23,6 +24,7 @@ public slots:
 
 signals:
     void FrameToMendium(QSharedPointer<Frame> frame);
+    void AdresChanged(uchar);
     void Error(QString);
 
 protected:
@@ -37,6 +39,10 @@ protected:
     static const char _myAdr = 0xFE;
 
     void InitDebug();
+
+protected slots:
+    void protSET_ADR();
+    void protSET_NEXT_ADR();
 };
 
 #endif

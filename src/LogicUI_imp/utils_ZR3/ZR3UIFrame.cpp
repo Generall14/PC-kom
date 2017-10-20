@@ -1,5 +1,7 @@
 #include "ZR3UIFrame.hpp"
 #include <QLayout>
+#include <QLabel>
+#include <QInputDialog>
 #include "../../Frame_imp/FrameZR3.hpp"
 #include "../../Factory.hpp"
 
@@ -39,9 +41,91 @@ void ZR3UIFrame::InitDebug()
     QVBoxLayout* mainLay = new QVBoxLayout(dbgFrame);
     mainLay->setMargin(6);
 
-    QPushButton* btnHello = new QPushButton("protHELLO");
+
+    QLabel* lbl1 = new QLabel("Warstwa protokołu");
+    lbl1->setAlignment(Qt::AlignCenter);
+    mainLay->addWidget(lbl1);
+
+    QHBoxLayout* Lay1 = new QHBoxLayout();
+    mainLay->addLayout(Lay1);
+
+    QPushButton* btnHello = new QPushButton("HELLO");
     connect(btnHello, &QPushButton::clicked, [=](){emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(protHELLO)));});
-    mainLay->addWidget(btnHello);
+    Lay1->addWidget(btnHello);
+
+    Lay1->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    QPushButton* btnSetAdr = new QPushButton("SET_ADR");
+    Lay1->addWidget(btnSetAdr);
+    connect(btnSetAdr, SIGNAL(clicked(bool)), this, SLOT(protSET_ADR()));
+
+    Lay1->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    QPushButton* btnSetNextAdr = new QPushButton("SET_NEXT_ADR");
+    Lay1->addWidget(btnSetNextAdr);
+    connect(btnSetNextAdr, SIGNAL(clicked(bool)), this, SLOT(protSET_NEXT_ADR()));
+
+    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+}
+
+void ZR3UIFrame::protSET_ADR()
+{
+    QString astring = QString::number(_adr, 16);
+    while(astring.length()<2)
+        astring.insert(0, '0');
+
+    bool ok;
+    QString text = QInputDialog::getText(cFrame, "Podaj adres", "Adres:", QLineEdit::Normal, astring, &ok);
+
+    if(!ok)
+        return;
+
+    text = text.left(2);
+    char nadr = text.toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Kijowe dane adresu \""+text+"\".");
+        return;
+    }
+
+    QByteArray temp;
+    temp.append(0xFF);
+    temp.append(0x02);
+    temp.append(_adr);
+    temp.append(_myAdr);
+    temp.append((char)0x01);
+    temp.append(nadr);
+    FrameZR3::AppendLRC(temp);
+    emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
+    emit AdresChanged(nadr);
+    _adr = nadr;
+}
+
+void ZR3UIFrame::protSET_NEXT_ADR()
+{
+    bool ok;
+    QString text = QInputDialog::getText(cFrame, "Podaj adres", "Adres:", QLineEdit::Normal, "FE", &ok);
+
+    if(!ok)
+        return;
+
+    text = text.left(2);
+    char nadr = text.toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Kijowe dane adresu \""+text+"\".");
+        return;
+    }
+
+    QByteArray temp;
+    temp.append(0xFF);
+    temp.append(0x03);
+    temp.append(_adr);
+    temp.append(_myAdr);
+    temp.append((char)0x01);
+    temp.append(nadr);
+    FrameZR3::AppendLRC(temp);
+    emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
 
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)

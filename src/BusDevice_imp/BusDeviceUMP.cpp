@@ -34,7 +34,7 @@ void BusDeviceUMP::OnStart()
 
 void BusDeviceUMP::ParseConfigFile(QByteArray data)
 {
-    if(data.size()<2)
+    if(data.size()<6)
     {
         emit Error("Błąd parsowania adresów pliku konfiguracyjnego \"" + _arg + "\"");
         return;
@@ -43,8 +43,19 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     {
         myADr = data.at(0);
         nextAdr = data.at(1);
-        data.remove(0, 2);
     }
+
+    int stptr = 0, stsize = 0;
+    stptr |= (data.at(2)<<8)&0xFF00;
+    stptr |= (data.at(3)<<0)&0x00FF;
+    stsize |= (data.at(4)<<8)&0xFF00;
+    stsize |= (data.at(5)<<0)&0x00FF;
+    if(data.length()<stptr+stsize-1)
+    {
+        emit Error("Błąd parsowania listy stringów pliku konfiguracyjnego \"" + _arg + "\"");
+        return;
+    }
+    stringTable = data.mid(stptr, stsize);
 
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
