@@ -3,6 +3,9 @@
 #include <QLayout>
 #include <QLabel>
 #include <QTextBrowser>
+#include <QPushButton>
+#include <QDesktopServices>
+#include <QUrl>
 #include "../Factory.hpp"
 #include "../Mendium.hpp"
 #include "../Frame.hpp"
@@ -71,6 +74,7 @@ void About::InitWidgets()
 
     QTextBrowser* te = new QTextBrowser(this);
     te->setText(Factory::ConfigDescription());
+    te->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     txtLay->addWidget(te);
 
     QLabel* l5 = new QLabel("Zestawienie implementacji:", this);
@@ -126,4 +130,11 @@ void About::InitWidgets()
     l5->setAlignment(Qt::AlignCenter);
     txtLay->addWidget(l5);
     delete temp6;
+
+    QHBoxLayout* btnLay = new QHBoxLayout();
+    txtLay->addLayout(btnLay);
+    QPushButton* btn = new QPushButton("Wyślij litanie dziękczynne do autora");
+    btn->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    connect(btn, &QPushButton::clicked, [=](){QDesktopServices::openUrl(QUrl("mailto:wojciech_kogut@o2.pl?subject=O najwspanialszy z wspaniałych&body=...", QUrl::TolerantMode));});
+    btnLay->addWidget(btn);
 }
