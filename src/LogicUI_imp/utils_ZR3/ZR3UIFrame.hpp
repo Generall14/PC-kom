@@ -11,7 +11,9 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QStringList>
+#include <QList>
 #include "../../Frame.hpp"
+#include "ZR3ReadFile.hpp"
 
 class ZR3UIFrame : public QObject
 {
@@ -28,6 +30,7 @@ public slots:
 signals:
     void FrameToMendium(QSharedPointer<Frame> frame);
     void PureDataToMedium(QByteArray ar);
+    void InternalDataReaded(QByteArray ba);
     void AdresChanged(uchar);
     void Error(QString);
 
@@ -49,11 +52,20 @@ protected:
     QSpinBox* sbSize = NULL;
     QStringList readList = {"aplDeviceDescriptor", "aplStringListDescriptor", "dupa"};
 
+    ZR3ReadFile* rfile = NULL;
+    void InitZR3ReadFile(uchar header);
+
+    QByteArray strings;
+    QList<QStringList> stringi;
+    void ParseStrings();
+
 protected slots:
     void protSET_ADR();
     void protSET_NEXT_ADR();
 
     void aplReadReq();
+
+    void FinalizeZR3ReadFile(uchar _header, QByteArray arr);
 };
 
 #endif

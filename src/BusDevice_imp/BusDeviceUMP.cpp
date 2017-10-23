@@ -23,7 +23,7 @@ void BusDeviceUMP::Run()
 void BusDeviceUMP::OnStart()
 {
     QFile config1File(_arg);
-    if(!config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    if(!config1File.open(QIODevice::ReadOnly))
         emit Error("Nie można odczytać pliku konfiguracyjnego \"" + _arg + "\"");
     else
     {
@@ -73,6 +73,7 @@ QByteArray BusDeviceUMP::GetFileData(QByteArray& ba, uint16_t ptr, uint8_t size)
         return temp;
     if(size==0)
         return temp;
+    size = qMin(size, MAX_DATA_FILE_SIZE);
     temp.append(ba.mid(ptr, size));
     return temp;
 }

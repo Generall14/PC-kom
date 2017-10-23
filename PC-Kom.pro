@@ -59,7 +59,8 @@ SOURCES += main.cpp\
     src/Utils/About.cpp \
     src/Mendium_imp/MendiumBusConnector.cpp \
     src/BusDevice_imp/BusDeviceUMP.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.cpp
+    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.cpp \
+    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -108,4 +109,5 @@ HEADERS  += mainwindow.h \
     src/Mendium_imp/MendiumBusConnector.hpp \
     src/BusDevice.hpp \
     src/BusDevice_imp/BusDeviceUMP.hpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.hpp
+    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.hpp \
+    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.hpp

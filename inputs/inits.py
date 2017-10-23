@@ -7,11 +7,6 @@ texts=[
     ['dupa', 'ass'],
     ['dawka', 'dose'],
     ['moc dawki', 'dose rate'],
-    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
-    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
-    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
-    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
-    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
     ['koniec','end']
     ]
 

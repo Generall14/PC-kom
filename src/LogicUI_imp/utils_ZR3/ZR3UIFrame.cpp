@@ -70,6 +70,7 @@ void ZR3UIFrame::InitDebug()
     lbl1->setAlignment(Qt::AlignCenter);
     mainLay->addWidget(lbl1);
 
+
     QHBoxLayout* Lay2 = new QHBoxLayout();
     mainLay->addLayout(Lay2);
 
@@ -90,6 +91,15 @@ void ZR3UIFrame::InitDebug()
     QPushButton* btnReadReq = new QPushButton("read req");
     Lay2->addWidget(btnReadReq);
     connect(btnReadReq, SIGNAL(clicked(bool)), this, SLOT(aplReadReq()));
+
+
+    QHBoxLayout* Lay3 = new QHBoxLayout();
+    mainLay->addLayout(Lay3);
+
+    QPushButton* btnReadString = new QPushButton("Read Strings");
+    connect(btnReadString, &QPushButton::clicked, [=](){InitZR3ReadFile(0x0A);});
+    Lay3->addWidget(btnReadString);
+
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
@@ -167,9 +177,75 @@ void ZR3UIFrame::aplReadReq()
     emit PureDataToMedium(temp);
 }
 
+void ZR3UIFrame::InitZR3ReadFile(uchar header)
+{
+    if(rfile!=NULL)
+        return;
+    rfile = new ZR3ReadFile(header);
+    connect(rfile, &ZR3ReadFile::SendDataFrame, [=](QByteArray ba){ba.insert(0, _adr);emit PureDataToMedium(ba);});
+    connect(rfile, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(rfile, SIGNAL(Done(uchar,QByteArray)), this, SLOT(FinalizeZR3ReadFile(uchar,QByteArray)));
+    connect(this, SIGNAL(InternalDataReaded(QByteArray)), rfile, SLOT(RecievedData(QByteArray)), Qt::QueuedConnection);
+    rfile->start(QThread::NormalPriority);
+}
+
+void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
+{
+    rfile = NULL;
+    if(arr.isEmpty())
+        return;
+    if(_header==0x0A)
+    {
+        strings = arr;
+        ParseStrings();
+    }
+}
+
+void ZR3UIFrame::ParseStrings()
+{
+    stringi.clear();
+    QList<uint16_t> ptrs;
+    int lasti = -3;
+    while(1)
+    {
+        if((strings.at(lasti+3)==QChar(0x00)))
+            break;
+        int ti = strings.indexOf(char(0x00), lasti+3);
+        if(ti<=0)
+            break;
+        stringi.push_back(QStringList());
+        stringi[stringi.size()-1].push_back(QString(strings.mid(lasti+3, ti-lasti+3)));
+        uint16_t tt = 0;
+        tt = (strings.at(ti+1)<<8)&0xFF00;
+        tt |= strings.at(ti+2)&0xFF;
+        ptrs.push_back(tt);
+        lasti = ti;
+    }
+    for(int i=0;i<ptrs.size();++i)
+    {
+        if(i+1==ptrs.size())
+        {
+            for(QByteArray la: strings.mid(ptrs.at(i)).split(0x00))
+            {
+                if(!la.isEmpty())
+                    stringi[i].append(QString(la));
+            }
+        }
+        else
+        {
+            for(QByteArray la: strings.mid(ptrs.at(i), ptrs.at(i+1)-ptrs.at(i)).split(0x00))
+            {
+                if(!la.isEmpty())
+                    stringi[i].append(QString(la));
+            }
+        }
+    }
+    qDebug() << stringi;
+}
+
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)
 {
-
+    emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
 }
 
 uchar ZR3UIFrame::Adr() const

@@ -35,7 +35,6 @@ protected slots:
     void AdrOpenAll();
     void AdrFromFile();
 
-
 protected:
     QPushButton* btn = NULL;
     QPushButton* btnE = NULL;
