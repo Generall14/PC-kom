@@ -162,6 +162,7 @@ void LogicUIZR3::AddZR3Dev(QString str)
         newFrame->setEnabled(false);
     connect(newzr3, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
     connect(newzr3, SIGNAL(FrameToMendium(QSharedPointer<Frame>)), this, SIGNAL(WriteFrame(QSharedPointer<Frame>)));
+    connect(newzr3, SIGNAL(PureDataToMedium(QByteArray)), this, SIGNAL(WritePureData(QByteArray)));
     connect(newzr3, SIGNAL(AdresChanged(uchar)), this,SLOT(ZR3UIFrameAdrChanged(uchar)));
     connect(this, SIGNAL(InternalFrame(QSharedPointer<Frame>)), newzr3, SLOT(FrameToUI(QSharedPointer<Frame>)));
     devsList.push_back(newzr3);
@@ -224,7 +225,14 @@ void LogicUIZR3::FrameReaded(QSharedPointer<Frame> frame)
 
 void LogicUIZR3::makeStupidMessage()
 {
-    emit WritePureData(QByteArray("Nic nie znaczaca wiadomosc"));
+    QByteArray temp;
+    temp.append(QChar(0x01));
+    temp.append(QChar(0x0a));
+    temp.append(QChar(0x00));
+    temp.append(QChar(0x00));
+    temp.append(QChar(0x04));
+    qDebug() << temp;
+    emit WritePureData(temp);
 }
 
 void LogicUIZR3::makeStupidError()

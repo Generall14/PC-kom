@@ -2,6 +2,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QInputDialog>
+#include <QDebug>
 #include "../../Frame_imp/FrameZR3.hpp"
 #include "../../Factory.hpp"
 
@@ -65,6 +66,31 @@ void ZR3UIFrame::InitDebug()
     Lay1->addWidget(btnSetNextAdr);
     connect(btnSetNextAdr, SIGNAL(clicked(bool)), this, SLOT(protSET_NEXT_ADR()));
 
+    lbl1 = new QLabel("Warstwa aplikacji");
+    lbl1->setAlignment(Qt::AlignCenter);
+    mainLay->addWidget(lbl1);
+
+    QHBoxLayout* Lay2 = new QHBoxLayout();
+    mainLay->addLayout(Lay2);
+
+    cbFreadFile = new QComboBox();
+    cbFreadFile->addItems(readList);
+    Lay2->addWidget(cbFreadFile);
+
+    sboffset = new QSpinBox(cFrame);
+    sboffset->setMinimum(0);
+    sboffset->setMaximum(0xFFFF);
+    Lay2->addWidget(sboffset);
+
+    sbSize = new QSpinBox(cFrame);
+    sbSize->setMinimum(0);
+    sbSize->setMaximum(0xFF);
+    Lay2->addWidget(sbSize);
+
+    QPushButton* btnReadReq = new QPushButton("read req");
+    Lay2->addWidget(btnReadReq);
+    connect(btnReadReq, SIGNAL(clicked(bool)), this, SLOT(aplReadReq()));
+
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
@@ -126,6 +152,19 @@ void ZR3UIFrame::protSET_NEXT_ADR()
     temp.append(nadr);
     FrameZR3::AppendLRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
+}
+
+void ZR3UIFrame::aplReadReq()
+{
+    QByteArray temp;
+    temp.append(_adr);
+    if(!cbFreadFile->currentText().compare("aplStringListDescriptor"))
+        temp.append(QChar(0x0A));
+
+    temp.append((sboffset->value()>>8)&0xFF);
+    temp.append((sboffset->value()>>0)&0xFF);
+    temp.append((sbSize->value()>>0)&0xFF);
+    emit PureDataToMedium(temp);
 }
 
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)

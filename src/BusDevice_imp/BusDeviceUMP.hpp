@@ -28,11 +28,17 @@ protected:
     FrameBuilderZR3* frameBuilder = NULL;
 
     void ParseConfigFile(QByteArray data);
+    QByteArray GetFileData(QByteArray& ba, uint16_t ptr, uint8_t size);
+
+    static const unsigned int MAX_DATA_FILE_SIZE = 63;
+
+protected slots:
+    void AplFrameReaded(QSharedPointer<Frame> fr);
 
 signals:
     void toFrameByteReaded(QByteArray);
     void Halt();
-
+    void AplWritePureData(QByteArray arr);
 };
 
 #endif

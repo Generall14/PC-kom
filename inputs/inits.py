@@ -6,7 +6,13 @@ langs=['pol', 'eng']
 texts=[
     ['dupa', 'ass'],
     ['dawka', 'dose'],
-    ['moc dawki', 'dose rate']
+    ['moc dawki', 'dose rate'],
+    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
+    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
+    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
+    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
+    ['dudupadupadupadupadupadupadupapa','assassassassassassassassassassass'],
+    ['koniec','end']
     ]
 
 name1='test1'

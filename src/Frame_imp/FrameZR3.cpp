@@ -1,4 +1,5 @@
 #include "FrameZR3.hpp"
+#include <QDebug>
 
 FrameZR3::FrameZR3(QByteArray ba)
     :Frame(ba)
@@ -129,7 +130,30 @@ QString FrameZR3::AplString()
     QByteArray ba = pck.mid(5);
     ba.remove(ba.length()-1, 1);
 
-    for(char ch:ba)
+    uchar val = ba.at(0);
+    QByteArray rest;
+    uint16_t off = 0;
+    uint8_t siz = 0;
+    switch(val)
+    {
+    case 0x0A:
+        off |= (ba.at(1)<<8)&0xFF00;
+        off |= (ba.at(2)<<0)&0x00FF;
+        siz = ba.at(3);
+        temp.append(QString("aplStringListDescriptor req offset=0x%1 size=0x%2").arg(((int)(off))&0xFFFF, 4, 16, QChar('0'))\
+                    .arg(((int)(siz))&0xFF, 2, 16, QChar('0')));
+        break;
+    case 0x8A:
+        temp.append("aplStringListDescriptor resp: ");
+        rest = ba.mid(1);
+        break;
+    default:
+        temp.append("??? ");
+        rest = ba;
+        break;
+    }
+
+    for(char ch:rest)
         temp.append(QString("0x%1 ").arg(((int)(ch))&0xFF, 2, 16, QChar('0')));
 
     temp.append(")");

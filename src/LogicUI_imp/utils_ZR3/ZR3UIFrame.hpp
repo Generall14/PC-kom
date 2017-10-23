@@ -8,6 +8,9 @@
 #include <QStackedWidget>
 #include <QListWidget>
 #include <QLineEdit>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QStringList>
 #include "../../Frame.hpp"
 
 class ZR3UIFrame : public QObject
@@ -24,6 +27,7 @@ public slots:
 
 signals:
     void FrameToMendium(QSharedPointer<Frame> frame);
+    void PureDataToMedium(QByteArray ar);
     void AdresChanged(uchar);
     void Error(QString);
 
@@ -40,9 +44,16 @@ protected:
 
     void InitDebug();
 
+    QComboBox* cbFreadFile = NULL;
+    QSpinBox* sboffset = NULL;
+    QSpinBox* sbSize = NULL;
+    QStringList readList = {"aplDeviceDescriptor", "aplStringListDescriptor", "dupa"};
+
 protected slots:
     void protSET_ADR();
     void protSET_NEXT_ADR();
+
+    void aplReadReq();
 };
 
 #endif

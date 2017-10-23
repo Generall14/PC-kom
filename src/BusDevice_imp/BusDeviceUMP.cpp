@@ -50,7 +50,7 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     stptr |= (data.at(3)<<0)&0x00FF;
     stsize |= (data.at(4)<<8)&0xFF00;
     stsize |= (data.at(5)<<0)&0x00FF;
-    if(data.length()<stptr+stsize-1)
+    if((data.length()<stptr+stsize-1)||(stptr<=1))
     {
         emit Error("Błąd parsowania listy stringów pliku konfiguracyjnego \"" + _arg + "\"");
         return;
@@ -60,8 +60,21 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
     connect(this, SIGNAL(Halt()), frameBuilder, SLOT(Stop()));
+    connect(this, SIGNAL(AplWritePureData(QByteArray)), frameBuilder, SLOT(PureDataWrite(QByteArray)));
     connect(frameBuilder, &FrameBuilderZR3::Write, [=](QSharedPointer<Frame> fr){emit Write(fr->pureData());});
+    connect(frameBuilder, SIGNAL(FrameReaded(QSharedPointer<Frame>)), this, SLOT(AplFrameReaded(QSharedPointer<Frame>)));
     frameBuilder->start(QThread::NormalPriority);
+}
+
+QByteArray BusDeviceUMP::GetFileData(QByteArray& ba, uint16_t ptr, uint8_t size)
+{
+    QByteArray temp;
+    if(ptr>=ba.size())
+        return temp;
+    if(size==0)
+        return temp;
+    temp.append(ba.mid(ptr, size));
+    return temp;
 }
 
 void BusDeviceUMP::OnStop()
@@ -70,5 +83,32 @@ void BusDeviceUMP::OnStop()
     if(frameBuilder)
     {
         while(frameBuilder->isRunning()){}
+    }
+}
+
+void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
+{
+    QByteArray data = fr->pureData().mid(5, fr->pureData().at(4));
+    uchar val = data.at(0);
+
+    if((val==(uchar)0x0A))
+    {
+        QByteArray toWrite;
+        toWrite.append(fr->pureData().at(3));
+        uint16_t off = 0;
+        off |= (data.at(1)<<8)&0xFF00;
+        off |= (data.at(2)<<0)&0x00FF;
+        uint8_t siz = data.at(3);
+        switch(val)
+        {
+        case (uchar)0x0A:
+            toWrite.append(0x8A);
+            toWrite.append(GetFileData(stringTable, off, siz));
+            break;
+        default:
+            break;
+        }
+        emit AplWritePureData(toWrite);
+        return;
     }
 }
