@@ -12,6 +12,7 @@
 #include <QSpinBox>
 #include <QStringList>
 #include <QList>
+#include <QTableWidget>
 #include "../../Frame.hpp"
 #include "ZR3ReadFile.hpp"
 
@@ -57,7 +58,9 @@ protected:
 
     QByteArray strings;
     QList<QStringList> stringi;
+    QTableWidget* sltw = NULL;
     void ParseStrings();
+    void UpdateStringsTable();
 
 protected slots:
     void protSET_ADR();

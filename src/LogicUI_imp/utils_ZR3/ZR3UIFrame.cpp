@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QInputDialog>
 #include <QDebug>
+#include <QHeaderView>
 #include "../../Frame_imp/FrameZR3.hpp"
 #include "../../Factory.hpp"
 
@@ -100,8 +101,18 @@ void ZR3UIFrame::InitDebug()
     connect(btnReadString, &QPushButton::clicked, [=](){InitZR3ReadFile(0x0A);});
     Lay3->addWidget(btnReadString);
 
+    sltw = new QTableWidget();
+    mainLay->addWidget(sltw);
+    sltw->horizontalHeader()->setVisible(false);
+    sltw->verticalHeader()->setVisible(false);
+    sltw->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    sltw->setSelectionMode(QAbstractItemView::SingleSelection);
+    sltw->setSelectionBehavior(QAbstractItemView::SelectRows);
+    sltw->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    sltw->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    sltw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
 }
 
 void ZR3UIFrame::protSET_ADR()
@@ -241,6 +252,27 @@ void ZR3UIFrame::ParseStrings()
         }
     }
     qDebug() << stringi;
+
+    UpdateStringsTable();
+}
+
+void ZR3UIFrame::UpdateStringsTable()
+{
+    sltw->clear();
+    if(stringi.isEmpty())
+        return;
+    if(stringi.at(0).isEmpty())
+        return;
+    sltw->setColumnCount(stringi.size()+1);
+    sltw->setRowCount(stringi.at(0).size());
+
+    for(int i=1;i<stringi.at(0).size();++i)
+        sltw->setItem(i, 0, new QTableWidgetItem(QString::number(i)));
+    for(int i=0;i<stringi.size();++i)
+    {
+        for(int j=0;j<stringi.at(i).size();j++)
+            sltw->setItem(j, i+1, new QTableWidgetItem(stringi.at(i).at(j)));
+    }
 }
 
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)
