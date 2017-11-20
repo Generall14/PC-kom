@@ -10,7 +10,6 @@ MendiumFakeStawrow::MendiumFakeStawrow()
     sdata.append(0xFF);
     sdata.append(0xFF);
     sdata.append(0xFF);
-    sdata.append(0x08);
 }
 
 void MendiumFakeStawrow::Open(QString)
@@ -37,15 +36,25 @@ void MendiumFakeStawrow::Flush()
 
 void MendiumFakeStawrow::Run()
 {
-    QThread::msleep(100);
+    QThread::msleep(200);
     if(opened)
     {
+        char status = 0x00;
+        if(occupied)
+            status |= 0x01;
+        if(!(qrand()%20))
+            occupied = !occupied;
+        const int channels = 6;
         QByteArray temp(sdata);
-        for(int i=0;i<4;i++)
+        temp.append(channels*2+3);
+        temp.append(0x31);
+        temp.append(status);
+        temp.append((char)0x00);
+        for(int i=0;i<channels;i++)
         {
-            int tint = qrand();
-            temp.append((tint>>8)&0xFF);
+            int tint = qrand()%1000;
             temp.append(tint&0xFF);
+            temp.append((tint>>8)&0xFF);
         }
         temp = FrameStawrov::AddCRC16(temp);
         emit Readed(temp);

@@ -24,6 +24,7 @@ public slots:
 protected:
     virtual void Run();
     QByteArray sdata;
+    bool occupied = false;
 };
 
 #endif

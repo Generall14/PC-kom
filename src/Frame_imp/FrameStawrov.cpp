@@ -1,4 +1,5 @@
 #include "FrameStawrov.hpp"
+#include <QDebug>
 
 FrameStawrov::FrameStawrov(QByteArray ba)
     :Frame(ba)
@@ -13,9 +14,19 @@ bool FrameStawrov::isValid()
         errorString = "Invalid start byte";
         return false;
     }
-    if(pck.size()-6!=pck.at(3))
+    if(pck.size()-5!=pck.at(3))
     {
         errorString = "Invalid data length";
+        return false;
+    }
+    if(pck.at(3)>27)
+    {
+        errorString = "Exceeded data length";
+        return false;
+    }
+    if(pck.at(3)==0)
+    {
+        errorString = "Null data length";
         return false;
     }
     if(!CheckCRC16(this))
@@ -31,21 +42,48 @@ QString FrameStawrov::toQString()
     if(!isValid())
         return InvalidString();
 
-    if((pck.at(3)-0x08)==0)
+    if(pck.at(3)!=0)
     {
-        QString tempR = "Kanały: ";
-        QByteArray cutArray = pck.mid(4);
-        int tval;
-        for(int i=0;i<4;i++)
+        QByteArray cargo = pck.mid(4);
+        QString tempR;
+        if((cargo.at(0)-0x31)==0)
         {
-            tval = 0;
-            tval |= (cutArray.at(0)<<8)&0xFF00;
-            tval |= (cutArray.at(1)<<0)&0x00FF;
-            tempR.append(QString("[ %1 ] ").arg(tval));
-            cutArray = cutArray.mid(2);
+            if((cargo.length()<6)||((cargo.length()%2)))
+            {
+                tempR = "Błędny format kanałów: ";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            tempR = QString("Kanały [S 0x%1, E 0x%2]: ").arg(cargo.at(1), 2, 16, QChar('0')).arg(cargo.at(2), 2, 16, QChar('0'));
+            for(int i=3; i<cargo.length()-1; i+=2)
+            {
+                int tval = 0;
+                tval |= (cargo.at(i+1)<<8)&0xFF00;
+                tval |= (cargo.at(i)<<0)&0x00FF;
+                tempR.append(QString("[ %1 ] ").arg(tval));
+            }
+
+            return tempR;
         }
-        return tempR;
     }
+
+
+//    if((pck.at(3)-0x08)==0)
+//    {
+//        QString
+//        QByteArray cutArray = pck.mid(4);
+//        int tval;
+//        for(int i=0;i<4;i++)
+//        {
+//            tval = 0;
+//            tval |= (cutArray.at(0)<<8)&0xFF00;
+//            tval |= (cutArray.at(1)<<0)&0x00FF;
+//            tempR.append(QString("[ %1 ] ").arg(tval));
+//            cutArray = cutArray.mid(2);
+//        }
+//        return tempR;
+//    }
 
     QString temp = "Kij wie co: ";
     for(auto s: pck)
@@ -77,18 +115,27 @@ QString FrameStawrov::InvalidString()
     return temp;
 }
 
+/**
+ * Tak naprawdę to nie jest CRC16 tylko 1-bajtowy XOR.
+ */
 QByteArray FrameStawrov::AddCRC16(QByteArray data)
 {
-    data.append(0x66);
-    data.append(0x77);
+    char temp = 0x00;
+    for(int i=1;i<data.length();++i)
+        temp ^= data.at(i);
+    data.append(temp);
     return data;
 }
 
+/**
+ * Tak naprawdę to nie jest CRC16 tylko 1-bajtowy XOR.
+ */
 bool FrameStawrov::CheckCRC16(Frame* fr)
 {
-//    if(fr->pureData().at(fr->pureData().size()-1)!=0x77)
-//        return false;
-//    if(fr->pureData().at(fr->pureData().size()-2)!=0x66)
-//        return false;
+    char temp = 0x00;
+    for(int i=1;i<fr->pureData().length()-1;++i)
+        temp ^= fr->pureData().at(i);
+    if(fr->pureData().at(fr->pureData().size()-1)!=temp)
+        return false;
     return true;
 }

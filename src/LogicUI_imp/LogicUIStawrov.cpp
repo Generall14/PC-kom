@@ -10,6 +10,11 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
 {
     Desc::description = "LogicUIStawrov";
+    logg = new STawrovLogger("dupa.txt");
+    connect(logg, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(logg, SIGNAL(StateChanged(QString)), this, SLOT(setStatus(QString)), Qt::QueuedConnection);
+    connect(logg, SIGNAL(SetChannels(int)), this, SLOT(setChannels(int)), Qt::QueuedConnection);
+    logg->Reset("defaultFileName.txt");
 }
 
 LogicUIStawrov::~LogicUIStawrov()
@@ -37,6 +42,29 @@ LogicUIStawrov::~LogicUIStawrov()
         out << leData->text();
         config1File.close();
     }
+
+    config1File.setFileName("configs/LogicUIStawrovFileLog.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << fileAdr->text();
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovleZakA.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << leZakA->text();
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovleAakB.cfg");
+    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
+    {
+        out << leAakB->text();
+        config1File.close();
+    }
+
+    delete logg;
 }
 
 void LogicUIStawrov::Init()
@@ -72,6 +100,7 @@ void LogicUIStawrov::InitTests()
     leHeader = new QLineEdit("fd");
     leHeader->setMaximumWidth(50);
     leHeader->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leHeader->setValidator(new HexValidator(1, 1, leHeader));
     groupBoxWyslijCosX->addWidget(leHeader);
 
     QHBoxLayout* groupBoxWyslijCosY = new QHBoxLayout();
@@ -81,6 +110,7 @@ void LogicUIStawrov::InitTests()
     leAdr = new QLineEdit("fe");
     leAdr->setMaximumWidth(50);
     leAdr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leAdr->setValidator(new HexValidator(1, 1, leAdr));
     groupBoxWyslijCosY->addWidget(leAdr);
 
     QHBoxLayout* groupBoxWyslijCosZ = new QHBoxLayout();
@@ -89,12 +119,64 @@ void LogicUIStawrov::InitTests()
     groupBoxWyslijCosZ->addWidget(tl3);
     leData = new QLineEdit("ff aa 55");
     leData->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leData->setValidator(new HexValidator(1, 27, leData));
     groupBoxWyslijCosZ->addWidget(leData);
 
     btn = new QPushButton("Wyślij coś");
     mainWyslijCosLay->addWidget(btn);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(makeStupidMessage()));
 
+    //=======================Grupa zbieranie danych===============================================
+    QGroupBox* groupBoxZbieranie = new QGroupBox("Zbieranie danych");
+    mainLay->addWidget(groupBoxZbieranie);
+    QVBoxLayout* mainZbieranieLay = new QVBoxLayout(groupBoxZbieranie);
+
+    QHBoxLayout* mainZbieranieLay1 = new QHBoxLayout();
+    mainZbieranieLay->addLayout(mainZbieranieLay1);
+    QLabel* tlab = new QLabel("Status:");
+    mainZbieranieLay1->addWidget(tlab);
+    statusLabel = new QLabel("---");
+    statusLabel->setAlignment(Qt::AlignRight);
+    mainZbieranieLay1->addWidget(statusLabel);
+
+    QHBoxLayout* mainZbieranieLay3 = new QHBoxLayout();
+    mainZbieranieLay->addLayout(mainZbieranieLay3);
+    tlab = new QLabel("Kanały:");
+    mainZbieranieLay3->addWidget(tlab);
+    channelsLabel = new QLabel("-");
+    channelsLabel->setAlignment(Qt::AlignRight);
+    mainZbieranieLay3->addWidget(channelsLabel);
+
+    QHBoxLayout* mainZbieranieLay2 = new QHBoxLayout();
+    mainZbieranieLay->addLayout(mainZbieranieLay2);
+    QLabel* lll = new QLabel("Nazwa pliku:");
+    mainZbieranieLay2->addWidget(lll);
+    fileAdr = new QLineEdit("defaultFileName.txt");
+    mainZbieranieLay2->addWidget(fileAdr);
+
+    QPushButton* btnr = new QPushButton("Reset");
+    mainZbieranieLay->addWidget(btnr);
+    connect(btnr, &QPushButton::clicked, [=](){logg->Reset(fileAdr->text());});
+
+    //=======================Grupa konfiguracja===================================================
+    QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
+    mainLay->addWidget(groupBoxKonfiguracja);
+    QVBoxLayout* mainKonfiguracjaLay = new QVBoxLayout(groupBoxKonfiguracja);
+
+    QHBoxLayout* groupBoxKonfiguracja1 = new QHBoxLayout();
+    mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja1);
+    tl1 = new QLabel("Zakres pracy (min - max):");
+    groupBoxKonfiguracja1->addWidget(tl1);
+    leZakA = new QLineEdit("fd");
+    leZakA->setMaximumWidth(50);
+    leZakA->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leZakA->setValidator(new HexValidator(2, 1, leZakA));
+    groupBoxKonfiguracja1->addWidget(leZakA);
+    leAakB = new QLineEdit("fd");
+    leAakB->setMaximumWidth(50);
+    leAakB->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leAakB->setValidator(new HexValidator(2, 1, leAakB));
+    groupBoxKonfiguracja1->addWidget(leAakB);
 
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -124,6 +206,27 @@ void LogicUIStawrov::LoadConfigs()
         leData->setText(QString(config1File.readLine()));
         config1File.close();
     }
+
+    config1File.setFileName("configs/LogicUIStawrovFileLog.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        fileAdr->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovleZakA.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        leZakA->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
+
+    config1File.setFileName("configs/LogicUIStawrovleAakB.cfg");
+    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        leAakB->setText(QString(config1File.readLine()));
+        config1File.close();
+    }
 }
 
 void LogicUIStawrov::Connected()
@@ -138,6 +241,7 @@ void LogicUIStawrov::Disconnected()
 
 void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
 {
+    logg->FrameReaded(frame);
     frame.isNull();
 }
 
@@ -191,4 +295,14 @@ void LogicUIStawrov::makeStupidMessage()
 void LogicUIStawrov::makeStupidError()
 {
     emit Error("Bezsensowny błąd.");
+}
+
+void LogicUIStawrov::setStatus(QString s)
+{
+    statusLabel->setText(s);
+}
+
+void LogicUIStawrov::setChannels(int s)
+{
+    channelsLabel->setText(QString::number(s));
 }

@@ -60,7 +60,9 @@ SOURCES += main.cpp\
     src/Mendium_imp/MendiumBusConnector.cpp \
     src/BusDevice_imp/BusDeviceUMP.cpp \
     src/LogicUI_imp/utils_ZR3/ZR3UIFrame.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.cpp
+    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.cpp \
+    src/LogicUI_imp/utils_Stawrov/StawrovLogger.cpp \
+    src/Utils/ValidateHex.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -110,4 +112,6 @@ HEADERS  += mainwindow.h \
     src/BusDevice.hpp \
     src/BusDevice_imp/BusDeviceUMP.hpp \
     src/LogicUI_imp/utils_ZR3/ZR3UIFrame.hpp \
-    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.hpp
+    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.hpp \
+    src/LogicUI_imp/utils_Stawrov/StawrovLogger.hpp \
+    src/Utils/ValidateHex.hpp
