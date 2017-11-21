@@ -45,6 +45,9 @@ QString FrameStawrov::toQString()
     if(pck.at(3)!=0)
     {
         QByteArray cargo = pck.mid(4);
+        cargo.remove(cargo.size()-1, 1);
+        if(cargo.isEmpty())
+            return "To nie powinno się zdarzyć.";
         QString tempR;
         if((cargo.at(0)-0x31)==0)
         {
@@ -66,24 +69,33 @@ QString FrameStawrov::toQString()
 
             return tempR;
         }
+        else if((cargo.at(0)-0x01)==0)
+        {
+            if(cargo.length()<3)
+            {
+                tempR = "Błędny format ustawień kanałów: ";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            if(cargo.length()!=(3+2*cargo.at(2)))
+            {
+                tempR = "Błędny rozmiar danych ustawień kanałów: ";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            tempR = QString("SET_CHANNELS [ADR 0x%1, CHS 0x%2]: ").arg(cargo.at(1)&0xff, 2, 16, QChar('0')).arg(cargo.at(2)&0xff, 2, 16, QChar('0'));
+            for(int i=3; i<cargo.length(); i+=2)
+            {
+                int tval = 0;
+                tval |= (cargo.at(i+1)<<8)&0xFF00;
+                tval |= (cargo.at(i)<<0)&0x00FF;
+                tempR.append(QString("[ 0x%1 ] ").arg(tval, 4, 16, QChar('0')));
+            }
+            return tempR;
+        }
     }
-
-
-//    if((pck.at(3)-0x08)==0)
-//    {
-//        QString
-//        QByteArray cutArray = pck.mid(4);
-//        int tval;
-//        for(int i=0;i<4;i++)
-//        {
-//            tval = 0;
-//            tval |= (cutArray.at(0)<<8)&0xFF00;
-//            tval |= (cutArray.at(1)<<0)&0x00FF;
-//            tempR.append(QString("[ %1 ] ").arg(tval));
-//            cutArray = cutArray.mid(2);
-//        }
-//        return tempR;
-//    }
 
     QString temp = "Kij wie co: ";
     for(auto s: pck)

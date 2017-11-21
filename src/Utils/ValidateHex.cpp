@@ -47,18 +47,20 @@ QValidator::State HexValidator::validate(QString &input, int&) const
     if(input.at(0)==' ')
         input.remove(0, 1);
 
+    bool addZeros = false;
     if(input.length()>_slowo*2)
     {
         for(int i=input.length()-1;i>=0;--i)
         {
             if((input.at(i)==' '))
             {
-                while(counter<_slowo*2)
+                while((counter<_slowo*2)&&addZeros)
                 {
                     input.insert(i+1, '0');
                     counter++;
                 }
                 counter = 0;
+                addZeros = true;
             }
             else
                 counter++;
@@ -75,5 +77,5 @@ QValidator::State HexValidator::validate(QString &input, int&) const
     }
     if(_liczba)
         input = input.left(_liczba*(2*_slowo)+1);
-    return QValidator::Intermediate;
+    return QValidator::Acceptable;
 }

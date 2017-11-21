@@ -8,8 +8,10 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QLabel>
+#include <QRadioButton>
 #include "utils_Stawrov/StawrovLogger.hpp"
 #include "../Utils/ValidateHex.hpp"
+#include "../Utils/ValidateDumbFloat.hpp"
 
 class LogicUIStawrov : public LogicUI
 {
@@ -30,6 +32,10 @@ private slots:
     void makeStupidError();
     void setStatus(QString s);
     void setChannels(int s);
+
+    void checkMode();
+    bool CalcChannels();
+    void SendConfig();
 
 protected:
     void InitTests();
@@ -52,6 +58,16 @@ protected:
 
     QLineEdit* leZakA = NULL;
     QLineEdit* leAakB = NULL;
+    QRadioButton* metUlamki = NULL;
+    QRadioButton* metWartosci = NULL;
+    QLineEdit* warUlamki = NULL;
+    QLineEdit* warWartosci = NULL;
+    QLineEdit* lekAdr = NULL;
+    QLineEdit* lekAdrLoc = NULL;
+    QPushButton* btnr2 = NULL;
+    QList<int> values;
+
+    bool modeFromSizes = true;
 };
 
 #endif
