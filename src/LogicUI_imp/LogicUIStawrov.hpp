@@ -12,8 +12,9 @@
 #include "utils_Stawrov/StawrovLogger.hpp"
 #include "../Utils/ValidateHex.hpp"
 #include "../Utils/ValidateDumbFloat.hpp"
+#include "../Utils/Restorable.hpp"
 
-class LogicUIStawrov : public LogicUI
+class LogicUIStawrov : public LogicUI, public Restorable
 {
     Q_OBJECT
 public:
@@ -29,7 +30,6 @@ public slots:
 
 private slots:
     void makeStupidMessage();
-    void makeStupidError();
     void setStatus(QString s);
     void setChannels(int s);
 

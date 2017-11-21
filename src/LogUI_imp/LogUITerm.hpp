@@ -5,11 +5,12 @@
 #include "../LogUI.hpp"
 #include <QSharedPointer>
 #include "../Frame.hpp"
+#include "../Utils/Restorable.hpp"
 #include <QTextEdit>
 #include <QPushButton>
 #include "QCheckBox"
 
-class LogUITerm : public LogUI
+class LogUITerm : public LogUI, public Restorable
 {
     Q_OBJECT
 public:

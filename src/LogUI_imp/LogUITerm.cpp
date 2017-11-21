@@ -4,8 +4,6 @@
 #include "../Factory.hpp"
 #include <QTime>
 #include <QSpacerItem>
-#include <QFile>
-#include <QTextStream>
 
 LogUITerm::LogUITerm(QFrame* parent):
     LogUI(parent)
@@ -15,27 +13,14 @@ LogUITerm::LogUITerm(QFrame* parent):
 
 LogUITerm::~LogUITerm()
 {
-    QFile config1File;
-    QTextStream out(&config1File);
-
-    config1File.setFileName("configs/LogUITermWrapLines.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << (int)(chb->isChecked());
-        config1File.close();
-    }
+    Store("configs/LogUITermWrapLines.cfg", QString::number((int)(chb->isChecked())));
 }
 
 void LogUITerm::LoadConfigs()
 {
-    QFile config1File;
-
-    config1File.setFileName("configs/LogUITermWrapLines.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        chb->setChecked(QString(config1File.readLine()).toInt());
-        config1File.close();
-    }
+    QString temp;
+    if(!Restore("configs/LogUITermWrapLines.cfg", temp))
+        chb->setChecked(temp.toInt());
 }
 
 void LogUITerm::Init()

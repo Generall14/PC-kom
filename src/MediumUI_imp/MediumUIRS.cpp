@@ -5,8 +5,6 @@
 #include <QSerialPortInfo>
 #include <QStringList>
 #include <QSpacerItem>
-#include <QFile>
-#include <QTextStream>
 #include <QDebug>
 
 MediumUiRS::MediumUiRS(QFrame* parent):
@@ -17,22 +15,8 @@ MediumUiRS::MediumUiRS(QFrame* parent):
 
 MediumUiRS::~MediumUiRS()
 {
-    QFile config1File;
-    QTextStream out(&config1File);
-
-    config1File.setFileName("configs/MediumUiRSbaudrate.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << speedBox->currentIndex();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/MediumUiRSport.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << portBox->currentText();
-        config1File.close();
-    }
+    Store("configs/MediumUiRSbaudrate.cfg", QString::number(speedBox->currentIndex()));
+    Store("configs/MediumUiRSport.cfg", portBox->currentText());
 }
 
 void MediumUiRS::Init()
@@ -81,22 +65,15 @@ void MediumUiRS::Init()
 
 void MediumUiRS::LoadConfigs()
 {
-    QFile config1File;
+    QString temp;
 
-    config1File.setFileName("configs/MediumUiRSbaudrate.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    if(!(Restore("configs/MediumUiRSbaudrate.cfg", temp)))
+        speedBox->setCurrentIndex(temp.toInt());
+    if(!(Restore("configs/MediumUiRSport.cfg", temp)))
     {
-        speedBox->setCurrentIndex(QString(config1File.readLine()).toInt());
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/MediumUiRSport.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        int ind = portBox->findText(QString(config1File.readLine()));
+        int ind = portBox->findText(temp);
         if((ind>-1)&&(ind<portBox->count()))
             portBox->setCurrentIndex(ind);
-        config1File.close();
     }
 }
 

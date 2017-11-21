@@ -48,10 +48,11 @@ QString FrameStawrov::toQString()
         cargo.remove(cargo.size()-1, 1);
         if(cargo.isEmpty())
             return "To nie powinno się zdarzyć.";
+
         QString tempR;
         if((cargo.at(0)-0x31)==0)
         {
-            if((cargo.length()<6)||((cargo.length()%2)))
+            if((cargo.length()<6)||(((cargo.length()+1)%2)))
             {
                 tempR = "Błędny format kanałów: ";
                 for(auto s: cargo)

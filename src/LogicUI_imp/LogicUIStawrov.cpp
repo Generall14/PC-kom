@@ -3,8 +3,6 @@
 #include "../Frame_imp/FrameStawrov.hpp"
 #include <QLabel>
 #include <QDebug>
-#include <QFile>
-#include <QTextStream>
 
 LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
@@ -19,78 +17,16 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
 
 LogicUIStawrov::~LogicUIStawrov()
 {
-    QFile config1File;
-    QTextStream out(&config1File);
-
-    config1File.setFileName("configs/LogicUIStawrovAdr.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << leAdr->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovHeader.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << leHeader->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovData.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << leData->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovFileLog.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << fileAdr->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovleZakA.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << leZakA->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovleAakB.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << leAakB->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovlekAdr.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << lekAdr->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovwarUlamki.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << warUlamki->text();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovmetUlamki.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << (int)metUlamki->isChecked();
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovlekAdrLoc.cfg");
-    if(config1File.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        out << lekAdrLoc->text();
-        config1File.close();
-    }
+    Store("configs/LogicUIStawrovAdr.cfg", leAdr->text());
+    Store("configs/LogicUIStawrovHeader.cfg", leHeader->text());
+    Store("configs/LogicUIStawrovData.cfg", leData->text());
+    Store("configs/LogicUIStawrovFileLog.cfg", fileAdr->text());
+    Store("configs/LogicUIStawrovleZakA.cfg", leZakA->text());
+    Store("configs/LogicUIStawrovleAakB.cfg", leAakB->text());
+    Store("configs/LogicUIStawrovlekAdr.cfg", lekAdr->text());
+    Store("configs/LogicUIStawrovwarUlamki.cfg", warUlamki->text());
+    Store("configs/LogicUIStawrovmetUlamki.cfg", QString::number((int)metUlamki->isChecked()));
+    Store("configs/LogicUIStawrovlekAdrLoc.cfg", lekAdrLoc->text());
 
     delete logg;
 }
@@ -101,11 +37,6 @@ void LogicUIStawrov::Init()
     mainLay->setMargin(2);
 
     InitTests();
-
-    btnE = new QPushButton("Wygeneruj bezsensowny błąd");
-    mainLay->addWidget(btnE);
-    btnE->setMinimumWidth(350);
-    connect(btnE, SIGNAL(clicked(bool)), this, SLOT(makeStupidError()));
 
     LoadConfigs();
     checkMode();
@@ -268,80 +199,34 @@ void LogicUIStawrov::InitTests()
 
 void LogicUIStawrov::LoadConfigs()
 {
-    QFile config1File;
+    QString temp;
 
-    config1File.setFileName("configs/LogicUIStawrovAdr.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
+    if(!Restore("configs/LogicUIStawrovAdr.cfg", temp))
+        leAdr->setText(temp);
+    if(!Restore("configs/LogicUIStawrovHeader.cfg", temp))
+        leHeader->setText(temp);
+    if(!Restore("configs/LogicUIStawrovData.cfg", temp))
+        leData->setText(temp);
+    if(!Restore("configs/LogicUIStawrovFileLog.cfg", temp))
+        fileAdr->setText(temp);
+    if(!Restore("configs/LogicUIStawrovleZakA.cfg", temp))
+        leZakA->setText(temp);
+    if(!Restore("configs/LogicUIStawrovleAakB.cfg", temp))
+        leAakB->setText(temp);
+    if(!Restore("configs/LogicUIStawrovlekAdr.cfg", temp))
+        lekAdr->setText(temp);
+    if(!Restore("configs/LogicUIStawrovwarUlamki.cfg", temp))
+        warUlamki->setText(temp);
+    if(!Restore("configs/LogicUIStawrovlekAdrLoc.cfg", temp))
+        lekAdrLoc->setText(temp);
+    if(!Restore("configs/LogicUIStawrovmetUlamki.cfg", temp))
     {
-        leAdr->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovHeader.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        leHeader->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovData.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        leData->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovFileLog.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        fileAdr->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovleZakA.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        leZakA->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovleAakB.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        leAakB->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovlekAdr.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        lekAdr->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-
-    config1File.setFileName("configs/LogicUIStawrovwarUlamki.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        warUlamki->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
-    CalcChannels();
-
-    config1File.setFileName("configs/LogicUIStawrovmetUlamki.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        bool first = QString(config1File.readLine()).toInt();
+        bool first = temp.toInt();
         if(!first)
             metWartosci->setChecked(true);
-        config1File.close();
     }
 
-    config1File.setFileName("configs/LogicUIStawrovlekAdrLoc.cfg");
-    if(config1File.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        lekAdrLoc->setText(QString(config1File.readLine()));
-        config1File.close();
-    }
+    CalcChannels();
 }
 
 void LogicUIStawrov::Connected()
@@ -362,6 +247,9 @@ void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
     frame.isNull();
 }
 
+/**
+ * Tworzy wiadomość z wpisanymi danymi.
+ */
 void LogicUIStawrov::makeStupidMessage()
 {
     QByteArray maker;
@@ -409,11 +297,6 @@ void LogicUIStawrov::makeStupidMessage()
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(maker)));
 }
 
-void LogicUIStawrov::makeStupidError()
-{
-    emit Error("Bezsensowny błąd.");
-}
-
 void LogicUIStawrov::setStatus(QString s)
 {
     statusLabel->setText(s);
@@ -424,6 +307,9 @@ void LogicUIStawrov::setChannels(int s)
     channelsLabel->setText(QString::number(s));
 }
 
+/**
+ * Sprawdza wybrany tryb wprowadzania kanałów i odpowiednio enabluje edytory.
+ */
 void LogicUIStawrov::checkMode()
 {
     if(metUlamki->isChecked())

@@ -6,8 +6,9 @@
 #include <QPushButton>
 #include <QDebug>
 #include "../MediumUI.hpp"
+#include "../Utils/Restorable.hpp"
 
-class MediumUiRS : public MediumUI
+class MediumUiRS : public MediumUI, public Restorable
 {
     Q_OBJECT
 public:
