@@ -57,6 +57,19 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     }
     stringTable = data.mid(stptr, stsize);
 
+    stptr = 0;
+    stsize = 0;
+    stptr |= (data.at(6)<<8)&0xFF00;
+    stptr |= (data.at(7)<<0)&0x00FF;
+    stsize |= (data.at(8)<<8)&0xFF00;
+    stsize |= (data.at(9)<<0)&0x00FF;
+    if((data.length()<stptr+stsize-1)||(stptr<=1))
+    {
+        emit Error("Błąd parsowania deskryptora urządzenia pliku konfiguracyjnego \"" + _arg + "\"");
+        return;
+    }
+    deviceDescriptor = data.mid(stptr, stsize);
+
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
     connect(this, SIGNAL(Halt()), frameBuilder, SLOT(Stop()));
@@ -92,7 +105,7 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
     QByteArray data = fr->pureData().mid(5, fr->pureData().at(4));
     uchar val = data.at(0);
 
-    if((val==(uchar)0x0A))
+    if(/*(val==(uchar)0x0A)*/1)
     {
         QByteArray toWrite;
         toWrite.append(fr->pureData().at(3));
@@ -105,6 +118,10 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
         case (uchar)0x0A:
             toWrite.append(0x8A);
             toWrite.append(GetFileData(stringTable, off, siz));
+            break;
+        case (uchar)0x01:
+            toWrite.append(0x81);
+            toWrite.append(GetFileData(deviceDescriptor, off, siz));
             break;
         default:
             break;

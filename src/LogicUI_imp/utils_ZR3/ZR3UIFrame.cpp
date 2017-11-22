@@ -4,6 +4,7 @@
 #include <QInputDialog>
 #include <QDebug>
 #include <QHeaderView>
+#include <QGroupBox>
 #include "../../Frame_imp/FrameZR3.hpp"
 #include "../../Factory.hpp"
 
@@ -94,6 +95,7 @@ void ZR3UIFrame::InitDebug()
     connect(btnReadReq, SIGNAL(clicked(bool)), this, SLOT(aplReadReq()));
 
 
+    // String list
     QHBoxLayout* Lay3 = new QHBoxLayout();
     mainLay->addLayout(Lay3);
 
@@ -111,6 +113,56 @@ void ZR3UIFrame::InitDebug()
     sltw->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     sltw->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     sltw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // Device descriptor
+    QPushButton* btnReadDevDesc = new QPushButton("Read DevDesc");
+    connect(btnReadDevDesc, &QPushButton::clicked, [=](){InitZR3ReadFile(0x01);});
+    Lay3->addWidget(btnReadDevDesc);
+
+    QGroupBox* devFrame = new QGroupBox("DeviceDescriptor");
+    mainLay->addWidget(devFrame);
+    QVBoxLayout* devL = new QVBoxLayout();
+    devFrame->setLayout(devL);
+
+    QHBoxLayout* devL1 = new QHBoxLayout();
+    devL->addLayout(devL1);
+    QLabel* dd1 = new QLabel("Wersja programu: ");
+    devL1->addWidget(dd1);
+    vProg = new QLabel("XX");
+    devL1->addWidget(vProg);
+    dd1 = new QLabel(" prot. publicznego: ");
+    devL1->addWidget(dd1);
+    vPub = new QLabel("XX");
+    devL1->addWidget(vPub);
+    dd1 = new QLabel(" prot. prywatnego: ");
+    devL1->addWidget(dd1);
+    vPriv = new QLabel("XX");
+    devL1->addWidget(vPriv);
+
+    QHBoxLayout* devL2 = new QHBoxLayout();
+    devL->addLayout(devL2);
+    prod = new QLabel("--------");
+    prod->setToolTip("Producent");
+    devL2->addWidget(prod);
+    ser = new QLabel("--------");
+    ser->setToolTip("Numer seryjny");
+    devL2->addWidget(ser);
+    name = new QLabel("--------");
+    name->setToolTip("Nazwa urządzenia");
+    devL2->addWidget(name);
+
+    tooltip = new QLineEdit("--------");
+    tooltip->setToolTip("Tooltip urządzenia");
+    tooltip->setReadOnly(true);
+    devL->addWidget(tooltip);
+    opis = new QLineEdit("--------");
+    opis->setToolTip("Opis urządzenia");
+    opis->setReadOnly(true);
+    devL->addWidget(opis);
+
+    classList = new QComboBox();
+    classList->setToolTip("Lista implementowanych klas");
+    devL->addWidget(classList);
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
 }
@@ -209,6 +261,10 @@ void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
     {
         strings = arr;
         ParseStrings();
+    }
+    else if(_header==0x01)
+    {
+        qDebug() << arr;
     }
 }
 

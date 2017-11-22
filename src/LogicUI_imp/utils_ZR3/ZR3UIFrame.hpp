@@ -13,6 +13,7 @@
 #include <QStringList>
 #include <QList>
 #include <QTableWidget>
+#include <QLabel>
 #include "../../Frame.hpp"
 #include "ZR3ReadFile.hpp"
 
@@ -41,6 +42,16 @@ protected:
 
     QFrame* dbgFrame = NULL;
     QFrame* suiFrame = NULL;
+
+    QLabel* vProg = NULL;
+    QLabel* vPub = NULL;
+    QLabel* vPriv = NULL;
+    QLabel* prod = NULL;
+    QLabel* ser = NULL;
+    QLabel* name = NULL;
+    QLineEdit* tooltip = NULL;
+    QLineEdit* opis = NULL;
+    QComboBox* classList = NULL;
 
     QByteArray protHELLO;
 

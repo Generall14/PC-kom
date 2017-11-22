@@ -25,6 +25,7 @@ protected:
     uchar myADr;
     uchar nextAdr;
     QByteArray stringTable;
+    QByteArray deviceDescriptor;
     FrameBuilderZR3* frameBuilder = NULL;
 
     void ParseConfigFile(QByteArray data);

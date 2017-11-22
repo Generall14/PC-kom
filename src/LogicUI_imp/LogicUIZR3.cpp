@@ -23,7 +23,8 @@ void LogicUIZR3::Init()
     mainLay->setMargin(1);
 
     qtw = new QTabWidget();
-    qtw->setMinimumWidth(300);
+    qtw->setMinimumWidth(400);
+    qtw->setMinimumHeight(800);
     mainLay->addWidget(qtw);
 
     dbgFrame = new QFrame();
