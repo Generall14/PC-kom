@@ -428,6 +428,7 @@ bool LogicUIStawrov::CalcChannels()
         }
         warWartosci->setText(temps);
     }
+    values.insert(0, valMin);
     return 0;
 }
 

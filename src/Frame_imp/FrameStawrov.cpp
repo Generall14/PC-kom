@@ -86,7 +86,8 @@ QString FrameStawrov::toQString()
                     tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
                 return tempR;
             }
-            tempR = QString("SET_CHANNELS [ADR 0x%1, CHS 0x%2]: ").arg(cargo.at(1)&0xff, 2, 16, QChar('0')).arg(cargo.at(2)&0xff, 2, 16, QChar('0'));
+            tempR = QString("SET_CHANNELS [ADR 0x%1, CHS 0x%2]: ").arg(cargo.at(1)&0xff, 2, 16, QChar('0'))
+                    .arg((cargo.at(2)-1)&0xff, 2, 16, QChar('0'));
             for(int i=3; i<cargo.length(); i+=2)
             {
                 int tval = 0;
