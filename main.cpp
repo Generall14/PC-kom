@@ -11,9 +11,20 @@ int main(int argc, char *argv[])
 {
     qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
 
+    QApplication a(argc, argv);
+
+    bool fake = false;
+    qDebug() << QApplication::arguments();
+    for(QString arg:QApplication::arguments())
+    {
+        if(arg=="-f"){
+            fake = true;
+            break;
+        }
+    }
+
     #include "init.hpp"
 
-    QApplication a(argc, argv);
     MainWindow w;
     w.show();
 
