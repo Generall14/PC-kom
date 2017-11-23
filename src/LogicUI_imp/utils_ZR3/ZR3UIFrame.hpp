@@ -49,6 +49,8 @@ protected:
     QList<davClass> devClasses;
     void ParseDevice();
 
+    QByteArray methDescriptor;
+
     QString ConcStringPointers(QList<int> ptrs, int lang);
 
 protected slots:

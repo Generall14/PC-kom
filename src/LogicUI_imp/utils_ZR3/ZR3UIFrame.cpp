@@ -134,6 +134,11 @@ void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
         devDescriptor = arr;
         ParseDevice();
     }
+    else if(_header==0x09)
+    {
+        methDescriptor = arr;
+        qDebug() << methDescriptor;
+    }
 }
 
 void ZR3UIFrame::ParseStrings()

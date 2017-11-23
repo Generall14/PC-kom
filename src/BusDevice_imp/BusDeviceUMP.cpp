@@ -36,7 +36,7 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
 {
     if(data.size()<6)
     {
-        emit Error("Błąd parsowania adresów pliku konfiguracyjnego \"" + _arg + "\"");
+        emit Error("Błąd parsowania adresów pliku z konfiguracyjnego \"" + _arg + "\"");
         return;
     }
     else
@@ -52,7 +52,7 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     stsize |= (data.at(5)<<0)&0x00FF;
     if((data.length()<stptr+stsize-1)||(stptr<=1))
     {
-        emit Error("Błąd parsowania listy stringów pliku konfiguracyjnego \"" + _arg + "\"");
+        emit Error("Błąd parsowania listy stringów z pliku konfiguracyjnego \"" + _arg + "\"");
         return;
     }
     stringTable = data.mid(stptr, stsize);
@@ -65,10 +65,23 @@ void BusDeviceUMP::ParseConfigFile(QByteArray data)
     stsize |= (data.at(9)<<0)&0x00FF;
     if((data.length()<stptr+stsize-1)||(stptr<=1))
     {
-        emit Error("Błąd parsowania deskryptora urządzenia pliku konfiguracyjnego \"" + _arg + "\"");
+        emit Error("Błąd parsowania deskryptora urządzenia z pliku konfiguracyjnego \"" + _arg + "\"");
         return;
     }
     deviceDescriptor = data.mid(stptr, stsize);
+
+    stptr = 0;
+    stsize = 0;
+    stptr |= (data.at(10)<<8)&0xFF00;
+    stptr |= (data.at(11)<<0)&0x00FF;
+    stsize |= (data.at(12)<<8)&0xFF00;
+    stsize |= (data.at(13)<<0)&0x00FF;
+    if((data.length()<stptr+stsize-1)||(stptr<=1))
+    {
+        emit Error("Błąd parsowania deskryptora metod z pliku konfiguracyjnego \"" + _arg + "\"");
+        return;
+    }
+    methodsDescriptor = data.mid(stptr, stsize);
 
     frameBuilder = new FrameBuilderZR3(myADr, nextAdr, false);
     connect(this, SIGNAL(toFrameByteReaded(QByteArray)), frameBuilder, SLOT(ByteReaded(QByteArray)));
@@ -122,6 +135,10 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
         case (uchar)0x01:
             toWrite.append(0x81);
             toWrite.append(GetFileData(deviceDescriptor, off, siz));
+            break;
+        case (uchar)0x09:
+            toWrite.append(0x89);
+            toWrite.append(GetFileData(methodsDescriptor, off, siz));
             break;
         default:
             break;

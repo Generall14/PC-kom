@@ -102,6 +102,14 @@ void ZR3UIFrameUI::InitDebug()
     connect(btnReadString, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x0A);});
     Lay3->addWidget(btnReadString);
 
+    QPushButton* btnReadDevDesc = new QPushButton("Read DevDesc");
+    connect(btnReadDevDesc, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x01);});
+    Lay3->addWidget(btnReadDevDesc);
+
+    QPushButton* btnReadMethDesc = new QPushButton("Read MethDesc");
+    connect(btnReadMethDesc, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x09);});
+    Lay3->addWidget(btnReadMethDesc);
+
     sltw = new QTableWidget();
     gbAplLay->addWidget(sltw);
     sltw->horizontalHeader()->setVisible(false);
@@ -112,10 +120,6 @@ void ZR3UIFrameUI::InitDebug()
     sltw->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     sltw->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     sltw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    QPushButton* btnReadDevDesc = new QPushButton("Read DevDesc");
-    connect(btnReadDevDesc, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x01);});
-    Lay3->addWidget(btnReadDevDesc);
 
     QGroupBox* devFrame = new QGroupBox("DeviceDescriptor");
     gbAplLay->addWidget(devFrame);
