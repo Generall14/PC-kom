@@ -19,9 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));
     emit FakeDiscinnect();
-
-    this->setToolTip("F1");
-    this->setToolTipDuration(4000);
 }
 
 MainWindow::~MainWindow()

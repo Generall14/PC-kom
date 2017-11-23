@@ -439,7 +439,7 @@ void LogicUIStawrov::SendConfig()
 {
     if(CalcChannels())
         return;
-    if(values.isEmpty())
+    if(values.size()<2)
         return;
     QByteArray temp;
     temp.append(0xff);
@@ -462,7 +462,7 @@ void LogicUIStawrov::SendConfig()
         return;
     }
     cargo.append(tempi);
-    cargo.append(values.size()&0xFF);
+    cargo.append((values.size()-1)&0xFF);
     for(int i: values)
     {
         cargo.append(i&0xFF);
