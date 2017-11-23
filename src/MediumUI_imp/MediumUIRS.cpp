@@ -80,8 +80,11 @@ void MediumUiRS::LoadConfigs()
 void MediumUiRS::Refresh()
 {
     portBox->clear();
-    for(auto pi: QSerialPortInfo::availablePorts())
-        portBox->addItem(pi.portName());
+    QStringList out;
+    for(QSerialPortInfo l:QSerialPortInfo::availablePorts())
+        out.append(l.portName());
+    out.sort();
+    portBox->addItems(out);
 }
 
 void MediumUiRS::MakeConnectRequest()
