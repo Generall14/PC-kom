@@ -161,11 +161,11 @@ void LogicUIZR3::AddZR3Dev(QString str)
     ZR3UIFrame* newzr3 = new ZR3UIFrame(newFrame, nadr);
     if(!connected)
         newFrame->setEnabled(false);
-    connect(newzr3, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
-    connect(newzr3, SIGNAL(FrameToMendium(QSharedPointer<Frame>)), this, SIGNAL(WriteFrame(QSharedPointer<Frame>)));
-    connect(newzr3, SIGNAL(PureDataToMedium(QByteArray)), this, SIGNAL(WritePureData(QByteArray)));
-    connect(newzr3, SIGNAL(AdresChanged(uchar)), this,SLOT(ZR3UIFrameAdrChanged(uchar)));
-    connect(this, SIGNAL(InternalFrame(QSharedPointer<Frame>)), newzr3, SLOT(FrameToUI(QSharedPointer<Frame>)));
+    connect(newzr3, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)), Qt::QueuedConnection);
+    connect(newzr3, SIGNAL(FrameToMendium(QSharedPointer<Frame>)), this, SIGNAL(WriteFrame(QSharedPointer<Frame>)), Qt::QueuedConnection);
+    connect(newzr3, SIGNAL(PureDataToMedium(QByteArray)), this, SIGNAL(WritePureData(QByteArray)), Qt::QueuedConnection);
+    connect(newzr3, SIGNAL(AdresChanged(uchar)), this,SLOT(ZR3UIFrameAdrChanged(uchar)), Qt::QueuedConnection);
+    connect(this, SIGNAL(InternalFrame(QSharedPointer<Frame>)), newzr3, SLOT(FrameToUI(QSharedPointer<Frame>)), Qt::QueuedConnection);
     devsList.push_back(newzr3);
     tabsList.append(newFrame);
     newzr3->Init();

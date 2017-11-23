@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.cpp \
     src/Utils/ValidateHex.cpp \
     src/Utils/ValidateDumbFloat.cpp \
-    src/Utils/Restorable.cpp
+    src/Utils/Restorable.cpp \
+    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -118,4 +119,6 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.hpp \
     src/Utils/ValidateHex.hpp \
     src/Utils/ValidateDumbFloat.hpp \
-    src/Utils/Restorable.hpp
+    src/Utils/Restorable.hpp \
+    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.hpp \
+	src/LogicUI_imp/utils_ZR3/devClass.hpp

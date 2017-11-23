@@ -2,26 +2,20 @@
 #define ZR3UIFRAME_HPP
 
 #include <QObject>
-#include <QFrame>
-#include <QPushButton>
-#include <QTabWidget>
-#include <QStackedWidget>
-#include <QListWidget>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QSpinBox>
 #include <QStringList>
 #include <QList>
-#include <QTableWidget>
-#include <QLabel>
 #include "../../Frame.hpp"
+#include "devClass.hpp"
 #include "ZR3ReadFile.hpp"
+#include "ZR3UIFrameUI.hpp"
 
 class ZR3UIFrame : public QObject
 {
     Q_OBJECT
+    friend class ZR3UIFrameUI;
 public:
     ZR3UIFrame(QFrame* parent, uchar adr);
+    ~ZR3UIFrame();
 
     void Init();
     uchar Adr() const;
@@ -38,48 +32,36 @@ signals:
 
 protected:
     QFrame* cFrame = NULL;
+    ZR3UIFrameUI* ui = NULL;
     uchar _adr;
-
-    QFrame* dbgFrame = NULL;
-    QFrame* suiFrame = NULL;
-
-    QLabel* vProg = NULL;
-    QLabel* vPub = NULL;
-    QLabel* vPriv = NULL;
-    QLabel* prod = NULL;
-    QLabel* ser = NULL;
-    QLabel* name = NULL;
-    QLineEdit* tooltip = NULL;
-    QLineEdit* opis = NULL;
-    QComboBox* classList = NULL;
-
-    QByteArray protHELLO;
-
     static const char _myAdr = 0xFE;
-
-    void InitDebug();
-
-    QComboBox* cbFreadFile = NULL;
-    QSpinBox* sboffset = NULL;
-    QSpinBox* sbSize = NULL;
-    QStringList readList = {"aplDeviceDescriptor", "aplStringListDescriptor", "dupa"};
 
     ZR3ReadFile* rfile = NULL;
     void InitZR3ReadFile(uchar header);
 
     QByteArray strings;
     QList<QStringList> stringi;
-    QTableWidget* sltw = NULL;
+    int currentLang = 0;
     void ParseStrings();
-    void UpdateStringsTable();
+
+    QByteArray devDescriptor;
+    QStringList parsedDevDesc;
+    QList<davClass> devClasses;
+    void ParseDevice();
+
+    QString ConcStringPointers(QList<int> ptrs, int lang);
 
 protected slots:
+    //Metody warstwy protokołu:
     void protSET_ADR();
     void protSET_NEXT_ADR();
+    void protHELLO();
 
-    void aplReadReq();
+    //Metody warstwy aplikacji:
+    void aplReadReq(QString type, int offset, char size);
 
     void FinalizeZR3ReadFile(uchar _header, QByteArray arr);
+    void UpdateCurrentLanguage(int newLang);
 };
 
 #endif
