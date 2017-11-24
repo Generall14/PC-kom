@@ -65,7 +65,10 @@ SOURCES += main.cpp\
     src/Utils/ValidateHex.cpp \
     src/Utils/ValidateDumbFloat.cpp \
     src/Utils/Restorable.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.cpp
+    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.cpp \
+    src/LogicUI_imp/utils_ZR3/transactionDesc.cpp \
+    src/LogicUI_imp/utils_ZR3/ParamUi.cpp \
+    src/LogicUI_imp/utils_ZR3/transactionUi.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -123,4 +126,7 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.hpp \
 	src/LogicUI_imp/utils_ZR3/devClass.hpp \
     src/LogicUI_imp/utils_ZR3/method.hpp \
-    src/LogicUI_imp/utils_ZR3/param.hpp
+    src/LogicUI_imp/utils_ZR3/param.hpp \
+    src/LogicUI_imp/utils_ZR3/transactionDesc.hpp \
+    src/LogicUI_imp/utils_ZR3/ParamUi.hpp \
+    src/LogicUI_imp/utils_ZR3/transactionUi.hpp

@@ -110,8 +110,8 @@ void ZR3UIFrame::aplReadReq(QString type, int offset, char size)
 
 void ZR3UIFrame::InitZR3ReadFile(uchar header)
 {
-    if(rfile!=NULL)
-        return;
+//    if(rfile!=NULL)
+//        return;
     rfile = new ZR3ReadFile(header);
     connect(rfile, &ZR3ReadFile::SendDataFrame, [=](QByteArray ba){ba.insert(0, _adr);emit PureDataToMedium(ba);});
     connect(rfile, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
@@ -122,7 +122,7 @@ void ZR3UIFrame::InitZR3ReadFile(uchar header)
 
 void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
 {
-    rfile = NULL;
+//    rfile = NULL;
     if(arr.isEmpty())
         return;
     if(_header==0x0A)
@@ -186,6 +186,8 @@ void ZR3UIFrame::ParseStrings()
     }
 
     ui->UpdateStringsTable(stringi);
+    ParseDevice();
+    ParseMethods();
 }
 
 /**
@@ -193,6 +195,8 @@ void ZR3UIFrame::ParseStrings()
  */
 void ZR3UIFrame::ParseDevice()
 {
+    if(stringi.isEmpty())
+        return;
     if(devDescriptor.isEmpty())
         return;
 
@@ -266,6 +270,8 @@ void ZR3UIFrame::ParseDevice()
  */
 void ZR3UIFrame::ParseMethods()
 {
+    if(stringi.isEmpty())
+        return;
     if(methDescriptor.isEmpty())
         return;
 

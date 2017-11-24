@@ -28,10 +28,12 @@ public:
 private:
     ZR3UIFrame* p = NULL;
     void InitDebug();
+    void InitSimpleUI();
 
     QFrame* dbgFrame = NULL;
     QFrame* suiFrame = NULL;
 
+    //DEBUG
     QComboBox* cbFreadFile = NULL;
     QSpinBox* sboffset = NULL;
     QSpinBox* sbSize = NULL;
@@ -57,6 +59,8 @@ private:
     QLabel* larep = NULL;
     QListWidget* lparams = NULL;
 
+    //SIMPLE UI
+
 private slots:
     void aplReadReq();
 
@@ -65,6 +69,9 @@ private slots:
     void UpdateMetDescriptor(QList<method>& meths);
 
     void UpdateCurrentMethod(int nr);
+
+    //SImple ui
+    void GenSimpleUI();
 };
 
 #endif

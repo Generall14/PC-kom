@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QCoreApplication>
+#include <QtGlobal>
 
 BusDeviceUMP::BusDeviceUMP(QString arg):
     BusDevice(arg)
@@ -99,7 +100,9 @@ QByteArray BusDeviceUMP::GetFileData(QByteArray& ba, uint16_t ptr, uint8_t size)
         return temp;
     if(size==0)
         return temp;
-    size = qMin(size, MAX_DATA_FILE_SIZE);
+//    size = qMin(size, MAX_DATA_FILE_SIZE);
+    if(MAX_DATA_FILE_SIZE<size)
+        size = MAX_DATA_FILE_SIZE;
     temp.append(ba.mid(ptr, size));
     return temp;
 }

@@ -41,7 +41,7 @@ gmeths=[
 		[
 			0x60, # nagłówek
 			0x80, # parametry
-			0x00, # nagłówek powiązany
+			0xe0, # nagłówek powiązany
 			[5], # tooltip
 			[5, 7], #opis
 			[ # parametry
@@ -62,7 +62,6 @@ gmeths=[
 				['char','j',[8],[8, 7]],
 				['int16','Sv',[8],[8, 7]]
 			]
-
 		]
 	]
 

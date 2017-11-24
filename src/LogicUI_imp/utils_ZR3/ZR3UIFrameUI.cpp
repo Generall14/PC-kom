@@ -7,6 +7,8 @@
 #include <QHeaderView>
 #include <QDebug>
 #include "param.hpp"
+#include "transactionDesc.hpp"
+#include "transactionUi.hpp"
 
 ZR3UIFrameUI::ZR3UIFrameUI(ZR3UIFrame* parent):
     p(parent)
@@ -30,6 +32,26 @@ void ZR3UIFrameUI::Init()
     qtw->addTab(suiFrame, "Simple UI");
 
     InitDebug();
+    InitSimpleUI();
+}
+
+void ZR3UIFrameUI::InitSimpleUI()
+{
+    QVBoxLayout* mainLay = new QVBoxLayout(suiFrame);
+    mainLay->setMargin(6);
+
+    QHBoxLayout* Lay1 = new QHBoxLayout();
+    mainLay->addLayout(Lay1);
+
+    QPushButton* btnLData = new QPushButton("Load data");
+    connect(btnLData, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x0a);p->InitZR3ReadFile(0x09);});
+    Lay1->addWidget(btnLData);
+
+    QPushButton* btnInit = new QPushButton("Init");
+    connect(btnInit, SIGNAL(clicked(bool)), this, SLOT(GenSimpleUI()), Qt::QueuedConnection);
+    Lay1->addWidget(btnInit);
+
+    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
 }
 
 void ZR3UIFrameUI::InitDebug()
@@ -274,7 +296,7 @@ void ZR3UIFrameUI::UpdateMetDescriptor(QList<method>& meths)
         if(m.isResponse)
             s.append(QString(", resp(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0')));
         else
-            s.append(", req");
+            s.append(", req(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0'));
         if(m.direct)
             s.append(", to device");
         else
@@ -310,7 +332,7 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
     if(cmet.isResponse)
         ltype->setText(QString("response to 0x%1").arg(cmet.secondHeader&0xFF, 2, 16, QChar('0')));
     else
-        ltype->setText("request");
+        ltype->setText(QString("ask to 0x%1").arg(cmet.secondHeader&0xFF, 2, 16, QChar('0')));
     if(cmet.autoReport)
         larep->setText("oui");
     else
@@ -321,4 +343,25 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
         pars.append(QString(pp.type+"["+pp.unit+"] <"+pp.tooltip+"> <"+pp.desc+">"));
     lparams->clear();
     lparams->addItems(pars);
+}
+
+void ZR3UIFrameUI::GenSimpleUI()
+{
+    QList<TransactionDesc> trs;
+    for(method m: p->methods)
+    {
+        bool found = false;
+        for(int i=0;i<trs.size();++i)
+        {
+            if(trs[i].DoYouNeedThis(m))
+                found = true;
+        }
+        if(!found)
+        {
+            TransactionDesc ttrans(m);
+            trs.append(ttrans);
+        }
+
+        TransactionUi* asd = new TransactionUi(suiFrame, m);
+    }
 }
