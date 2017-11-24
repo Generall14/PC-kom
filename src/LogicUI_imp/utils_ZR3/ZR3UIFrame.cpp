@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "../../Frame_imp/FrameZR3.hpp"
 #include "../../Factory.hpp"
+#include "param.hpp"
 
 ZR3UIFrame::ZR3UIFrame(QFrame* parent, uchar adr):
     QObject(parent),
@@ -137,10 +138,13 @@ void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
     else if(_header==0x09)
     {
         methDescriptor = arr;
-        qDebug() << methDescriptor;
+        ParseMethods();
     }
 }
 
+/**
+ * Funkcja przetwarza dane binarne strings na listę stringów stringi.
+ */
 void ZR3UIFrame::ParseStrings()
 {
     stringi.clear();
@@ -184,6 +188,9 @@ void ZR3UIFrame::ParseStrings()
     ui->UpdateStringsTable(stringi);
 }
 
+/**
+ * Funkcja przetwarza dane binarne devDescriptor na opis urządzenia parsedDevDesc.
+ */
 void ZR3UIFrame::ParseDevice()
 {
     if(devDescriptor.isEmpty())
@@ -200,96 +207,211 @@ void ZR3UIFrame::ParseDevice()
     }
     for(int i=0;i<3;++i)
         parsedDevDesc.append(QString::number((int)temp.at(i)));
-
     temp.remove(0, 3);
-    QList<int> zeros;
-    for(int i=0;i<temp.size();++i)
-        if(temp.at(i)==0x00)
-            zeros.append(i);
-    if(zeros.size()<3)
-    {
-        emit Error("Błąd parsowania deskryptora urządzenia: błąd tekstów opisowych");
-        return;
-    }
-    parsedDevDesc.append(QString(temp.mid(0, zeros.at(0))));
-    parsedDevDesc.append(QString(temp.mid(zeros.at(0)+1, zeros.at(1)-zeros.at(0))));
-    parsedDevDesc.append(QString(temp.mid(zeros.at(1)+1, zeros.at(2)-zeros.at(1))));
-    temp.remove(0, zeros.at(2)+1);
 
-    zeros.clear();
-    for(int i=0;i<temp.size();++i)
-        if((temp.at(i)==(char)0xFF))
-            zeros.append(i);
-    if(zeros.size()<2)
+    try
     {
-        emit Error("Błąd parsowania deskryptora urządzenia: błąd wskaźników tekstowych");
+        parsedDevDesc.append(ReadAndRemoveNextSimpleString(temp));
+        parsedDevDesc.append(ReadAndRemoveNextSimpleString(temp));
+        parsedDevDesc.append(ReadAndRemoveNextSimpleString(temp));
+        parsedDevDesc.append(ReadAndRemoveNextString(temp));
+        parsedDevDesc.append(ReadAndRemoveNextString(temp));
+    }
+    catch(QString exc)
+    {
+        emit Error(exc);
         return;
     }
-    QList<int> ptrs;
-    for(int i=0;i<zeros.at(0);++i)
-        ptrs.append(temp.at(i));
-    parsedDevDesc.append(ConcStringPointers(ptrs, currentLang));
-    ptrs.clear();
-    for(int i=zeros.at(0)+1;i<zeros.at(1);++i)
-        ptrs.append(temp.at(i));
-    parsedDevDesc.append(ConcStringPointers(ptrs, currentLang));
-    temp.remove(0, zeros.at(1)+1);
 
     while(!temp.isEmpty())
     {
-        ptrs.clear();
-        zeros.clear();
         QString tclass;
+        try
+        {
+            tclass = ReadAndRemoveNextSimpleString(temp);
+        }
+        catch(QString exc)
+        {
+            emit Error(exc);
+            return;
+        }
+
+        int x00 = -1;
         for(int i=0;i<temp.size();++i)
         {
             if(temp.at(i)==0x00)
             {
-                zeros.append(i);
-                if(zeros.size()>=2)
-                    break;
+                x00 = i;
+                break;
             }
         }
-        if(zeros.size()<2)
+        if(x00<0)
         {
             emit Error("Błąd parsowania listy funkcjonalności");
             return;
         }
-        tclass = QString(temp.mid(0, zeros.at(0)));
-        for(int i=zeros.at(0)+1;i<zeros.at(1);++i)
+        QList<int> ptrs;
+        for(int i=0;i<x00;++i)
             ptrs.append(temp.at(i));
         davClass tdv{tclass, ptrs};
         devClasses.append(tdv);
-        if(zeros.at(1)<temp.size())
-            temp.remove(0, zeros.at(1)+1);
-        else
-        {
-            emit Error("Błąd parsowania listy funkcjonalności");
-            return;
-        }
+        temp.remove(0, x00+1);
     }
 
     ui->UpdateDevDescriptor(parsedDevDesc, devClasses);
 }
 
-QString ZR3UIFrame::ConcStringPointers(QList<int> ptrs, int lang)
+/**
+ * Funkcja przetwarza dane binarne methDescriptor na listę metod methods.
+ */
+void ZR3UIFrame::ParseMethods()
 {
-    if(lang>=stringi.size())
+    if(methDescriptor.isEmpty())
+        return;
+
+    QByteArray temp = methDescriptor;
+    methods.clear();
+
+    while(!temp.isEmpty())
     {
+        QList<param> par;
+        method met{(char)0xFF, false, false, false, 0, (char)0xFF, "-", "-", par};
+
+        if(temp.size()<3)
         {
-            emit Error("Błąd konkatenacji listy stringów: nieprawidłowy numer języka: " + QString::number(lang));
-            return "lang err";
+            emit Error("Błąd parsowania deskryptora metod: temp.size()<3");
+            return;
+        }
+        met.header = temp.at(0);
+        met.secondHeader = temp.at(2);
+        met.direct = temp.at(1)&0x80;
+        met.isResponse = temp.at(1)&0x40;
+        met.autoReport = temp.at(1)&0x20;
+        met.timeout = temp.at(1)&0x1F;
+        temp.remove(0, 3);
+
+        try
+        {
+            met.tooltip = ReadAndRemoveNextString(temp);
+            met.desc = ReadAndRemoveNextString(temp);
+        }
+        catch(QString exc)
+        {
+            emit Error(exc);
+            return;
+        }
+
+        while(1)
+        {
+            if(temp.isEmpty())
+            {
+                emit Error("Błąd parsowania deskryptora metod: temp.isEmpty() in params");
+                return;
+            }
+            if(temp.at(0)==(char)0xFF)
+            {
+                temp.remove(0, 1);
+                break;
+            }
+            param par{"-", "-", "-", "-"};
+
+            try
+            {
+                par.type = ReadAndRemoveNextSimpleString(temp);
+                par.unit = ReadAndRemoveNextSimpleString(temp);
+                par.tooltip = ReadAndRemoveNextString(temp);
+                par.desc = ReadAndRemoveNextString(temp);
+            }
+            catch(QString exc)
+            {
+                emit Error(exc);
+                return;
+            }
+
+            met.params.append(par);
+        }
+        methods.append(met);
+    }
+
+    ui->UpdateMetDescriptor(methods);
+
+    for(method m: methods)
+    {
+        qDebug() << (uchar)m.header << m.direct << m.isResponse << m.autoReport << m.timeout << (uchar)m.secondHeader << m.tooltip << m.desc;
+        for(param p: m.params)
+            qDebug() << "\t\t" << p.type << p.unit << p.tooltip << p.desc;
+    }
+}
+
+/**
+ * Odczytuje z ciągu binarnego początkowy zbiór wartości (jednobajtywych) aż do napotkania znacznika 0xFF i usuwa je z danych. Odczytane liczby
+ * trantuje jako wskaźniki do listy stringów i składa je w jeden ciąg tekstowy.
+ * @param arr - dane binarne
+ * @return tekst wynikowy
+ */
+QString ZR3UIFrame::ReadAndRemoveNextString(QByteArray& arr) throw(QString)
+{
+    int xff = -1;
+    QList<int> ptrs;
+
+    for(int i=0;i<arr.size();++i)
+    {
+        if((arr.at(i)==(char)0xFF))
+        {
+            xff = i;
+            break;
         }
     }
+    if(xff<0)
+        throw QString("Błąd parsowania stringów: nie odnaleziono znacznika 0xFF");
+    for(int i=0;i<xff;++i)
+        ptrs.append(arr.at(i));
+    QString temp = ConcStringPointers(ptrs, currentLang);
+    arr.remove(0, xff+1);
+    return temp;
+}
+
+/**
+ * Odczytuje z ciągu binarnego początkowy ciąg znaków (do pierwszego znacznika 0x00) i usuwa go z danych.
+ * @param arr - dane binarne
+ * @return tekst wynikowy
+ */
+QString ZR3UIFrame::ReadAndRemoveNextSimpleString(QByteArray& arr) throw(QString)
+{
+    int x00 = -1;
+    for(int i=0;i<arr.size();++i)
+    {
+        if(arr.at(i)==0x00)
+        {
+            x00 = i;
+            break;
+        }
+    }
+    if(x00<0)
+        throw QString("Błąd parsowania stringów: nie odnaleziono znacznika 0x00");
+    QString temp = arr.mid(0, x00);
+    arr.remove(0, x00+1);
+    return temp;
+}
+
+/**
+ * Składa ciąg tekstowy na podstawie listy numerów stringów, wcześniej odczytanej listy stringóW (stringi) i numeru języka.
+ * @param ptrs - lista numerów stringów
+ * @param lang - numer języka
+ * @return tekst wynikowy
+ */
+QString ZR3UIFrame::ConcStringPointers(QList<int> ptrs, int lang) throw(QString)
+{
+    if(lang>=stringi.size())
+        throw QString("Błąd konkatenacji listy stringów: nieprawidłowy numer języka: " + QString::number(lang));
+
     QStringList tempList = stringi.at(lang);
     QString temp;
     for(int i: ptrs)
     {
         i += 1;
         if(i>=tempList.size())
-        {
-            emit Error("Błąd konkatenacji listy stringów: nieprawidłowy wskaźnik tekstu: " + QString::number(i));
-            return temp + " ???";
-        }
+            throw QString("Błąd konkatenacji listy stringów: nieprawidłowy wskaźnik tekstu: " + QString::number(i));
         temp.append(" " + tempList.at(i));
     }
     if(temp.size()>0)
@@ -313,5 +435,6 @@ void ZR3UIFrame::UpdateCurrentLanguage(int newLang)
     if(!stringi.isEmpty())
     {
         ParseDevice();
+        ParseMethods();
     }
 }

@@ -121,4 +121,6 @@ HEADERS  += mainwindow.h \
     src/Utils/ValidateDumbFloat.hpp \
     src/Utils/Restorable.hpp \
     src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.hpp \
-	src/LogicUI_imp/utils_ZR3/devClass.hpp
+	src/LogicUI_imp/utils_ZR3/devClass.hpp \
+    src/LogicUI_imp/utils_ZR3/method.hpp \
+    src/LogicUI_imp/utils_ZR3/param.hpp

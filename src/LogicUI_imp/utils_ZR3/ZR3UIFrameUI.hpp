@@ -9,7 +9,9 @@
 #include <QSpinBox>
 #include <QTableWidget>
 #include <QLabel>
+#include <QListWidget>
 #include "devClass.hpp"
+#include "method.hpp"
 //#include "ZR3UIFrame.hpp"
 
 class ZR3UIFrame;
@@ -46,13 +48,23 @@ private:
     QLabel* name = NULL;
     QLineEdit* tooltip = NULL;
     QLineEdit* opis = NULL;
-    QComboBox* classList = NULL;
+    QListWidget* classList = NULL;
+
+    QComboBox* met = NULL;
+    QLabel* lheader = NULL;
+    QLabel* ldir = NULL;
+    QLabel* ltype = NULL;
+    QLabel* larep = NULL;
+    QListWidget* lparams = NULL;
 
 private slots:
     void aplReadReq();
 
     void UpdateStringsTable(QList<QStringList>& stringi);
     void UpdateDevDescriptor(QStringList d1, QList<davClass> d2);
+    void UpdateMetDescriptor(QList<method>& meths);
+
+    void UpdateCurrentMethod(int nr);
 };
 
 #endif

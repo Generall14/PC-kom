@@ -8,6 +8,7 @@
 #include "devClass.hpp"
 #include "ZR3ReadFile.hpp"
 #include "ZR3UIFrameUI.hpp"
+#include "method.hpp"
 
 class ZR3UIFrame : public QObject
 {
@@ -50,8 +51,12 @@ protected:
     void ParseDevice();
 
     QByteArray methDescriptor;
+    QList<method> methods;
+    void ParseMethods();
 
-    QString ConcStringPointers(QList<int> ptrs, int lang);
+    QString ConcStringPointers(QList<int> ptrs, int lang) throw(QString);
+    QString ReadAndRemoveNextString(QByteArray& arr) throw(QString);
+    QString ReadAndRemoveNextSimpleString(QByteArray& arr) throw(QString);
 
 protected slots:
     //Metody warstwy protokołu:

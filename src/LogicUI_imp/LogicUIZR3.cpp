@@ -23,7 +23,7 @@ void LogicUIZR3::Init()
     mainLay->setMargin(1);
 
     qtw = new QTabWidget();
-    qtw->setMinimumWidth(400);
+    qtw->setMinimumWidth(500);
     qtw->setMinimumHeight(800);
     mainLay->addWidget(qtw);
 
@@ -139,7 +139,7 @@ void LogicUIZR3::AdrOpenAll()
 {
     QListWidgetItem* item;
     int row = 0;
-    while(item = adrLw->item(row++))
+    while((item = adrLw->item(row++)))
         AddZR3Dev(item->text());
 }
 

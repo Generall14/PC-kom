@@ -5,6 +5,8 @@
 #include <QTabWidget>
 #include <QGroupBox>
 #include <QHeaderView>
+#include <QDebug>
+#include "param.hpp"
 
 ZR3UIFrameUI::ZR3UIFrameUI(ZR3UIFrame* parent):
     p(parent)
@@ -162,9 +164,44 @@ void ZR3UIFrameUI::InitDebug()
     opis->setReadOnly(true);
     devL->addWidget(opis);
 
-    classList = new QComboBox();
+    classList = new QListWidget();
     classList->setToolTip("Lista implementowanych klas");
+    classList->setMaximumHeight(150);
     devL->addWidget(classList);
+
+    QGroupBox* metFrame = new QGroupBox("MethodDescriptor");
+    gbAplLay->addWidget(metFrame);
+    QVBoxLayout* devM = new QVBoxLayout();
+    metFrame->setLayout(devM);
+
+    met = new QComboBox();
+    met->setToolTip("Metody");
+    connect(met, SIGNAL(currentIndexChanged(int)), this, SLOT(UpdateCurrentMethod(int)));
+    devM->addWidget(met);
+
+    QHBoxLayout* devM1 = new QHBoxLayout();
+    devM->addLayout(devM1);
+    QLabel* dd2 = new QLabel("Nagłówek: ");
+    devM1->addWidget(dd2);
+    lheader = new QLabel("XX");
+    devM1->addWidget(lheader);
+    dd2 = new QLabel(" kierunek: ");
+    devM1->addWidget(dd2);
+    ldir = new QLabel("XX");
+    devM1->addWidget(ldir);
+    dd2 = new QLabel(" typ: ");
+    devM1->addWidget(dd2);
+    ltype = new QLabel("XX");
+    devM1->addWidget(ltype);
+    dd2 = new QLabel(" aRep: ");
+    devM1->addWidget(dd2);
+    larep = new QLabel("XX");
+    devM1->addWidget(larep);
+
+    lparams = new QListWidget();
+    lparams->setToolTip("Lista parametrów metody");
+    lparams->setMaximumHeight(150);
+    devM->addWidget(lparams);
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
 }
@@ -226,4 +263,62 @@ void ZR3UIFrameUI::UpdateDevDescriptor(QStringList d1, QList<davClass> d2)
     }
     classList->clear();
     classList->addItems(temp);
+}
+
+void ZR3UIFrameUI::UpdateMetDescriptor(QList<method>& meths)
+{
+    QStringList temp;
+    for(method m: meths)
+    {
+        QString s = QString("[0x%1]").arg(m.header&0xFF, 2, 16, QChar('0'));
+        if(m.isResponse)
+            s.append(QString(", resp(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0')));
+        else
+            s.append(", req");
+        if(m.direct)
+            s.append(", to device");
+        else
+            s.append(", from device");
+        if(m.autoReport)
+            s.append(", aRep available");
+        temp.append(s);
+    }
+    met->clear();
+    met->addItems(temp);
+}
+
+void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
+{
+    if(nr<0)
+    {
+        lheader->setText("XX");
+        ldir->setText("XX");
+        ltype->setText("XX");
+        larep->setText("XX");
+        lparams->clear();
+        return;
+    }
+    if(nr>=p->methods.size())
+        return;
+    method cmet = p->methods.at(nr);
+
+    lheader->setText(QString("[0x%1]").arg(cmet.header&0xff, 2, 16, QChar('0')));
+    if(cmet.direct)
+        ldir->setText("to device");
+    else
+        ldir->setText("from device");
+    if(cmet.isResponse)
+        ltype->setText(QString("response to 0x%1").arg(cmet.secondHeader&0xFF, 2, 16, QChar('0')));
+    else
+        ltype->setText("request");
+    if(cmet.autoReport)
+        larep->setText("oui");
+    else
+        larep->setText("non");
+
+    QStringList pars;
+    for(param pp: cmet.params)
+        pars.append(QString(pp.type+"["+pp.unit+"] <"+pp.tooltip+"> <"+pp.desc+">"));
+    lparams->clear();
+    lparams->addItems(pars);
 }
