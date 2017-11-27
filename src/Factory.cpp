@@ -35,6 +35,7 @@
 #include "LogFormater_imp/LogFormaterHtml.hpp"
 
 #include "BusDevice_imp/BusDeviceUMP.hpp"
+#include "BusDevice_imp/BusDeviceUMPZR3.hpp"
 
 Factory::frameFormat Factory::frame = Factory::frameEmpty;
 Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
@@ -258,6 +259,8 @@ BusDevice* Factory::newBusDevice(QString arg)
         return NULL;
     case busDeviceUMP:
         return new BusDeviceUMP(arg);
+    case busDeviceUMPZR3:
+        return new BusDeviceUMPZR3(arg);
     }
     return NULL;
 }

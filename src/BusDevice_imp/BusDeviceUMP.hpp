@@ -22,6 +22,9 @@ protected:
     virtual void OnStop();
     virtual void Run();
 
+    virtual void OnRun();
+    virtual QByteArray OnDataRecieved(QByteArray data);
+
     uchar myADr;
     uchar nextAdr;
     QByteArray stringTable;

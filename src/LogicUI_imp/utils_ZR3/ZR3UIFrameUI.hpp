@@ -57,6 +57,7 @@ private:
     QLabel* ldir = NULL;
     QLabel* ltype = NULL;
     QLabel* larep = NULL;
+    QLabel* ltout = NULL;
     QListWidget* lparams = NULL;
     QLineEdit* mettooltip = NULL;
     QLineEdit* metopis = NULL;

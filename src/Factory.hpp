@@ -96,7 +96,8 @@ public:
     enum busDeviceFormat                                                                /**Określa implementację klasy BusDevice*/
     {
         busDeviceNone,                                                                  /**<Wskaźnik NULL*/
-        busDeviceUMP                                                                    /**<Implementacja BusDeviceUMP*/
+        busDeviceUMP,                                                                   /**<Implementacja BusDeviceUMP*/
+        busDeviceUMPZR3                                                                 /**<Implementacja BusDeviceUMPZR3*/
     };
 
     static void ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \

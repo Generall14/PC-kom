@@ -18,6 +18,7 @@ void BusDeviceUMP::ByteReaded(QByteArray ba)
 void BusDeviceUMP::Run()
 {
     QThread::msleep(10);
+    OnRun();
     QCoreApplication::processEvents();
 }
 
@@ -153,20 +154,22 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
     }
     else
     {
-        QByteArray toWrite;
-        toWrite.append(fr->pureData().at(3));
-        switch(val)
+        QByteArray toWrite = OnDataRecieved(data);
+        if(!toWrite.isEmpty())
         {
-        case (uchar)0x60:
-            toWrite.append(0xe0);
-            toWrite.append(0xe0);
-            toWrite.append(0xe0);
-            toWrite.append(0xe0);
-            break;
-        default:
-            return;
+            toWrite.insert(0, fr->pureData().at(3));
+            emit AplWritePureData(toWrite);
         }
-        emit AplWritePureData(toWrite);
         return;
     }
+}
+
+void BusDeviceUMP::OnRun()
+{
+
+}
+
+QByteArray BusDeviceUMP::OnDataRecieved(QByteArray data)
+{
+
 }

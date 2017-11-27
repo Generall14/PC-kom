@@ -14,4 +14,4 @@ typedef Factory f;
 
 #define IMPL_ZR_3 f::frameZR3, f::mediumUIRS, f::mendiumRS, f::logicUIZR3, f::frameBuilderZR3, f::logUITerm, f::logFileDefault, f::logFormaterHtml
 #define DESC_ZR_3 "Implementacja dla próbnego protokołu UMP Skolopendra i ZR-3.", "ZR-3: PC-tester"
-#define FAKE_ZR_3 f::mandiumBusConnector, f::busDeviceUMP
+#define FAKE_ZR_3 f::mandiumBusConnector, f::busDeviceUMPZR3

@@ -219,22 +219,53 @@ void ZR3UIFrameUI::InitDebug()
 
     QHBoxLayout* devM1 = new QHBoxLayout();
     devM->addLayout(devM1);
+
+    QVBoxLayout* devMAp = new QVBoxLayout();
+    devM1->addLayout(devMAp);
     QLabel* dd2 = new QLabel("Nagłówek: ");
-    devM1->addWidget(dd2);
-    lheader = new QLabel("XX");
-    devM1->addWidget(lheader);
-    dd2 = new QLabel(" kierunek: ");
-    devM1->addWidget(dd2);
-    ldir = new QLabel("XX");
-    devM1->addWidget(ldir);
+    dd2->setAlignment(Qt::AlignRight);
+    devMAp->addWidget(dd2);
     dd2 = new QLabel(" typ: ");
-    devM1->addWidget(dd2);
+    dd2->setAlignment(Qt::AlignRight);
+    devMAp->addWidget(dd2);
+    QVBoxLayout* devMAv = new QVBoxLayout();
+    devM1->addLayout(devMAv);
+    lheader = new QLabel("XX");
+    lheader->setAlignment(Qt::AlignLeft);
+    devMAv->addWidget(lheader);
     ltype = new QLabel("XX");
-    devM1->addWidget(ltype);
+    ltype->setAlignment(Qt::AlignLeft);
+    devMAv->addWidget(ltype);
+
+    QVBoxLayout* devMBp = new QVBoxLayout();
+    devM1->addLayout(devMBp);
+    dd2 = new QLabel(" kierunek: ");
+    dd2->setAlignment(Qt::AlignRight);
+    devMBp->addWidget(dd2);
     dd2 = new QLabel(" aRep: ");
-    devM1->addWidget(dd2);
+    dd2->setAlignment(Qt::AlignRight);
+    devMBp->addWidget(dd2);
+    QVBoxLayout* devMBv = new QVBoxLayout();
+    devM1->addLayout(devMBv);
+    ldir = new QLabel("XX");
+    ldir->setAlignment(Qt::AlignLeft);
+    devMBv->addWidget(ldir);
     larep = new QLabel("XX");
-    devM1->addWidget(larep);
+    larep->setAlignment(Qt::AlignLeft);
+    devMBv->addWidget(larep);
+
+    QVBoxLayout* devMCp = new QVBoxLayout();
+    devM1->addLayout(devMCp);
+    dd2 = new QLabel(" timeout: ");
+    dd2->setAlignment(Qt::AlignRight);
+    devMCp->addWidget(dd2);
+    QVBoxLayout* devMCv = new QVBoxLayout();
+    devM1->addLayout(devMCv);
+    ltout = new QLabel("XX");
+    ltout->setAlignment(Qt::AlignLeft);
+    devMCv->addWidget(ltout);
+
+
 
     mettooltip = new QLineEdit("--------");
     mettooltip->setToolTip("Tooltip metody");
@@ -321,7 +352,7 @@ void ZR3UIFrameUI::UpdateMetDescriptor(QList<method>& meths)
         if(m.isResponse)
             s.append(QString(", resp(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0')));
         else
-            s.append(", req(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0'));
+            s.append(QString(", req(0x%1)").arg(m.secondHeader&0xFF, 2, 16, QChar('0')));
         if(m.direct)
             s.append(", to device");
         else
@@ -342,6 +373,7 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
         ldir->setText("XX");
         ltype->setText("XX");
         larep->setText("XX");
+        ltout->setText("XX");
         lparams->clear();
         mettooltip->setText("--------");
         metopis->setText("--------");
@@ -367,6 +399,7 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
 
     mettooltip->setText(cmet.tooltip);
     metopis->setText(cmet.desc);
+    ltout->setText(QString::number(cmet.timeout)+" ms");
 
     QStringList pars;
     for(param pp: cmet.params)

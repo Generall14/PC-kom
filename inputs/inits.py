@@ -6,8 +6,8 @@ from os import system
  
 langs=['pol', 'eng'] 	#Lista języków
 texts=[					#Zbiór słów
-    ['Polon-Alfa', 'Polon-Alfa'], #0
-    ['prototyp', 'prototype of'], #1
+    ['moc dawki', 'dose rate'], #0
+    ['chwilowa moc dawki', '...'], #1
     ['ZR-3', 'ZR-3'], #2
     ['w fazie koncepcyjnej', 'in concept phase'], #3
     ['i kij', 'and stick'], #4
@@ -15,6 +15,9 @@ texts=[					#Zbiór słów
     ['odpowiedz testowa', 'test answer'], #6
     [', nic nie robi', ', do nothing'], #7
     ['testowy parametr', 'test parametr'], #8
+    ['Zapytanie o:', 'Question for:'], #9
+    ['dawka', 'dose'], #10
+    ['calkowita dawka zebrana przez urzadzenie', 'total dose...'], #11
     ['moc dawki', 'dose rate'],
     ['koniec','end']
     ]
@@ -37,30 +40,53 @@ gdev=[
 
 # Deskryptor metod
 gmeths=[
+
+		[
+			0x20, # nagłówek
+			0x80, # parametry
+			0xa0, # nagłówek powiązany
+			[0], # tooltip
+			[9, 0], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+
+		[
+			0xa0, # nagłówek
+			0x6a, # parametry
+			0x20, # nagłówek powiązany
+			[0], # tooltip
+			[1], #opis
+			[
+				['float24','Sv/h',[0],[1]]
+			]
+		],
 	
 		[
-			0x60, # nagłówek
+			0x22, # nagłówek
 			0x80, # parametry
-			0xe0, # nagłówek powiązany
-			[5], # tooltip
-			[5, 7], #opis
+			0xa2, # nagłówek powiązany
+			[10], # tooltip
+			[9, 10], #opis
 			[ # parametry
-				['char', # typ słowa
-				'j', # jednostka
-				[8], # tooltip
-				[8, 7]] # opis
+				#[
+					#'char', # typ słowa
+					#'j', # jednostka
+					#[8], # tooltip
+					#[8, 7]
+				#] # opis
 			]
 		],
 			
 		[
-			0xE0, # nagłówek
+			0xa2, # nagłówek
 			0x6a, # parametry
-			0x60, # nagłówek powiązany
-			[6], # tooltip
-			[6, 7], #opis
+			0x22, # nagłówek powiązany
+			[10], # tooltip
+			[11], #opis
 			[
-				['char','j',[8],[8, 7]],
-				['int16','Sv',[8],[8, 7]]
+				['int48','nSv',[10],[11]]
 			]
 		]
 	]
