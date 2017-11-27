@@ -232,7 +232,6 @@ void LogicUIZR3::makeStupidMessage()
     temp.append(QChar(0x00));
     temp.append(QChar(0x00));
     temp.append(QChar(0x04));
-    qDebug() << temp;
     emit WritePureData(temp);
 }
 

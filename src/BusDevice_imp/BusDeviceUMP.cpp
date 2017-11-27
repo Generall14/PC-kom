@@ -100,7 +100,6 @@ QByteArray BusDeviceUMP::GetFileData(QByteArray& ba, uint16_t ptr, uint8_t size)
         return temp;
     if(size==0)
         return temp;
-//    size = qMin(size, MAX_DATA_FILE_SIZE);
     if(MAX_DATA_FILE_SIZE<size)
         size = MAX_DATA_FILE_SIZE;
     temp.append(ba.mid(ptr, size));
@@ -121,11 +120,13 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
     QByteArray data = fr->pureData().mid(5, fr->pureData().at(4));
     uchar val = data.at(0);
 
-    if(/*(val==(uchar)0x0A)*/1)
+    if((val==(uchar)0x0A)||(val==(uchar)0x01)||(val==(uchar)0x09))
     {
         QByteArray toWrite;
         toWrite.append(fr->pureData().at(3));
         uint16_t off = 0;
+        if(data.size()<3)
+            return;
         off |= (data.at(1)<<8)&0xFF00;
         off |= (data.at(2)<<0)&0x00FF;
         uint8_t siz = data.at(3);
@@ -143,11 +144,25 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
             toWrite.append(0x89);
             toWrite.append(GetFileData(methodsDescriptor, off, siz));
             break;
+        default:
+            return;
+        }
 
+        emit AplWritePureData(toWrite);
+        return;
+    }
+    else
+    {
+        QByteArray toWrite;
+        toWrite.append(fr->pureData().at(3));
+        switch(val)
+        {
         case (uchar)0x60:
             toWrite.append(0xe0);
+            toWrite.append(0xe0);
+            toWrite.append(0xe0);
+            toWrite.append(0xe0);
             break;
-
         default:
             return;
         }

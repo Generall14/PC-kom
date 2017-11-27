@@ -13,16 +13,12 @@ TransactionMaker::~TransactionMaker()
 
 void TransactionMaker::OnStop()
 {
-//    delete timer;
+
 }
 
 void TransactionMaker::OnStart()
 {
-//    timer = new QTimer(NULL);
-//    timer->setSingleShot(true);
-//    connect(timer, &QTimer::timeout, this, &ZR3ReadFile::timeouted);
-//    connect(this, SIGNAL(StopTimer()), timer, SLOT(stop()), Qt::QueuedConnection);
-//    Send();
+
 }
 
 void TransactionMaker::RecievedData(QByteArray data)

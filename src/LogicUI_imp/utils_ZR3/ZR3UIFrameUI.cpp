@@ -400,5 +400,6 @@ void ZR3UIFrameUI::GenSimpleUI()
         TransactionUi* ntr = new TransactionUi(simpleUiFrame, atrs);
         connect(ntr, SIGNAL(TransactionRequest(TransactionDesc)), p->tMaker, SLOT(RegisterTransaction(TransactionDesc)), Qt::QueuedConnection);
         connect(p->tMaker, SIGNAL(Done(uchar,QByteArray)), ntr, SLOT(Done(uchar,QByteArray)));
+        connect(ntr, SIGNAL(Error(QString)), p, SIGNAL(Error(QString)));
     }
 }

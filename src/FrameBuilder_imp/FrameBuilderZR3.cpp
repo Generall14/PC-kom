@@ -127,7 +127,6 @@ void FrameBuilderZR3::ReadInputBuffer()
 
         if((uchar)(frame->pureData().at(2))==_myAdr)
         {
-//            emit FrameReaded(frame);
             char val = frame->pureData().at(1)&0x1f;
             if(frame->pureData().at(1)&0x80)
                 haveToken = true;
@@ -160,9 +159,6 @@ void FrameBuilderZR3::ReadInputBuffer()
                 _nextAdr = frame->pureData().at(5);
                 InitTokenFrame();
                 break;
-//            case (char)0x04://Data
-//                emit FrameReaded(frame);
-//                break;
             }
         }
         else

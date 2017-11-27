@@ -22,8 +22,12 @@ private:
     QGroupBox* mbox = NULL;
     QList<ParamUi*> plist;
 
+private slots:
+    void askDevice();
+
 signals:
     void TransactionRequest(TransactionDesc t);
+    void Error(QString);
 
 public slots:
     void Done(uchar _header, QByteArray arr);
