@@ -9,6 +9,7 @@
 #include "ZR3ReadFile.hpp"
 #include "ZR3UIFrameUI.hpp"
 #include "method.hpp"
+#include "TransactionMaker.hpp"
 
 class ZR3UIFrame : public QObject
 {
@@ -30,12 +31,14 @@ signals:
     void InternalDataReaded(QByteArray ba);
     void AdresChanged(uchar);
     void Error(QString);
+    void HALT();
 
 protected:
     QFrame* cFrame = NULL;
     ZR3UIFrameUI* ui = NULL;
     uchar _adr;
     static const char _myAdr = 0xFE;
+    TransactionMaker* tMaker = NULL;
 
     ZR3ReadFile* rfile = NULL;
     void InitZR3ReadFile(uchar header);

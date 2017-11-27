@@ -6,9 +6,12 @@
 #include <QGroupBox>
 #include <QHeaderView>
 #include <QDebug>
+#include <QScrollArea>
+#include <QtAlgorithms>
 #include "param.hpp"
-#include "transactionDesc.hpp"
+
 #include "transactionUi.hpp"
+#include "TransactionMaker.hpp"
 
 ZR3UIFrameUI::ZR3UIFrameUI(ZR3UIFrame* parent):
     p(parent)
@@ -22,7 +25,7 @@ void ZR3UIFrameUI::Init()
     mainLay->setMargin(1);
 
     QTabWidget* qtw = new QTabWidget();
-    qtw->setTabPosition(QTabWidget::South);
+//    qtw->setTabPosition(QTabWidget::South);
     mainLay->addWidget(qtw);
 
     dbgFrame = new QFrame();
@@ -40,8 +43,12 @@ void ZR3UIFrameUI::InitSimpleUI()
     QVBoxLayout* mainLay = new QVBoxLayout(suiFrame);
     mainLay->setMargin(6);
 
+    QFrame* fr = new QFrame();
+    fr->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+    mainLay->addWidget(fr);
     QHBoxLayout* Lay1 = new QHBoxLayout();
-    mainLay->addLayout(Lay1);
+    Lay1->setMargin(0);
+    fr->setLayout(Lay1);
 
     QPushButton* btnLData = new QPushButton("Load data");
     connect(btnLData, &QPushButton::clicked, [=](){p->InitZR3ReadFile(0x0a);p->InitZR3ReadFile(0x09);});
@@ -51,7 +58,14 @@ void ZR3UIFrameUI::InitSimpleUI()
     connect(btnInit, SIGNAL(clicked(bool)), this, SLOT(GenSimpleUI()), Qt::QueuedConnection);
     Lay1->addWidget(btnInit);
 
-    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
+    simpleUiFrame = new QFrame();
+    simpleUiFrame->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+    mainLay->addWidget(simpleUiFrame);
+    QVBoxLayout* Lay2 = new QVBoxLayout();
+    Lay2->setMargin(0);
+    simpleUiFrame->setLayout(Lay2);
+
+    suiFrame->layout()->addWidget(new QFrame);
 }
 
 void ZR3UIFrameUI::InitDebug()
@@ -145,6 +159,7 @@ void ZR3UIFrameUI::InitDebug()
     sltw->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     sltw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // deskryptor urządzenia
     QGroupBox* devFrame = new QGroupBox("DeviceDescriptor");
     gbAplLay->addWidget(devFrame);
     QVBoxLayout* devL = new QVBoxLayout();
@@ -191,6 +206,7 @@ void ZR3UIFrameUI::InitDebug()
     classList->setMaximumHeight(150);
     devL->addWidget(classList);
 
+    // deskryptor metod
     QGroupBox* metFrame = new QGroupBox("MethodDescriptor");
     gbAplLay->addWidget(metFrame);
     QVBoxLayout* devM = new QVBoxLayout();
@@ -220,12 +236,21 @@ void ZR3UIFrameUI::InitDebug()
     larep = new QLabel("XX");
     devM1->addWidget(larep);
 
+    mettooltip = new QLineEdit("--------");
+    mettooltip->setToolTip("Tooltip metody");
+    mettooltip->setReadOnly(true);
+    devM->addWidget(mettooltip);
+    metopis = new QLineEdit("--------");
+    metopis->setToolTip("Opis metody");
+    metopis->setReadOnly(true);
+    devM->addWidget(metopis);
+
     lparams = new QListWidget();
     lparams->setToolTip("Lista parametrów metody");
     lparams->setMaximumHeight(150);
     devM->addWidget(lparams);
 
-    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
+//    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Maximum, QSizePolicy::Maximum));
 }
 
 void ZR3UIFrameUI::aplReadReq()
@@ -318,6 +343,8 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
         ltype->setText("XX");
         larep->setText("XX");
         lparams->clear();
+        mettooltip->setText("--------");
+        metopis->setText("--------");
         return;
     }
     if(nr>=p->methods.size())
@@ -337,6 +364,9 @@ void ZR3UIFrameUI::UpdateCurrentMethod(int nr)
         larep->setText("oui");
     else
         larep->setText("non");
+
+    mettooltip->setText(cmet.tooltip);
+    metopis->setText(cmet.desc);
 
     QStringList pars;
     for(param pp: cmet.params)
@@ -361,7 +391,14 @@ void ZR3UIFrameUI::GenSimpleUI()
             TransactionDesc ttrans(m);
             trs.append(ttrans);
         }
+    }
 
-        TransactionUi* asd = new TransactionUi(suiFrame, m);
+    qDeleteAll(simpleUiFrame->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly));
+
+    for(TransactionDesc atrs: trs)
+    {
+        TransactionUi* ntr = new TransactionUi(simpleUiFrame, atrs);
+        connect(ntr, SIGNAL(TransactionRequest(TransactionDesc)), p->tMaker, SLOT(RegisterTransaction(TransactionDesc)), Qt::QueuedConnection);
+        connect(p->tMaker, SIGNAL(Done(uchar,QByteArray)), ntr, SLOT(Done(uchar,QByteArray)));
     }
 }

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include <QByteArray>
 #include "param.hpp"
 
 struct method
@@ -16,6 +17,7 @@ struct method
     QString tooltip;
     QString desc;
     QList<param> params;
+    QByteArray data; // przesyłane dane (tylko przy wykonywaniu transakcji)
 };
 
 #endif

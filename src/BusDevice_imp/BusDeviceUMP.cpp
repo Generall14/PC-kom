@@ -143,8 +143,13 @@ void BusDeviceUMP::AplFrameReaded(QSharedPointer<Frame> fr)
             toWrite.append(0x89);
             toWrite.append(GetFileData(methodsDescriptor, off, siz));
             break;
-        default:
+
+        case (uchar)0x60:
+            toWrite.append(0xe0);
             break;
+
+        default:
+            return;
         }
         emit AplWritePureData(toWrite);
         return;

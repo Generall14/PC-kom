@@ -68,7 +68,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.cpp \
     src/LogicUI_imp/utils_ZR3/transactionDesc.cpp \
     src/LogicUI_imp/utils_ZR3/ParamUi.cpp \
-    src/LogicUI_imp/utils_ZR3/transactionUi.cpp
+    src/LogicUI_imp/utils_ZR3/transactionUi.cpp \
+    src/LogicUI_imp/utils_ZR3/TransactionMaker.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -129,4 +130,5 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_ZR3/param.hpp \
     src/LogicUI_imp/utils_ZR3/transactionDesc.hpp \
     src/LogicUI_imp/utils_ZR3/ParamUi.hpp \
-    src/LogicUI_imp/utils_ZR3/transactionUi.hpp
+    src/LogicUI_imp/utils_ZR3/transactionUi.hpp \
+    src/LogicUI_imp/utils_ZR3/TransactionMaker.hpp

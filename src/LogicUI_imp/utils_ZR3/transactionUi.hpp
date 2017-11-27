@@ -21,6 +21,12 @@ private:
     TransactionDesc _tra;
     QGroupBox* mbox = NULL;
     QList<ParamUi*> plist;
+
+signals:
+    void TransactionRequest(TransactionDesc t);
+
+public slots:
+    void Done(uchar _header, QByteArray arr);
 };
 
 #endif

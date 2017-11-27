@@ -24,6 +24,16 @@ TransactionDesc::TransactionDesc(method met)
     Add(met);
 }
 
+TransactionDesc::TransactionDesc()
+{
+    ask.header=0x00;
+    answer.header=0x00;
+    ask.secondHeader=0xFF;
+    answer.secondHeader=0xFF;
+    ask.direct = true;
+    answer.direct = true;
+}
+
 bool TransactionDesc::isValid() const
 {
     if((char)ask.secondHeader!=(char)answer.header)

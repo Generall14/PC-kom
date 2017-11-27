@@ -10,6 +10,7 @@ class TransactionDesc
 public:
     TransactionDesc(method iask, method ianswer);
     TransactionDesc(method met);
+    TransactionDesc();
 
     bool isValid() const;
     bool DoYouNeedThis(method met);
@@ -17,7 +18,8 @@ public:
 
     method ask;
     method answer;
-    QList<QByteArray> values;
+    int attempts; // liczba prób wykonania transakcji
+    int currentTime; // aktualny czas od zapytania
 };
 
 #endif

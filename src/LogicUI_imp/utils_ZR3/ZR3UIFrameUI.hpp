@@ -12,7 +12,7 @@
 #include <QListWidget>
 #include "devClass.hpp"
 #include "method.hpp"
-//#include "ZR3UIFrame.hpp"
+#include "transactionDesc.hpp"
 
 class ZR3UIFrame;
 
@@ -58,8 +58,11 @@ private:
     QLabel* ltype = NULL;
     QLabel* larep = NULL;
     QListWidget* lparams = NULL;
+    QLineEdit* mettooltip = NULL;
+    QLineEdit* metopis = NULL;
 
     //SIMPLE UI
+    QFrame* simpleUiFrame = NULL;
 
 private slots:
     void aplReadReq();
@@ -72,6 +75,9 @@ private slots:
 
     //SImple ui
     void GenSimpleUI();
+
+signals:
+    void RegisterTransaction(TransactionDesc);
 };
 
 #endif

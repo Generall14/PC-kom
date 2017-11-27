@@ -11,10 +11,19 @@ ZR3UIFrame::ZR3UIFrame(QFrame* parent, uchar adr):
     _adr(adr)
 {
     ui = new ZR3UIFrameUI(this);
+
+    tMaker = NULL;
+    tMaker = new TransactionMaker();
+    connect(tMaker, &TransactionMaker::SendDataFrame, [=](QByteArray ba){ba.insert(0, _adr);emit PureDataToMedium(ba);});
+    connect(tMaker, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(this, SIGNAL(HALT()), tMaker, SLOT(Stop()));
+    connect(this, SIGNAL(InternalDataReaded(QByteArray)), tMaker, SLOT(RecievedData(QByteArray)), Qt::QueuedConnection);
+    tMaker->start(QThread::NormalPriority);
 }
 
 ZR3UIFrame::~ZR3UIFrame()
 {
+    emit HALT();
     delete ui;
 }
 
@@ -110,8 +119,6 @@ void ZR3UIFrame::aplReadReq(QString type, int offset, char size)
 
 void ZR3UIFrame::InitZR3ReadFile(uchar header)
 {
-//    if(rfile!=NULL)
-//        return;
     rfile = new ZR3ReadFile(header);
     connect(rfile, &ZR3ReadFile::SendDataFrame, [=](QByteArray ba){ba.insert(0, _adr);emit PureDataToMedium(ba);});
     connect(rfile, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
@@ -122,7 +129,6 @@ void ZR3UIFrame::InitZR3ReadFile(uchar header)
 
 void ZR3UIFrame::FinalizeZR3ReadFile(uchar _header, QByteArray arr)
 {
-//    rfile = NULL;
     if(arr.isEmpty())
         return;
     if(_header==0x0A)
@@ -293,7 +299,7 @@ void ZR3UIFrame::ParseMethods()
         met.direct = temp.at(1)&0x80;
         met.isResponse = temp.at(1)&0x40;
         met.autoReport = temp.at(1)&0x20;
-        met.timeout = temp.at(1)&0x1F;
+        met.timeout = (temp.at(1)&0x1F)*50;
         temp.remove(0, 3);
 
         try
@@ -427,7 +433,8 @@ QString ZR3UIFrame::ConcStringPointers(QList<int> ptrs, int lang) throw(QString)
 
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)
 {
-    emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
+    if(frame->pureData().at(3)==_adr)
+        emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
 }
 
 uchar ZR3UIFrame::Adr() const
