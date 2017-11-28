@@ -46,52 +46,26 @@ void ParamUi::setData(QByteArray dat)
     {
         if(dat.size()<1)
             return;
-//        mVal->setText(QString("0x%1").arg((uchar)dat.at(0)&0xFF, 2, 16, QChar('0')));
         mVal->setText(QString::number((int)(dat.at(0)&0xFF)));
     }
     else if(_par.type=="int16")
     {
-        if(dat.size()<2)
-            return;
-        int temp = 0;
-        temp |= (dat.at(0)<<8)&0xFF00;
-        temp |= (dat.at(1)<<0)&0x0000;
-        mVal->setText(QString::number(temp));
+        mVal->setText(QString::number(SU::byteArray2Int16(dat)));
     }
     else if(_par.type=="int32")
     {
-        if(dat.size()<4)
-            return;
-        int temp = 0;
-        temp |= (dat.at(0)<<24)&0xFF000000;
-        temp |= (dat.at(1)<<16)&0x00FF0000;
-        temp |= (dat.at(2)<<8)&0x0000FF00;
-        temp |= (dat.at(3)<<0)&0x000000FF;
-        mVal->setText(QString::number(temp));
+        mVal->setText(QString::number(SU::byteArray2Int32(dat)));
     }
     else if(_par.type=="int48")
     {
-        if(dat.size()<6)
-            return;
-        qint64 temp = 0;
-        temp |= (dat.at(0)<<40)&0xFF0000000000;
-        temp |= (dat.at(1)<<32)&0x00FF00000000;
-        temp |= (dat.at(2)<<24)&0x0000FF000000;
-        temp |= (dat.at(3)<<16)&0x000000FF0000;
-        temp |= (dat.at(4)<<8)&0x00000000FF00;
-        temp |= (dat.at(5)<<0)&0x0000000000FF;
-        mVal->setText(QString::number(temp));
+        mVal->setText(QString::number(SU::byteArray2Int48(dat)));
     }
     else if(_par.type=="float24")
     {
-        if(dat.size()<3)
-            return;
         mVal->setText(QString::number(SU::float24to32(dat.left(3))));
     }
     else if(_par.type=="float32")
     {
-        if(dat.size()<4)
-            return;
         mVal->setText(QString::number(SU::byteArray2Float32(dat.left(4))));
     }
     else if(_par.type=="string")
@@ -133,40 +107,31 @@ QByteArray ParamUi::getParamValue(param parr)
     else if(parr.type=="int16")
     {
         bool ok;
-        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -(2^16)/2, (2^16)/2-1, 1, &ok);
+        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, -1, -0x7F, 0x7F, 1, &ok);
         if(!ok)
             return temp;
-        temp.append((i&0xFF00)>>8);
-        temp.append((i&0x00FF)>>0);
+        temp.append(SU::int16ToByteArray(i));
     }
     else if(parr.type=="int32")
     {
         bool ok;
-        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -(2^32)/2, (2^32)/2-1, 1, &ok);
+        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, -1, -0x7FFF, 0x7FFF, 1, &ok);
         if(!ok)
             return temp;
-        temp.append((i&0xFF000000)>>24);
-        temp.append((i&0x00FF0000)>>16);
-        temp.append((i&0x0000FF00)>>8);
-        temp.append((i&0x000000FF)>>0);
+        temp.append(SU::int32ToByteArray(i));
     }
     else if(parr.type=="int48")
     {
         bool ok;
-        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -(2^32)/2, (2^32)/2-1, 1, &ok);
+        int i = QInputDialog::getInt(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, -1, -0x7FFFFF, 0x7FFFFF, 1, &ok);
         if(!ok)
             return temp;
-        temp.append((i&0xFF0000000000)>>40);
-        temp.append((i&0x00FF00000000)>>32);
-        temp.append((i&0x0000FF000000)>>24);
-        temp.append((i&0x000000FF0000)>>16);
-        temp.append((i&0x00000000FF00)>>8);
-        temp.append((i&0x0000000000FF)>>0);
+        temp.append(SU::int48ToByteArray(i));
     }
     else if(parr.type=="float24")
     {
         bool ok;
-        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -2147483647, 2147483647, 9, &ok);
+        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, -1, -2147483647, 2147483647, 9, &ok);
         if(!ok)
             return temp;
         temp.append(SU::float32to24(f));
@@ -174,7 +139,7 @@ QByteArray ParamUi::getParamValue(param parr)
     else if(parr.type=="float32")
     {
         bool ok;
-        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -2147483647, 2147483647, 9, &ok);
+        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, -1, -2147483647, 2147483647, 9, &ok);
         if(!ok)
             return temp;
         temp.append(SU::float32toByteArray(f));

@@ -8,6 +8,8 @@ union SU::FI
 
 float SU::float24to32(QByteArray b)
 {
+    if(b.size()<3)
+        return -1;
     FI con;
     con.i &= 0x00;
     con.i |= (b[0]&0xFF)<<23;
@@ -29,6 +31,8 @@ QByteArray SU::float32to24(float f)
 
 float SU::byteArray2Float32(QByteArray b)
 {
+    if(b.size()<4)
+        return -1;
     FI con;
     con.i &= 0x00;
     con.i |= (b[0]&0xFF)<<24;
@@ -47,5 +51,71 @@ QByteArray SU::float32toByteArray(float f)
     temp.push_back(char((con.i&0x00FF0000)>>16));
     temp.push_back(char((con.i&0x0000FF00)>>8));
     temp.push_back(char((con.i&0x000000FF)>>0));
+    return temp;
+}
+
+int SU::byteArray2Int16(QByteArray b)
+{
+    if(b.size()<2)
+        return -1;
+    int i=0;
+    i |= (b.at(0)&0xFF)<<8;
+    i |= (b.at(1)&0xFF)<<0;
+    return i;
+}
+
+QByteArray SU::int16ToByteArray(int i)
+{
+    QByteArray temp;
+    temp.append((i>>8)&0xFF);
+    temp.append((i>>0)&0xFF);
+    return temp;
+}
+
+int SU::byteArray2Int32(QByteArray b)
+{
+    if(b.size()<4)
+        return -1;
+    int i=0;
+    i |= (b.at(0)&0xFF)<<24;
+    i |= (b.at(1)&0xFF)<<16;
+    i |= (b.at(2)&0xFF)<<8;
+    i |= (b.at(3)&0xFF)<<0;
+    return i;
+}
+
+QByteArray SU::int32ToByteArray(int i)
+{
+    QByteArray temp;
+    temp.append((i>>24)&0xFF);
+    temp.append((i>>16)&0xFF);
+    temp.append((i>>8)&0xFF);
+    temp.append((i>>0)&0xFF);
+    return temp;
+}
+
+long long SU::byteArray2Int48(QByteArray b)
+{
+    if(b.size()<6)
+        return -1;
+    long long i=0;
+    i |= (b.at(0)&0xFF)<<40;
+    i |= (b.at(1)&0xFF)<<32;
+    i |= (b.at(2)&0xFF)<<24;
+    i |= (b.at(3)&0xFF)<<16;
+    i |= (b.at(4)&0xFF)<<8;
+    i |= (b.at(5)&0xFF)<<0;
+    return i;
+}
+
+QByteArray SU::int48ToByteArray(long long i)
+{
+    QByteArray temp;
+    temp.append((i>>40)&0xFF);
+    temp.append((i>>32)&0xFF);
+    temp.append((i>>24)&0xFF);
+    temp.append((i>>16)&0xFF);
+    temp.append((i>>8)&0xFF);
+    temp.append((i>>0)&0xFF);
     return temp;
 }

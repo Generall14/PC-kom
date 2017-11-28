@@ -29,6 +29,8 @@ protected:
     float time = 0;
     float currentDoseRate;
     long long currentDose = 0;
+    long long doseAlarm = 1000;
+    bool doseAlarmState = false;
 
     virtual void OnRun();
     virtual QByteArray OnDataRecieved(QByteArray data);
@@ -36,8 +38,13 @@ protected:
     static const int TIME_TO_EXPIRE_S = 30;
 
     QByteArray DoseData();
+    QByteArray SetDoseData(QByteArray dat);
+    QByteArray DoseAlarmStateData();
+    QByteArray SetDoseAlarmLevelData(QByteArray dat);
+    QByteArray GetDoseAlarmLevelData();
     QByteArray DoseRateData();
     QByteArray StatusData();
+    QByteArray EstData();
     QByteArray AutoReportData(QByteArray dat);
 };
 
