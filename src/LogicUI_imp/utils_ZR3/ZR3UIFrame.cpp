@@ -434,7 +434,12 @@ QString ZR3UIFrame::ConcStringPointers(QList<int> ptrs, int lang) throw(QString)
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)
 {
     if(frame->pureData().at(3)==_adr)
-        emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
+    {
+        if(frame->pureData().at(2)==(char)0x00)
+            emit ToNobody(frame->pureData().at(5), frame->pureData().mid(6, frame->pureData().at(4)-1));
+        else
+            emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
+    }
 }
 
 uchar ZR3UIFrame::Adr() const

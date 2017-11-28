@@ -2,8 +2,9 @@
 #include <QLayout>
 #include <QDebug>
 #include <QInputDialog>
+#include "../../Utils/StaticUtils.hpp"
 
-const QMap<QString, int> ParamUi::typeSizes{{"bool", 1}, {"char", 1}, {"int16", 2}, {"int32", 4}, {"int48", 6}, {"float24", 3}, {"float32", 4}};
+const QMap<QString, int> ParamUi::typeSizes{{"bool", 1}, {"char", 1}, {"int16", 2}, {"int32", 4}, {"int48", 6}, {"float24", 3}, {"float32", 4}, {"string", 0}};
 
 ParamUi::ParamUi(QWidget* parent, param npar):
     _parent(parent),
@@ -81,6 +82,33 @@ void ParamUi::setData(QByteArray dat)
         temp |= (dat.at(5)<<0)&0x0000000000FF;
         mVal->setText(QString::number(temp));
     }
+    else if(_par.type=="float24")
+    {
+        if(dat.size()<3)
+            return;
+        mVal->setText(QString::number(SU::float24to32(dat.left(3))));
+    }
+    else if(_par.type=="float32")
+    {
+        if(dat.size()<4)
+            return;
+        mVal->setText(QString::number(SU::byteArray2Float32(dat.left(4))));
+    }
+    else if(_par.type=="string")
+    {
+        int zero = -1;
+        for(int i=0;i<dat.size();++i)
+        {
+            if((uchar)dat.at(i)==(uchar)0x00)
+            {
+                zero = i;
+                break;
+            }
+        }
+        if(zero<0)
+            return;
+        mVal->setText(QString(dat.left(zero)));
+    }
 }
 
 QByteArray ParamUi::getParamValue(param parr)
@@ -134,6 +162,30 @@ QByteArray ParamUi::getParamValue(param parr)
         temp.append((i&0x000000FF0000)>>16);
         temp.append((i&0x00000000FF00)>>8);
         temp.append((i&0x0000000000FF)>>0);
+    }
+    else if(parr.type=="float24")
+    {
+        bool ok;
+        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -2147483647, 2147483647, 9, &ok);
+        if(!ok)
+            return temp;
+        temp.append(SU::float32to24(f));
+    }
+    else if(parr.type=="float32")
+    {
+        bool ok;
+        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -2147483647, 2147483647, 9, &ok);
+        if(!ok)
+            return temp;
+        temp.append(SU::float32toByteArray(f));
+    }
+    else if(parr.type=="string")
+    {
+//        bool ok;
+//        float f = QInputDialog::getDouble(NULL, parr.tooltip+" <"+parr.type+">",parr.desc, 0, -2147483647, 2147483647, 9, &ok);
+//        if(!ok)
+//            return temp;
+//        temp.append(SU::float32toByteArray(f));
     }
     return temp;
 }

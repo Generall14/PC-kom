@@ -29,6 +29,7 @@ signals:
     void FrameToMendium(QSharedPointer<Frame> frame);
     void PureDataToMedium(QByteArray ar);
     void InternalDataReaded(QByteArray ba);
+    void ToNobody(uchar _header, QByteArray arr);
     void AdresChanged(uchar);
     void Error(QString);
     void HALT();

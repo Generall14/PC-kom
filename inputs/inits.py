@@ -18,6 +18,7 @@ texts=[					#Zbiór słów
     ['Zapytanie o:', 'Question for:'], #9
     ['dawka', 'dose'], #10
     ['calkowita dawka zebrana przez urzadzenie', 'total dose...'], #11
+    ['status urzadzenia', 'device state'], #12
     ['moc dawki', 'dose rate'],
     ['koniec','end']
     ]
@@ -62,7 +63,7 @@ gmeths=[
 				['float24','Sv/h',[0],[1]]
 			]
 		],
-	
+			#==========================================================
 		[
 			0x22, # nagłówek
 			0x80, # parametry
@@ -88,7 +89,29 @@ gmeths=[
 			[
 				['int48','nSv',[10],[11]]
 			]
-		]
+		],
+			#=======================================================
+		[
+			0x30, # nagłówek
+			0x80, # parametry
+			0xb0, # nagłówek powiązany
+			[12], # tooltip
+			[9, 12], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+
+		[
+			0xb0, # nagłówek
+			0x4a, # parametry
+			0x30, # nagłówek powiązany
+			[12], # tooltip
+			[12], #opis
+			[
+				['string','',[12],[12]]
+			]
+		],
 	]
 
 name1='test1'

@@ -125,6 +125,15 @@ void FrameBuilderZR3::ReadInputBuffer()
         if((frame->pureData().at(1)&0x1f)!=0x00)
             skipSlowly = true;
 
+        if(((uchar)(frame->pureData().at(2))==(uchar)0x00)||((uchar)(frame->pureData().at(2))==(uchar)0xFF))
+        {
+            if((char)(frame->pureData().at(1)&0x1f)==(char)0x04)//Data
+            {
+                emit FrameReaded(frame);
+                return;
+            }
+        }
+
         if((uchar)(frame->pureData().at(2))==_myAdr)
         {
             char val = frame->pureData().at(1)&0x1f;

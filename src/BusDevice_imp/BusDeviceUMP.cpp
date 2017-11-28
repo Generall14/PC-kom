@@ -17,7 +17,7 @@ void BusDeviceUMP::ByteReaded(QByteArray ba)
 
 void BusDeviceUMP::Run()
 {
-    QThread::msleep(10);
+    QThread::msleep(TIME_STEP_MS);
     OnRun();
     QCoreApplication::processEvents();
 }

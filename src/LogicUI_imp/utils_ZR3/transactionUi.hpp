@@ -24,6 +24,7 @@ private:
 
 private slots:
     void askDevice();
+    void setAutoReport();
 
 signals:
     void TransactionRequest(TransactionDesc t);
