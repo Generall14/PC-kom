@@ -8,19 +8,27 @@ langs=['pol', 'eng'] 	#Lista języków
 texts=[					#Zbiór słów
     ['moc dawki', 'dose rate'], #0
     ['chwilowa moc dawki', '...'], #1
-    ['ZR-3', 'ZR-3'], #2
-    ['w fazie koncepcyjnej', 'in concept phase'], #3
-    ['i kij', 'and stick'], #4
-    ['komenda testowa', 'test command'], #5
-    ['odpowiedz testowa', 'test answer'], #6
-    [', nic nie robi', ', do nothing'], #7
+    ['jakosc pomiaru', '...'], #2
+    ['niepewnosc', '...'], #3
+    ['zliczenia', '...'], #4
+    ['pomiaru chwilowej mocy dawki', '...'], #5
+    ['wykorzystane do oszacowania chwilowej mocy dawki', '...'], #6
+    ['ustaw: ', 'set: '], #7
     ['testowy parametr', 'test parametr'], #8
     ['Zapytanie o:', 'Question for:'], #9
     ['dawka', 'dose'], #10
     ['calkowita dawka zebrana przez urzadzenie', 'total dose...'], #11
     ['status urzadzenia', 'device state'], #12
-    ['moc dawki', 'dose rate'],
-    ['koniec','end']
+    ['nowa', 'new'], #13
+    ['alarm:', 'alarm:'], #14
+    ['stan alarmu zebranej dawki', '...'], #15
+    ['nowa wartosc progu alarmu', '...'], #16
+    ['prog alarmu zebranej dawki', '...'], #17
+    ['stan alarmu chwilowej mocy dawki', '...'], #18
+    ['tryb pracy:','mode:'], #19
+    ['true=zatrzaskowy, false=ciagly', 'true=..., false='], #20
+    ['histereze:', 'histeresis:'], #21
+    ['nowa wartosc histerezy alarmu', '...'], #22
     ]
 
 # Deskryptor urządzenia
@@ -41,7 +49,7 @@ gdev=[
 
 # Deskryptor metod
 gmeths=[
-
+			#==================ZR3DoseRate========================================
 		[
 			0x20, # nagłówek
 			0x80, # parametry
@@ -63,7 +71,186 @@ gmeths=[
 				['float24','Sv/h',[0],[1]]
 			]
 		],
-			#==========================================================
+			
+			#==================ZR3CheckDoseRateAlarm========================================
+		[
+			0x29, # nagłówek
+			0x80, # parametry
+			0xa9, # nagłówek powiązany
+			[14, 0], # tooltip
+			[14, 0], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+
+		[
+			0xa9, # nagłówek
+			0x6a, # parametry
+			0x29, # nagłówek powiązany
+			[14, 0], # tooltip
+			[14, 0], #opis
+			[
+				['bool','',[14, 0],[18]]
+			]
+		],
+			#==================ZR3SetDoseRateAlarmLevel========================================
+		[
+			0x2a, # nagłówek
+			0x80, # parametry
+			0xaa, # nagłówek powiązany
+			[7, 14, 0], # tooltip
+			[7, 14, 0], #opis
+			[
+				['float24','Sv',[14, 0],[16]]
+			]
+		],
+
+		[
+			0xaa, # nagłówek
+			0x4a, # parametry
+			0x2a, # nagłówek powiązany
+			[7, 14, 0], # tooltip
+			[7, 14, 0], #opis
+			[
+				#['bool','',[14, 0],[18]]
+			]
+		],
+			#==================ZR3GetDoseRateAlarmLevel========================================
+		[
+			0x2b, # nagłówek
+			0x80, # parametry
+			0xab, # nagłówek powiązany
+			[14, 0], # tooltip
+			[14, 0], #opis
+			[
+				#['float24','Sv',[14, 0],[16]]
+			]
+		],
+
+		[
+			0xab, # nagłówek
+			0x4a, # parametry
+			0x2b, # nagłówek powiązany
+			[14, 0], # tooltip
+			[14, 0], #opis
+			[
+				['float24','Sv',[14, 0],[16]]
+			]
+		],
+			#==================ZR3SetDoseRateAlarmMode========================================
+		[
+			0x2c, # nagłówek
+			0x80, # parametry
+			0xac, # nagłówek powiązany
+			[7, 19, 14, 0], # tooltip
+			[7, 19, 14, 0], #opis
+			[
+				['bool','',[19],[19, 20]]
+			]
+		],
+
+		[
+			0xac, # nagłówek
+			0x4a, # parametry
+			0x2c, # nagłówek powiązany
+			[7, 19, 14, 0], # tooltip
+			[7, 19, 14, 0], #opis
+			[
+				#['float24','Sv',[19],[19, 20]]
+			]
+		],
+			#==================ZR3GetDoseRateAlarmMode========================================
+		[
+			0x2d, # nagłówek
+			0x80, # parametry
+			0xad, # nagłówek powiązany
+			[19, 14, 0], # tooltip
+			[19, 14, 0], #opis
+			[
+				#['bool','',[19],[19, 20]]
+			]
+		],
+
+		[
+			0xad, # nagłówek
+			0x4a, # parametry
+			0x2d, # nagłówek powiązany
+			[19, 14, 0], # tooltip
+			[19, 14, 0], #opis
+			[
+				['bool','',[19],[19, 20]]
+			]
+		],
+			#==================ZR3SetDoseRateAlarmHysteresis========================================
+		[
+			0x2e, # nagłówek
+			0x80, # parametry
+			0xae, # nagłówek powiązany
+			[7, 21, 14, 0], # tooltip
+			[7, 21, 14, 0], #opis
+			[
+				['float24','Sv',[21, 14, 0],[16]]
+			]
+		],
+
+		[
+			0xae, # nagłówek
+			0x4a, # parametry
+			0x2e, # nagłówek powiązany
+			[7, 21, 14, 0], # tooltip
+			[7, 21, 14, 0], #opis
+			[
+				#['bool','',[14, 0],[18]]
+			]
+		],
+			#==================ZR3GetDoseRateAlarmHysteresis========================================
+		[
+			0x2f, # nagłówek
+			0x80, # parametry
+			0xaf, # nagłówek powiązany
+			[21, 14, 0], # tooltip
+			[21, 14, 0], #opis
+			[
+				#['float24','Sv',[21, 14, 0],[16]]
+			]
+		],
+
+		[
+			0xaf, # nagłówek
+			0x4a, # parametry
+			0x2f, # nagłówek powiązany
+			[21, 14, 0], # tooltip
+			[21, 14, 0], #opis
+			[
+				['float24','Sv',[21, 14, 0],[21, 14, 0]]
+			]
+		],
+			
+			#==================ZR3DoseRateEstParams========================================
+		[
+			0x21, # nagłówek
+			0x80, # parametry
+			0xa1, # nagłówek powiązany
+			[2], # tooltip
+			[9, 2], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+
+		[
+			0xa1, # nagłówek
+			0x6a, # parametry
+			0x21, # nagłówek powiązany
+			[2], # tooltip
+			[2], #opis
+			[
+				['float24','%',[3],[4, 5]],
+				['int32','imp',[4],[4, 6]]
+			]
+		],
+			#=================ZR3Dose=========================================
 		[
 			0x22, # nagłówek
 			0x80, # parametry
@@ -90,7 +277,97 @@ gmeths=[
 				['int48','nSv',[10],[11]]
 			]
 		],
-			#=======================================================
+			
+			#=================ZR3SetDose=========================================
+		[
+			0x23, # nagłówek
+			0x80, # parametry
+			0xa3, # nagłówek powiązany
+			[7, 10], # tooltip
+			[7, 10], #opis
+			[
+				['int48','nSv',[10],[13]]
+			]
+		],
+			
+		[
+			0xa3, # nagłówek
+			0x4a, # parametry
+			0x23, # nagłówek powiązany
+			[7, 10], # tooltip
+			[7, 10], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+			#=================ZR3SetDoseAlarmLevel=========================================
+		[
+			0x25, # nagłówek
+			0x80, # parametry
+			0xa5, # nagłówek powiązany
+			[7, 14, 10], # tooltip
+			[7, 14, 10], #opis
+			[
+				['int48','nSv',[14, 10],[16]]
+			]
+		],
+			
+		[
+			0xa5, # nagłówek
+			0x4a, # parametry
+			0x25, # nagłówek powiązany
+			[7, 14, 10], # tooltip
+			[7, 14, 10], #opis
+			[
+				#['int48','nSv',[10],[11]]
+			]
+		],
+			#=================ZR3GetDoseAlarmLevel=========================================
+		[
+			0x26, # nagłówek
+			0x80, # parametry
+			0xa6, # nagłówek powiązany
+			[14, 10], # tooltip
+			[14, 10], #opis
+			[
+				#['int48','nSv',[14, 10],[16]]
+			]
+		],
+			
+		[
+			0xa6, # nagłówek
+			0x4a, # parametry
+			0x26, # nagłówek powiązany
+			[14, 10], # tooltip
+			[14, 10], #opis
+			[
+				['int48','nSv',[14, 10],[17]]
+			]
+		],
+			
+			#=================ZR3CheckDoseAlarm=========================================
+		[
+			0x24, # nagłówek
+			0x80, # parametry
+			0xa4, # nagłówek powiązany
+			[14, 10], # tooltip
+			[14, 10], #opis
+			[
+				#['int48','nSv',[10],[13]]
+			]
+		],
+			
+		[
+			0xa4, # nagłówek
+			0x6a, # parametry
+			0x24, # nagłówek powiązany
+			[14, 10], # tooltip
+			[14, 10], #opis
+			[
+				['bool','',[14, 10],[11]]
+			]
+		],
+			#=================ZR3GetErrorList======================================
 		[
 			0x30, # nagłówek
 			0x80, # parametry
@@ -118,13 +395,13 @@ name1='test1'
 adrs1=[0x01, 0x02]
 
 name2='test2'
-adrs2=[0x02, 0x03]
+adrs2=[0x02, 0xFE]
 
-name3='test3'
-adrs3=[0x03, 0x14]
+#name3='test3'
+#adrs3=[0x03, 0x14]
 
-name4='test4'
-adrs4=[0x14, 0xFE]
+#name4='test4'
+#adrs4=[0x14, 0xFE]
 
 def genfun(name, adr, lng, txt, dev, met):
     nuls = [0x00, 0x00]
@@ -248,7 +525,7 @@ filem.close()
 
 genfun(name1, adrs1, langs, texts, gdev, gmeths)
 genfun(name2, adrs2, langs, texts, gdev, gmeths)
-genfun(name3, adrs3, langs, texts, gdev, gmeths)
-genfun(name4, adrs4, langs, texts, gdev, gmeths)
+#genfun(name3, adrs3, langs, texts, gdev, gmeths)
+#genfun(name4, adrs4, langs, texts, gdev, gmeths)
 
 #system('pause')

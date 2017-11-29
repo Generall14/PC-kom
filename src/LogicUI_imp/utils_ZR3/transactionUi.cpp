@@ -25,18 +25,18 @@ TransactionUi::TransactionUi(QWidget* parent, TransactionDesc ntra):
     for(param p: _tra.answer.params)
         plist.append(new ParamUi(hbox, p));
 
-    QHBoxLayout* butLay = new QHBoxLayout();
-    mainLay->addLayout(butLay);
+//    QHBoxLayout* butLay = new QHBoxLayout();
+//    mainLay->addLayout(butLay);
 
     QPushButton* btn = new QPushButton("Auto raport");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(setAutoReport()));
     if(!_tra.answer.autoReport)
         btn->setEnabled(false);
-    butLay->addWidget(btn);
+    hLay->addWidget(btn);
 
     btn = new QPushButton("Request");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(askDevice()));
-    butLay->addWidget(btn);
+    hLay->addWidget(btn);
 }
 
 TransactionUi::~TransactionUi()

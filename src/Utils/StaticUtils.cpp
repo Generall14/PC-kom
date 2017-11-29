@@ -119,3 +119,23 @@ QByteArray SU::int48ToByteArray(long long i)
     temp.append((i>>0)&0xFF);
     return temp;
 }
+
+bool SU::byteArray2bool(QByteArray b)
+{
+    if(b.isEmpty())
+        return false;
+    if(b.at(0)&0x01)
+        return true;
+    else
+        return false;
+}
+
+QByteArray SU::boolToByteArray(bool b)
+{
+    QByteArray temp;
+    char t = 0x00;
+    if(b)
+        t |= 0x01;
+    temp.append(t);
+    return temp;
+}

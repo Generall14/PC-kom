@@ -22,6 +22,9 @@ public:
     static long long byteArray2Int48(QByteArray b);
     static QByteArray int48ToByteArray(long long i);
 
+    static bool byteArray2bool(QByteArray b);
+    static QByteArray boolToByteArray(bool b);
+
 private:
     union FI;
 };

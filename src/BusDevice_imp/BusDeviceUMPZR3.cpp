@@ -19,6 +19,30 @@ void BusDeviceUMPZR3::OnRun()
     else
         doseAlarmState = false;
 
+    if(currentDoseRate>(doseRateAlarm+doseRateAlarmHist))
+    {
+        if(!latchModeAlarm)
+            doseRateAlarmState = true;
+        else
+        {
+            if(doseRateAlarmStateReseted)
+            {
+                doseRateAlarmState = true;
+                doseRateAlarmStateReseted = false;
+            }
+        }
+    }
+    else if(currentDoseRate<doseRateAlarm)
+    {
+        if(!latchModeAlarm)
+            doseRateAlarmState = false;
+        else
+        {
+            doseRateAlarmStateReseted = true;
+        }
+    }
+
+
     QMutexLocker locker(&mutex);
     for(int i=alist.size()-1;i>=0;i--)
     {
@@ -67,6 +91,27 @@ QByteArray BusDeviceUMPZR3::OnDataRecieved(QByteArray data)
     case (uchar)0x26:
         toWrite.append(GetDoseAlarmLevelData());
         break;
+    case (uchar)0x29:
+        toWrite.append(DoseRateAlarmStateData());
+        break;
+    case (uchar)0x2A:
+        toWrite.append(SetDoseRateAlarmLevelData(data));
+        break;
+    case (uchar)0x2B:
+        toWrite.append(GetDoseRateAlarmLevelData());
+        break;
+    case (uchar)0x2C:
+        toWrite.append(SetDoseRateAlarmModeData(data));
+        break;
+    case (uchar)0x2D:
+        toWrite.append(GetDoseRateAlarmModeData());
+        break;
+    case (uchar)0x2E:
+        toWrite.append(SetDoseRateAlarmHisteresisData(data));
+        break;
+    case (uchar)0x2F:
+        toWrite.append(GetDoseRateAlarmHisteresisData());
+        break;
     case (uchar)0x30:
         toWrite.append(StatusData());
         break;
@@ -98,11 +143,38 @@ QByteArray BusDeviceUMPZR3::DoseAlarmStateData()
     return temp;
 }
 
+QByteArray BusDeviceUMPZR3::DoseRateAlarmStateData()
+{
+    QByteArray temp;
+    temp.append(0xa9);
+    if(doseRateAlarmState)
+        temp.append((char)0xFF);
+    else
+        temp.append((char)0x00);
+    return temp;
+}
+
 QByteArray BusDeviceUMPZR3::GetDoseAlarmLevelData()
 {
     QByteArray toWrite;
     toWrite.append(0xa6);
     toWrite.append(SU::int48ToByteArray(doseAlarm));
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::GetDoseRateAlarmLevelData()
+{
+    QByteArray toWrite;
+    toWrite.append(0xab);
+    toWrite.append(SU::float32to24(doseRateAlarm));
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::GetDoseRateAlarmHisteresisData()
+{
+    QByteArray toWrite;
+    toWrite.append(0xaf);
+    toWrite.append(SU::float32to24(doseRateAlarmHist));
     return toWrite;
 }
 
@@ -137,6 +209,59 @@ QByteArray BusDeviceUMPZR3::SetDoseAlarmLevelData(QByteArray dat)
         toWrite.append(0xA5);
     }
 
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::SetDoseRateAlarmLevelData(QByteArray dat)
+{
+    QByteArray toWrite;
+    if(dat.isEmpty())
+        return toWrite;
+    dat.remove(0, 1);
+
+    float temp = SU::float24to32(dat);
+    if(temp>=0)
+    {
+        doseRateAlarm = temp;
+        toWrite.append(0xAA);
+    }
+
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::SetDoseRateAlarmHisteresisData(QByteArray dat)
+{
+    QByteArray toWrite;
+    if(dat.isEmpty())
+        return toWrite;
+    dat.remove(0, 1);
+
+    float temp = SU::float24to32(dat);
+    if(temp>=0)
+    {
+        doseRateAlarmHist = temp;
+        toWrite.append(0xAE);
+    }
+
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::SetDoseRateAlarmModeData(QByteArray dat)
+{
+    QByteArray toWrite;
+    if(dat.isEmpty())
+        return toWrite;
+    dat.remove(0, 1);
+    toWrite.append(0xAC);
+    latchModeAlarm = SU::byteArray2bool(dat);
+    return toWrite;
+}
+
+QByteArray BusDeviceUMPZR3::GetDoseRateAlarmModeData()
+{
+    QByteArray toWrite;
+    toWrite.append(0xad);
+    toWrite.append(SU::boolToByteArray(latchModeAlarm));
     return toWrite;
 }
 
@@ -214,6 +339,9 @@ QByteArray BusDeviceUMPZR3::AutoReportData(QByteArray dat)
                 break;
             case (uchar)0xa4:
                 tars.fptr = &BusDeviceUMPZR3::DoseAlarmStateData;
+                break;
+            case (uchar)0xa9:
+                tars.fptr = &BusDeviceUMPZR3::DoseRateAlarmStateData;
                 break;
             default:
                 break;

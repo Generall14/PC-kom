@@ -31,6 +31,12 @@ protected:
     long long currentDose = 0;
     long long doseAlarm = 1000;
     bool doseAlarmState = false;
+    float doseRateAlarm = 150e-6;
+    float doseRateAlarmHist = 25e-6;
+    bool doseRateAlarmState = false;
+    bool doseRateAlarmStateReseted = true;
+    bool latchModeAlarm = false;
+
 
     virtual void OnRun();
     virtual QByteArray OnDataRecieved(QByteArray data);
@@ -40,8 +46,15 @@ protected:
     QByteArray DoseData();
     QByteArray SetDoseData(QByteArray dat);
     QByteArray DoseAlarmStateData();
+    QByteArray DoseRateAlarmStateData();
     QByteArray SetDoseAlarmLevelData(QByteArray dat);
+    QByteArray SetDoseRateAlarmLevelData(QByteArray dat);
     QByteArray GetDoseAlarmLevelData();
+    QByteArray GetDoseRateAlarmLevelData();
+    QByteArray SetDoseRateAlarmModeData(QByteArray dat);
+    QByteArray GetDoseRateAlarmModeData();
+    QByteArray GetDoseRateAlarmHisteresisData();
+    QByteArray SetDoseRateAlarmHisteresisData(QByteArray dat);
     QByteArray DoseRateData();
     QByteArray StatusData();
     QByteArray EstData();
