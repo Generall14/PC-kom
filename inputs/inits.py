@@ -4,31 +4,31 @@ from os import system
 # <2B wskaźnik na deskryptor urządzenia> <2B długość deskryptora urządzenia>
 # <2B wskaźnik na deskryptor metod> <2B długość deskryptora metod>
  
-langs=['pol', 'eng'] 	#Lista języków
+langs=[u'pou', u'eng'] 	#Lista języków
 texts=[					#Zbiór słów
-    ['moc dawki', 'dose rate'], #0
-    ['chwilowa moc dawki', '...'], #1
-    ['jakosc pomiaru', '...'], #2
-    ['niepewnosc', '...'], #3
-    ['zliczenia', '...'], #4
-    ['pomiaru chwilowej mocy dawki', '...'], #5
-    ['wykorzystane do oszacowania chwilowej mocy dawki', '...'], #6
-    ['ustaw: ', 'set: '], #7
-    ['testowy parametr', 'test parametr'], #8
-    ['Zapytanie o:', 'Question for:'], #9
-    ['dawka', 'dose'], #10
-    ['calkowita dawka zebrana przez urzadzenie', 'total dose...'], #11
-    ['status urzadzenia', 'device state'], #12
-    ['nowa', 'new'], #13
-    ['alarm:', 'alarm:'], #14
-    ['stan alarmu zebranej dawki', '...'], #15
-    ['nowa wartosc progu alarmu', '...'], #16
-    ['prog alarmu zebranej dawki', '...'], #17
-    ['stan alarmu chwilowej mocy dawki', '...'], #18
-    ['tryb pracy:','mode:'], #19
-    ['true=zatrzaskowy, false=ciagly', 'true=..., false='], #20
-    ['histereze:', 'histeresis:'], #21
-    ['nowa wartosc histerezy alarmu', '...'], #22
+    [u'moc dawki', u'dose rate'], #0
+    [u'chwilowa moc dawki', u'...'], #1
+    [u'jakość pomiaru', u'...'], #2
+    [u'niepewność', u'...'], #3
+    [u'zliczenia', u'...'], #4
+    [u'pomiaru chwilowej mocy dawki', u'...'], #5
+    [u'wykorzystane do oszacowania chwilowej mocy dawki', u'...'], #6
+    [u'ustaw: ', u'set: '], #7
+    [u'.', u'.'], #8
+    [u'Zapytanie o:', u'Question for:'], #9
+    [u'dawka', u'dose'], #10
+    [u'całkowita dawka zebrana przez urządzenie', u'total dose...'], #11
+    [u'status urządzenia', u'device state'], #12
+    [u'nowa', u'new'], #13
+    [u'alarm:', u'alarm:'], #14
+    [u'stan alarmu zebranej dawki', u'...'], #15
+    [u'nowa wartość progu alarmu', u'...'], #16
+    [u'próg alarmu zebranej dawki', u'...'], #17
+    [u'stan alarmu chwilowej mocy dawki', u'...'], #18
+    [u'tryb pracy:',u'mode:'], #19
+    [u'true=zatrzaskowy, false=ciągły', u'true=..., false='], #20
+    [u'histereza:', u'histeresis:'], #21
+    [u'nowa wartość histerezy alarmu', u'...'], #22
     ]
 
 # Deskryptor urządzenia
@@ -423,7 +423,7 @@ def genfun(name, adr, lng, txt, dev, met):
     ptrs = []
     sdata = bytearray()
     for string in lng:
-        sdata+=(bytes(string, 'ascii'))
+        sdata+=(bytes(string, 'utf-8'))
         ptrs.append(len(sdata)+1)
         sdata+=(bytes([0x00, 0xFF, 0xFF ]))
     sdata += b'\x00'
@@ -432,7 +432,7 @@ def genfun(name, adr, lng, txt, dev, met):
         lstrs.append(bytearray())
     for langstrings in txt:
         for i in range(langsc):
-            lstrs[i] += bytes(langstrings[i], 'ascii')
+            lstrs[i] += bytes(langstrings[i], 'utf-8')
             lstrs[i] += b'\x00'
     adrs = []
     for dat in lstrs:
@@ -456,11 +456,11 @@ def genfun(name, adr, lng, txt, dev, met):
     #================== Generowanie deskryptora urządzenia ==================
     devd = bytearray()
     devd += bytes([dev[0], dev[1], dev[2]])
-    devd += bytes(dev[3], 'ascii')
+    devd += bytes(dev[3], 'utf-8')
     devd += b'\x00'
-    devd += bytes(dev[4], 'ascii')
+    devd += bytes(dev[4], 'utf-8')
     devd += b'\x00'
-    devd += bytes(dev[5], 'ascii')
+    devd += bytes(dev[5], 'utf-8')
     devd += b'\x00'
     for i in dev[6]:
         devd += bytes([i])
@@ -469,7 +469,7 @@ def genfun(name, adr, lng, txt, dev, met):
         devd += bytes([i])
     devd += b'\xFF'
     for fu in dev[8]:
-        devd += bytes(fu[0], 'ascii')
+        devd += bytes(fu[0], 'utf-8')
         devd += b'\x00'
         for i in fu[1]:
             devd += bytes([i])
@@ -495,9 +495,9 @@ def genfun(name, adr, lng, txt, dev, met):
             metd += bytes([op])
         metd += b'\xFF'
         for arg in metoda[5]:
-            metd += bytes(arg[0], 'ascii')
+            metd += bytes(arg[0], 'utf-8')
             metd += b'\x00'
-            metd += bytes(arg[1], 'ascii')
+            metd += bytes(arg[1], 'utf-8')
             metd += b'\x00'
             for att in arg[2]:
                 metd += bytes([att])

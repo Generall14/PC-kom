@@ -12,21 +12,34 @@ FrameBuilderZR3::FrameBuilderZR3(uchar myAdr, uchar nextAdr, bool slw):
 {
     Desc::description = "FrameBuilderZR3";
 
-    InitTokenFrame();
-
     if(slw)
         haveToken = true;
+
+    qsrand((int)QThread::currentThreadId());
+    for(int i=0;i<10;++i)
+        _serial.append(0x41+qrand()%25);
+
+    InitTokenFrame();
 }
 
 void FrameBuilderZR3::InitTokenFrame()
 {
     tokenFrame.clear();
-    tokenFrame.append(0xff);
+    tokenFrame.append(0xfd);
     tokenFrame.append(0x80);
     tokenFrame.append(_nextAdr);
     tokenFrame.append(_myAdr);
-    tokenFrame.append(QChar(0x00));
-    FrameZR3::AppendLRC(tokenFrame);
+    FrameZR3::AppendCRC(tokenFrame);
+
+    devIDFrame.clear();
+    devIDFrame.append(0xff);
+    devIDFrame.append(0xfd);
+    devIDFrame.append(0x04);
+    devIDFrame.append(_nextAdr);
+    devIDFrame.append(_myAdr);
+    devIDFrame.append(_serial);
+    devIDFrame.append((char)(0x01));
+    FrameZR3::AppendCRC(devIDFrame);
 }
 
 void FrameBuilderZR3::OnStart()
@@ -55,15 +68,38 @@ void FrameBuilderZR3::ByteReaded(QByteArray ba)
 {
     recievedbuf.append(ba);
 
-    if(recievedbuf.length()>=5)
+    if(recievedbuf.size()>1)
     {
-        if(recievedbuf.length()-6>=recievedbuf.at(4))
+        if(recievedbuf.at(0)==(char)(0xFD))
+            recievedbuf.insert(0, (char)(0xFF));
+    }
+
+    if(recievedbuf.length()>=4)
+    {
+        int estLength = 0;
+        if(recievedbuf.at(2)&0x40)
+            estLength = recievedbuf.at(2)&0x3F;
+        else
+        {
+            switch(recievedbuf.at(2)&0x3F)
+            {
+            case 0x02:
+            case 0x03:
+            case 0x04:
+                estLength = 11;
+                break;
+            default:
+                estLength = 0;
+            }
+        }
+
+        if(recievedbuf.length()-7>=estLength)
         {
             QMutexLocker locker(&inBufforMutex);
-            inBuffor.push_back(Factory::newFrame(recievedbuf.left(6+recievedbuf.at(4))));
+            inBuffor.push_back(Factory::newFrame(recievedbuf.left(7+estLength)));
 
             timer->stop();
-            recievedbuf.remove(0, 6+recievedbuf.at(4));
+            recievedbuf.remove(0, 7+estLength);
         }
     }
 
@@ -106,7 +142,7 @@ void FrameBuilderZR3::PureDataWrite(QByteArray ba)
     temp.push_back(_myAdr);
     temp.push_back(ba.size());
     temp.push_back(ba);
-    FrameZR3::AppendLRC(temp);
+    FrameZR3::AppendCRC(temp);
     QMutexLocker locker(&outBufforMutex);
     outBuffor.push_back(Factory::newFrame(temp));
 }
@@ -122,25 +158,25 @@ void FrameBuilderZR3::ReadInputBuffer()
         QSharedPointer<Frame> frame = QSharedPointer<Frame>(inBuffor.first());
         inBuffor.pop_front();
 
-        if((frame->pureData().at(1)&0x1f)!=0x00)
+        if((frame->magicNumbers().at(0)!=0x00))
             skipSlowly = true;
 
-        if(((uchar)(frame->pureData().at(2))==(uchar)0x00)||((uchar)(frame->pureData().at(2))==(uchar)0xFF))
+        if((frame->dstAdr().at(0)==(uchar)0x00)||(frame->dstAdr().at(0)==(uchar)0xFF))
         {
-            if((char)(frame->pureData().at(1)&0x1f)==(char)0x04)//Data
+            if(frame->magicNumbers().at(0)&0x40)//Data
             {
                 emit FrameReaded(frame);
                 return;
             }
         }
 
-        if((uchar)(frame->pureData().at(2))==_myAdr)
+        if((frame->dstAdr().at(0))==_myAdr)
         {
-            char val = frame->pureData().at(1)&0x1f;
-            if(frame->pureData().at(1)&0x80)
+            char val = frame->magicNumbers().at(0);
+            if(frame->magicNumbers().at(0)&0x80)
                 haveToken = true;
 
-            if(val==(char)0x04)//Data
+            if(val&0x40)//Data
             {
                 emit FrameReaded(frame);
                 return;
@@ -152,22 +188,16 @@ void FrameBuilderZR3::ReadInputBuffer()
             switch(val)
             {
             case (char)0x01://protHELLO
-                temp.push_back(0xFF);
-                temp.push_back((char)0x00);
-                temp.push_back(frame->pureData().at(3));
-                temp.push_back(_myAdr);
-                temp.push_back((char)0x00);
-                FrameZR3::AppendLRC(temp);
-                outBuffor.push_back(Factory::newFrame(temp));
+                outBuffor.push_back(Factory::newFrame(devIDFrame));
                 break;
-            case(char)0x02://protSET_ADR
-                _myAdr = frame->pureData().at(5);
-                InitTokenFrame();
-                break;
-            case(char)0x03://protSET_NEXT_ADR
-                _nextAdr = frame->pureData().at(5);
-                InitTokenFrame();
-                break;
+//            case(char)0x02://protSET_ADR
+//                _myAdr = frame->pureData().at(5);
+//                InitTokenFrame();
+//                break;
+//            case(char)0x03://protSET_NEXT_ADR
+//                _nextAdr = frame->pureData().at(5);
+//                InitTokenFrame();
+//                break;
             }
         }
         else

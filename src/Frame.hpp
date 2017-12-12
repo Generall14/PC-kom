@@ -31,8 +31,11 @@ public:
     virtual QString toQString() = 0;            /**<Tworzy string opisujący zawartość, np. "Pomiar czasu".*/
     virtual QString toShortQString() = 0;       /**<Tworzy zwięzły string z samą wartością przenoszoną w ramce, np. "100 ms".*/
     virtual QByteArray magicNumbers() = 0;      /**<Zwraca wartość jednoznacznie identyfikującą typ zawartości, np nagłówek.*/
+    virtual QByteArray aplData();               /**<Zwraca dane warstwy aplikacji.*/
+    virtual QByteArray srcAdr();                /**<Zwraca adres źródłowy pakietu.*/
+    virtual QByteArray dstAdr();                /**<Zwraca adres docelowy pakietu.*/
 
-    QByteArray pureData();                      /**<Zwraca czałość jako QByteArray.*/
+    QByteArray pureData();                      /**<Zwraca całość jako QByteArray.*/
 
 protected:
     QByteArray pck;                             /**<Dane.*/

@@ -15,10 +15,13 @@ public:
     virtual QString toQString();
     virtual QString toShortQString();
     virtual QByteArray magicNumbers();
+    virtual QByteArray aplData();
+    virtual QByteArray srcAdr();
+    virtual QByteArray dstAdr();
 
-    static void AppendLRC(QByteArray& ba);
+    static void AppendCRC(QByteArray& ba);
     static bool CheckLRC(QByteArray &ba);
-    static char CalcLRC(QByteArray ba);
+    static uint16_t CalcLRC(QByteArray arr, uint16_t sum = 0x0000);
 
 protected:
     QString invalidDesc;
@@ -33,7 +36,7 @@ protected:
     static const char protHELLO = 0x01;
     static const char protSET_ADR = 0x02;
     static const char protSET_NEXT_ADR = 0x03;
-    static const char protDATA = 0x04;
+    static const char protDEV_ID = 0x04;
 };
 
 #endif

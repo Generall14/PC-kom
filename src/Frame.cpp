@@ -15,3 +15,18 @@ QByteArray Frame::pureData()
 {
     return pck;
 }
+
+QByteArray Frame::srcAdr()
+{
+    return QByteArray();
+}
+
+QByteArray Frame::dstAdr()
+{
+    return QByteArray();
+}
+
+QByteArray Frame::aplData()
+{
+    return QByteArray();
+}

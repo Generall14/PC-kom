@@ -59,7 +59,7 @@ void ZR3UIFrame::protSET_ADR()
     temp.append(_myAdr);
     temp.append((char)0x01);
     temp.append(nadr);
-    FrameZR3::AppendLRC(temp);
+    FrameZR3::AppendCRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
     emit AdresChanged(nadr);
     _adr = nadr;
@@ -88,7 +88,7 @@ void ZR3UIFrame::protSET_NEXT_ADR()
     temp.append(_myAdr);
     temp.append((char)0x01);
     temp.append(nadr);
-    FrameZR3::AppendLRC(temp);
+    FrameZR3::AppendCRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
 
@@ -96,11 +96,11 @@ void ZR3UIFrame::protHELLO()
 {
     QByteArray temp;
     temp.append(0xFF);
+    temp.append(0xFD);
     temp.append(0x01);
     temp.append(_adr);
     temp.append(_myAdr);
-    temp.append((char)0x00);
-    FrameZR3::AppendLRC(temp);
+    FrameZR3::AppendCRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
 
@@ -346,13 +346,6 @@ void ZR3UIFrame::ParseMethods()
     }
 
     ui->UpdateMetDescriptor(methods);
-
-    for(method m: methods)
-    {
-        qDebug() << (uchar)m.header << m.direct << m.isResponse << m.autoReport << m.timeout << (uchar)m.secondHeader << m.tooltip << m.desc;
-        for(param p: m.params)
-            qDebug() << "\t\t" << p.type << p.unit << p.tooltip << p.desc;
-    }
 }
 
 /**

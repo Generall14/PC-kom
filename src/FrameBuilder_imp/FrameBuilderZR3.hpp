@@ -26,11 +26,12 @@ protected:
     virtual void OnStart();
     uchar _myAdr;
     uchar _nextAdr;
+    QByteArray _serial;
     bool _slowly;
     bool haveToken = false;
     bool skipSlowly = false;
 
-    QByteArray tokenFrame;
+    QByteArray tokenFrame, devIDFrame;
     QTimer* tokenTimer = NULL;
     QTimer* timerTokenMiss = NULL;
 
