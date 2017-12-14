@@ -99,6 +99,23 @@ void ZR3UIFrameUI::InitDebug()
     Lay1->addWidget(btnSetNextAdr);
     connect(btnSetNextAdr, SIGNAL(clicked(bool)), p, SLOT(protSET_NEXT_ADR()), Qt::QueuedConnection);
 
+    Lay1 = new QHBoxLayout();
+    gbProtLay->addLayout(Lay1);
+
+    QLabel* ddxx = new QLabel("Numer seryjny: ");
+    Lay1->addWidget(ddxx);
+
+    serialNumber = new QLabel("XXX");
+    serialNumber->setAlignment(Qt::AlignRight);
+    Lay1->addWidget(serialNumber);
+
+    ddxx = new QLabel(", wersja protokołu: ");
+    Lay1->addWidget(ddxx);
+
+    vProt = new QLabel("XXX");
+    vProt->setAlignment(Qt::AlignRight);
+    Lay1->addWidget(vProt);
+
     //Aplikacja
     QGroupBox* gbApl = new QGroupBox("Warstwa aplikacji");
     mainLay->addWidget(gbApl);

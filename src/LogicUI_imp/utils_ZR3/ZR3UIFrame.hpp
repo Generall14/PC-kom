@@ -40,6 +40,7 @@ protected:
     uchar _adr;
     static const char _myAdr = 0xFE;
     TransactionMaker* tMaker = NULL;
+    QByteArray _serial;
 
     ZR3ReadFile* rfile = NULL;
     void InitZR3ReadFile(uchar header);

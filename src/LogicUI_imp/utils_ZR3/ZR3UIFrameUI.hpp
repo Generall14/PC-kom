@@ -42,6 +42,8 @@ private:
     QTableWidget* sltw = NULL;
     QComboBox* clang = NULL;
 
+    QLabel* serialNumber = NULL;
+    QLabel* vProt = NULL;
     QLabel* vProg = NULL;
     QLabel* vPub = NULL;
     QLabel* vPriv = NULL;

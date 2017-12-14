@@ -31,7 +31,7 @@ protected:
     bool haveToken = false;
     bool skipSlowly = false;
 
-    QByteArray tokenFrame, devIDFrame;
+    QByteArray tokenFrame;
     QTimer* tokenTimer = NULL;
     QTimer* timerTokenMiss = NULL;
 

@@ -30,16 +30,6 @@ void FrameBuilderZR3::InitTokenFrame()
     tokenFrame.append(_nextAdr);
     tokenFrame.append(_myAdr);
     FrameZR3::AppendCRC(tokenFrame);
-
-    devIDFrame.clear();
-    devIDFrame.append(0xff);
-    devIDFrame.append(0xfd);
-    devIDFrame.append(0x04);
-    devIDFrame.append(_nextAdr);
-    devIDFrame.append(_myAdr);
-    devIDFrame.append(_serial);
-    devIDFrame.append((char)(0x01));
-    FrameZR3::AppendCRC(devIDFrame);
 }
 
 void FrameBuilderZR3::OnStart()
@@ -158,7 +148,7 @@ void FrameBuilderZR3::ReadInputBuffer()
         QSharedPointer<Frame> frame = QSharedPointer<Frame>(inBuffor.first());
         inBuffor.pop_front();
 
-        if((frame->magicNumbers().at(0)!=0x00))
+        if((frame->magicNumbers().at(0)!=(char)0x80))
             skipSlowly = true;
 
         if((frame->dstAdr().at(0)==(uchar)0x00)||(frame->dstAdr().at(0)==(uchar)0xFF))
@@ -170,11 +160,12 @@ void FrameBuilderZR3::ReadInputBuffer()
             }
         }
 
-        if((frame->dstAdr().at(0))==_myAdr)
+        if(((uchar)frame->dstAdr().at(0))==_myAdr)
         {
             char val = frame->magicNumbers().at(0);
             if(frame->magicNumbers().at(0)&0x80)
                 haveToken = true;
+
 
             if(val&0x40)//Data
             {
@@ -185,19 +176,41 @@ void FrameBuilderZR3::ReadInputBuffer()
 
             QMutexLocker locker(&outBufforMutex);
             QByteArray temp;
+            QByteArray devIDFrame;
             switch(val)
             {
             case (char)0x01://protHELLO
+                devIDFrame.append(0xff);
+                devIDFrame.append(0xfd);
+                devIDFrame.append(0x04);
+                devIDFrame.append(frame->srcAdr());
+                devIDFrame.append(_myAdr);
+                devIDFrame.append(_serial);
+                devIDFrame.append((char)(0x01));
+                FrameZR3::AppendCRC(devIDFrame);
                 outBuffor.push_back(Factory::newFrame(devIDFrame));
                 break;
-//            case(char)0x02://protSET_ADR
-//                _myAdr = frame->pureData().at(5);
-//                InitTokenFrame();
-//                break;
-//            case(char)0x03://protSET_NEXT_ADR
-//                _nextAdr = frame->pureData().at(5);
-//                InitTokenFrame();
-//                break;
+            case(char)0x02://protSET_ADR
+                temp = frame->pureData().mid(5, 11);
+                if(temp.length()<11)
+                    break;
+                if(temp.mid(0, 10)!=_serial)
+                    break;
+                _myAdr = temp.at(10);
+                InitTokenFrame();
+                break;
+            case(char)0x03://protSET_NEXT_ADR
+                temp = frame->pureData().mid(5, 11);
+                if(temp.length()<11)
+                    break;
+                if(temp.mid(0, 10)!=_serial)
+                    break;
+                _nextAdr = temp.at(10);
+                InitTokenFrame();
+                break;
+            case(char)0x04://protDEV_ID
+                emit FrameReaded(frame);
+                break;
             }
         }
         else

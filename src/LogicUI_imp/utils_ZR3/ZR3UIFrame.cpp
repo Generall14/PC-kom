@@ -54,10 +54,11 @@ void ZR3UIFrame::protSET_ADR()
 
     QByteArray temp;
     temp.append(0xFF);
+    temp.append(0xFD);
     temp.append(0x02);
     temp.append(_adr);
     temp.append(_myAdr);
-    temp.append((char)0x01);
+    temp.append(_serial);
     temp.append(nadr);
     FrameZR3::AppendCRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
@@ -83,10 +84,11 @@ void ZR3UIFrame::protSET_NEXT_ADR()
 
     QByteArray temp;
     temp.append(0xFF);
+    temp.append(0xFD);
     temp.append(0x03);
     temp.append(_adr);
     temp.append(_myAdr);
-    temp.append((char)0x01);
+    temp.append(_serial);
     temp.append(nadr);
     FrameZR3::AppendCRC(temp);
     emit FrameToMendium(QSharedPointer<Frame>(Factory::newFrame(temp)));
@@ -426,12 +428,20 @@ QString ZR3UIFrame::ConcStringPointers(QList<int> ptrs, int lang) throw(QString)
 
 void ZR3UIFrame::FrameToUI(QSharedPointer<Frame> frame)
 {
-    if(frame->pureData().at(3)==_adr)
+    if(frame->srcAdr().at(0)==_adr)
     {
-        if(frame->pureData().at(2)==(char)0x00)
-            emit ToNobody(frame->pureData().at(5), frame->pureData().mid(6, frame->pureData().at(4)-1));
+        if(frame->magicNumbers().at(0)==0x04)
+        {
+            if(frame->pureData().length()<18)
+                return;
+            _serial = frame->pureData().mid(5, 10);
+            ui->vProt->setText(QString::number((uchar)frame->pureData().at(15)));
+            ui->serialNumber->setText(QString(_serial));
+        }
+        if(frame->dstAdr().at(0)==(char)0x00)
+            emit ToNobody(frame->aplData().at(0), frame->pureData().mid(1));
         else
-            emit InternalDataReaded(frame->pureData().mid(5, frame->pureData().at(4)));
+            emit InternalDataReaded(frame->aplData());
     }
 }
 
