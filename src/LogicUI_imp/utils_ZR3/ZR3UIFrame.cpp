@@ -19,6 +19,8 @@ ZR3UIFrame::ZR3UIFrame(QFrame* parent, uchar adr):
     connect(this, SIGNAL(HALT()), tMaker, SLOT(Stop()));
     connect(this, SIGNAL(InternalDataReaded(QByteArray)), tMaker, SLOT(RecievedData(QByteArray)), Qt::QueuedConnection);
     tMaker->start(QThread::NormalPriority);
+
+    _serial = "ABCDEFGHIJ";
 }
 
 ZR3UIFrame::~ZR3UIFrame()
