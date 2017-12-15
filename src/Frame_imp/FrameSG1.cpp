@@ -83,6 +83,12 @@ QString FrameSG1::toQString()
         return QString("Błąd urządzenia: ")+toShortQString();
     case 'e':                           //Wymuszenie napięcia SiPM
         return QString("Wymuszenie napięcia SiPM: ")+toShortQString();
+    case 'X':
+        return QString("Odczyt flash: ")+toShortQString();
+    case 'x':
+        return QString("Żądanie odczytu flash: ")+toShortQString();
+    case 'y':
+        return QString("Żądanie zapisu flash: ")+toShortQString();
     }
 
     QString temp;
@@ -185,6 +191,12 @@ QString FrameSG1::toShortQString()
     case 'E':                           //Error
         voltage = (float)result*k;
         return QString("0x%1 - ").arg((int)(pck[3]&0xFF), 2, 16, QChar('0')).toUpper().replace("X", "x")+errorNumbers.value(pck.at(3), "Nieznany błąd");
+    case 'x':
+        return QString("offset 0x%1").arg((int)(pck[1]&0xFF), 2, 16, QChar('0'));
+    case 'X':
+        return QString("offset 0x%1, data 0x%2%3").arg((int)(pck[1]&0xFF), 2, 16, QChar('0')).arg((int)(pck[2]&0xFF), 2, 16, QChar('0')).arg((int)(pck[3]&0xFF), 2, 16, QChar('0'));
+    case 'y':
+        return QString("offset 0x%1, data 0x%2%3").arg((int)(pck[1]&0xFF), 2, 16, QChar('0')).arg((int)(pck[2]&0xFF), 2, 16, QChar('0')).arg((int)(pck[3]&0xFF), 2, 16, QChar('0'));
     }
 
     return "XXX";

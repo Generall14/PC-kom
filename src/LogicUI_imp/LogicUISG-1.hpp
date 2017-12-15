@@ -37,6 +37,8 @@ protected slots:
     void WriteSingleCal();
     void ReadAll();
     void InternalWriteFrame(QByteArray frame);
+    void ReadFlash();
+    void WriteFlash();
 
     void StartCollectingData();
     void StoppedCollectingData();
@@ -77,6 +79,10 @@ protected:
     QPalette standardPalette;
 
     QSpinBox* chkDAC = NULL;
+
+    QSpinBox* readOffset = NULL;
+    QSpinBox* writeOffset = NULL;
+    QSpinBox* writeData = NULL;
 
     //kalibracja:
     QSpinBox* chkProbki = NULL;

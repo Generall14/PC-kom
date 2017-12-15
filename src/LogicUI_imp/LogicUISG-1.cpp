@@ -260,6 +260,41 @@ void LogicUISG1::InitDebug()
     kalwrite->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(kalwrite, &QPushButton::clicked, this, &LogicUISG1::WriteSingleCal);
 
+    //=======================Grupa flash==========================================================
+    QGroupBox* groupBoxFlash = new QGroupBox("Flash");
+    mainDbgLay->addWidget(groupBoxFlash);
+    QVBoxLayout* mainFlashLay = new QVBoxLayout(groupBoxFlash);
+
+    QHBoxLayout* mainFlashLayX = new QHBoxLayout();
+    mainFlashLay->addLayout(mainFlashLayX);
+
+    QHBoxLayout* readflash = new QHBoxLayout();
+    mainFlashLay->addLayout(readflash);
+    readOffset = new QSpinBox();
+    readflash->addWidget(readOffset);
+    readOffset->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    readOffset->setMaximum(127);
+    kalread = new QPushButton("Read");
+    readflash->addWidget(kalread);
+    kalread->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    readflash->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    connect(kalread, &QPushButton::clicked, this, &LogicUISG1::ReadFlash);
+
+    QHBoxLayout* writeflash = new QHBoxLayout();
+    mainFlashLay->addLayout(writeflash);
+    writeOffset = new QSpinBox();
+    writeflash->addWidget(writeOffset);
+    writeOffset->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    writeOffset->setMaximum(0xFF);
+    writeData = new QSpinBox();
+    writeflash->addWidget(writeData);
+    writeData->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    writeData->setMaximum(0xFFFF);
+    kalread = new QPushButton("Write");
+    writeflash->addWidget(kalread);
+    kalread->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    writeflash->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    connect(kalread, &QPushButton::clicked, this, &LogicUISG1::WriteFlash);
 
 
     mainDbgLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -547,6 +582,21 @@ void LogicUISG1::ReadSingleCal()
     int header = 0x00;
     header += sbrnumber->value();
     SendFrame(header&0xFF);
+}
+
+void LogicUISG1::ReadFlash()
+{
+    int header = 0x78;
+    int val = (readOffset->value()<<16)&0xFF0000;
+    SendFrame(header, val);
+}
+
+void LogicUISG1::WriteFlash()
+{
+    int header = 0x79;
+    int val = (writeOffset->value()<<16)&0xFF0000;
+    val |= (writeData->value()&0xFFFF);
+    SendFrame(header, val);
 }
 
 void LogicUISG1::WriteSingleCal()
