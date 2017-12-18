@@ -83,11 +83,11 @@ QString FrameSG1::toQString()
         return QString("Błąd urządzenia: ")+toShortQString();
     case 'e':                           //Wymuszenie napięcia SiPM
         return QString("Wymuszenie napięcia SiPM: ")+toShortQString();
-    case 'X':
+    case 'X':                           //Dane we flash
         return QString("Odczyt flash: ")+toShortQString();
-    case 'x':
+    case 'x':                           //Zapytanie o dane we flash
         return QString("Żądanie odczytu flash: ")+toShortQString();
-    case 'y':
+    case 'y':                           //Żądanie zapisu do flash
         return QString("Żądanie zapisu flash: ")+toShortQString();
     }
 

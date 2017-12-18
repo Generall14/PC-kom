@@ -4,14 +4,19 @@
 #include <QDebug>
 #include <QGroupBox>
 #include <QSpacerItem>
-#include "utils/Transaction.hpp"
-#include "utils/WorkerManager.hpp"
 #include "utils_SG1/DataCollector.hpp"
+#include "utils_SG1/WorkerRead.hpp"
+#include "utils_SG1/WorkerWrite.hpp"
+#include "utils_SG1/Worker.hpp"
+#include "utils_SG1/WorkerManager.hpp"
 
 LogicUISG1::LogicUISG1(QFrame* parent):
     LogicUI(parent)
 {
     Desc::description = "LogicUISG1";
+
+    while(data.size()<128)
+        data.append((char)(0x00));
 }
 
 void LogicUISG1::Init()
@@ -195,14 +200,17 @@ void LogicUISG1::InitDebug()
 
 
     //=======================Grupa kalibracja=====================================================
-    for(int i=0;i<12;++i)
+    for(int i=0;i<9;++i)
     {
-        calV.push_back(new QLabel("XXX"));
-        calV.at(i)->setAlignment(Qt::AlignCenter);
+        calV.push_back(new QSpinBox());
+        calV.at(i)->setMaximum(0xFFFFFF);
     }
     QGroupBox* groupBoxKalibracja = new QGroupBox("Kalibracja");
     mainDbgLay->addWidget(groupBoxKalibracja);
     QVBoxLayout* mainKalibracjaLay = new QVBoxLayout(groupBoxKalibracja);
+
+    QLabel* lll = new QLabel("Progi:");
+    mainKalibracjaLay->addWidget(lll);
 
     QHBoxLayout* kallay = new QHBoxLayout();
     mainKalibracjaLay->addLayout(kallay);
@@ -212,53 +220,48 @@ void LogicUISG1::InitDebug()
     kallay1->addWidget(calV.at(0));
     kallay1->addWidget(calV.at(3));
     kallay1->addWidget(calV.at(6));
-    kallay1->addWidget(calV.at(9));
 
     QVBoxLayout* kallay2 = new QVBoxLayout();
     kallay->addLayout(kallay2);
     kallay2->addWidget(calV.at(1));
     kallay2->addWidget(calV.at(4));
     kallay2->addWidget(calV.at(7));
-    kallay2->addWidget(calV.at(10));
 
     QVBoxLayout* kallay3 = new QVBoxLayout();
     kallay->addLayout(kallay3);
     kallay3->addWidget(calV.at(2));
     kallay3->addWidget(calV.at(5));
     kallay3->addWidget(calV.at(8));
-    kallay3->addWidget(calV.at(11));
-
-    QHBoxLayout* kkkread = new QHBoxLayout();
-    mainKalibracjaLay->addLayout(kkkread);
-    sbrnumber = new QSpinBox();
-    kkkread->addWidget(sbrnumber);
-    sbrnumber->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    sbrnumber->setMaximum(11);
-    QPushButton* kalread = new QPushButton("Read");
-    kkkread->addWidget(kalread);
-    kalread->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    kkkread->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    connect(kalread, &QPushButton::clicked, this, &LogicUISG1::ReadSingleCal);
-    QPushButton* kalreadall = new QPushButton("Read all");
-    kkkread->addWidget(kalreadall);
-    kalreadall->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    connect(kalreadall, &QPushButton::clicked, this, &LogicUISG1::ReadAll);
 
     QHBoxLayout* kkkread2 = new QHBoxLayout();
     mainKalibracjaLay->addLayout(kkkread2);
-    sbwnumber = new QSpinBox();
-    kkkread2->addWidget(sbwnumber);
-    sbwnumber->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    sbwnumber->setMaximum(11);
-    sbwvalue = new QSpinBox();
-    kkkread2->addWidget(sbwvalue);
-    sbwvalue->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    sbwvalue->setMaximum(120000);
-    kkkread2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    QPushButton* kalwrite = new QPushButton("Zapisz");
-    kkkread2->addWidget(kalwrite);
-    kalwrite->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    connect(kalwrite, &QPushButton::clicked, this, &LogicUISG1::WriteSingleCal);
+    lll = new QLabel("Napięcie bazowe:");
+    kkkread2->addWidget(lll);
+    baseV = new QSpinBox();
+    kkkread2->addWidget(baseV);
+    baseV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    baseV->setMaximum(255);
+
+    QHBoxLayout* kkkread3 = new QHBoxLayout();
+    mainKalibracjaLay->addLayout(kkkread3);
+    lll = new QLabel("Offset temperatury:");
+    kkkread3->addWidget(lll);
+    tempOffset = new QSpinBox();
+    kkkread3->addWidget(tempOffset);
+    tempOffset->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    tempOffset->setMaximum(1023);
+
+    QHBoxLayout* kkkread = new QHBoxLayout();
+    mainKalibracjaLay->addLayout(kkkread);
+    QPushButton* kalread = new QPushButton("Write");
+    kkkread->addWidget(kalread);
+    kalread->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    kkkread->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    connect(kalread, &QPushButton::clicked, this, &LogicUISG1::WriteAll);
+    QPushButton* kalreadall = new QPushButton("Read");
+    kkkread->addWidget(kalreadall);
+    kalreadall->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(kalreadall, &QPushButton::clicked, this, &LogicUISG1::ReadAll);
 
     //=======================Grupa flash==========================================================
     QGroupBox* groupBoxFlash = new QGroupBox("Flash");
@@ -506,8 +509,8 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     ival |= (pck.at(1)<<16)&0xFF0000;
     ival |= (pck.at(2)<<8)&0x00FF00;
     ival |= (pck.at(3)<<0)&0x0000FF;
-    if((pck[0]&0xF0)==0x10)
-        return calV.at(inum)->setText(QString::number(ival));
+//    if((pck[0]&0xF0)==0x10)
+//        return calV.at(inum)->setText(QString::number(ival));
 
     switch (pck.at(0))
     {
@@ -538,6 +541,14 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
         cParent->setPalette(errorPalette);
         errorLabel->setText("ERROR: "+frame->toShortQString());
         errorCounter = 1;
+        return;
+    case 'X':
+        uchar offset = pck.at(1);
+        if(offset<128)
+        {
+            data[offset] = pck.at(2);
+            data[offset+1] = pck.at(3);
+        }
         return;
     }
 }
@@ -577,13 +588,6 @@ void LogicUISG1::SendAutoReportConfig()
     SendFrame('s', tval);
 }
 
-void LogicUISG1::ReadSingleCal()
-{
-    int header = 0x00;
-    header += sbrnumber->value();
-    SendFrame(header&0xFF);
-}
-
 void LogicUISG1::ReadFlash()
 {
     int header = 0x78;
@@ -599,24 +603,45 @@ void LogicUISG1::WriteFlash()
     SendFrame(header, val);
 }
 
-void LogicUISG1::WriteSingleCal()
-{
-    int header = 0x20;
-    header += sbwnumber->value();
-    SendFrame(header&0xFF, sbwvalue->value());
-}
-
 void LogicUISG1::ReadAll()
 {
-    QVector<transaction> vec;
-    for(int i=0;i<12;++i)
-        vec.append(transaction(MakeFrame((0x00|i)&0xFF), QByteArray(1, (0x10|i)&0xFF), 1000, 3));
+    QVector<Worker*> vec;
+    for(int i=0;i<32;i+=2)
+        vec.append(new WorkerRead((uchar)i, 1000, 3));
 
-    WorkerManager* man = new WorkerManager(vec, 7);
+    WorkerManager* man = new WorkerManager(vec, 5);
     connect(this, SIGNAL(InternalFrameReaded(QByteArray)), man, SLOT(RecievedFrame(QByteArray)));
     connect(man, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
     connect(man, SIGNAL(Fail(QString)), this, SIGNAL(Error(QString)));
     connect(man, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(man, SIGNAL(Done()), this, SLOT(ParseData()));
+    man->start(QThread::HighPriority);
+}
+
+void LogicUISG1::WriteAll()
+{
+    for(int i=0;i<9;++i)
+    {
+        data[i*3] = (calV.at(i)->value()>>16)&0xFF;
+        data[i*3+1] = (calV.at(i)->value()>>8)&0xFF;
+        data[i*3+2] = (calV.at(i)->value()>>0)&0xFF;
+    }
+
+    data[0x1B] = (tempOffset->value()>>8)&0x03;
+    data[0x1C] = (tempOffset->value()>>0)&0xFF;
+
+    data[0x1D] = (baseV->value()>>0)&0xFF;
+
+    QVector<Worker*> vec;
+    for(int i=0;i<32;i+=2)
+        vec.append(new WorkerWrite((uchar)i, data.mid((uchar)i, 2), 1000, 3));
+
+    WorkerManager* man = new WorkerManager(vec, 1);
+    connect(this, SIGNAL(InternalFrameReaded(QByteArray)), man, SLOT(RecievedFrame(QByteArray)));
+    connect(man, SIGNAL(SendFrame(QByteArray)), this, SLOT(InternalWriteFrame(QByteArray)));
+    connect(man, SIGNAL(Fail(QString)), this, SIGNAL(Error(QString)));
+    connect(man, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(man, SIGNAL(Done()), this, SLOT(ParseData()));
     man->start(QThread::HighPriority);
 }
 
@@ -666,4 +691,22 @@ void LogicUISG1::UpdateCollectingData(float mval, int madc, int prog)
     mPomiar->setText(QString::number(mval, 'f', 2)+" cps");
     sPomiar->setText(QString::number(madc)+" ADC");
     progressBar->setValue(prog);
+}
+
+void LogicUISG1::ParseData()
+{
+    for(int i=0;i<9;++i)
+    {
+        uint tempv=0;
+        tempv |= (data.at(i*3)<<16)&0xFF0000;
+        tempv |= (data.at(i*3+1)<<8)&0x00FF00;
+        tempv |= (data.at(i*3+2)<<0)&0x0000FF;
+        calV.at(i)->setValue(tempv);
+    }
+    uint tempt = 0;
+    tempt |= (data.at(0x1B)<<8)&0x0300;
+    tempt |= (data.at(0x1C)<<0)&0x00FF;
+    uint tempvol = data.at(0x1D)&0xFF;
+    baseV->setValue(tempvol);
+    tempOffset->setValue(tempt);
 }

@@ -33,12 +33,12 @@ protected slots:
     QSharedPointer<Frame> MakeFrame(uchar header, int val = 0);
     void SendFrame(uchar header, int val = 0);
     void SendAutoReportConfig();
-    void ReadSingleCal();
-    void WriteSingleCal();
     void ReadAll();
+    void WriteAll();
     void InternalWriteFrame(QByteArray frame);
     void ReadFlash();
     void WriteFlash();
+    void ParseData();
 
     void StartCollectingData();
     void StoppedCollectingData();
@@ -69,10 +69,9 @@ protected:
     QCheckBox* chkVSiPM = NULL;
     QCheckBox* chkACal = NULL;
 
-    QVector<QLabel*> calV;
-    QSpinBox* sbrnumber = NULL;
-    QSpinBox* sbwnumber = NULL;
-    QSpinBox* sbwvalue = NULL;
+    QVector<QSpinBox*> calV;
+    QSpinBox* baseV = NULL;
+    QSpinBox* tempOffset = NULL;
 
     QLabel* errorLabel = NULL;
     QPalette errorPalette;
@@ -102,6 +101,8 @@ protected:
 
     QVector<QSpinBox*> calDst;
     QComboBox* cmbMetoda = NULL;
+
+    QByteArray data;
 
 signals:
     void InternalFrameReaded(QByteArray);

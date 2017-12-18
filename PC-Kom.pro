@@ -41,8 +41,6 @@ SOURCES += main.cpp\
     src/Frame_imp/FrameSG1.cpp \
     src/FrameBuilder_imp/FrameBuilderSG1.cpp \
     src/Mendium_imp/MendiumFakeSG1.cpp \
-    src/LogicUI_imp/utils/Worker.cpp \
-    src/LogicUI_imp/utils/WorkerManager.cpp \
     src/LogicUI_imp/utils_SG1/DataCollector.cpp \
     src/Mendium_imp/MendiumFakeStawrow.cpp \
     src/Frame_imp/FrameStawrov.cpp \
@@ -71,7 +69,11 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_ZR3/transactionUi.cpp \
     src/LogicUI_imp/utils_ZR3/TransactionMaker.cpp \
     src/BusDevice_imp/BusDeviceUMPZR3.cpp \
-    src/Utils/StaticUtils.cpp
+    src/Utils/StaticUtils.cpp \
+    src/LogicUI_imp/utils_SG1/Worker.cpp \
+    src/LogicUI_imp/utils_SG1/WorkerManager.cpp \
+    src/LogicUI_imp/utils_SG1/WorkerRead.cpp \
+    src/LogicUI_imp/utils_SG1/WorkerWrite.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -96,9 +98,6 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/FrameSG1.hpp \
     src/FrameBuilder_imp/FrameBuilderSG1.hpp \
     src/Mendium_imp/MendiumFakeSG1.hpp \
-    src/LogicUI_imp/utils/Transaction.hpp \
-    src/LogicUI_imp/utils/Worker.hpp \
-    src/LogicUI_imp/utils/WorkerManager.hpp \
     src/LogicUI_imp/utils_SG1/DataCollector.hpp \
     init.hpp \
     src/Mendium_imp/MendiumFakeStawrow.hpp \
@@ -135,4 +134,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_ZR3/transactionUi.hpp \
     src/LogicUI_imp/utils_ZR3/TransactionMaker.hpp \
     src/BusDevice_imp/BusDeviceUMPZR3.hpp \
-    src/Utils/StaticUtils.hpp
+    src/Utils/StaticUtils.hpp \
+    src/LogicUI_imp/utils_SG1/Worker.hpp \
+    src/LogicUI_imp/utils_SG1/WorkerManager.hpp \
+    src/LogicUI_imp/utils_SG1/WorkerRead.hpp \
+    src/LogicUI_imp/utils_SG1/WorkerWrite.hpp
