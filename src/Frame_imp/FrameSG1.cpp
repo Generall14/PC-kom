@@ -13,6 +13,7 @@ FrameSG1::FrameSG1(QByteArray ba)
     errorNumbers.insert(0x03, "ACAL_OUT_OF_VOLTAGE");
     errorNumbers.insert(0x04, "NO_SIGNAL_ON_CDETECT");
     errorNumbers.insert(0x05, "LOST_SIPM_SIGNAL");
+    errorNumbers.insert(0x06, "NO_COUNTS");
 }
 
 bool FrameSG1::isValid()
