@@ -114,6 +114,16 @@ void LogicUISG1::InitDebug()
     bbbvsipm->addWidget(lblVSiPM);
     lblVSiPM->setAlignment(Qt::AlignRight);
 
+    QHBoxLayout* bbbvbr = new QHBoxLayout();
+    mainZapytaniaLay->addLayout(bbbvbr);
+    QPushButton* btnVbr = new QPushButton("Vbr");
+    bbbvbr->addWidget(btnVbr);
+    btnVbr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btnVbr, &QPushButton::clicked, [=](){SendFrame('w');});
+    lblVbr = new QLabel("XXX DAC");
+    bbbvbr->addWidget(lblVbr);
+    lblVbr->setAlignment(Qt::AlignRight);
+
     QHBoxLayout* bbbvbat = new QHBoxLayout();
     mainZapytaniaLay->addLayout(bbbvbat);
     QPushButton* btnVBat = new QPushButton("V Bat.");
@@ -505,7 +515,7 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
     QByteArray pck = frame->pureData();
 
     int ival=0;
-    int inum=pck.at(0)&0x0F;
+//    int inum=pck.at(0)&0x0F;
     ival |= (pck.at(1)<<16)&0xFF0000;
     ival |= (pck.at(2)<<8)&0x00FF00;
     ival |= (pck.at(3)<<0)&0x0000FF;
@@ -529,6 +539,9 @@ void LogicUISG1::FrameReaded(QSharedPointer<Frame> frame)
         return;
     case 'D':                           //Napięcie SiPM
         lblVSiPM->setText(frame->toShortQString());
+        return;
+    case 'W':                           //Napięcie Vbr
+        lblVbr->setText(frame->toShortQString());
         return;
     case 'H':                           //Hello
         lblHello->setText(frame->toShortQString());

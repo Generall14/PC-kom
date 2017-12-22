@@ -64,6 +64,10 @@ QString FrameSG1::toQString()
         return QString("Zapytanie o napięcie SiPM.");
     case 'D':                           //Napięcie SiPM
         return QString("Raport: napięcie SiPM: ")+toShortQString();
+    case 'w':                           //Napięcie Vbr
+        return QString("Zapytanie o napięcie Vbr.");
+    case 'W':                           //Napięcie Vbr
+        return QString("Raport: napięcie Vbr: ")+toShortQString();
     case 'h':                           //Hello
         return QString("Zapytanie hello.");
     case 'H':                           //Hello
@@ -163,6 +167,9 @@ QString FrameSG1::toShortQString()
         llv = 8-llv;
         return QString("%1/%2").arg(mlv, 0, 10).arg(llv, 0, 10);
     case 'D':                           //Napięcie SiPM
+        voltage = (float)result*k;
+        return QString("%1 DAC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
+    case 'W':                           //Napięcie SiPM
         voltage = (float)result*k;
         return QString("%1 DAC, ~").arg(result, 0, 10) +QString::number(voltage, 'f', 2)+" V";
     case 'e':                           //Wymuszenie napięcia SiPM

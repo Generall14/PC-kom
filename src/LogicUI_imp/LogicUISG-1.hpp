@@ -60,6 +60,7 @@ protected:
     QLabel* lblZatk = NULL;
     QLabel* lblLevels = NULL;
     QLabel* lblVSiPM = NULL;
+    QLabel* lblVbr = NULL;
     QLabel* lblVBat = NULL;
 
     QCheckBox* chkCounts = NULL;
