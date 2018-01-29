@@ -1,10 +1,12 @@
 #include "FrameStawrov.hpp"
 #include <QDebug>
+#include <QApplication>
 
 FrameStawrov::FrameStawrov(QByteArray ba)
     :Frame(ba)
 {
     Desc::description = "FrameStawrov";
+    dbg = QApplication::arguments().contains("-dbg");
 }
 
 bool FrameStawrov::isValid()
@@ -14,17 +16,17 @@ bool FrameStawrov::isValid()
         errorString = "Invalid start byte";
         return false;
     }
-    if(pck.size()-5!=pck.at(2))
+    if(pck.size()-5!=pck.at(3))
     {
         errorString = "Invalid data length";
         return false;
     }
-    if(pck.at(2)>27)
+    if(pck.at(3)>27)
     {
         errorString = "Exceeded data length";
         return false;
     }
-    if(pck.at(2)==0)
+    if(pck.at(3)==0)
     {
         errorString = "Null data length";
         return false;
@@ -39,18 +41,21 @@ bool FrameStawrov::isValid()
 
 QString FrameStawrov::toQString()
 {
-//    QString pure = "PURE DATA: ";
-//    for(auto s: pck)
-//        pure.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
-//    pure.remove(pure.size()-1, 1);
-//    pure = pure.toUpper();
-//    pure = pure.replace("X", "x");
-//    return pure;
+    if(dbg)
+    {
+        QString pure = "PURE DATA: ";
+        for(auto s: pck)
+            pure.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+        pure.remove(pure.size()-1, 1);
+        pure = pure.toUpper();
+        pure = pure.replace("X", "x");
+        return pure;
+    }
 
     if(!isValid())
         return InvalidString();
 
-    if(pck.at(2)!=0)
+    if(pck.at(3)!=0)
     {
         QByteArray cargo = pck.mid(4);
         cargo.remove(cargo.size()-1, 1);

@@ -45,8 +45,8 @@ void MendiumFakeStawrow::Run()
             occupied = !occupied;
         const int channels = 6;
         QByteArray temp(sdata);
-        temp.append(channels*2+3);
         temp.append(0xFF);
+        temp.append(channels*2+3);
         temp.append(0x31);
         temp.append(status);
         temp.append((char)0x00);

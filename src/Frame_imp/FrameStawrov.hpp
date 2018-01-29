@@ -23,6 +23,7 @@ public:
 protected:
     QString InvalidString();
     QString errorString;
+    bool dbg = false;
 };
 
 #endif

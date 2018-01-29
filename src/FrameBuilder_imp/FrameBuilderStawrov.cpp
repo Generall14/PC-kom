@@ -20,12 +20,12 @@ void FrameBuilderStawrov::ByteReaded(QByteArray ba)
     timer->stop();
     recievedbuf.append(ba);
 
-    if(recievedbuf.length()>=3)
+    if(recievedbuf.length()>=4)
     {
-        if(recievedbuf.length()-5>=recievedbuf.at(2))
+        if(recievedbuf.length()-5>=recievedbuf.at(3))
         {
-            emit FrameReaded(QSharedPointer<Frame>(Factory::newFrame(recievedbuf.left(5+recievedbuf.at(2)))));
-            recievedbuf.remove(0, 5+recievedbuf.at(2));
+            emit FrameReaded(QSharedPointer<Frame>(Factory::newFrame(recievedbuf.left(5+recievedbuf.at(3)))));
+            recievedbuf.remove(0, 5+recievedbuf.at(3));
         }
     }
 

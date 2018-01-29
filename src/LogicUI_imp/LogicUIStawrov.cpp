@@ -295,7 +295,6 @@ void LogicUIStawrov::makeStupidMessage()
         }
         dataArray.append(tint&0xFF);
     }
-    maker.append(dataArray.size()&0xFF);
 
     stemp = leAdr->text().left(2);
     tint = stemp.toInt(&ok, 16);
@@ -305,6 +304,7 @@ void LogicUIStawrov::makeStupidMessage()
         return;
     }
     maker.append(tint&0xFF);
+    maker.append(dataArray.size()&0xFF);
     maker.append(dataArray);
     maker = FrameStawrov::AddCRC16(maker);
 
@@ -444,8 +444,8 @@ void LogicUIStawrov::PackAndSend(QByteArray data)
     QByteArray temp;
     temp.append(0xFF);
     temp.append(0xFD);
-    temp.append((uchar)data.length());
     temp.append(tempi);
+    temp.append((uchar)data.length());
     temp.append(data);
     temp = FrameStawrov::AddCRC16(temp);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
