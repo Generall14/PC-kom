@@ -9,6 +9,8 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QRadioButton>
+#include <QComboBox>
+#include <QCheckBox>
 #include "utils_Stawrov/StawrovLogger.hpp"
 #include "../Utils/ValidateHex.hpp"
 #include "../Utils/ValidateDumbFloat.hpp"
@@ -33,9 +35,14 @@ private slots:
     void setStatus(QString s);
     void setChannels(int s);
 
-    void checkMode();
-    bool CalcChannels();
-    void SendConfig();
+    void makeSYNCH_AND_START();
+    void makeRESET_SLAVE();
+    void makeRESET_MASTER();
+    void makeSET_HIGH_VOLTAGE();
+    void makeSET_GAIN_OFFSET_AND_TRIGGER();
+    void makeSET_CHANNELS();
+
+    void PackAndSend(QByteArray data);
 
 protected:
     void InitTests();
@@ -47,7 +54,6 @@ protected:
     QPushButton* btnE = NULL;
 
     QLineEdit* leAdr = NULL;
-    QLineEdit* leHeader = NULL;
     QLineEdit* leData = NULL;
 
     STawrovLogger* logg = NULL;
@@ -56,18 +62,20 @@ protected:
     QLabel* channelsLabel = NULL;
     QLineEdit* fileAdr = NULL;
 
-    QLineEdit* leZakA = NULL;
-    QLineEdit* leAakB = NULL;
-    QRadioButton* metUlamki = NULL;
-    QRadioButton* metWartosci = NULL;
-    QLineEdit* warUlamki = NULL;
-    QLineEdit* warWartosci = NULL;
+    QLineEdit* leHV = NULL;
+    QLineEdit* leOFFSET = NULL;
+    QLineEdit* leTRIGGER = NULL;
+    QLineEdit* leKANALY = nullptr;
+
     QLineEdit* lekAdr = NULL;
     QLineEdit* lekAdrLoc = NULL;
-    QPushButton* btnr2 = NULL;
-    QList<int> values;
+
+    QComboBox* kcbox = nullptr;
+    QCheckBox* rozniczkowanie = nullptr;
 
     bool modeFromSizes = true;
+    QStringList gnam;
+    QMap<QString, uchar> gval;
 };
 
 #endif

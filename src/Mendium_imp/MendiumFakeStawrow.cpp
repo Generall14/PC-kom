@@ -8,8 +8,7 @@ MendiumFakeStawrow::MendiumFakeStawrow()
 
     sdata.clear();
     sdata.append(0xFF);
-    sdata.append(0xFF);
-    sdata.append(0xFF);
+    sdata.append(0xF9);
 }
 
 void MendiumFakeStawrow::Open(QString)
@@ -47,6 +46,7 @@ void MendiumFakeStawrow::Run()
         const int channels = 6;
         QByteArray temp(sdata);
         temp.append(channels*2+3);
+        temp.append(0xFF);
         temp.append(0x31);
         temp.append(status);
         temp.append((char)0x00);

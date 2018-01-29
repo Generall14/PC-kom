@@ -14,17 +14,17 @@ bool FrameStawrov::isValid()
         errorString = "Invalid start byte";
         return false;
     }
-    if(pck.size()-5!=pck.at(3))
+    if(pck.size()-5!=pck.at(2))
     {
         errorString = "Invalid data length";
         return false;
     }
-    if(pck.at(3)>27)
+    if(pck.at(2)>27)
     {
         errorString = "Exceeded data length";
         return false;
     }
-    if(pck.at(3)==0)
+    if(pck.at(2)==0)
     {
         errorString = "Null data length";
         return false;
@@ -39,10 +39,18 @@ bool FrameStawrov::isValid()
 
 QString FrameStawrov::toQString()
 {
+//    QString pure = "PURE DATA: ";
+//    for(auto s: pck)
+//        pure.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+//    pure.remove(pure.size()-1, 1);
+//    pure = pure.toUpper();
+//    pure = pure.replace("X", "x");
+//    return pure;
+
     if(!isValid())
         return InvalidString();
 
-    if(pck.at(3)!=0)
+    if(pck.at(2)!=0)
     {
         QByteArray cargo = pck.mid(4);
         cargo.remove(cargo.size()-1, 1);
@@ -79,7 +87,7 @@ QString FrameStawrov::toQString()
                     tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
                 return tempR;
             }
-            if(cargo.length()!=(5+2*cargo.at(2)))
+            if(cargo.length()!=(3+2*cargo.at(2)))
             {
                 tempR = "Błędny rozmiar danych ustawień kanałów: ";
                 for(auto s: cargo)
@@ -95,6 +103,65 @@ QString FrameStawrov::toQString()
                 tval |= (cargo.at(i)<<0)&0x00FF;
                 tempR.append(QString("[ 0x%1 ] ").arg(tval, 4, 16, QChar('0')));
             }
+            return tempR;
+        }
+        else if((cargo.at(0)-0x02)==0)
+        {
+            tempR = "SYNCH_AND_START";
+            return tempR;
+        }
+        else if((cargo.at(0)-0x03)==0)
+        {
+            if(cargo.length()<2)
+            {
+                tempR = "Błędny format RESET_SLAVE";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            tempR = QString("RESET_SLAVE [ADR: 0x%1]").arg(cargo.at(1)&0xff, 2, 16, QChar('0'));
+            return tempR;
+        }
+        else if((cargo.at(0)-0x04)==0)
+        {
+            tempR = "RESET_MASTER";
+            return tempR;
+        }
+        else if((cargo.at(0)-0x05)==0)
+        {
+            if(cargo.length()<4)
+            {
+                tempR = "Błędny format SET_HIGH_VOLTAGE: ";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            int tval = 0;
+            tval |= (cargo.at(3)<<8)&0xFF00;
+            tval |= (cargo.at(2)<<0)&0x00FF;
+            tempR = QString("SET_HIGH_VOLTAGE [ADR: 0x%1, VOL: 0x%2]").arg(cargo.at(1)&0xff, 2, 16, QChar('0'))
+                    .arg(tval, 4, 16, QChar('0'));
+            return tempR;
+        }
+        else if((cargo.at(0)-0x06)==0)
+        {
+            if(cargo.length()<7)
+            {
+                tempR = "Błędny format SET_GAIN_OFFSET_AND_TRIGGER: ";
+                for(auto s: cargo)
+                    tempR.append(QString("0x%1 ").arg(((int)(s))&0xFF, 2, 16, QChar('0')));
+                return tempR;
+            }
+            int toff = 0, ttrig = 0;
+            toff |= (cargo.at(4)<<8)&0xFF00;
+            toff |= (cargo.at(3)<<0)&0x00FF;
+            ttrig |= (cargo.at(6)<<8)&0xFF00;
+            ttrig |= (cargo.at(5)<<0)&0x00FF;
+            tempR = QString("SET_GAIN_OFFSET_AND_TRIGGER [ADR: 0x%1, GAIN: 0x%2, OFFSET: 0x%3, TRIGGER: 0x%4]")
+                    .arg(cargo.at(1)&0xff, 2, 16, QChar('0'))
+                    .arg(cargo.at(2)&0xff, 2, 16, QChar('0'))
+                    .arg(toff, 4, 16, QChar('0'))
+                    .arg(ttrig, 4, 16, QChar('0'));
             return tempR;
         }
     }

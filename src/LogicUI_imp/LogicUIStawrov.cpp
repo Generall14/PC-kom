@@ -3,6 +3,7 @@
 #include "../Frame_imp/FrameStawrov.hpp"
 #include <QLabel>
 #include <QDebug>
+#include <QMap>
 
 LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
@@ -13,20 +14,28 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     connect(logg, SIGNAL(StateChanged(QString)), this, SLOT(setStatus(QString)), Qt::QueuedConnection);
     connect(logg, SIGNAL(SetChannels(int)), this, SLOT(setChannels(int)), Qt::QueuedConnection);
     logg->Reset("pustyPlikKropkaTeIksTe.txt");
+
+    gnam.append("[010] x0.3"); gval.insertMulti(gnam.at(0), 0x02);
+    gnam.append("[110] x0.6"); gval.insertMulti(gnam.at(1), 0x06);
+    gnam.append("[011] x2"); gval.insertMulti(gnam.at(2), 0x03);
+    gnam.append("[111] x4"); gval.insertMulti(gnam.at(3), 0x07);
+    gnam.append("[001] x7.5"); gval.insertMulti(gnam.at(4), 0x01);
+    gnam.append("[101] x15"); gval.insertMulti(gnam.at(5), 0x05);
 }
 
 LogicUIStawrov::~LogicUIStawrov()
 {
     Store("configs/LogicUIStawrovAdr.cfg", leAdr->text());
-    Store("configs/LogicUIStawrovHeader.cfg", leHeader->text());
     Store("configs/LogicUIStawrovData.cfg", leData->text());
     Store("configs/LogicUIStawrovFileLog.cfg", fileAdr->text());
-    Store("configs/LogicUIStawrovleZakA.cfg", leZakA->text());
-    Store("configs/LogicUIStawrovleAakB.cfg", leAakB->text());
     Store("configs/LogicUIStawrovlekAdr.cfg", lekAdr->text());
-    Store("configs/LogicUIStawrovwarUlamki.cfg", warUlamki->text());
-    Store("configs/LogicUIStawrovmetUlamki.cfg", QString::number((int)metUlamki->isChecked()));
     Store("configs/LogicUIStawrovlekAdrLoc.cfg", lekAdrLoc->text());
+    Store("configs/LogicUIStawrovleHV.cfg", leHV->text());
+    Store("configs/LogicUIStawrovlekcbox.cfg", kcbox->currentText());
+    Store("configs/LogicUIStawrovmetrozniczkowanie.cfg", QString::number((int)rozniczkowanie->isChecked()));
+    Store("configs/LogicUIStawrovleOFFSET.cfg", leOFFSET->text());
+    Store("configs/LogicUIStawrovleTRIGGER.cfg", leTRIGGER->text());
+    Store("configs/LogicUIStawrovleKANALY.cfg", leKANALY->text());
 
     delete logg;
 }
@@ -39,7 +48,6 @@ void LogicUIStawrov::Init()
     InitTests();
 
     LoadConfigs();
-    checkMode();
 }
 
 void LogicUIStawrov::InitTests()
@@ -48,16 +56,6 @@ void LogicUIStawrov::InitTests()
     QGroupBox* groupBoxWyslijCos = new QGroupBox("Wyślij coś");
     mainLay->addWidget(groupBoxWyslijCos);
     QVBoxLayout* mainWyslijCosLay = new QVBoxLayout(groupBoxWyslijCos);
-
-    QHBoxLayout* groupBoxWyslijCosX = new QHBoxLayout();
-    mainWyslijCosLay->addLayout(groupBoxWyslijCosX);
-    QLabel* tl1 = new QLabel("Nagłówek:");
-    groupBoxWyslijCosX->addWidget(tl1);
-    leHeader = new QLineEdit("fd");
-    leHeader->setMaximumWidth(50);
-    leHeader->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leHeader->setValidator(new HexValidator(1, 1, leHeader));
-    groupBoxWyslijCosX->addWidget(leHeader);
 
     QHBoxLayout* groupBoxWyslijCosY = new QHBoxLayout();
     mainWyslijCosLay->addLayout(groupBoxWyslijCosY);
@@ -120,53 +118,6 @@ void LogicUIStawrov::InitTests()
     mainLay->addWidget(groupBoxKonfiguracja);
     QVBoxLayout* mainKonfiguracjaLay = new QVBoxLayout(groupBoxKonfiguracja);
 
-    QHBoxLayout* groupBoxKonfiguracja1 = new QHBoxLayout();
-    mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja1);
-    tl1 = new QLabel("Zakres pracy (min - max):");
-    groupBoxKonfiguracja1->addWidget(tl1);
-    leZakA = new QLineEdit("fd");
-    leZakA->setToolTip("Początek wykorzystywanego przedziału pomiarowego.");
-    leZakA->setMaximumWidth(50);
-    leZakA->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leZakA->setValidator(new HexValidator(2, 1, leZakA));
-    groupBoxKonfiguracja1->addWidget(leZakA);
-    leAakB = new QLineEdit("fd");
-    leAakB->setToolTip("Koniec wykorzystywanego przedziału pomiarowego.");
-    leAakB->setMaximumWidth(50);
-    leAakB->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leAakB->setValidator(new HexValidator(2, 1, leAakB));
-    groupBoxKonfiguracja1->addWidget(leAakB);
-
-    lll = new QLabel("Szerokości kanałów:");
-    mainKonfiguracjaLay->addWidget(lll);
-    QHBoxLayout* groupBoxKonfiguracja2 = new QHBoxLayout();
-    mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja2);
-
-    QVBoxLayout* checkLay = new QVBoxLayout();
-    groupBoxKonfiguracja2->addLayout(checkLay);
-    metUlamki = new QRadioButton("Tak:");
-    checkLay->addWidget(metUlamki);
-    metUlamki->setChecked(true);
-    metUlamki->setToolTip("Tu się podaje szerokości kanałów jako ułamki całego przedziału podanego wyżej.");
-    connect(metUlamki, SIGNAL(toggled(bool)), this, SLOT(checkMode()));
-    metWartosci = new QRadioButton("Inaczej:");
-    metWartosci->setToolTip("Te wartości będą bezpośrednio przesłane do kontrolera.");
-    connect(metWartosci, SIGNAL(toggled(bool)), this, SLOT(checkMode()));
-    checkLay->addWidget(metWartosci);
-
-    QVBoxLayout* checkLay2 = new QVBoxLayout();
-    groupBoxKonfiguracja2->addLayout(checkLay2);
-    warUlamki = new QLineEdit("0.5 0.5");
-    warUlamki->setValidator(new ValidateDumbFloat(warUlamki));
-    warUlamki->setToolTip("Tu się podaje szerokości kanałów jako ułamki całego przedziału podanego wyżej.");
-    connect(warUlamki, SIGNAL(editingFinished()), this, SLOT(CalcChannels()), Qt::QueuedConnection);
-    checkLay2->addWidget(warUlamki);
-    warWartosci = new QLineEdit("0666 AAAA");
-    warWartosci->setValidator(new HexValidator(2, 12, warWartosci));
-    warWartosci->setToolTip("Te wartości będą bezpośrednio przesłane do kontrolera.");
-    connect(warWartosci, SIGNAL(editingFinished()), this, SLOT(CalcChannels()), Qt::QueuedConnection);
-    checkLay2->addWidget(warWartosci);
-
     QHBoxLayout* groupBoxKonfiguracja22 = new QHBoxLayout();
     mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja22);
     QLabel* tl23 = new QLabel("Wyślij na adres:");
@@ -187,12 +138,85 @@ void LogicUIStawrov::InitTests()
     lekAdrLoc->setToolTip("Docelowy adres lokalny komendy z konfiguracją szerokości kanałów.");
     lekAdrLoc->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     lekAdrLoc->setValidator(new HexValidator(1, 1, lekAdrLoc));
+
     groupBoxKonfiguracja23->addWidget(lekAdrLoc);
 
-    btnr2 = new QPushButton("Przelicz i wyślij");
-    btnr2->setToolTip("Przelicz kanały i wyślij komunikat na wskazany adres.");
-    mainKonfiguracjaLay->addWidget(btnr2);
-    connect(btnr2, SIGNAL(clicked(bool)), this, SLOT(SendConfig()));
+    QGroupBox* groupBoxS = new QGroupBox();
+    mainKonfiguracjaLay->addWidget(groupBoxS);
+    QVBoxLayout* groupBoxKonfiguracjaSimple = new QVBoxLayout(groupBoxS);
+
+    QPushButton* btns = new QPushButton("SYNCH_AND_START");
+    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeSYNCH_AND_START()));
+    groupBoxKonfiguracjaSimple->addWidget(btns);
+    btns = new QPushButton("RESET_SLAVE");
+    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeRESET_SLAVE()));
+    groupBoxKonfiguracjaSimple->addWidget(btns);
+    btns = new QPushButton("RESET_MASTER");
+    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeRESET_MASTER()));
+    groupBoxKonfiguracjaSimple->addWidget(btns);
+
+    QGroupBox* groupBoxHV = new QGroupBox();
+    mainKonfiguracjaLay->addWidget(groupBoxHV);
+    QVBoxLayout* groupBoxKonfiguracjaHV = new QVBoxLayout(groupBoxHV);
+    QHBoxLayout* groupBoxKonfiguracjaHV1 = new QHBoxLayout();
+    groupBoxKonfiguracjaHV->addLayout(groupBoxKonfiguracjaHV1);
+    QLabel* hvl = new QLabel("Napięcie:");
+    groupBoxKonfiguracjaHV1->addWidget(hvl);
+    leHV = new QLineEdit("01FF");
+    leHV->setMaximumWidth(50);
+    leHV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leHV->setValidator(new HexValidator(2, 1, leHV));
+    leHV->setToolTip("Napięcie pracy, magiczna, niewyskalowana liczba.");
+    groupBoxKonfiguracjaHV1->addWidget(leHV);
+    QPushButton* btnHV = new QPushButton("SET_HIGH_VOLTAGE");
+    connect(btnHV, SIGNAL(clicked(bool)), this, SLOT(makeSET_HIGH_VOLTAGE()));
+    groupBoxKonfiguracjaHV->addWidget(btnHV);
+
+    QGroupBox* groupBoxGOT = new QGroupBox();
+    mainKonfiguracjaLay->addWidget(groupBoxGOT);
+    QVBoxLayout* groupBoxKonfiguracjaGOT = new QVBoxLayout(groupBoxGOT);
+    QHBoxLayout* groupBoxKonfiguracjaGOT1 = new QHBoxLayout();
+    groupBoxKonfiguracjaGOT->addLayout(groupBoxKonfiguracjaGOT1);
+    QLabel* gotl = new QLabel("Wzmocnienie:");
+    groupBoxKonfiguracjaGOT1->addWidget(gotl);
+    kcbox = new QComboBox();
+    kcbox->addItems(gnam);
+    groupBoxKonfiguracjaGOT1->addWidget(kcbox);
+    rozniczkowanie = new QCheckBox("Różniczkowanie");
+    groupBoxKonfiguracjaGOT->addWidget(rozniczkowanie);
+    QHBoxLayout* groupBoxKonfiguracjaGOT2 = new QHBoxLayout();
+    groupBoxKonfiguracjaGOT->addLayout(groupBoxKonfiguracjaGOT2);
+    gotl = new QLabel("Offset:");
+    groupBoxKonfiguracjaGOT2->addWidget(gotl);
+    leOFFSET = new QLineEdit("0000");
+    leOFFSET->setMaximumWidth(50);
+    leOFFSET->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leOFFSET->setValidator(new HexValidator(2, 1, leOFFSET));
+    groupBoxKonfiguracjaGOT2->addWidget(leOFFSET);
+    gotl = new QLabel("Trigger:");
+    groupBoxKonfiguracjaGOT2->addWidget(gotl);
+    leTRIGGER = new QLineEdit("0000");
+    leTRIGGER->setMaximumWidth(50);
+    leTRIGGER->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leTRIGGER->setValidator(new HexValidator(2, 1, leTRIGGER));
+    groupBoxKonfiguracjaGOT2->addWidget(leTRIGGER);
+    QPushButton* btnGOT = new QPushButton("SET_GAIN_OFFSET_AND_TRIGGER");
+    connect(btnGOT, SIGNAL(clicked(bool)), this, SLOT(makeSET_GAIN_OFFSET_AND_TRIGGER()));
+    groupBoxKonfiguracjaGOT->addWidget(btnGOT);
+
+    QGroupBox* groupBoxKAN = new QGroupBox();
+    mainKonfiguracjaLay->addWidget(groupBoxKAN);
+    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
+    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
+    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
+    QLabel* kanl = new QLabel("Kanały:");
+    groupBoxKonfiguracjaKAN1->addWidget(kanl);
+    leKANALY = new QLineEdit("0666 AAAA");
+    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
+    groupBoxKonfiguracjaKAN1->addWidget(leKANALY);
+    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
+    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
+    groupBoxKonfiguracjaKAN->addWidget(btnKAN);
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
@@ -203,42 +227,40 @@ void LogicUIStawrov::LoadConfigs()
 
     if(!Restore("configs/LogicUIStawrovAdr.cfg", temp))
         leAdr->setText(temp);
-    if(!Restore("configs/LogicUIStawrovHeader.cfg", temp))
-        leHeader->setText(temp);
     if(!Restore("configs/LogicUIStawrovData.cfg", temp))
         leData->setText(temp);
     if(!Restore("configs/LogicUIStawrovFileLog.cfg", temp))
         fileAdr->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleZakA.cfg", temp))
-        leZakA->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleAakB.cfg", temp))
-        leAakB->setText(temp);
     if(!Restore("configs/LogicUIStawrovlekAdr.cfg", temp))
         lekAdr->setText(temp);
-    if(!Restore("configs/LogicUIStawrovwarUlamki.cfg", temp))
-        warUlamki->setText(temp);
     if(!Restore("configs/LogicUIStawrovlekAdrLoc.cfg", temp))
         lekAdrLoc->setText(temp);
-    if(!Restore("configs/LogicUIStawrovmetUlamki.cfg", temp))
+    if(!Restore("configs/LogicUIStawrovleHV.cfg", temp))
+        leHV->setText(temp);
+    if(!Restore("configs/LogicUIStawrovlekcbox.cfg", temp))
+        kcbox->setCurrentText(temp);
+    if(!Restore("configs/LogicUIStawrovleOFFSET.cfg", temp))
+        leOFFSET->setText(temp);
+    if(!Restore("configs/LogicUIStawrovleTRIGGER.cfg", temp))
+        leTRIGGER->setText(temp);
+    if(!Restore("configs/LogicUIStawrovleKANALY.cfg", temp))
+        leKANALY->setText(temp);
+    if(!Restore("configs/LogicUIStawrovmetrozniczkowanie.cfg", temp))
     {
         bool first = temp.toInt();
-        if(!first)
-            metWartosci->setChecked(true);
+        if(first)
+            rozniczkowanie->setChecked(true);
     }
-
-    CalcChannels();
 }
 
 void LogicUIStawrov::Connected()
 {
     btn->setEnabled(true);
-    btnr2->setEnabled(true);
 }
 
 void LogicUIStawrov::Disconnected()
 {
     btn->setEnabled(false);
-    btnr2->setEnabled(false);
 }
 
 void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
@@ -252,28 +274,12 @@ void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
  */
 void LogicUIStawrov::makeStupidMessage()
 {
+    bool ok;
+    QString stemp;
+    int tint;
     QByteArray maker;
     maker.append(0xFF);
-
-    QString stemp = leHeader->text().left(2);
-    int tint = 0;
-    bool ok;
-    tint = stemp.toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Kijowe dane nagłówka \""+stemp+"\".");
-        return;
-    }
-    maker.append(tint&0xFF);
-
-    stemp = leAdr->text().left(2);
-    tint = stemp.toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Kijowe dane adresu \""+stemp+"\".");
-        return;
-    }
-    maker.append(tint&0xFF);
+    maker.append(0xFD);
 
     QByteArray dataArray;
     for(QString tttemp: leData->text().split(" "))
@@ -289,8 +295,16 @@ void LogicUIStawrov::makeStupidMessage()
         }
         dataArray.append(tint&0xFF);
     }
-
     maker.append(dataArray.size()&0xFF);
+
+    stemp = leAdr->text().left(2);
+    tint = stemp.toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Kijowe dane adresu \""+stemp+"\".");
+        return;
+    }
+    maker.append(tint&0xFF);
     maker.append(dataArray);
     maker = FrameStawrov::AddCRC16(maker);
 
@@ -307,143 +321,118 @@ void LogicUIStawrov::setChannels(int s)
     channelsLabel->setText(QString::number(s));
 }
 
-/**
- * Sprawdza wybrany tryb wprowadzania kanałów i odpowiednio enabluje edytory.
- */
-void LogicUIStawrov::checkMode()
+void LogicUIStawrov::makeSYNCH_AND_START()
 {
-    if(metUlamki->isChecked())
-    {
-        modeFromSizes = true;
-        warUlamki->setEnabled(true);
-        warWartosci->setEnabled(false);
-    }
-    else
-    {
-        modeFromSizes = false;
-        warUlamki->setEnabled(false);
-        warWartosci->setEnabled(true);
-    }
-}
-
-/**
- * Przelicza przedziały podane w ułamkach na wartości i odwrotnie, w zależności od wybranej opcji. Wyniki przekazuje do values.
- * @return false - ok
- */
-bool LogicUIStawrov::CalcChannels()
-{
-    int valMin = leZakA->text().toInt(NULL, 16);
-    int valMax = leAakB->text().toInt(NULL, 16);
-    if(!((valMin>=0)&&(valMax>0)&&(valMin<0xFFFF)&&(valMax<=0xFFFF)&&(valMax>valMin)))
-    {
-        emit Error("Błędne zakresy");
-        return 1;
-    }
-
-    if(!modeFromSizes)
-    {
-        QString inString = warWartosci->text();
-        if(inString.at(0)==' ')
-            inString.remove(0, 1);
-        if(inString.at(inString.size()-1)==' ')
-            inString.remove(inString.size()-1, 1);
-        QStringList vals = inString.split(' ');
-        values.clear();
-        for(QString str: vals)
-            values.append(str.toInt(NULL, 16));
-        if(values.isEmpty())
-        {
-            emit Error("Brak zakresów");
-            return 1;
-        }
-        if((values.at(0)<valMin)||(values.last()>valMax))
-        {
-            emit Error("Progi poza zakresami");
-            return 1;
-        }
-        for(int i=1;i<values.size();i++)
-        {
-            if(values.at(i)<values.at(i-1))
-            {
-                emit Error("Malejący ciąg progów");
-                return 1;
-            }
-        }
-
-        QList<float> fvals;
-        values.insert(0, valMin);
-        for(int i=1;i<values.size();i++)
-            fvals.append((float)(values.at(i)-values.at(i-1))/(float)(valMax-valMin));
-        values.removeAt(0);
-
-        QString vtemp;
-        for(float f: fvals)
-            vtemp.append(" " + QString::number(f, 'g', 2));
-        vtemp.remove(0, 1);
-        warUlamki->setText(vtemp);
-    }
-    else
-    {
-        QString inString = warUlamki->text();
-        if(inString.at(0)==' ')
-            inString.remove(0, 1);
-        if(inString.at(inString.size()-1)==' ')
-            inString.remove(inString.size()-1, 1);
-        QStringList vals = inString.split(' ');
-        QList<float> fvals;
-        bool ok;
-        for(QString str: vals)
-        {
-            fvals.append(str.toFloat(&ok));
-            if(!ok)
-            {
-                emit Error("Nie można odczytać wartości: " + str);
-                return 1;
-            }
-        }
-        float sum = 0;
-        for(auto f: fvals)
-        {
-            if(f<=0)
-            {
-                emit Error("Nieprawidłowa wartość: " + QString::number(f));
-                return 1;
-            }
-            sum += f;
-        }
-        if(sum>1.1)
-        {
-            emit Error("Suma ułamków grubo przekroczyła jedność: " + QString::number(sum));
-            return 1;
-        }
-
-        values.clear();
-        float csum = 0;
-        QString temps;
-        for(auto f: fvals)
-        {
-            csum += f;
-            values.append(valMin+(((float)(valMax-valMin))*csum));
-            temps.append(QString("%1 ").arg(values.last(), 4, 16, QChar('0')));
-        }
-        warWartosci->setText(temps);
-    }
-    values.insert(0, valMin);
-    return 0;
-}
-
-/**
- * Buduje i wysyła komendę z konfiguracją.
- */
-void LogicUIStawrov::SendConfig()
-{
-    if(CalcChannels())
-        return;
-    if(values.size()<2)
-        return;
     QByteArray temp;
-    temp.append(0xff);
-    temp.append(0xfd);
+    temp.append(0x02);
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::makeRESET_SLAVE()
+{
+    QByteArray temp;
+    temp.append(0x03);
+    bool ok;
+    int tempi = lekAdrLoc->text().toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Nie można odczytać adresu: " + lekAdr->text());
+        return;
+    }
+    temp.append(tempi);
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::makeRESET_MASTER()
+{
+    QByteArray temp;
+    temp.append(0x04);
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::makeSET_HIGH_VOLTAGE()
+{
+    int hvval = leHV->text().toInt(NULL, 16);
+    QByteArray temp;
+    temp.append(0x05);
+    bool ok;
+    int tempi = lekAdrLoc->text().toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Nie można odczytać adresu: " + lekAdr->text());
+        return;
+    }
+    temp.append(tempi);
+    temp.append(hvval&0xFF);
+    temp.append((hvval>>8)&0xFF);
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::makeSET_GAIN_OFFSET_AND_TRIGGER()
+{
+    int offval = leOFFSET->text().toInt(NULL, 16);
+    int trival = leTRIGGER->text().toInt(NULL, 16);
+    QByteArray temp;
+    temp.append(0x06);
+    bool ok;
+    int tempi = lekAdrLoc->text().toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Nie można odczytać adresu: " + lekAdr->text());
+        return;
+    }
+    temp.append(tempi);
+    uchar gain = gval.value(kcbox->currentText(), 0);
+    if(rozniczkowanie->isChecked())
+        gain |= 0x08;
+    temp.append(gain);
+    temp.append(offval&0xFF);
+    temp.append((offval>>8)&0xFF);
+    temp.append(trival&0xFF);
+    temp.append((trival>>8)&0xFF);
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::makeSET_CHANNELS()
+{
+    QList<int> values;
+    QString inString = leKANALY->text();
+    if(inString.at(0)==' ')
+        inString.remove(0, 1);
+    if(inString.at(inString.size()-1)==' ')
+        inString.remove(inString.size()-1, 1);
+    QStringList vals = inString.split(' ');
+    values.clear();
+    for(QString str: vals)
+        values.append(str.toInt(NULL, 16));
+    if(values.isEmpty())
+    {
+        emit Error("Brak zakresów");
+        return;
+    }
+
+    QByteArray temp;
+    temp.append(0x01);
+    bool ok;
+    int tempi = lekAdrLoc->text().toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Nie można odczytać adresu: " + lekAdr->text());
+        return;
+    }
+    temp.append(tempi);
+    temp.append(values.size());
+
+    for(int i: values)
+    {
+        temp.append(i&0xFF);
+        temp.append((i>>8)&0xFF);
+    }
+    PackAndSend(temp);
+}
+
+void LogicUIStawrov::PackAndSend(QByteArray data)
+{
     bool ok;
     int tempi = lekAdr->text().toInt(&ok, 16);
     if(!ok)
@@ -451,26 +440,13 @@ void LogicUIStawrov::SendConfig()
         emit Error("Nie można odczytać adresu: " + lekAdr->text());
         return;
     }
+
+    QByteArray temp;
+    temp.append(0xFF);
+    temp.append(0xFD);
+    temp.append((uchar)data.length());
     temp.append(tempi);
-
-    QByteArray cargo;
-    cargo.append(0x01);
-    tempi = lekAdrLoc->text().toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Nie można odczytać adresu lokalnego: " + lekAdrLoc->text());
-        return;
-    }
-    cargo.append(tempi);
-    cargo.append((values.size()-1)&0xFF);
-    for(int i: values)
-    {
-        cargo.append(i&0xFF);
-        cargo.append((i>>8)&0xFF);
-    }
-
-    temp.append(cargo.size()&0xFF);
-    temp.append(cargo);
+    temp.append(data);
     temp = FrameStawrov::AddCRC16(temp);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
 }
