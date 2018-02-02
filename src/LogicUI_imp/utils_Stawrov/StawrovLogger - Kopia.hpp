@@ -14,7 +14,7 @@ class STawrovLogger : public QObject
 {
     Q_OBJECT
 public:
-    STawrovLogger(QObject* parent = NULL);
+    STawrovLogger(QString fileName, QObject* parent = NULL);
     ~STawrovLogger();
     void Reset(QString fileName);
 
@@ -22,6 +22,7 @@ private:
     enum state
     {
         state_reseted,
+        state_collecting_mean,
         state_collecting_background,
         state_collecting_meat
     };
@@ -29,12 +30,19 @@ private:
     QFile logFile;
     QTextStream logStream;
     int curretChannels = 0;
-    int writen = 0;
 
     void DoSomeStuff(QList<int> channels, bool zajety);
-    void AppendLine(QList<int> v);
+    void AppendLine(QList<int> v, QString pre);
+
+    QTimer* timer = NULL;
+
+    QList<int> meanv;
+    int meanc;
 
     QString low, high;
+
+private slots:
+    void StopMeaning();
 
 public slots:
     void FrameReaded(QSharedPointer<Frame> frame);
@@ -43,7 +51,6 @@ signals:
     void Error(QString msg);
     void StateChanged(QString msg);
     void SetChannels(int channels);
-    void File(QString file);
 };
 
 #endif

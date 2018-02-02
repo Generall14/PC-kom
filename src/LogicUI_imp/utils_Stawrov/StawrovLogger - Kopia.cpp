@@ -1,49 +1,43 @@
 #include "StawrovLogger.hpp"
-#include "QDir"
 
-STawrovLogger::STawrovLogger(QObject* parent):
+STawrovLogger::STawrovLogger(QString fileName, QObject* parent):
     QObject(parent)
 {
-    low = "occ_off\n";
-    high = "occ_on\n";
-
-    QDir cdir("./Pomiary/");
-    if (!cdir.exists())
-        cdir.mkpath(".");
+    low = "tlo\n";
+    high = "cos\n";
 
     logStream.setDevice(&logFile);
-    //Reset(fileName);
+    Reset(fileName);
+    timer = new QTimer();
+    timer->setInterval(3000);
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(StopMeaning()), Qt::QueuedConnection);
 }
 
 STawrovLogger::~STawrovLogger()
 {
     logFile.close();
+    delete timer;
 }
 
 void STawrovLogger::Reset(QString fileName)
 {
-    fileName = fileName.insert(0, "Pomiary/");
     logFile.close();
     _state = state_reseted;
 
     logFile.setFileName(fileName);
-    if(logFile.exists())
-    {
-        int add = 1;
-        QString pre = fileName.left(fileName.lastIndexOf('.'));
-        QString suff = fileName.mid(fileName.lastIndexOf('.'));
-        while(logFile.exists())
-            logFile.setFileName(pre+"_"+QString::number(add++)+suff);
-    }
-
     if(!logFile.open(QIODevice::Text | QIODevice::WriteOnly))
     {
         emit Error(QString("Nie można otworzyć pliku %1.").arg(fileName));
         logFile.close();
-        emit File("---");
         return;
     }
-    emit File(logFile.fileName());
+
+    meanv.clear();
+    meanc = 0;
+    curretChannels = 0;
+    emit SetChannels(curretChannels);
+    emit StateChanged("noninitialized");
 }
 
 void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
@@ -83,19 +77,26 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
         if(!zajety)
         {
             logStream << low;
+            _state = state_collecting_mean;
             curretChannels = channels.size();
-            _state = state_collecting_background;
+            meanv = channels;
+            meanc = 1;
+            timer->start();
+            emit StateChanged("zbieranie średniej");
             emit SetChannels(curretChannels);
-            emit StateChanged("zbieranie tła");
         }
         else
         {
             logStream << high;
-            curretChannels = channels.size();
             _state = state_collecting_meat;
+            curretChannels = channels.size();
             emit StateChanged("zbieranie mięsa");
             emit SetChannels(curretChannels);
         }
+        break;
+    case state_collecting_mean:
+        if(zajety)
+            StopMeaning();
         break;
     case state_collecting_background:
         if(zajety)
@@ -104,7 +105,7 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
             _state = state_collecting_meat;
             emit StateChanged("zbieranie mięsa");
         }
-        AppendLine(channels);
+        AppendLine(channels, "CS");
         break;
     case state_collecting_meat:
         if(!zajety)
@@ -113,7 +114,7 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
             _state = state_collecting_background;
             emit StateChanged("zbieranie tła");
         }
-        AppendLine(channels);
+        AppendLine(channels, "CS");
         break;
     default:
         _state = state_reseted;
@@ -122,20 +123,22 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
     }
 }
 
-void STawrovLogger::AppendLine(QList<int> v)
+void STawrovLogger::StopMeaning()
 {
-    QString pre;
-    for(int i=0;i<v.size();++i)
+    if((!meanv.isEmpty())&&(meanc))
     {
-        if(i!=0)
-            pre.append(",");
-        pre.append(QString("%1").arg(i, 6, 10, QChar('0')));
+        for(int i=0;i<meanv.size();++i)
+            meanv[i] = meanv[i]/meanc;
+        AppendLine(meanv, "CB");
     }
+    _state = state_collecting_background;
+    emit StateChanged("zliczenia tła");
+}
+
+void STawrovLogger::AppendLine(QList<int> v, QString pre)
+{
+    for(int i: v)
+        pre.append(QString(",%1").arg(i, 6, 10, QChar('0')));
     pre.append("\n");
     logStream << pre;
-    if(writen++>10)
-    {
-        writen = 0;
-        logStream.flush();
-    }
 }

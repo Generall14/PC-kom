@@ -9,18 +9,19 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     LogicUI(parent)
 {
     Desc::description = "LogicUIStawrov";
-    logg = new STawrovLogger("pustyPlikKropkaTeIksTe.txt");
+    logg = new STawrovLogger();
     connect(logg, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
     connect(logg, SIGNAL(StateChanged(QString)), this, SLOT(setStatus(QString)), Qt::QueuedConnection);
     connect(logg, SIGNAL(SetChannels(int)), this, SLOT(setChannels(int)), Qt::QueuedConnection);
-    logg->Reset("pustyPlikKropkaTeIksTe.txt");
+    connect(logg, SIGNAL(File(QString)), this, SLOT(setFile(QString)), Qt::QueuedConnection);
 
     gnam.append("[010] x0.3"); gval.insertMulti(gnam.at(0), 0x02);
     gnam.append("[110] x0.6"); gval.insertMulti(gnam.at(1), 0x06);
-    gnam.append("[011] x2"); gval.insertMulti(gnam.at(2), 0x03);
-    gnam.append("[111] x4"); gval.insertMulti(gnam.at(3), 0x07);
-    gnam.append("[001] x7.5"); gval.insertMulti(gnam.at(4), 0x01);
-    gnam.append("[101] x15"); gval.insertMulti(gnam.at(5), 0x05);
+    gnam.append("[000] x1.15"); gval.insertMulti(gnam.at(2), 0x00);
+    gnam.append("[011] x2"); gval.insertMulti(gnam.at(3), 0x03);
+    gnam.append("[111] x4"); gval.insertMulti(gnam.at(4), 0x07);
+    gnam.append("[001] x7.5"); gval.insertMulti(gnam.at(5), 0x01);
+    gnam.append("[101] x15"); gval.insertMulti(gnam.at(6), 0x05);
 }
 
 LogicUIStawrov::~LogicUIStawrov()
@@ -31,6 +32,7 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("configs/LogicUIStawrovlekAdr.cfg", lekAdr->text());
     Store("configs/LogicUIStawrovlekAdrLoc.cfg", lekAdrLoc->text());
     Store("configs/LogicUIStawrovleHV.cfg", leHV->text());
+    Store("configs/LogicUIStawrovleMaxHV.cfg", leMaxHV->text());
     Store("configs/LogicUIStawrovlekcbox.cfg", kcbox->currentText());
     Store("configs/LogicUIStawrovmetrozniczkowanie.cfg", QString::number((int)rozniczkowanie->isChecked()));
     Store("configs/LogicUIStawrovleOFFSET.cfg", leOFFSET->text());
@@ -48,6 +50,8 @@ void LogicUIStawrov::Init()
     InitTests();
 
     LoadConfigs();
+
+    ograniczHV("");
 }
 
 void LogicUIStawrov::InitTests()
@@ -84,9 +88,17 @@ void LogicUIStawrov::InitTests()
     mainLay->addWidget(groupBoxZbieranie);
     QVBoxLayout* mainZbieranieLay = new QVBoxLayout(groupBoxZbieranie);
 
+    QHBoxLayout* mainZbieranieLay4 = new QHBoxLayout();
+    mainZbieranieLay->addLayout(mainZbieranieLay4);
+    QLabel* tlab = new QLabel("Plik:");
+    mainZbieranieLay4->addWidget(tlab);
+    fileLabel = new QLabel("---");
+    fileLabel->setAlignment(Qt::AlignRight);
+    mainZbieranieLay4->addWidget(fileLabel);
+
     QHBoxLayout* mainZbieranieLay1 = new QHBoxLayout();
     mainZbieranieLay->addLayout(mainZbieranieLay1);
-    QLabel* tlab = new QLabel("Status:");
+    tlab = new QLabel("Status:");
     mainZbieranieLay1->addWidget(tlab);
     statusLabel = new QLabel("---");
     statusLabel->setAlignment(Qt::AlignRight);
@@ -105,10 +117,10 @@ void LogicUIStawrov::InitTests()
     QLabel* lll = new QLabel("Nazwa pliku:");
     mainZbieranieLay2->addWidget(lll);
     fileAdr = new QLineEdit("defaultFileName.txt");
-    fileAdr->setToolTip("Nazwa pliku, pisane do niego będzie dopiero po kliknięciu 'Reset'.");
+    fileAdr->setToolTip("Nazwa pliku, pisane do niego będzie dopiero po kliknięciu 'Nowy plik'.");
     mainZbieranieLay2->addWidget(fileAdr);
 
-    QPushButton* btnr = new QPushButton("Reset");
+    QPushButton* btnr = new QPushButton("Nowy plik");
     mainZbieranieLay->addWidget(btnr);
     btnr->setToolTip("Resetuje zbieranie danych, rozpoczyna nowy pomiar w pliku o nazwie podanej wyżej (UWAGA! nadpisuje istniejące pliki).");
     connect(btnr, &QPushButton::clicked, [=](){logg->Reset(fileAdr->text());});
@@ -158,6 +170,21 @@ void LogicUIStawrov::InitTests()
     QGroupBox* groupBoxHV = new QGroupBox();
     mainKonfiguracjaLay->addWidget(groupBoxHV);
     QVBoxLayout* groupBoxKonfiguracjaHV = new QVBoxLayout(groupBoxHV);
+
+    QHBoxLayout* groupBoxKonfiguracjaHV2 = new QHBoxLayout();
+    groupBoxKonfiguracjaHV->addLayout(groupBoxKonfiguracjaHV2);
+    ograniczenie = new QCheckBox("Ograniczenie:");
+    groupBoxKonfiguracjaHV2->addWidget(ograniczenie);
+    connect(ograniczenie, &QCheckBox::toggled, [=](bool checked){leMaxHV->setEnabled(checked);});
+    leMaxHV = new QLineEdit("01FF");
+    leMaxHV->setMaximumWidth(50);
+    leMaxHV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leMaxHV->setValidator(new HexValidator(2, 1, leMaxHV));
+    leMaxHV->setToolTip("Maksymalne napięcie pracy, magiczna, niewyskalowana liczba.");
+    connect(leMaxHV, SIGNAL(textChanged(QString)), this, SLOT(ograniczHV(QString)));
+    groupBoxKonfiguracjaHV2->addWidget(leMaxHV);
+    ograniczenie->setChecked(true);
+
     QHBoxLayout* groupBoxKonfiguracjaHV1 = new QHBoxLayout();
     groupBoxKonfiguracjaHV->addLayout(groupBoxKonfiguracjaHV1);
     QLabel* hvl = new QLabel("Napięcie:");
@@ -167,6 +194,7 @@ void LogicUIStawrov::InitTests()
     leHV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     leHV->setValidator(new HexValidator(2, 1, leHV));
     leHV->setToolTip("Napięcie pracy, magiczna, niewyskalowana liczba.");
+    connect(leHV, SIGNAL(textChanged(QString)), this, SLOT(ograniczHV(QString)));
     groupBoxKonfiguracjaHV1->addWidget(leHV);
     QPushButton* btnHV = new QPushButton("SET_HIGH_VOLTAGE");
     connect(btnHV, SIGNAL(clicked(bool)), this, SLOT(makeSET_HIGH_VOLTAGE()));
@@ -230,13 +258,20 @@ void LogicUIStawrov::LoadConfigs()
     if(!Restore("configs/LogicUIStawrovData.cfg", temp))
         leData->setText(temp);
     if(!Restore("configs/LogicUIStawrovFileLog.cfg", temp))
+    {
         fileAdr->setText(temp);
+        logg->Reset(temp);
+    }
+    else
+        logg->Reset("pustyPlikKropkaTeIksTe.txt");
     if(!Restore("configs/LogicUIStawrovlekAdr.cfg", temp))
         lekAdr->setText(temp);
     if(!Restore("configs/LogicUIStawrovlekAdrLoc.cfg", temp))
         lekAdrLoc->setText(temp);
     if(!Restore("configs/LogicUIStawrovleHV.cfg", temp))
         leHV->setText(temp);
+    if(!Restore("configs/LogicUIStawrovleMaxHV.cfg", temp))
+        leMaxHV->setText(temp);
     if(!Restore("configs/LogicUIStawrovlekcbox.cfg", temp))
         kcbox->setCurrentText(temp);
     if(!Restore("configs/LogicUIStawrovleOFFSET.cfg", temp))
@@ -316,9 +351,26 @@ void LogicUIStawrov::setStatus(QString s)
     statusLabel->setText(s);
 }
 
+void LogicUIStawrov::setFile(QString s)
+{
+    fileLabel->setText(s);
+}
+
 void LogicUIStawrov::setChannels(int s)
 {
     channelsLabel->setText(QString::number(s));
+}
+
+void LogicUIStawrov::ograniczHV(QString)
+{
+    if(!ograniczenie->isChecked())
+        return;
+
+    int max = leMaxHV->text().toInt(nullptr, 16);
+    int current = leHV->text().toInt(nullptr, 16);
+    qDebug() << max;
+    if(current>max)
+        leHV->setText(leMaxHV->text());
 }
 
 void LogicUIStawrov::makeSYNCH_AND_START()
@@ -352,6 +404,7 @@ void LogicUIStawrov::makeRESET_MASTER()
 
 void LogicUIStawrov::makeSET_HIGH_VOLTAGE()
 {
+    ograniczHV("");
     int hvval = leHV->text().toInt(NULL, 16);
     QByteArray temp;
     temp.append(0x05);

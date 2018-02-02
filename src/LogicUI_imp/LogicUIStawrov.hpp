@@ -33,7 +33,10 @@ public slots:
 private slots:
     void makeStupidMessage();
     void setStatus(QString s);
+    void setFile(QString s);
     void setChannels(int s);
+
+    void ograniczHV(QString);
 
     void makeSYNCH_AND_START();
     void makeRESET_SLAVE();
@@ -59,10 +62,12 @@ protected:
     STawrovLogger* logg = NULL;
 
     QLabel* statusLabel = NULL;
+    QLabel* fileLabel = NULL;
     QLabel* channelsLabel = NULL;
     QLineEdit* fileAdr = NULL;
 
     QLineEdit* leHV = NULL;
+    QLineEdit* leMaxHV = NULL;
     QLineEdit* leOFFSET = NULL;
     QLineEdit* leTRIGGER = NULL;
     QLineEdit* leKANALY = nullptr;
@@ -72,6 +77,7 @@ protected:
 
     QComboBox* kcbox = nullptr;
     QCheckBox* rozniczkowanie = nullptr;
+    QCheckBox* ograniczenie = nullptr;
 
     bool modeFromSizes = true;
     QStringList gnam;
