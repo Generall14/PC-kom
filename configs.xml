@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<PC-KOM-configs>
+	<empty_set>
+		<Implementations Frame="FrameEmpty" FrameBuilder="FrameBuilderEmpty" LogFile="LogFileEmpty" LogFormater="LogFormaterEmpty" LogicUI="LogicUIEmpty" LogUI="LogUIEmpty" MediumUI="MediumUiEmpty" Mendium="MendiumEmpty" />
+		<Descriptions Ico="ikona.ico" Name="Chuje muje dzikie węże" Descrioption="Przykładowa konfiguracja." />
+		<fake Mendium="none" />
+	</empty_set>
+	<stawrov_set>
+		<Implementations Frame="FrameStawrov" FrameBuilder="FrameBuilderStawrov" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUIStawrov" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+		<Descriptions Ico="ikona.ico" Name="Grzegorzowy komunikator" Descrioption="Implementacja dla srednio zdefiniowanego wynalazku dla Stawrova." />
+		<fake Mendium="MendiumFakeStawrow" />
+	</stawrov_set>
+	<sg1_set>
+		<Implementations Frame="FrameSG1" FrameBuilder="FrameBuilderSG1" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUISG1" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+		<Descriptions Ico="ikona.ico" Name="SG-1: PC-Tester" Descrioption="Implementacja dla prób i debugowania SG-1." />
+		<fake Mendium="MendiumFakeSG1" />
+	</sg1_set>
+</PC-KOM-configs>

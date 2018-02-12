@@ -15,7 +15,7 @@ FrameBuilderZR3::FrameBuilderZR3(uchar myAdr, uchar nextAdr, bool slw):
     if(slw)
         haveToken = true;
 
-    qsrand((int)QThread::currentThreadId());
+//    qsrand((int)QThread::currentThreadId());
     for(int i=0;i<10;++i)
         _serial.append(0x41+qrand()%25);
 
