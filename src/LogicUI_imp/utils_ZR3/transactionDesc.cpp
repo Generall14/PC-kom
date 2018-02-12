@@ -1,5 +1,5 @@
 #include "transactionDesc.hpp"
-#include <qDebug>
+//#include <qDebug>
 
 TransactionDesc::TransactionDesc(method iask, method ianswer):
     ask(iask),

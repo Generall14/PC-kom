@@ -2,7 +2,7 @@
 #include <QLayout>
 #include <QFrame>
 #include <QPushButton>
-#include <qDebug>
+//#include <qDebug>
 #include <QInputDialog>
 
 TransactionUi::TransactionUi(QWidget* parent, TransactionDesc ntra):
@@ -106,8 +106,8 @@ void TransactionUi::setAutoReport()
         return;
     temp.append((i&0xFF00)>>8);
     temp.append((i&0x00FF)>>0);
-    method task{0x08, true, false, false, 0, 0x88, "", "", QList<param>(), temp};
-    method tans{0x88, false, true, false, 500, 0x08, "", ""};
-    TransactionDesc ttra(task, tans);
-    emit TransactionRequest(ttra);
+//    method task{0x08, true, false, false, 0, 0x88, "", "", QList<param>(), temp};
+//    method tans{0x88, false, true, false, 500, 0x08, "", ""};
+//    TransactionDesc ttra(task, tans);
+//    emit TransactionRequest(ttra);
 }

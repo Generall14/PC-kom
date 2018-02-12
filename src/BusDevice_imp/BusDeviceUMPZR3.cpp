@@ -1,6 +1,6 @@
 #include "BusDeviceUMPZR3.hpp"
 #include "../Utils/StaticUtils.hpp"
-#include <qDebug>
+//#include <qDebug>
 
 BusDeviceUMPZR3::BusDeviceUMPZR3(QString arg):
     BusDeviceUMP(arg)
@@ -12,7 +12,7 @@ void BusDeviceUMPZR3::OnRun()
 {
     float step = ((float)TIME_STEP_MS)/1000.0;
     time += step;
-    currentDoseRate = 201e-6+sin(time/(2.0*3.14))*100e-6;
+//    currentDoseRate = 201e-6+sin(time/(2.0*3.14))*100e-6;
     currentDose += (1e9/(1000.0*60.0*60.0))*currentDoseRate*(((float)TIME_STEP_MS));
     if(currentDose>doseAlarm)
         doseAlarmState = true;
