@@ -114,15 +114,17 @@ public:
     static LogUI* newLogUI(QFrame* fr);
     static LogFile* newLogFile();
     static LogFormater* newLogFormater();
-    static BusDevice* newBusDevice(QString arg);
+    static BusDevice* newBusDevice(QString arg);//-----------------------------------------------------
 
     static QString WindowName();
     static QString IcoPath();
     static QString ConfigDescription();
     static bool IsFake();
 
-    static void LoadConfig();
+    static void LoadConfig() throw(std::runtime_error);
     static void CreateExampleXML();
+
+    static void setFake(bool fake = true);
 
 private:
     static frameFormat frame;
@@ -139,6 +141,17 @@ private:
     static QString icoPath;
     static QString descConfig;
     static bool fakeVer;
+
+    static QString _frame;
+    static QString _mediumUi;
+    static QString _mendium;
+    static QString _logicUi;
+    static QString _frameBuilder;
+    static QString _logUi;
+    static QString _logFile;
+    static QString _logFormater;
+
+    static void terminate(QString arg);
 };
 
 #endif

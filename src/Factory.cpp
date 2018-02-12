@@ -1,6 +1,10 @@
 #include "Factory.hpp"
 
 #include "Utils/pugixml.hpp"
+#include <QFile>
+#include <exception>
+#include <string>
+#include <QMessageBox>
 
 #include "Frame_imp/FrameEmpty.hpp"
 #include "Frame_imp/FrameTransparent.hpp"
@@ -52,6 +56,14 @@ QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 QString Factory::descConfig = "brak opisu";
 bool Factory::fakeVer = false;
+QString Factory::_frame = "";
+QString Factory::_mediumUi = "";
+QString Factory::_mendium = "";
+QString Factory::_logicUi = "";
+QString Factory::_frameBuilder = "";
+QString Factory::_logUi = "";
+QString Factory::_logFile = "";
+QString Factory::_logFormater = "";
 
 /**
  * Funkcja służy do określenia które konkretne implementacje będą zwracane w metodach fabryki abstrakcyjnej. Dodatkowo wskazuje nazwę dla głównego okna programu
@@ -96,22 +108,18 @@ void Factory::MakeFake(mendiumFormat mf, busDeviceFormat bdf)
  */
 Frame* Factory::newFrame(QByteArray ba)
 {
-    switch (frame)
-    {
-    case Factory::frameNone:
-        return NULL;
-    case Factory::frameEmpty:
+    if(_frame=="FrameEmpty")
         return new FrameEmpty(ba);
-    case Factory::frameTransparent:
-        return new FrameTransparent(ba);
-    case Factory::frameSG1:
+    else if(_frame=="FrameSG1")
         return new FrameSG1(ba);
-    case Factory::frameStawrov:
+    else if(_frame=="FrameStawrov")
         return new FrameStawrov(ba);
-    case Factory::frameZR3:
-        return new FrameZR3(ba);
-    }
-    return NULL;
+    else if(_frame=="FrameTransparent")
+        return new FrameTransparent(ba);
+    else
+        Factory::terminate("Invalid _frame specifier: \"" + _frame + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -120,16 +128,14 @@ Frame* Factory::newFrame(QByteArray ba)
  */
 MediumUI* Factory::newMediumUI(QFrame *fr)
 {
-    switch (mediumui)
-    {
-    case Factory::mediumUINone:
-        return NULL;
-    case Factory::mediumUIEmpty:
-        return new MediumUiEmpty(fr);
-    case Factory::mediumUIRS:
+    if(_mediumUi=="MediumUiRS")
         return new MediumUiRS(fr);
-    }
-    return NULL;
+    else if(_mediumUi=="MediumUiEmpty")
+        return new MediumUiEmpty(fr);
+    else
+        Factory::terminate("Invalid _mediumUi specifier: \"" + _mediumUi + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -138,20 +144,16 @@ MediumUI* Factory::newMediumUI(QFrame *fr)
  */
 LogicUI* Factory::newLogicUI(QFrame *fr)
 {
-    switch (logicUi)
-    {
-    case Factory::logicUiNone:
-        return NULL;
-    case Factory::logicUiEmpty:
+    if(_logicUi=="LogicUIEmpty")
         return new LogicUIEmpty(fr);
-    case Factory::logicUiSG1:
+    else if(_logicUi=="LogicUISG1")
         return new LogicUISG1(fr);
-    case Factory::logicUIStawrov:
+    else if(_logicUi=="LogicUIStawrov")
         return new LogicUIStawrov(fr);
-    case Factory::logicUIZR3:
-        return new LogicUIZR3(fr);
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _logicUi specifier: \"" + _logicUi + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -159,22 +161,18 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
  */
 Mendium* Factory::newMendium()
 {
-    switch (mendium)
-    {
-    case Factory::mendiumNone:
-        return NULL;
-    case Factory::mendiumEmpty:
+    if(_mendium=="MendiumEmpty")
         return new MendiumEmpty();
-    case Factory::mendiumRS:
+    else if(_mendium=="MendiumRS")
         return new MendiumRS();
-    case Factory::mendiumFakeGS1:
+    else if(_mendium=="MendiumFakeSG1")
         return new MendiumFakeSG1();
-    case Factory::mendiumFakeStawrow:
+    else if(_mendium=="MendiumFakeStawrow")
         return new MendiumFakeStawrow();
-    case Factory::mandiumBusConnector:
-        return new MendiumBusConnector();
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _mendium specifier: \"" + _mendium + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -182,20 +180,16 @@ Mendium* Factory::newMendium()
  */
 FrameBuilder* Factory::newFrameBuilder()
 {
-    switch (frameBuilder)
-    {
-    case frameBuilderNone:
-        return NULL;
-    case frameBuilderEmpty:
+    if(_frameBuilder=="FrameBuilderEmpty")
         return new FrameBuilderEmpty();
-    case frameBuilderSG1:
+    else if(_frameBuilder=="FrameBuilderSG1")
         return new FrameBuilderSG1();
-    case frameBuilderStawrov:
+    else if(_frameBuilder=="FrameBuilderStawrov")
         return new FrameBuilderStawrov();
-    case frameBuilderZR3:
-        return new FrameBuilderZR3();
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _frameBuilder specifier: \"" + _frameBuilder + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -204,16 +198,14 @@ FrameBuilder* Factory::newFrameBuilder()
  */
 LogUI* Factory::newLogUI(QFrame* fr)
 {
-    switch (logUI)
-    {
-    case logUINone:
-        return NULL;
-    case logUIEmpty:
+    if(_logUi=="LogUIEmpty")
         return new LogUIEmpty(fr);
-    case logUITerm:
+    else if(_logUi=="LogUITerm")
         return new LogUITerm(fr);
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _logUi specifier: \"" + _logUi + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -221,16 +213,14 @@ LogUI* Factory::newLogUI(QFrame* fr)
  */
 LogFile* Factory::newLogFile()
 {
-    switch (logFile)
-    {
-    case logFileNone:
-        return NULL;
-    case logFileEmpty:
+    if(_logFile=="LogFileEmpty")
         return new LogFileEmpty();
-    case logFileDefault:
+    else if(_logFile=="LogFileDefault")
         return new LogFileDefault();
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _logFile specifier: \"" + _logFile + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -238,16 +228,14 @@ LogFile* Factory::newLogFile()
  */
 LogFormater* Factory::newLogFormater()
 {
-    switch (logFormater)
-    {
-    case logFormaterNone:
-        return NULL;
-    case logFormaterEmpty:
+    if(_logFormater=="LogFormaterEmpty")
         return new LogFormaterEmpty();
-    case logFormaterHtml:
+    else if(_logFormater=="LogFormaterHtml")
         return new LogFormaterHtml();
-    }
-    return NULL;
+    else
+        Factory::terminate("Invalid _logFormater specifier: \"" + _logFormater + "\".");
+
+    return nullptr;
 }
 
 /**
@@ -300,30 +288,79 @@ bool Factory::IsFake()
 }
 
 //.........
-void Factory::LoadConfig()
+void Factory::LoadConfig() throw(std::runtime_error)
 {
+    QFile file("set.cfg");
+    if(!file.open(QIODevice::ReadOnly))
+        throw std::runtime_error("Nie można otworzyć pliku konfiguracyjnego \"" + file.fileName().toStdString() + "\".");
 
+    QTextStream in(&file);
+    QString setName = in.readLine();
+    if(setName.isEmpty())
+        throw std::runtime_error("Plik konfiguracyjny \"" + file.fileName().toStdString() + "\" nie wskazuje żadnego zestawu implementacji.");
+
+    pugi::xml_document dok;
+    pugi::xml_parse_result wynik = dok.load_file("configs.xml");
+    if(!wynik)
+        throw std::runtime_error("Nie można otworzyć pliku konfiguracyjnego \"configs.xml\".");
+
+    pugi::xml_node mainNode = dok.child("PC-KOM-configs");
+    pugi::xml_node chosenNode = mainNode.child(setName.toStdString().c_str());
+    if(chosenNode.empty())
+        throw std::runtime_error("Brak gałęzi \"" + setName.toStdString() + "\" w pliku konfiguracyjnym.");
+
+    pugi::xml_node implNode = chosenNode.child("Implementations");
+    if(implNode.empty())
+        throw std::runtime_error("Brak gałęzi \"Implementations\" w zestawie konfiguracyjnym \"" + setName.toStdString() + "\".");
+    _frame = implNode.attribute("Frame").as_string();
+    _mediumUi = implNode.attribute("MediumUI").as_string();
+    _mendium = implNode.attribute("Mendium").as_string();
+    _logicUi = implNode.attribute("LogicUI").as_string();
+    _frameBuilder = implNode.attribute("FrameBuilder").as_string();
+    _logUi = implNode.attribute("LogUI").as_string();
+    _logFile = implNode.attribute("LogFile").as_string();
+    _logFormater = implNode.attribute("LogFormater").as_string();
+
+    pugi::xml_node descNode = chosenNode.child("Descriptions");
+    if(descNode.empty())
+        throw std::runtime_error("Brak gałęzi \"Descriptions\" w zestawie konfiguracyjnym \"" + setName.toStdString() + "\".");
+    windowName = descNode.attribute("Name").as_string();
+    icoPath = descNode.attribute("Ico").as_string();
+    descConfig = descNode.attribute("Descrioption").as_string();
+
+    file.close();
 }
 
 void Factory::CreateExampleXML()
 {
     pugi::xml_document xmldoc;
     pugi::xml_node mainNode = xmldoc.append_child("PC-KOM-configs");
-    pugi::xml_node exampleNode = mainNode.append_child("example_set");
+    pugi::xml_node exampleNode = mainNode.append_child("empty_set");
     pugi::xml_node imps = exampleNode.append_child("Implementations");
-    imps.append_attribute("Frame") = "none";
-    imps.append_attribute("FrameBuilder") = "none";
-    imps.append_attribute("LogFile") = "none";
-    imps.append_attribute("LogFormater") = "none";
-    imps.append_attribute("LogicUI") = "none";
-    imps.append_attribute("LogUI") = "none";
-    imps.append_attribute("MediumUI") = "none";
-    imps.append_attribute("Mendium") = "none";
-    imps.append_attribute("Ico") = "ikona.ico";
+    imps.append_attribute("Frame") = "FrameEmpty";
+    imps.append_attribute("FrameBuilder") = "FrameBuilderEmpty";
+    imps.append_attribute("LogFile") = "LogFileEmpty";
+    imps.append_attribute("LogFormater") = "LogFormaterEmpty";
+    imps.append_attribute("LogicUI") = "LogicUIEmpty";
+    imps.append_attribute("LogUI") = "LogUIEmpty";
+    imps.append_attribute("MediumUI") = "MediumUiEmpty";
+    imps.append_attribute("Mendium") = "MendiumEmpty";
     pugi::xml_node descs = exampleNode.append_child("Descriptions");
+    descs.append_attribute("Ico") = "ikona.ico";
     descs.append_attribute("Name") = "Chuje muje dzikie węże";
     descs.append_attribute("Descrioption") = "Przykładowa konfiguracja.";
     pugi::xml_node fake = exampleNode.append_child("fake");
     fake.append_attribute("Mendium") = "none";
     xmldoc.save_file("example.xml");
+}
+
+void Factory::setFake(bool fake)
+{
+    fakeVer = fake;
+}
+
+void Factory::terminate(QString arg)
+{
+    QMessageBox::critical(nullptr, "FATAL RUNTIME ERROR!", arg, QMessageBox::Abort);
+    exit(-2);
 }

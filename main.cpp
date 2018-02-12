@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QSharedPointer>
+#include <exception>
+#include <QMessageBox>
 #include "src/Frame.hpp"
 #include "src/LogicUI_imp/utils_ZR3/transactionDesc.hpp"
 
@@ -18,7 +20,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     bool fake = false;
-    qDebug() << QApplication::arguments();
     for(QString arg:QApplication::arguments())
     {
         if(arg=="-f"){
@@ -26,8 +27,17 @@ int main(int argc, char *argv[])
             break;
         }
     }
+    Factory::setFake(fake);
 
-    //#include "init.hpp"
+    try
+    {
+        Factory::LoadConfig();
+    }
+    catch (std::runtime_error ex)
+    {
+        QMessageBox::critical(nullptr, "FATAL ERROR!", ex.what(), QMessageBox::Abort);
+        return -1;
+    }
 
     MainWindow w;
     w.show();
