@@ -287,7 +287,9 @@ bool Factory::IsFake()
     return fakeVer;
 }
 
-//.........
+/**
+ * Konfiguruje iplementacje na podstawie plików set.cfg (wskazanie zestawu) i configs.xml (zestawy).
+ */
 void Factory::LoadConfig() throw(std::runtime_error)
 {
     QFile file("set.cfg");
@@ -328,6 +330,38 @@ void Factory::LoadConfig() throw(std::runtime_error)
     icoPath = descNode.attribute("Ico").as_string();
     descConfig = descNode.attribute("Descrioption").as_string();
 
+    pugi::xml_node fakeNode = chosenNode.child("fake");
+    if(fakeNode.empty())
+        throw std::runtime_error("Brak gałęzi \"fake\" w zestawie konfiguracyjnym \"" + setName.toStdString() + "\".");
+    if(fakeVer)
+    {
+        QString temp;
+        temp = fakeNode.attribute("Frame").as_string();
+        if(!temp.isEmpty())
+            _frame = temp;
+        temp = fakeNode.attribute("MediumUI").as_string();
+        if(!temp.isEmpty())
+            _mediumUi = temp;
+        temp = fakeNode.attribute("Mendium").as_string();
+        if(!temp.isEmpty())
+            _mendium = temp;
+        temp = fakeNode.attribute("LogicUI").as_string();
+        if(!temp.isEmpty())
+            _logicUi = temp;
+        temp = fakeNode.attribute("FrameBuilder").as_string();
+        if(!temp.isEmpty())
+            _frameBuilder = temp;
+        temp = fakeNode.attribute("LogUI").as_string();
+        if(!temp.isEmpty())
+            _logUi = temp;
+        temp = fakeNode.attribute("LogFile").as_string();
+        if(!temp.isEmpty())
+            _logFile = temp;
+        temp = fakeNode.attribute("LogFormater").as_string();
+        if(!temp.isEmpty())
+            _logFormater = temp;
+    }
+
     file.close();
 }
 
@@ -354,6 +388,9 @@ void Factory::CreateExampleXML()
     xmldoc.save_file("example.xml");
 }
 
+/**
+ * Ustawia tryb testowy, funkcja aby zadziałała musi być wywołana przed LoadConfig().
+ */
 void Factory::setFake(bool fake)
 {
     fakeVer = fake;

@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
+    qDebug() << fake;
     Factory::setFake(fake);
 
     try

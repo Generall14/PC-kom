@@ -8,7 +8,8 @@
  * Fabryka udostępnia statyczne metody zwracające implementacje danej klasy abstrakcyjnej (newFrame(QByteArray) itp.) w zależności od aktualnej konfiguracji. Poza obiektami zwraca
  * również tekst dla okna (WindowName() ), adres ikony (QString IcoPath() ), opis konfiguracji (ConfigDescription() ) oraz wskaźnik wersji udawanej (IsFake() ).
  *
- * Konfiguracja zestawu obiektów odbywa się poprzez metody statyczne void ConfigIml(...), ConfigDesc(...), MakeFake(...).
+ * Konfiguracja zestawu obiektów jest wczytywana z plików konfiguracyjnych set.cfg (wskazanie zestawu) i configs.xml (zestawy) za pomocą funkcji LoadConfig(), tryb udawany jest
+ * ustawiany funkcją setFake(...).
  */
 
 #include <QByteArray>
