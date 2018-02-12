@@ -123,14 +123,6 @@ void About::InitWidgets()
     l5->setAlignment(Qt::AlignCenter);
     txtLay->addWidget(l5);
 
-    BusDevice* temp6 = Factory::newBusDevice(QByteArray());
-    l5 = new QLabel("BusDevice -> NULL", this);
-    if(temp6)
-        l5->setText("BusDevice -> " + temp6->Description());
-    l5->setAlignment(Qt::AlignCenter);
-    txtLay->addWidget(l5);
-    delete temp6;
-
     QHBoxLayout* btnLay = new QHBoxLayout();
     txtLay->addLayout(btnLay);
     QPushButton* btn = new QPushButton("Wyślij litanie dziękczynne do autora");

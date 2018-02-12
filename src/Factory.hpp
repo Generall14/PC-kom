@@ -28,85 +28,6 @@ class Factory
 {
     Factory(){}
 public:
-    enum frameFormat                                                                    /**Określa implementację klasy Frame*/
-    {
-        frameNone,                                                                      /**<Wskaźnik NULL*/
-        frameEmpty,                                                                     /**<Implementacja FrameEmpty*/
-        frameTransparent,                                                               /**<Implementacja FrameTransparent*/
-        frameSG1,                                                                       /**<Implementacja FrameSG1*/
-        frameStawrov,                                                                   /**<Implementacja FrameStawrov*/
-        frameZR3                                                                        /**<Implementacja FrameZR3*/
-    };
-
-    enum mediumUiFormat                                                                 /**Określa implementację klasy MediumUI*/
-    {
-        mediumUINone,                                                                   /**<Wskaźnik NULL*/
-        mediumUIEmpty,                                                                  /**<Implementacja MediumUiEmpty*/
-        mediumUIRS                                                                      /**<Implementacja MediumUiRS*/
-    };
-
-    enum mendiumFormat                                                                  /**Określa implementację klasy Mendium*/
-    {
-        mendiumNone,                                                                    /**<Wskaźnik NULL*/
-        mendiumEmpty,                                                                   /**<Implementacja MendiumEmpty*/
-        mendiumRS,                                                                      /**<Implementacja MendiumRS*/
-        mendiumFakeGS1,                                                                 /**<Implementacja MendiumFakeSG1*/
-        mendiumFakeStawrow,                                                             /**<Implementacja MendiumFakeStawrow*/
-        mandiumBusConnector                                                             /**<Implementacja MendiumBusConnector*/
-    };
-
-    enum logicUiFormat                                                                  /**Określa implementację klasy LogicUI*/
-    {
-        logicUiNone,                                                                    /**<Wskaźnik NULL*/
-        logicUiEmpty,                                                                   /**<Implementacja LogicUIEmpty*/
-        logicUiSG1,                                                                     /**<Implementacja LogicUISG1*/
-        logicUIStawrov,                                                                 /**<Implementacja LogicUIStawrov*/
-        logicUIZR3                                                                      /**<Implementacja LogicUIZR3*/
-    };
-
-    enum frameBuilderFormat                                                             /**Określa implementację klasy FrameBuilder*/
-    {
-        frameBuilderNone,                                                               /**<Wskaźnik NULL*/
-        frameBuilderEmpty,                                                              /**<Implementacja FrameBuilderEmpty*/
-        frameBuilderSG1,                                                                /**<Implementacja FrameBuilderSG1*/
-        frameBuilderStawrov,                                                            /**<Implementacja FrameBuilderStawrov*/
-        frameBuilderZR3                                                                 /**<Implementacja FrameBuilderZR3*/
-    };
-
-    enum logUIFormat                                                                    /**Określa implementację klasy LogUI*/
-    {
-        logUINone,                                                                      /**<Wskaźnik NULL*/
-        logUIEmpty,                                                                     /**<Implementacja LogUIEmpty*/
-        logUITerm                                                                       /**<Implementacja LogUITerm*/
-    };
-
-    enum logFileFormat                                                                  /**Określa implementację klasy LogFile*/
-    {
-        logFileNone,                                                                    /**<Wskaźnik NULL*/
-        logFileEmpty,                                                                   /**<Implementacja LogFileEmpty*/
-        logFileDefault                                                                  /**<Implementacja LogFileDefault*/
-    };
-
-    enum logFormaterFormat                                                              /**Określa implementację klasy LogFormater*/
-    {
-        logFormaterNone,                                                                /**<Wskaźnik NULL*/
-        logFormaterEmpty,                                                               /**<Implementacja LogFormaterEmpty*/
-        logFormaterHtml                                                                 /**<Implementacja LogFormaterHtml*/
-    };
-
-    enum busDeviceFormat                                                                /**Określa implementację klasy BusDevice*/
-    {
-        busDeviceNone,                                                                  /**<Wskaźnik NULL*/
-        busDeviceUMP,                                                                   /**<Implementacja BusDeviceUMP*/
-        busDeviceUMPZR3                                                                 /**<Implementacja BusDeviceUMPZR3*/
-    };
-
-    static void ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, \
-                       logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
-                       logFileFormat lff, logFormaterFormat lf);
-    static void ConfigDesc(QString desc, QString name="Chuje muje dzikie węże", QString ico="ikona.ico");
-    static void MakeFake(mendiumFormat mf, busDeviceFormat bdf = busDeviceNone);
-
     static Frame* newFrame(QByteArray ba);
     static MediumUI* newMediumUI(QFrame *fr);
     static Mendium* newMendium();
@@ -128,16 +49,6 @@ public:
     static void setFake(bool fake = true);
 
 private:
-    static frameFormat frame;
-    static mediumUiFormat mediumui;
-    static mendiumFormat mendium;
-    static logicUiFormat logicUi;
-    static frameBuilderFormat frameBuilder;
-    static logUIFormat logUI;
-    static logFileFormat logFile;
-    static logFormaterFormat logFormater;
-    static busDeviceFormat busDFormat;
-
     static QString windowName;
     static QString icoPath;
     static QString descConfig;

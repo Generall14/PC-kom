@@ -10,7 +10,6 @@
 #include "Frame_imp/FrameTransparent.hpp"
 #include "Frame_imp/FrameSG1.hpp"
 #include "Frame_imp/FrameStawrov.hpp"
-#include "Frame_imp/FrameZR3.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -24,12 +23,10 @@
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
 #include "LogicUI_imp/LogicUIStawrov.hpp"
-#include "LogicUI_imp/LogicUIZR3.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 #include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
-#include "FrameBuilder_imp/FrameBuilderZR3.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -41,17 +38,7 @@
 #include "LogFormater_imp/LogFormaterHtml.hpp"
 
 #include "BusDevice_imp/BusDeviceUMP.hpp"
-#include "BusDevice_imp/BusDeviceUMPZR3.hpp"
 
-Factory::frameFormat Factory::frame = Factory::frameEmpty;
-Factory::mediumUiFormat Factory::mediumui = Factory::mediumUIEmpty;
-Factory::mendiumFormat Factory::mendium = Factory::mendiumEmpty;
-Factory::logicUiFormat Factory::logicUi = Factory::logicUiEmpty;
-Factory::frameBuilderFormat Factory::frameBuilder = Factory::frameBuilderEmpty;
-Factory::logUIFormat Factory::logUI = Factory::logUIEmpty;
-Factory::logFileFormat Factory::logFile = Factory::logFileEmpty;
-Factory::logFormaterFormat Factory::logFormater = Factory::logFormaterEmpty;
-Factory::busDeviceFormat Factory::busDFormat = Factory::busDeviceNone;
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 QString Factory::descConfig = "brak opisu";
@@ -64,43 +51,6 @@ QString Factory::_frameBuilder = "";
 QString Factory::_logUi = "";
 QString Factory::_logFile = "";
 QString Factory::_logFormater = "";
-
-/**
- * Funkcja służy do określenia które konkretne implementacje będą zwracane w metodach fabryki abstrakcyjnej. Dodatkowo wskazuje nazwę dla głównego okna programu
- * i adres do ikony.
- */
-void Factory::ConfigIml(frameFormat ff, mediumUiFormat muif, mendiumFormat mf, logicUiFormat lui, frameBuilderFormat fb, logUIFormat lgui, \
-                     logFileFormat lff, logFormaterFormat lf)
-{
-    Factory::frame = ff;
-    Factory::mediumui = muif;
-    Factory::mendium = mf;
-    Factory::logicUi = lui;
-    Factory::frameBuilder = fb;
-    Factory::logUI = lgui;
-    Factory::logFile = lff;
-    Factory::logFormater = lf;
-}
-
-/**
- * Funkcja ustawia adres ikony, nazwę głównego okna oraz opis konfiguracji.
- */
-void Factory::ConfigDesc(QString desc, QString name, QString ico)
-{
-    Factory::descConfig = desc;
-    Factory::windowName = name;
-    Factory::icoPath = ico;
-}
-
-/**
- * Funkcja określa implementację klasy Mendium i ustawia znacznik udawanej konfiguracji.
- */
-void Factory::MakeFake(mendiumFormat mf, busDeviceFormat bdf)
-{
-    Factory::mendium = mf;
-    Factory::fakeVer = true;
-    busDFormat = bdf;
-}
 
 /**
  * Zwraca obiekt pochodny po Frame w zależności od konfiguracji frameFormat.
@@ -243,15 +193,15 @@ LogFormater* Factory::newLogFormater()
  */
 BusDevice* Factory::newBusDevice(QString arg)
 {
-    switch (busDFormat)
-    {
-    case busDeviceNone:
-        return NULL;
-    case busDeviceUMP:
-        return new BusDeviceUMP(arg);
-    case busDeviceUMPZR3:
-        return new BusDeviceUMPZR3(arg);
-    }
+//    switch (busDFormat)
+//    {
+//    case busDeviceNone:
+//        return NULL;
+//    case busDeviceUMP:
+//        return new BusDeviceUMP(arg);
+//    case busDeviceUMPZR3:
+//        return new BusDeviceUMPZR3(arg);
+//    }
     return NULL;
 }
 
