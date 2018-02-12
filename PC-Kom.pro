@@ -52,23 +52,12 @@ SOURCES += main.cpp\
     src/LogFormater_imp/LogFormaterHtml.cpp \
     src/Frame_imp/FrameZR3.cpp \
     src/FrameBuilder_imp/FrameBuilderZR3.cpp \
-    src/LogicUI_imp/LogicUIZR3.cpp \
     src/Utils/Desc.cpp \
     src/Utils/About.cpp \
-    src/Mendium_imp/MendiumBusConnector.cpp \
-    src/BusDevice_imp/BusDeviceUMP.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.cpp \
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.cpp \
     src/Utils/ValidateHex.cpp \
     src/Utils/ValidateDumbFloat.cpp \
     src/Utils/Restorable.cpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.cpp \
-    src/LogicUI_imp/utils_ZR3/transactionDesc.cpp \
-    src/LogicUI_imp/utils_ZR3/ParamUi.cpp \
-    src/LogicUI_imp/utils_ZR3/transactionUi.cpp \
-    src/LogicUI_imp/utils_ZR3/TransactionMaker.cpp \
-    src/BusDevice_imp/BusDeviceUMPZR3.cpp \
     src/Utils/StaticUtils.cpp \
     src/LogicUI_imp/utils_SG1/Worker.cpp \
     src/LogicUI_imp/utils_SG1/WorkerManager.cpp \
@@ -100,12 +89,10 @@ HEADERS  += mainwindow.h \
     src/FrameBuilder_imp/FrameBuilderSG1.hpp \
     src/Mendium_imp/MendiumFakeSG1.hpp \
     src/LogicUI_imp/utils_SG1/DataCollector.hpp \
-    init.hpp \
     src/Mendium_imp/MendiumFakeStawrow.hpp \
     src/Frame_imp/FrameStawrov.hpp \
     src/FrameBuilder_imp/FrameBuilderStawrov.hpp \
     src/LogicUI_imp/LogicUIStawrov.hpp \
-    devices.hpp \
     src/LogFile.hpp \
     src/LogFile_imp/LogFileEmpty.hpp \
     src/LogFile_imp/LogFileDefault.hpp \
@@ -114,27 +101,13 @@ HEADERS  += mainwindow.h \
     src/LogFormater_imp/LogFormaterHtml.hpp \
     src/Frame_imp/FrameZR3.hpp \
     src/FrameBuilder_imp/FrameBuilderZR3.hpp \
-    src/LogicUI_imp/LogicUIZR3.hpp \
     src/Utils/Desc.hpp \
     src/Utils/About.hpp \
-    src/Mendium_imp/MendiumBusConnector.hpp \
     src/BusDevice.hpp \
-    src/BusDevice_imp/BusDeviceUMP.hpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrame.hpp \
-    src/LogicUI_imp/utils_ZR3/ZR3ReadFile.hpp \
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.hpp \
     src/Utils/ValidateHex.hpp \
     src/Utils/ValidateDumbFloat.hpp \
     src/Utils/Restorable.hpp \
-    src/LogicUI_imp/utils_ZR3/ZR3UIFrameUI.hpp \
-	src/LogicUI_imp/utils_ZR3/devClass.hpp \
-    src/LogicUI_imp/utils_ZR3/method.hpp \
-    src/LogicUI_imp/utils_ZR3/param.hpp \
-    src/LogicUI_imp/utils_ZR3/transactionDesc.hpp \
-    src/LogicUI_imp/utils_ZR3/ParamUi.hpp \
-    src/LogicUI_imp/utils_ZR3/transactionUi.hpp \
-    src/LogicUI_imp/utils_ZR3/TransactionMaker.hpp \
-    src/BusDevice_imp/BusDeviceUMPZR3.hpp \
     src/Utils/StaticUtils.hpp \
     src/LogicUI_imp/utils_SG1/Worker.hpp \
     src/LogicUI_imp/utils_SG1/WorkerManager.hpp \

@@ -18,7 +18,6 @@
 #include "Mendium_imp/MendiumRS.hpp"
 #include "Mendium_imp/MendiumFakeSG1.hpp"
 #include "Mendium_imp/MendiumFakeStawrow.hpp"
-#include "Mendium_imp/MendiumBusConnector.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
@@ -37,7 +36,7 @@
 #include "LogFormater_imp/LogFormaterEmpty.hpp"
 #include "LogFormater_imp/LogFormaterHtml.hpp"
 
-#include "BusDevice_imp/BusDeviceUMP.hpp"
+//#include "BusDevice_imp/BusDeviceUMP.hpp"
 
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
@@ -186,23 +185,6 @@ LogFormater* Factory::newLogFormater()
         Factory::terminate("Invalid _logFormater specifier: \"" + _logFormater + "\".");
 
     return nullptr;
-}
-
-/**
- * Zwraca obiekt pochodny po BusDevice w zależności od konfiguracji busDeviceFormat.
- */
-BusDevice* Factory::newBusDevice(QString arg)
-{
-//    switch (busDFormat)
-//    {
-//    case busDeviceNone:
-//        return NULL;
-//    case busDeviceUMP:
-//        return new BusDeviceUMP(arg);
-//    case busDeviceUMPZR3:
-//        return new BusDeviceUMPZR3(arg);
-//    }
-    return NULL;
 }
 
 /**

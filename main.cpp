@@ -4,18 +4,13 @@
 #include <exception>
 #include <QMessageBox>
 #include "src/Frame.hpp"
-#include "src/LogicUI_imp/utils_ZR3/transactionDesc.hpp"
-
 #include "src/Factory.hpp"
-
-#include "devices.hpp"
 
 int main(int argc, char *argv[])
 {
     Factory::CreateExampleXML();
 
     qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
-    qRegisterMetaType<TransactionDesc>("TransactionDesc");
 
     QApplication a(argc, argv);
 
@@ -27,7 +22,6 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    qDebug() << fake;
     Factory::setFake(fake);
 
     try
