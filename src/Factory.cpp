@@ -1,5 +1,7 @@
 #include "Factory.hpp"
 
+#include "Utils/pugixml.hpp"
+
 #include "Frame_imp/FrameEmpty.hpp"
 #include "Frame_imp/FrameTransparent.hpp"
 #include "Frame_imp/FrameSG1.hpp"
@@ -295,4 +297,33 @@ QString Factory::ConfigDescription()
 bool Factory::IsFake()
 {
     return fakeVer;
+}
+
+//.........
+void Factory::LoadConfig()
+{
+
+}
+
+void Factory::CreateExampleXML()
+{
+    pugi::xml_document xmldoc;
+    pugi::xml_node mainNode = xmldoc.append_child("PC-KOM-configs");
+    pugi::xml_node exampleNode = mainNode.append_child("example_set");
+    pugi::xml_node imps = exampleNode.append_child("Implementations");
+    imps.append_attribute("Frame") = "none";
+    imps.append_attribute("FrameBuilder") = "none";
+    imps.append_attribute("LogFile") = "none";
+    imps.append_attribute("LogFormater") = "none";
+    imps.append_attribute("LogicUI") = "none";
+    imps.append_attribute("LogUI") = "none";
+    imps.append_attribute("MediumUI") = "none";
+    imps.append_attribute("Mendium") = "none";
+    imps.append_attribute("Ico") = "ikona.ico";
+    pugi::xml_node descs = exampleNode.append_child("Descriptions");
+    descs.append_attribute("Name") = "Chuje muje dzikie węże";
+    descs.append_attribute("Descrioption") = "Przykładowa konfiguracja.";
+    pugi::xml_node fake = exampleNode.append_child("fake");
+    fake.append_attribute("Mendium") = "none";
+    xmldoc.save_file("example.xml");
 }

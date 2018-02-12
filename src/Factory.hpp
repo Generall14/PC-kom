@@ -121,6 +121,9 @@ public:
     static QString ConfigDescription();
     static bool IsFake();
 
+    static void LoadConfig();
+    static void CreateExampleXML();
+
 private:
     static frameFormat frame;
     static mediumUiFormat mediumui;

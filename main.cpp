@@ -10,6 +10,8 @@
 
 int main(int argc, char *argv[])
 {
+    Factory::CreateExampleXML();
+
     qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
     qRegisterMetaType<TransactionDesc>("TransactionDesc");
 
@@ -25,7 +27,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    #include "init.hpp"
+    //#include "init.hpp"
 
     MainWindow w;
     w.show();
