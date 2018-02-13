@@ -15,4 +15,9 @@
 		<Descriptions Ico="ikona.ico" Name="SG-1: PC-Tester" Descrioption="Implementacja dla prób i debugowania SG-1." />
 		<fake Mendium="MendiumFakeSG1" />
 	</sg1_set>
+	<universal_set>
+		<Implementations Frame="FrameTransparent" FrameBuilder="FrameBuilderSG1" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUIEmpty" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+		<Descriptions Ico="ikona.ico" Name="SG-1: PC-Tester" Descrioption="Implementacja dla prób i debugowania SG-1." />
+		<fake Mendium="MendiumFakeStawrow" />
+	</universal_set>
 </PC-KOM-configs>

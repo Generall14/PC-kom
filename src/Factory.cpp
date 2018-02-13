@@ -36,8 +36,6 @@
 #include "LogFormater_imp/LogFormaterEmpty.hpp"
 #include "LogFormater_imp/LogFormaterHtml.hpp"
 
-//#include "BusDevice_imp/BusDeviceUMP.hpp"
-
 QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 QString Factory::descConfig = "brak opisu";
