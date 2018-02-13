@@ -50,8 +50,6 @@ SOURCES += main.cpp\
     src/LogFile_imp/LogFileDefault.cpp \
     src/LogFormater_imp/LogFormaterEmpty.cpp \
     src/LogFormater_imp/LogFormaterHtml.cpp \
-    src/Frame_imp/FrameZR3.cpp \
-    src/FrameBuilder_imp/FrameBuilderZR3.cpp \
     src/Utils/Desc.cpp \
     src/Utils/About.cpp \
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.cpp \
@@ -99,8 +97,6 @@ HEADERS  += mainwindow.h \
     src/LogFormater.hpp \
     src/LogFormater_imp/LogFormaterEmpty.hpp \
     src/LogFormater_imp/LogFormaterHtml.hpp \
-    src/Frame_imp/FrameZR3.hpp \
-    src/FrameBuilder_imp/FrameBuilderZR3.hpp \
     src/Utils/Desc.hpp \
     src/Utils/About.hpp \
     src/BusDevice.hpp \
