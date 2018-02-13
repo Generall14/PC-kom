@@ -221,17 +221,23 @@ bool Factory::IsFake()
 
 /**
  * Konfiguruje iplementacje na podstawie plików set.cfg (wskazanie zestawu) i configs.xml (zestawy).
+ * @param setName - wskazana nazwa zestawu, jeżeli ciąg jest pusty zestaw zostanie odczytany z pliku set.cfg.
  */
-void Factory::LoadConfig() throw(std::runtime_error)
+void Factory::LoadConfig(QString setName) throw(std::runtime_error)
 {
-    QFile file("set.cfg");
-    if(!file.open(QIODevice::ReadOnly))
-        throw std::runtime_error("Nie można otworzyć pliku konfiguracyjnego \"" + file.fileName().toStdString() + "\".");
-
-    QTextStream in(&file);
-    QString setName = in.readLine();
     if(setName.isEmpty())
-        throw std::runtime_error("Plik konfiguracyjny \"" + file.fileName().toStdString() + "\" nie wskazuje żadnego zestawu implementacji.");
+    {
+        QFile file("set.cfg");
+        if(!file.open(QIODevice::ReadOnly))
+            throw std::runtime_error("Nie można otworzyć pliku konfiguracyjnego \"" + file.fileName().toStdString() + "\".");
+
+        QTextStream in(&file);
+        setName = in.readLine();
+        if(setName.isEmpty())
+            throw std::runtime_error("Plik konfiguracyjny \"" + file.fileName().toStdString() + "\" nie wskazuje żadnego zestawu implementacji.");
+
+        file.close();
+    }
 
     pugi::xml_document dok;
     pugi::xml_parse_result wynik = dok.load_file("configs.xml");
@@ -293,8 +299,6 @@ void Factory::LoadConfig() throw(std::runtime_error)
         if(!temp.isEmpty())
             _logFormater = temp;
     }
-
-    file.close();
 }
 
 void Factory::CreateExampleXML()

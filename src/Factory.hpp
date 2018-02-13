@@ -42,7 +42,7 @@ public:
     static QString ConfigDescription();
     static bool IsFake();
 
-    static void LoadConfig() throw(std::runtime_error);
+    static void LoadConfig(QString setName = "") throw(std::runtime_error);
     static void CreateExampleXML();
 
     static void setFake(bool fake = true);
