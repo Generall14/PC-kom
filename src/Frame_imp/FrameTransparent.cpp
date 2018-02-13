@@ -1,6 +1,6 @@
 #include "FrameTransparent.hpp"
 
-FrameTransparent::displayMethod FrameTransparent::_displayMethod = FrameTransparent::mixed;
+FrameTransparent::displayMethod FrameTransparent::_displayMethod = FrameTransparent::hex;
 char FrameTransparent::_invalidAsciiSign = '?';
 char FrameTransparent::_hexSpecifier = '\\';
 

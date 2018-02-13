@@ -22,10 +22,12 @@
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
 #include "LogicUI_imp/LogicUIStawrov.hpp"
+#include "LogicUI_imp/LogicUITerminal.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 #include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
+#include "FrameBuilder_imp/FrameBuilderTerminal.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -97,6 +99,8 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return new LogicUISG1(fr);
     else if(_logicUi=="LogicUIStawrov")
         return new LogicUIStawrov(fr);
+    else if(_logicUi=="LogicUITerminal")
+        return new LogicUITerminal(fr);
     else
         Factory::terminate("Invalid _logicUi specifier: \"" + _logicUi + "\".");
 
@@ -133,6 +137,8 @@ FrameBuilder* Factory::newFrameBuilder()
         return new FrameBuilderSG1();
     else if(_frameBuilder=="FrameBuilderStawrov")
         return new FrameBuilderStawrov();
+    else if(_frameBuilder=="FrameBuilderTerminal")
+        return new FrameBuilderTerminal();
     else
         Factory::terminate("Invalid _frameBuilder specifier: \"" + _frameBuilder + "\".");
 

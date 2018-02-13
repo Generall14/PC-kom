@@ -61,7 +61,9 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_SG1/WorkerManager.cpp \
     src/LogicUI_imp/utils_SG1/WorkerRead.cpp \
     src/LogicUI_imp/utils_SG1/WorkerWrite.cpp \
-    src/Utils/pugixml.cpp
+    src/Utils/pugixml.cpp \
+    src/LogicUI_imp/LogicUITerminal.cpp \
+    src/FrameBuilder_imp/FrameBuilderTerminal.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -110,4 +112,6 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_SG1/WorkerRead.hpp \
     src/LogicUI_imp/utils_SG1/WorkerWrite.hpp \
     src/Utils/pugiconfig.hpp \
-    src/Utils/pugixml.hpp
+    src/Utils/pugixml.hpp \
+    src/LogicUI_imp/LogicUITerminal.hpp \
+    src/FrameBuilder_imp/FrameBuilderTerminal.hpp
