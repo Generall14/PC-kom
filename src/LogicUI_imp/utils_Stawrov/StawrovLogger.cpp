@@ -12,7 +12,6 @@ STawrovLogger::STawrovLogger(QObject* parent):
         cdir.mkpath(".");
 
     logStream.setDevice(&logFile);
-    //Reset(fileName);
 }
 
 STawrovLogger::~STawrovLogger()
@@ -129,7 +128,7 @@ void STawrovLogger::AppendLine(QList<int> v)
     {
         if(i!=0)
             pre.append(",");
-        pre.append(QString("%1").arg(i, 6, 10, QChar('0')));
+        pre.append(QString("%1").arg(v.at(i), 6, 10, QChar('0')));
     }
     pre.append("\n");
     logStream << pre;
