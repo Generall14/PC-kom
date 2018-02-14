@@ -23,8 +23,8 @@ public slots:
 private:
     virtual void Run();
     QByteArray _dataToSend;
-    int _timeout;
     int _repeates;
+    int _timeout;
     int counter = 0;
     bool done = false;
 

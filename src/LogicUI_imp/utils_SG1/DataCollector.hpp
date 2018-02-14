@@ -32,8 +32,8 @@ protected:
 
     QList<int> dataList;
     QList<int> ADCList;
-    method typ;
     int length;
+    method typ;
     bool ciagly;
     float timeres;
 
