@@ -50,9 +50,6 @@ protected:
     const QStringList inputsMethods = {"ASCII", "hex", "mixed"};
 
     QVector<Terminal_SendSection*> sends;
-
-//    QPushButton* btn = NULL;
-//    QPushButton* btnE = NULL;
 };
 
 #endif

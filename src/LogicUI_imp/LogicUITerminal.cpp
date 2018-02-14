@@ -4,7 +4,6 @@
 #include <QToolButton>
 #include "../FrameBuilder_imp/FrameBuilderTerminal.hpp"
 #include "../Frame_imp/FrameTransparent.hpp"
-//#include <QLayout>
 #include <QDebug>
 
 LogicUITerminal::LogicUITerminal(QFrame* parent):
@@ -71,6 +70,9 @@ void LogicUITerminal::Init()
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     LoadConfigs();
+
+    SendReceivingParams();
+    SendDisplayParams();
 }
 
 void LogicUITerminal::InitReceive()
