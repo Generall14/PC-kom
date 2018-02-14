@@ -23,7 +23,8 @@ FrameBuilderTerminal::~FrameBuilderTerminal()
 
 void FrameBuilderTerminal::ByteReaded(QByteArray ba)
 {
-    timer->stop();
+    if(!timer->isActive())
+        timer->start(getTimeoutMs());
     recievedbuf.append(ba);
 
     int size = getPckSize();
