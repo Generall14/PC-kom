@@ -3,8 +3,9 @@
 #include <QLabel>
 #include <QToolButton>
 #include "../FrameBuilder_imp/FrameBuilderTerminal.hpp"
+#include "../Frame_imp/FrameTransparent.hpp"
 //#include <QLayout>
-//#include <QDebug>
+#include <QDebug>
 
 LogicUITerminal::LogicUITerminal(QFrame* parent):
     LogicUI(parent)
@@ -17,7 +18,9 @@ LogicUITerminal::~LogicUITerminal()
     Store("configs/LogicUITerminalsbBytes.cfg", sbBytes->text());
     Store("configs/LogicUITerminalleSHexSign.cfg", leSHexSign->text());
     Store("configs/LogicUITerminalinputsMethods.cfg", kbSWprowadzanie->currentText());
-//    Store("configs/LogicUIStawrovmetrozniczkowanie.cfg", QString::number((int)rozniczkowanie->isChecked()));
+    Store("configs/LogicUITerminalkbRWyswietanie.cfg", kbRWyswietanie->currentText());
+    Store("configs/LogicUITerminalleRHexSign.cfg", leRHexSign->text());
+    Store("configs/LogicUITerminalleRInvalid.cfg", leRInvalid->text());
 
     for(int i=0;i<sends.length();i++)
         Store("configs/LogicUITerminalleSend"+QString::number(i)+".cfg", sends.at(i)->Store());
@@ -35,10 +38,17 @@ void LogicUITerminal::LoadConfigs()
         leSHexSign->setText(temp);
     if(!Restore("configs/LogicUITerminalinputsMethods.cfg", temp))
         kbSWprowadzanie->setCurrentText(temp);
+    if(!Restore("configs/LogicUITerminalkbRWyswietanie.cfg", temp))
+        kbRWyswietanie->setCurrentText(temp);
+    if(!Restore("configs/LogicUITerminalleRHexSign.cfg", temp))
+        leRHexSign->setText(temp);
+    if(!Restore("configs/LogicUITerminalleRInvalid.cfg", temp))
+        leRInvalid->setText(temp);
+    bool ok;
+    int vale;
     if(!Restore("configs/LogicUITerminalsbBytes.cfg", temp))
     {
-        bool ok;
-        int vale = temp.toInt(&ok);
+        vale = temp.toInt(&ok);
         if(ok)
             sbBytes->setValue(vale);
     }
@@ -102,6 +112,38 @@ void LogicUITerminal::InitDisplay()
     QGroupBox* groupBoxWyswietlanie = new QGroupBox("Wyświetlanie");
     mainLay->addWidget(groupBoxWyswietlanie);
     QVBoxLayout* mainWyswietlanie = new QVBoxLayout(groupBoxWyswietlanie);
+
+    QHBoxLayout* bytesWyswietlanie = new QHBoxLayout();
+    mainWyswietlanie->addLayout(bytesWyswietlanie);
+    QLabel* lab = new QLabel("Metoda wyswietlania:");
+    bytesWyswietlanie->addWidget(lab);
+    bytesWyswietlanie->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    kbRWyswietanie = new QComboBox();
+    kbRWyswietanie->addItems(inputsMethods);
+    connect(kbRWyswietanie, SIGNAL(currentIndexChanged(int)), this, SLOT(SendDisplayParams()));
+    bytesWyswietlanie->addWidget(kbRWyswietanie);
+
+    QHBoxLayout* bytesHexSign = new QHBoxLayout();
+    mainWyswietlanie->addLayout(bytesHexSign);
+    lab = new QLabel("Znacznik hex:");
+    bytesHexSign->addWidget(lab);
+    bytesHexSign->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    leRHexSign = new QLineEdit("\\");
+    leRHexSign->setInputMask("X");
+    leRHexSign->setMaximumWidth(40);
+    connect(leRHexSign, SIGNAL(textChanged(QString)), this, SLOT(SendDisplayParams()));
+    bytesHexSign->addWidget(leRHexSign);
+
+    QHBoxLayout* bytesInvalid = new QHBoxLayout();
+    mainWyswietlanie->addLayout(bytesInvalid);
+    lab = new QLabel("Oznaczenie nieprawidłowych znaków ASCII:");
+    bytesInvalid->addWidget(lab);
+    bytesInvalid->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    leRInvalid = new QLineEdit("?");
+    leRInvalid->setInputMask("X");
+    leRInvalid->setMaximumWidth(40);
+    connect(leRInvalid, SIGNAL(textChanged(QString)), this, SLOT(SendDisplayParams()));
+    bytesInvalid->addWidget(leRInvalid);
 }
 
 void LogicUITerminal::InitSend()
@@ -152,19 +194,16 @@ void LogicUITerminal::Connected()
 {
     for(int i=0;i<sends.length();i++)
         sends[i]->Enable();
-//    btn->setEnabled(true);
 }
 
 void LogicUITerminal::Disconnected()
 {
     for(int i=0;i<sends.length();i++)
         sends[i]->Disable();
-//    btn->setEnabled(false);
 }
 
 void LogicUITerminal::FrameReaded(QSharedPointer<Frame>)
 {
-//    frame.isNull();
 }
 
 void LogicUITerminal::SendReceivingParams()
@@ -173,24 +212,63 @@ void LogicUITerminal::SendReceivingParams()
     FrameBuilderTerminal::setPckSize(sbBytes->value());
 }
 
+void LogicUITerminal::SendDisplayParams()
+{
+    FrameTransparent::setHexSpecifier(leRHexSign->text().at(0).toLatin1());
+    FrameTransparent::setInvalidAsciiSign(leRInvalid->text().at(0).toLatin1());
+    FrameTransparent::setDisplayMethod((FrameTransparent::displayMethod)kbRWyswietanie->currentIndex());
+}
+
 void LogicUITerminal::SendData(QString txt)
 {
     QByteArray data;
+    QChar hexSign = leSHexSign->text().at(0);
     if(kbSWprowadzanie->currentText()==inputsMethods.at(0)) // ascii
     {
         data = txt.toStdString().c_str();
     }
     else if(kbSWprowadzanie->currentText()==inputsMethods.at(1)) // hex
     {
-        if(txt.at(0)=='a')
+        txt.remove(' ');
+        bool ok;
+        int val;
+        while(!txt.isEmpty())
         {
-            static_cast<Terminal_SendSection*>(sender())->Stop();
-            emit Error("Coś się zepsuło");
+            val = txt.mid(1, 2).toInt(&ok, 16);
+            if((txt.at(0)!=hexSign)||(!ok))
+            {
+                emit Error("Nie można odczytać danych z \"" + txt.mid(0, 3) + "\"");
+                static_cast<Terminal_SendSection*>(sender())->Stop();
+                return;
+            }
+            data.push_back((char)val);
+            txt = txt.mid(3);
         }
     }
     else if(kbSWprowadzanie->currentText()==inputsMethods.at(2)) // mixed
     {
-
+        bool ok;
+        int val;
+        while(!txt.isEmpty())
+        {
+            if(txt.at(0)==hexSign)
+            {
+                val = txt.mid(1, 2).toInt(&ok, 16);
+                if(!ok)
+                {
+                    emit Error("Nie można odczytać danych z \"" + txt.mid(0, 3) + "\"");
+                    static_cast<Terminal_SendSection*>(sender())->Stop();
+                    return;
+                }
+                data.push_back((char)val);
+                txt = txt.mid(3);
+            }
+            else
+            {
+                data.push_back(txt.at(0).toLatin1());
+                txt = txt.mid(1);
+            }
+        }
     }
     else
     {

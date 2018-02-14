@@ -12,9 +12,9 @@ public:
 
     enum displayMethod
     {
-        hex,
-        ascii,
-        mixed
+        ascii=0,
+        hex=1,
+        mixed=2
     };
 
     virtual bool isValid();

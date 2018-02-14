@@ -26,6 +26,7 @@ public slots:
 
 protected slots:
     void SendReceivingParams();
+    void SendDisplayParams();
 
     void SendData(QString txt);
 
@@ -41,6 +42,10 @@ protected:
 
     QComboBox* kbSWprowadzanie = nullptr;
     QLineEdit* leSHexSign = nullptr;
+
+    QComboBox* kbRWyswietanie = nullptr;
+    QLineEdit* leRHexSign = nullptr;
+    QLineEdit* leRInvalid = nullptr;
 
     const QStringList inputsMethods = {"ASCII", "hex", "mixed"};
 
