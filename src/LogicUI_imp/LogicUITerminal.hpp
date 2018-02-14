@@ -8,7 +8,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include "../Utils/Restorable.hpp"
-//#include <QPushButton>
+#include "utils_Terminal/Terminal_SendSection.hpp"
 
 class LogicUITerminal : public LogicUI, public Restorable
 {
@@ -22,7 +22,7 @@ public:
 public slots:
     virtual void Connected();
     virtual void Disconnected();
-    virtual void FrameReaded(QSharedPointer<Frame> frame);
+    virtual void FrameReaded(QSharedPointer<Frame>);
 
 protected slots:
     void SendReceivingParams();
@@ -42,9 +42,9 @@ protected:
     QComboBox* kbSWprowadzanie = nullptr;
     QLineEdit* leSHexSign = nullptr;
 
-    QLineEdit* leSend1 = nullptr;
-
     const QStringList inputsMethods = {"ASCII", "hex", "mixed"};
+
+    QVector<Terminal_SendSection*> sends;
 
 //    QPushButton* btn = NULL;
 //    QPushButton* btnE = NULL;

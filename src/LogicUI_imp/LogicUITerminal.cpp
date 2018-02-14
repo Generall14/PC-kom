@@ -15,18 +15,22 @@ LogicUITerminal::LogicUITerminal(QFrame* parent):
 LogicUITerminal::~LogicUITerminal()
 {
     Store("configs/LogicUITerminalsbBytes.cfg", sbBytes->text());
-    Store("configs/LogicUITerminalleSend1.cfg", leSend1->text());
     Store("configs/LogicUITerminalleSHexSign.cfg", leSHexSign->text());
     Store("configs/LogicUITerminalinputsMethods.cfg", kbSWprowadzanie->currentText());
 //    Store("configs/LogicUIStawrovmetrozniczkowanie.cfg", QString::number((int)rozniczkowanie->isChecked()));
+
+    for(int i=0;i<sends.length();i++)
+        Store("configs/LogicUITerminalleSend"+QString::number(i)+".cfg", sends.at(i)->Store());
+
+    for(int i=0;i<sends.length();i++)
+        delete sends[i];
+    sends.clear();
 }
 
 void LogicUITerminal::LoadConfigs()
 {
     QString temp;
 
-    if(!Restore("configs/LogicUITerminalleSend1.cfg", temp))
-        leSend1->setText(temp);
     if(!Restore("configs/LogicUITerminalleSHexSign.cfg", temp))
         leSHexSign->setText(temp);
     if(!Restore("configs/LogicUITerminalinputsMethods.cfg", temp))
@@ -37,6 +41,11 @@ void LogicUITerminal::LoadConfigs()
         int vale = temp.toInt(&ok);
         if(ok)
             sbBytes->setValue(vale);
+    }
+    for(int i=0;i<sends.length();i++)
+    {
+        if(!Restore("configs/LogicUITerminalleSend"+QString::number(i)+".cfg", temp))
+            sends.at(i)->Restore(temp);
     }
 }
 
@@ -131,28 +140,29 @@ void LogicUITerminal::InitSend()
     lab = new QLabel("Wyślij dane:");
     mainWysylanie->addWidget(lab);
 
-    QHBoxLayout* send1Lay = new QHBoxLayout();
-    mainWysylanie->addLayout(send1Lay);
-    leSend1 = new QLineEdit();
-    leSend1->setMinimumWidth(300);
-    send1Lay->addWidget(leSend1);
-    QToolButton* tb = new QToolButton();
-    tb->setText(">");
-    connect(tb, &QToolButton::clicked, [this](){SendData(leSend1->text());});
-    send1Lay->addWidget(tb);
+    for(int i=0;i<6;i++)
+    {
+        Terminal_SendSection* temp = new Terminal_SendSection(mainWysylanie);
+        connect(temp, SIGNAL(Send(QString)), this, SLOT(SendData(QString)));
+        sends.push_back(temp);
+    }
 }
 
 void LogicUITerminal::Connected()
 {
+    for(int i=0;i<sends.length();i++)
+        sends[i]->Enable();
 //    btn->setEnabled(true);
 }
 
 void LogicUITerminal::Disconnected()
 {
+    for(int i=0;i<sends.length();i++)
+        sends[i]->Disable();
 //    btn->setEnabled(false);
 }
 
-void LogicUITerminal::FrameReaded(QSharedPointer<Frame> frame)
+void LogicUITerminal::FrameReaded(QSharedPointer<Frame>)
 {
 //    frame.isNull();
 }
@@ -172,7 +182,11 @@ void LogicUITerminal::SendData(QString txt)
     }
     else if(kbSWprowadzanie->currentText()==inputsMethods.at(1)) // hex
     {
-
+        if(txt.at(0)=='a')
+        {
+            static_cast<Terminal_SendSection*>(sender())->Stop();
+            emit Error("Coś się zepsuło");
+        }
     }
     else if(kbSWprowadzanie->currentText()==inputsMethods.at(2)) // mixed
     {

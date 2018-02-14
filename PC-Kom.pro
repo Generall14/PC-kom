@@ -63,7 +63,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_SG1/WorkerWrite.cpp \
     src/Utils/pugixml.cpp \
     src/LogicUI_imp/LogicUITerminal.cpp \
-    src/FrameBuilder_imp/FrameBuilderTerminal.cpp
+    src/FrameBuilder_imp/FrameBuilderTerminal.cpp \
+    src/LogicUI_imp/utils_Terminal/Terminal_SendSection.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -114,4 +115,9 @@ HEADERS  += mainwindow.h \
     src/Utils/pugiconfig.hpp \
     src/Utils/pugixml.hpp \
     src/LogicUI_imp/LogicUITerminal.hpp \
-    src/FrameBuilder_imp/FrameBuilderTerminal.hpp
+    src/FrameBuilder_imp/FrameBuilderTerminal.hpp \
+    src/LogicUI_imp/utils_Terminal/Terminal_SendSection.hpp
+
+DISTFILES += \
+    configs.xml \
+    set.cfg
