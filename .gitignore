@@ -2,3 +2,4 @@
 *.ico
 *.user*
 doc_doxygen/
+stats/*
