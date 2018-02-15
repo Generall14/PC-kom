@@ -28,6 +28,7 @@
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 #include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
 #include "FrameBuilder_imp/FrameBuilderTerminal.hpp"
+#include "FrameBuilder_imp/FrameBuilderPazur.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -139,6 +140,8 @@ FrameBuilder* Factory::newFrameBuilder()
         return new FrameBuilderStawrov();
     else if(_frameBuilder=="FrameBuilderTerminal")
         return new FrameBuilderTerminal();
+    else if(_frameBuilder=="FrameBuilderPazur")
+        return new FrameBuilderPazur();
     else
         Factory::terminate("Invalid _frameBuilder specifier: \"" + _frameBuilder + "\".");
 
@@ -326,6 +329,11 @@ void Factory::CreateExampleXML()
     pugi::xml_node fake = exampleNode.append_child("fake");
     fake.append_attribute("Mendium") = "none";
     xmldoc.save_file("example.xml");
+}
+
+void Factory::ForceFrame(QString newType)
+{
+    _frame = newType;
 }
 
 /**

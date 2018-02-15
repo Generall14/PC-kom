@@ -9,7 +9,7 @@ uint FrameBuilderTerminal::_countTo = 10;
 FrameBuilderTerminal::FrameBuilderTerminal():
     FrameBuilder()
 {
-    Desc::description = "FrameBuilderSG1";
+    Desc::description = "FrameBuilderTerminal";
 
     timer = new QTimer();
     timer->setSingleShot(true);

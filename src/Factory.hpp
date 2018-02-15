@@ -44,6 +44,7 @@ public:
 
     static void LoadConfig(QString setName = "") throw(std::runtime_error);
     static void CreateExampleXML();
+    static void ForceFrame(QString newType);
 
     static void setFake(bool fake = true);
 
