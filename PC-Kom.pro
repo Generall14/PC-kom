@@ -66,7 +66,8 @@ SOURCES += main.cpp\
     src/FrameBuilder_imp/FrameBuilderTerminal.cpp \
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.cpp \
     src/Utils/CRC.cpp \
-    src/FrameBuilder_imp/FrameBuilderPazur.cpp
+    src/FrameBuilder_imp/FrameBuilderPazur.cpp \
+    src/Frame_imp/FramePazur.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -120,7 +121,8 @@ HEADERS  += mainwindow.h \
     src/FrameBuilder_imp/FrameBuilderTerminal.hpp \
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.hpp \
     src/Utils/CRC.hpp \
-    src/FrameBuilder_imp/FrameBuilderPazur.hpp
+    src/FrameBuilder_imp/FrameBuilderPazur.hpp \
+    src/Frame_imp/FramePazur.hpp
 
 DISTFILES += \
     configs.xml \

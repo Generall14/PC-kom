@@ -17,6 +17,17 @@ uint8_t CRC::crc5(QByteArray arr, uint8_t sum, uint8_t poly, bool lsbFirst, bool
     assert(arr.size()>0);
     assert(poly!=0);
 
+    if(reversedCrc)
+    {
+        uint8_t ncrc = 0;
+        for(int i=0;i<5;++i)
+        {
+            if(sum&(1<<i))
+                ncrc |= 0x10>>i;
+        }
+        sum = ncrc;
+    }
+
     for(int i=0;i<arr.length();++i)
     {
         uint8_t lval = arr.at(i);

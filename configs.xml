@@ -21,7 +21,7 @@
 		<fake Mendium="MendiumFakeStawrow" />
 	</universal_set>
 	<pazur_set>
-		<Implementations Frame="FrameTransparent" FrameBuilder="FrameBuilderPazur" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUITerminal" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+		<Implementations Frame="FramePazur" FrameBuilder="FrameBuilderPazur" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUITerminal" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
 		<Descriptions Ico="ikona.ico" Name="Terminal" Descrioption="Uniwersalny terminal portu szeregowego." />
 		<fake Mendium="MendiumFakeStawrow" />
 	</pazur_set>
