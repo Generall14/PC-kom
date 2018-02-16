@@ -64,7 +64,7 @@ void FrameBuilderPazur::ByteReaded(QByteArray ba)
             {
                 trash.push_back(potentialFrame.at(0));
                 potentialFrame.remove(0, 1);
-                if(trash.size()>20)
+                if(trash.size()>10)
                 {
                     emit FrameReaded(QSharedPointer<Frame>(Factory::newFrame(trash)));
                     trash.clear();

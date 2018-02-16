@@ -67,6 +67,7 @@ QString FramePazur::dispHeader()
     int dat = 0;
     dat |= (pck.at(2)>>3)&0x1f;
     dat |= (pck.at(1)>>2)&0x60;
+    dat -= 1;
     int conf = pck.at(2)&0x07;
     temp.append(", conf: " + QString::number(conf) + ", dat: " + QString::number(dat));
     int f = 0, id = 0, sl = 0;
