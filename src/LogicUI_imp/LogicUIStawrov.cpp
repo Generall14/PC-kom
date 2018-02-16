@@ -58,7 +58,7 @@ void LogicUIStawrov::InitTests()
 {
     //=======================Grupa wyslijcos======================================================
     QGroupBox* groupBoxWyslijCos = new QGroupBox("Wyślij coś");
-    mainLay->addWidget(groupBoxWyslijCos);
+//    mainLay->addWidget(groupBoxWyslijCos);
     QVBoxLayout* mainWyslijCosLay = new QVBoxLayout(groupBoxWyslijCos);
 
     QHBoxLayout* groupBoxWyslijCosY = new QHBoxLayout();
@@ -69,7 +69,7 @@ void LogicUIStawrov::InitTests()
     leAdr->setMaximumWidth(50);
     leAdr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     leAdr->setValidator(new HexValidator(1, 1, leAdr));
-    groupBoxWyslijCosY->addWidget(leAdr);
+//    groupBoxWyslijCosY->addWidget(leAdr);
 
     QHBoxLayout* groupBoxWyslijCosZ = new QHBoxLayout();
     mainWyslijCosLay->addLayout(groupBoxWyslijCosZ);
@@ -77,10 +77,10 @@ void LogicUIStawrov::InitTests()
     groupBoxWyslijCosZ->addWidget(tl3);
     leData = new QLineEdit("ff aa 55");
     leData->setValidator(new HexValidator(1, 27, leData));
-    groupBoxWyslijCosZ->addWidget(leData);
+//    groupBoxWyslijCosZ->addWidget(leData);
 
     btn = new QPushButton("Wyślij coś");
-    mainWyslijCosLay->addWidget(btn);
+//    mainWyslijCosLay->addWidget(btn);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(makeStupidMessage()));
 
     //=======================Grupa zbieranie danych===============================================
@@ -155,7 +155,7 @@ void LogicUIStawrov::InitTests()
 
     QGroupBox* groupBoxS = new QGroupBox();
     mainKonfiguracjaLay->addWidget(groupBoxS);
-    QVBoxLayout* groupBoxKonfiguracjaSimple = new QVBoxLayout(groupBoxS);
+    QHBoxLayout* groupBoxKonfiguracjaSimple = new QHBoxLayout(groupBoxS);
 
     QPushButton* btns = new QPushButton("SYNCH_AND_START");
     connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeSYNCH_AND_START()));
