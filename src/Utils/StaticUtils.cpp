@@ -94,13 +94,13 @@ QByteArray SU::int32ToByteArray(int i)
     return temp;
 }
 
-long long SU::byteArray2Int48(QByteArray b)
+uint64_t SU::byteArray2Int48(QByteArray b)
 {
     if(b.size()<6)
         return -1;
-    long long i=0;
-    i |= (b.at(0)&0xFF)<<40;
-    i |= (b.at(1)&0xFF)<<32;
+    uint64_t i=0;
+    i |= ((uint64_t)(b.at(0)&0xFF))<<40;
+    i |= ((uint64_t)(b.at(1)&0xFF))<<32;
     i |= (b.at(2)&0xFF)<<24;
     i |= (b.at(3)&0xFF)<<16;
     i |= (b.at(4)&0xFF)<<8;

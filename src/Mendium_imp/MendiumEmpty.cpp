@@ -35,6 +35,5 @@ void MendiumEmpty::Run()
     {
         QByteArray temp("Testowa odpowiedz medium.");
         emit Readed(temp);
-        qDebug() << temp;
     }
 }

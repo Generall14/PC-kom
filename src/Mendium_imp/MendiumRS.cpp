@@ -24,7 +24,6 @@ MendiumRS::~MendiumRS()
 
 void MendiumRS::Open(QString desc)
 {
-    qDebug() << "MendiumRS::Open(QString desc)";
     if(!opened)
     {
         QStringList params = desc.split(";");

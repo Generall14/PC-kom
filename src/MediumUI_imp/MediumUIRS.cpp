@@ -91,7 +91,6 @@ void MediumUiRS::MakeConnectRequest()
 {
     QString temp = portBox->currentText()+";"+speedBox->currentText();
     emit ConnectRequest(temp);
-    qDebug() << temp;
 }
 
 void MediumUiRS::Connected()

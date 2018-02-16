@@ -27,7 +27,7 @@ public:
     static char getHexSpecifier();
     static void setDisplayMethod(displayMethod _method);
     static void setInvalidAsciiSign(char _sign);
-    static char setHexSpecifier(char _sign);
+    static void setHexSpecifier(char _sign);
 
 private:
     static displayMethod _displayMethod;

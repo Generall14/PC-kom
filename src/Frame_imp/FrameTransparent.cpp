@@ -93,7 +93,7 @@ void FrameTransparent::setInvalidAsciiSign(char _sign)
     _invalidAsciiSign = _sign;
 }
 
-char FrameTransparent::setHexSpecifier(char _sign)
+void FrameTransparent::setHexSpecifier(char _sign)
 {
     _hexSpecifier = _sign;
 }

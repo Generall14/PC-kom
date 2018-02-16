@@ -368,7 +368,6 @@ void LogicUIStawrov::ograniczHV(QString)
 
     int max = leMaxHV->text().toInt(nullptr, 16);
     int current = leHV->text().toInt(nullptr, 16);
-    qDebug() << max;
     if(current>max)
         leHV->setText(leMaxHV->text());
 }
