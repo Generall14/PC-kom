@@ -1,5 +1,9 @@
 #include "StawrovLogger.hpp"
 #include "QDir"
+#include <QDebug>
+#include <iostream>
+#include <QDate>
+#include <QTime>
 
 STawrovLogger::STawrovLogger(QObject* parent):
     QObject(parent)
@@ -71,6 +75,7 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         cargo.remove(0, 2);
     }
 
+    addToMean(temp);
     DoSomeStuff(temp, zajety);
 }
 
@@ -137,4 +142,60 @@ void STawrovLogger::AppendLine(QList<int> v)
         writen = 0;
         logStream.flush();
     }
+}
+
+void STawrovLogger::addToMean(QList<int>& newvals)
+{
+    if(!meaning)
+        return;
+    while(total.size()<newvals.size())
+        total.append(0);
+    for(int i=0;i<newvals.size();i++)
+        total[i] += newvals[i];
+    counts++;
+}
+
+void STawrovLogger::startMeaning()
+{
+    meaning = true;
+    total.clear();
+    counts = 0;
+}
+
+void STawrovLogger::stopMeaning()
+{
+    meaning = false;
+
+    if(!counts)
+        return;
+
+    QFile file("Pomiary/mean.txt");
+    if(!file.open(QIODevice::Text | QIODevice::Append))
+    {
+        emit Error(QString("Nie można otworzyć pliku %1.").arg(file.fileName()));
+        file.close();
+        return;
+    }
+    QTextStream stream(&file);
+    stream << QDate::currentDate().toString() << "  " << QTime::currentTime().toString() << "\r\n" << meanString();
+    file.close();
+
+    counts = 0;
+}
+
+void STawrovLogger::displayMean()
+{
+    std::cout << meanString().toStdString() << std::flush;
+}
+
+QString STawrovLogger::meanString()
+{
+    QString temp = QString("Liczba pomiarów: %1\r\nZliczenia: ").arg(counts);
+    for(auto i: total)
+        temp.append(QString("[%1]  ").arg(i));
+    temp.append("\r\nUśrednione: ");
+    for(auto i: total)
+        temp.append(QString("[%1]  ").arg(float(i)/float(counts), 0, 'f', 2));
+    temp.append("\r\n\r\n");
+    return temp;
 }

@@ -11,6 +11,7 @@
 #include <QRadioButton>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QSpinBox>
 #include "utils_Stawrov/StawrovLogger.hpp"
 #include "../Utils/ValidateHex.hpp"
 #include "../Utils/ValidateDumbFloat.hpp"
@@ -47,6 +48,10 @@ private slots:
 
     void PackAndSend(QByteArray data);
 
+    void StartMeaning();
+    void StopMeaning();
+    void TimeoutedMean();
+
 protected:
     void InitTests();
     void LoadConfigs();
@@ -82,6 +87,13 @@ protected:
     bool modeFromSizes = true;
     QStringList gnam;
     QMap<QString, uchar> gval;
+
+    QLabel* seconds = nullptr;
+    QSpinBox* sbseconds = nullptr;
+    QPushButton* btnme = nullptr;
+    QPushButton* btnms = nullptr;
+    QTimer* meanTimer = nullptr;
+    int secondsOfMeaning = 0;
 };
 
 #endif

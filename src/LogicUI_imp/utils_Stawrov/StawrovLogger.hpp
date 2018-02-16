@@ -36,8 +36,18 @@ private:
 
     QString low, high;
 
+    bool meaning = false;
+    QList<int> total;
+    int counts;
+    void addToMean(QList<int>& newvals);
+    QString meanString();
+
 public slots:
     void FrameReaded(QSharedPointer<Frame> frame);
+
+    void startMeaning();
+    void stopMeaning();
+    void displayMean();
 
 signals:
     void Error(QString msg);

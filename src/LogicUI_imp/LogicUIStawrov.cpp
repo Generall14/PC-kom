@@ -22,10 +22,16 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     gnam.append("[111] x4"); gval.insertMulti(gnam.at(4), 0x07);
     gnam.append("[001] x7.5"); gval.insertMulti(gnam.at(5), 0x01);
     gnam.append("[101] x15"); gval.insertMulti(gnam.at(6), 0x05);
+
+    meanTimer = new QTimer();
+    meanTimer->setSingleShot(true);
+    connect(meanTimer, SIGNAL(timeout()), this, SLOT(TimeoutedMean()));
 }
 
 LogicUIStawrov::~LogicUIStawrov()
 {
+    meanTimer->stop();
+
     Store("configs/LogicUIStawrovAdr.cfg", leAdr->text());
     Store("configs/LogicUIStawrovData.cfg", leData->text());
     Store("configs/LogicUIStawrovFileLog.cfg", fileAdr->text());
@@ -38,8 +44,10 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("configs/LogicUIStawrovleOFFSET.cfg", leOFFSET->text());
     Store("configs/LogicUIStawrovleTRIGGER.cfg", leTRIGGER->text());
     Store("configs/LogicUIStawrovleKANALY.cfg", leKANALY->text());
+    Store("configs/LogicUIStawrovsbseconds.cfg", QString::number(sbseconds->value()));
 
     delete logg;
+    delete meanTimer;
 }
 
 void LogicUIStawrov::Init()
@@ -125,6 +133,39 @@ void LogicUIStawrov::InitTests()
     btnr->setToolTip("Resetuje zbieranie danych, rozpoczyna nowy pomiar w pliku o nazwie podanej wyżej (UWAGA! nadpisuje istniejące pliki).");
     connect(btnr, &QPushButton::clicked, [=](){logg->Reset(fileAdr->text());});
 
+    QHBoxLayout* mainZbieranieLay5 = new QHBoxLayout();
+    QString tooltip = "Dane będą zbierane i uśredniane od wciśnięcia 'Start' do wciścięcia 'Stop' \n"
+                      "lub minięcia czasu podanego w SpinBoxie (w sekundach), podanie wartości '0' \n"
+                      "wyłącza czasowe zatrzymywanie uśredniania. Wyniki co sekundę wysyłąne są na \n"
+                      "std::cout oraz po zakończeniu uśredniania do pliku 'Pomiary/mean.txt' (w trybie \nappend).";
+    mainZbieranieLay->addLayout(mainZbieranieLay5);
+    QLabel* llly = new QLabel("Uśrednianie:");
+    llly->setToolTip(tooltip);
+    mainZbieranieLay5->addWidget(llly);
+    btnms = new QPushButton("Start");
+    btnms->setToolTip(tooltip);
+    mainZbieranieLay5->addWidget(btnms);
+    connect(btnms, SIGNAL(clicked(bool)), this, SLOT(StartMeaning()));
+    btnme = new QPushButton("Stop");
+    btnme->setToolTip(tooltip);
+    mainZbieranieLay5->addWidget(btnme);
+    connect(btnme, SIGNAL(clicked(bool)), this, SLOT(StopMeaning()));
+
+    seconds = new QLabel("0/");
+    seconds->setToolTip(tooltip);
+    seconds->setMinimumWidth(25);
+    seconds->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+    mainZbieranieLay5->addWidget(seconds);
+    sbseconds = new QSpinBox();
+    sbseconds->setToolTip(tooltip);
+    mainZbieranieLay5->addWidget(sbseconds);
+    sbseconds->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    sbseconds->setMinimum(0);
+    sbseconds->setMaximum(9999);
+    QLabel* lllx = new QLabel("[s]");
+    mainZbieranieLay5->addWidget(lllx);
+    lllx->setToolTip(tooltip);
+
     //=======================Grupa konfiguracja===================================================
     QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
     mainLay->addWidget(groupBoxKonfiguracja);
@@ -153,7 +194,8 @@ void LogicUIStawrov::InitTests()
 
     groupBoxKonfiguracja23->addWidget(lekAdrLoc);
 
-    QGroupBox* groupBoxS = new QGroupBox();
+    QFrame* groupBoxS = new QFrame();
+    groupBoxS->setFrameShape(QFrame::StyledPanel);
     mainKonfiguracjaLay->addWidget(groupBoxS);
     QHBoxLayout* groupBoxKonfiguracjaSimple = new QHBoxLayout(groupBoxS);
 
@@ -167,7 +209,8 @@ void LogicUIStawrov::InitTests()
     connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeRESET_MASTER()));
     groupBoxKonfiguracjaSimple->addWidget(btns);
 
-    QGroupBox* groupBoxHV = new QGroupBox();
+    QFrame* groupBoxHV = new QFrame();
+    groupBoxHV->setFrameShape(QFrame::StyledPanel);
     mainKonfiguracjaLay->addWidget(groupBoxHV);
     QVBoxLayout* groupBoxKonfiguracjaHV = new QVBoxLayout(groupBoxHV);
 
@@ -200,7 +243,8 @@ void LogicUIStawrov::InitTests()
     connect(btnHV, SIGNAL(clicked(bool)), this, SLOT(makeSET_HIGH_VOLTAGE()));
     groupBoxKonfiguracjaHV->addWidget(btnHV);
 
-    QGroupBox* groupBoxGOT = new QGroupBox();
+    QFrame* groupBoxGOT = new QFrame();
+    groupBoxGOT->setFrameShape(QFrame::StyledPanel);
     mainKonfiguracjaLay->addWidget(groupBoxGOT);
     QVBoxLayout* groupBoxKonfiguracjaGOT = new QVBoxLayout(groupBoxGOT);
     QHBoxLayout* groupBoxKonfiguracjaGOT1 = new QHBoxLayout();
@@ -232,7 +276,8 @@ void LogicUIStawrov::InitTests()
     connect(btnGOT, SIGNAL(clicked(bool)), this, SLOT(makeSET_GAIN_OFFSET_AND_TRIGGER()));
     groupBoxKonfiguracjaGOT->addWidget(btnGOT);
 
-    QGroupBox* groupBoxKAN = new QGroupBox();
+    QFrame* groupBoxKAN = new QFrame();
+    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
     mainKonfiguracjaLay->addWidget(groupBoxKAN);
     QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
     QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
@@ -241,10 +286,10 @@ void LogicUIStawrov::InitTests()
     groupBoxKonfiguracjaKAN1->addWidget(kanl);
     leKANALY = new QLineEdit("0666 AAAA");
     leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
-    groupBoxKonfiguracjaKAN1->addWidget(leKANALY);
+    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
     QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
     connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
-    groupBoxKonfiguracjaKAN->addWidget(btnKAN);
+    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
@@ -286,16 +331,27 @@ void LogicUIStawrov::LoadConfigs()
         if(first)
             rozniczkowanie->setChecked(true);
     }
+    if(!Restore("configs/LogicUIStawrovsbseconds.cfg", temp))
+    {
+        bool ok;
+        int vv = temp.toInt(&ok);
+        if(ok)
+            sbseconds->setValue(vv);
+    }
 }
 
 void LogicUIStawrov::Connected()
 {
     btn->setEnabled(true);
+    cParent->setEnabled(true);
+    StopMeaning();
 }
 
 void LogicUIStawrov::Disconnected()
 {
     btn->setEnabled(false);
+    cParent->setEnabled(false);
+    StopMeaning();
 }
 
 void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
@@ -501,4 +557,35 @@ void LogicUIStawrov::PackAndSend(QByteArray data)
     temp.append(data);
     temp = FrameStawrov::AddCRC16(temp);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(temp)));
+}
+
+void LogicUIStawrov::StartMeaning()
+{
+    btnme->setEnabled(true);
+    btnms->setEnabled(false);
+    logg->startMeaning();
+    secondsOfMeaning = 0;
+    meanTimer->start(1000);
+    seconds->setText("0 /");
+}
+
+void LogicUIStawrov::StopMeaning()
+{
+    btnme->setEnabled(false);
+    btnms->setEnabled(true);
+    logg->stopMeaning();
+    meanTimer->stop();
+}
+
+void LogicUIStawrov::TimeoutedMean()
+{
+    secondsOfMeaning++;
+    seconds->setText(QString::number(secondsOfMeaning)+" /");
+    meanTimer->start(1000);
+    logg->displayMean();
+    if(sbseconds->value()>0)
+    {
+        if(secondsOfMeaning>=sbseconds->value())
+            this->StopMeaning();
+    }
 }
