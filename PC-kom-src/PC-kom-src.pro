@@ -14,7 +14,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = PC-Kom
 TEMPLATE = app
 
-GIT_VERSION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags)
+GIT_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD describe --always --tags)
 DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 
 
