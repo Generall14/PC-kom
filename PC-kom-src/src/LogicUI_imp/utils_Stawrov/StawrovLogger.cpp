@@ -190,10 +190,10 @@ void STawrovLogger::displayMean()
 
 QString STawrovLogger::meanString()
 {
-    QString temp = QString("Liczba pomiarów: %1\r\nZliczenia: ").arg(counts);
+    QString temp = QString("Liczba pomiarow: %1\r\nZliczenia: ").arg(counts);
     for(auto i: total)
         temp.append(QString("[%1]  ").arg(i));
-    temp.append("\r\nUśrednione: ");
+    temp.append("\r\nUsrednione: ");
     for(auto i: total)
         temp.append(QString("[%1]  ").arg(float(i)/float(counts), 0, 'f', 2));
     temp.append("\r\n\r\n");

@@ -3,8 +3,9 @@
 #include <QSharedPointer>
 #include <exception>
 #include <QMessageBox>
-#include "src/Frame.hpp"
-#include "src/Factory.hpp"
+
+#include <Frame.hpp>
+#include <Factory.hpp>
 
 int main(int argc, char *argv[])
 {
