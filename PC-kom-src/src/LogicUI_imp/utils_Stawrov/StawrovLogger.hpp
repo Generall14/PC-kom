@@ -42,6 +42,21 @@ private:
     void addToMean(QList<int>& newvals);
     QString meanString();
 
+    QList<QList<int>> shortData;
+    QList<QList<int>> longData;
+    QList<QList<int>> occData;
+    QList<QList<int>> trash;
+    QList<int> acc;
+    QList<int> mean;
+    bool push = false;
+    void toFile();
+//    int someCOunter = 0;
+
+    void OccOn();
+    void OccOff();
+    void OccReset();
+    void skip();
+
 public slots:
     void FrameReaded(QSharedPointer<Frame> frame);
 

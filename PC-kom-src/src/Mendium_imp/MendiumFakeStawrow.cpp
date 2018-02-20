@@ -35,13 +35,13 @@ void MendiumFakeStawrow::Flush()
 
 void MendiumFakeStawrow::Run()
 {
-    QThread::msleep(200);
+    QThread::msleep(10);
     if(opened)
     {
         char status = 0x00;
         if(occupied)
             status |= 0x01;
-        if(!(qrand()%20))
+        if(!(qrand()%80))
             occupied = !occupied;
         const int channels = 6;
         QByteArray temp(sdata);

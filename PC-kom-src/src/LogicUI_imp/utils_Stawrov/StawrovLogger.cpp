@@ -9,7 +9,7 @@ STawrovLogger::STawrovLogger(QObject* parent):
     QObject(parent)
 {
     low = "occ_off\n";
-    high = "occ_on\n";
+    high = "AAA\n";
 
     QDir cdir("./Pomiary/");
     if (!cdir.exists())
@@ -27,7 +27,7 @@ void STawrovLogger::Reset(QString fileName)
 {
     fileName = fileName.insert(0, "Pomiary/");
     logFile.close();
-    _state = state_reseted;
+    OccOff();
 
     logFile.setFileName(fileName);
     if(logFile.exists())
@@ -39,13 +39,13 @@ void STawrovLogger::Reset(QString fileName)
             logFile.setFileName(pre+"_"+QString::number(add++)+suff);
     }
 
-    if(!logFile.open(QIODevice::Text | QIODevice::WriteOnly))
-    {
-        emit Error(QString("Nie można otworzyć pliku %1.").arg(fileName));
-        logFile.close();
-        emit File("---");
-        return;
-    }
+//    if(!logFile.open(QIODevice::Text | QIODevice::Append))
+//    {
+//        emit Error(QString("Nie można otworzyć pliku %1.").arg(fileName));
+//        logFile.close();
+//        emit File("---");
+//        return;
+//    }
     emit File(logFile.fileName());
 }
 
@@ -58,7 +58,6 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         return;
     if(cargo.size()<6)
         return;
-
 
     bool zajety = false;
     if(cargo.at(1)&&0x01)
@@ -75,8 +74,33 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         cargo.remove(0, 2);
     }
 
-    addToMean(temp);
-    DoSomeStuff(temp, zajety);
+    for(int i:temp)
+    {
+        if(i>255)
+            return;
+    }
+
+    if(!push)
+    {
+        acc=temp;
+        push = true;
+    }
+    else
+    {
+        if(temp.size()!=acc.size())
+        {
+            OccReset();
+        }
+        else
+        {
+            for(int i=0;i<temp.size();i++)
+                acc[i] += temp[i];
+            DoSomeStuff(acc, zajety);
+            addToMean(acc);
+        }
+        acc.clear();
+        push=false;
+    }
 }
 
 void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
@@ -85,45 +109,155 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
     {
     case state_reseted:
         if(!zajety)
-        {
-            logStream << low;
-            curretChannels = channels.size();
             _state = state_collecting_background;
-            emit SetChannels(curretChannels);
-            emit StateChanged("zbieranie tła");
-        }
-        else
-        {
-            logStream << high;
-            curretChannels = channels.size();
-            _state = state_collecting_meat;
-            emit StateChanged("zbieranie mięsa");
-            emit SetChannels(curretChannels);
-        }
         break;
     case state_collecting_background:
         if(zajety)
         {
-            logStream << high;
-            _state = state_collecting_meat;
-            emit StateChanged("zbieranie mięsa");
+            OccOn();
         }
-        AppendLine(channels);
+        else
+        {
+            if(trash.size()<15)
+            {
+                trash.append(channels);
+                break;
+            }
+//            someCOunter++;
+            shortData.push_back(channels);
+            if(shortData.size()>15)
+            {
+                longData.push_back(shortData.at(0));
+                shortData.removeFirst();
+                if(longData.size()>600)
+                    longData.removeFirst();
+            }
+        }
         break;
     case state_collecting_meat:
         if(!zajety)
         {
-            logStream << low;
-            _state = state_collecting_background;
-            emit StateChanged("zbieranie tła");
+            OccOff();
         }
-        AppendLine(channels);
-        break;
-    default:
-        _state = state_reseted;
-        emit Error("Coś się skasztaniło");
-        break;
+        else
+        {
+            occData.append(channels);
+        }
     }
+}
+
+void STawrovLogger::OccOn()
+{
+    _state = state_collecting_meat;
+    emit StateChanged("zbieranie mięsa");
+}
+
+void STawrovLogger::skip()
+{
+//    OccOn();
+    _state = state_reseted;
+    trash.clear();
+//    shortData.clear();
+//    someCOunter=0;
+    occData.clear();
+    qDebug() << "skip()";
+    emit StateChanged("reseted");
+}
+
+void STawrovLogger::OccOff()
+{
+    _state = state_collecting_background;
+    if(longData.size()<5)
+    {
+        skip();
+        return;
+    }
+    if(shortData.size()<15)
+    {
+        skip();
+        return;
+    }
+    mean.clear();
+    mean = longData.at(0);
+    for(int i=1;i<longData.size();i++)
+    {
+        if(mean.size()!=longData.at(i).size())
+        {
+            OccReset();
+            return;
+        }
+        for(int j=0;j<mean.size();j++)
+            mean[j] += longData[i][j];
+    }
+    for(int j=0;j<mean.size();j++)
+        mean[j] = (mean[j]*5)/(longData.size());
+
+    toFile();
+    emit StateChanged("zbieranie tła");
+    trash.clear();
+    occData.clear();
+//    shortData.clear();
+}
+
+void STawrovLogger::OccReset()
+{
+    _state = state_reseted;
+    qDebug() << "OccReset()";
+    emit StateChanged("reseted");
+//    shortData.clear();
+    longData.clear();
+    occData.clear();
+}
+
+void STawrovLogger::toFile()
+{
+    if(!logFile.open(QIODevice::Text | QIODevice::Append))
+    {
+        emit Error(QString("Nie można otworzyć pliku %1.").arg(logFile.fileName()));
+        logFile.close();
+        emit File("---");
+        return;
+    }
+
+    qDebug() << "toFile()";
+    logStream << high;
+    QString pre;
+    for(int i=0;i<mean.size();++i)
+    {
+        if(i!=0)
+            pre.append(",");
+        pre.append(QString("%1").arg(mean.at(i), 6, 10, QChar('0')));
+    }
+    pre.append("\n");
+    logStream<<pre;
+
+    pre.clear();
+    for(QList<int> aaa: shortData)
+    {
+        for(int i=0;i<aaa.size();++i)
+        {
+            if(i!=0)
+                pre.append(",");
+            pre.append(QString("%1").arg(aaa.at(i), 6, 10, QChar('0')));
+        }
+        pre.append("\n");
+    }
+    logStream<<pre;
+
+    pre.clear();
+    for(QList<int> aaa: occData)
+    {
+        for(int i=0;i<aaa.size();++i)
+        {
+            if(i!=0)
+                pre.append(",");
+            pre.append(QString("%1").arg(aaa.at(i), 6, 10, QChar('0')));
+        }
+        pre.append("\n");
+    }
+    logStream<<pre;
+
+    logFile.close();
 }
 
 void STawrovLogger::AppendLine(QList<int> v)
@@ -195,7 +329,7 @@ QString STawrovLogger::meanString()
         temp.append(QString("[%1]  ").arg(i));
     temp.append("\r\nUsrednione: ");
     for(auto i: total)
-        temp.append(QString("[%1]  ").arg(float(i)/float(counts), 0, 'f', 2));
+        temp.append(QString("[%1]  ").arg(float(i)/float(counts)*float(5), 0, 'f', 2));
     temp.append("\r\n\r\n");
     return temp;
 }
