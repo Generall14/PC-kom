@@ -26,8 +26,6 @@ STawrovLogger::~STawrovLogger()
 void STawrovLogger::Reset(QString fileName)
 {
     fileName = fileName.insert(0, "Pomiary/");
-    logFile.close();
-    OccOff();
 
     logFile.setFileName(fileName);
     if(logFile.exists())
@@ -37,6 +35,14 @@ void STawrovLogger::Reset(QString fileName)
         QString suff = fileName.mid(fileName.lastIndexOf('.'));
         while(logFile.exists())
             logFile.setFileName(pre+"_"+QString::number(add++)+suff);
+    }
+
+    fileName = fileName.insert(0, "Pomiary/");
+
+    if(logFile.open(QIODevice::Text | QIODevice::Append))
+    {
+        logStream << high;
+        logFile.close();
     }
 
 //    if(!logFile.open(QIODevice::Text | QIODevice::Append))
@@ -74,11 +80,11 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         cargo.remove(0, 2);
     }
 
-    for(int i:temp)
-    {
-        if(i>255)
-            return;
-    }
+//    for(int i:temp)
+//    {
+//        if(i>255)
+//            return;
+//    }
 
     if(!push)
     {
@@ -123,7 +129,6 @@ void STawrovLogger::DoSomeStuff(QList<int> channels, bool zajety)
                 trash.append(channels);
                 break;
             }
-//            someCOunter++;
             shortData.push_back(channels);
             if(shortData.size()>15)
             {
@@ -154,11 +159,8 @@ void STawrovLogger::OccOn()
 
 void STawrovLogger::skip()
 {
-//    OccOn();
     _state = state_reseted;
     trash.clear();
-//    shortData.clear();
-//    someCOunter=0;
     occData.clear();
     qDebug() << "skip()";
     emit StateChanged("reseted");
@@ -196,7 +198,6 @@ void STawrovLogger::OccOff()
     emit StateChanged("zbieranie tła");
     trash.clear();
     occData.clear();
-//    shortData.clear();
 }
 
 void STawrovLogger::OccReset()
@@ -204,7 +205,6 @@ void STawrovLogger::OccReset()
     _state = state_reseted;
     qDebug() << "OccReset()";
     emit StateChanged("reseted");
-//    shortData.clear();
     longData.clear();
     occData.clear();
 }
@@ -220,7 +220,7 @@ void STawrovLogger::toFile()
     }
 
     qDebug() << "toFile()";
-    logStream << high;
+//    logStream << high;
     QString pre;
     for(int i=0;i<mean.size();++i)
     {
@@ -256,6 +256,7 @@ void STawrovLogger::toFile()
         pre.append("\n");
     }
     logStream<<pre;
+    logStream << high;
 
     logFile.close();
 }

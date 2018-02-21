@@ -50,7 +50,6 @@ private:
     QList<int> mean;
     bool push = false;
     void toFile();
-//    int someCOunter = 0;
 
     void OccOn();
     void OccOff();
