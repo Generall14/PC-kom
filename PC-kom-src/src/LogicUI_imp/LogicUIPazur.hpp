@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QList>
+#include <QTableWidget>
 #include "Frame_imp/utils_Pazur/Confirm.hpp"
 #include "Frame_imp/utils_Pazur/Message.hpp"
 #include "../Utils/Restorable.hpp"
@@ -31,6 +32,11 @@ protected slots:
     void InitGlobals();
     void InitConfirms();
 
+    void ConfStoreCurrent();
+    void ConfsAddNewSet();
+    void ConfsSetChanged();
+    void ConfsAddNewConf();
+
     void Send();
 
 protected:
@@ -43,6 +49,8 @@ protected:
     QCheckBox* cbIncrement = nullptr;
 
     QComboBox* cbcfgs = nullptr;
+    QTableWidget* twcfgs = nullptr;
+    int currentConf=-1;
 
     QList<QList<Confirm> > _cfs;
     QList<QList<Message> > _msgs;
