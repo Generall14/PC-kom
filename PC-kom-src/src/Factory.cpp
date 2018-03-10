@@ -25,6 +25,7 @@
 #include "LogicUI_imp/LogicUISG-1.hpp"
 #include "LogicUI_imp/LogicUIStawrov.hpp"
 #include "LogicUI_imp/LogicUITerminal.hpp"
+#include "LogicUI_imp/LogicUIPazur.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
@@ -106,6 +107,8 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return new LogicUIStawrov(fr);
     else if(_logicUi=="LogicUITerminal")
         return new LogicUITerminal(fr);
+    else if(_logicUi=="LogicUIPazur")
+        return new LogicUIPazur(fr);
     else
         Factory::terminate("Invalid _logicUi specifier: \"" + _logicUi + "\".");
 

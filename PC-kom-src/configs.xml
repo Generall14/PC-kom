@@ -21,7 +21,7 @@
 		<fake Mendium="MendiumEcho" />
 	</universal_set>
 	<pazur_set>
-		<Implementations Frame="FramePazur" FrameBuilder="FrameBuilderPazur" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUITerminal" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+		<Implementations Frame="FramePazur" FrameBuilder="FrameBuilderPazur" LogFile="LogFileDefault" LogFormater="LogFormaterEmpty" LogicUI="LogicUIPazur" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
 		<Descriptions Ico="ikona.ico" Name="Pazurowy podglądacz" Descrioption="Nasłuch magistrali opartych na protokole 'Pazur'." />
 		<fake Mendium="MendiumEcho" />
 	</pazur_set>

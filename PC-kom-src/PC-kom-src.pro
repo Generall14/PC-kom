@@ -75,7 +75,8 @@ SOURCES += main.cpp\
     src/Frame_imp/utils_Pazur/Confirm.cpp \
     src/Frame_imp/utils_Pazur/Confirms.cpp \
     src/Frame_imp/utils_Pazur/Message.cpp \
-    src/Frame_imp/utils_Pazur/Messages.cpp
+    src/Frame_imp/utils_Pazur/Messages.cpp \
+    src/LogicUI_imp/LogicUIPazur.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -135,7 +136,8 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/utils_Pazur/Confirm.hpp \
     src/Frame_imp/utils_Pazur/Confirms.hpp \
     src/Frame_imp/utils_Pazur/Message.hpp \
-    src/Frame_imp/utils_Pazur/Messages.hpp
+    src/Frame_imp/utils_Pazur/Messages.hpp \
+    src/LogicUI_imp/LogicUIPazur.hpp
 
 DISTFILES += \
     configs.xml \

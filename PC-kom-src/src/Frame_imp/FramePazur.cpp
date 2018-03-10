@@ -50,6 +50,7 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
 
     temp = 0x00;
     // crc
+    // temp |= (crc5<<2)&0x7C;
     temp |= _crc10add&0x30;
     temp |= (_id<<6)&0x80;
     pck.append(temp);
