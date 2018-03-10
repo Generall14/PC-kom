@@ -13,6 +13,8 @@ public:
     QString toQString() const;
     QByteArray toPureData() const;
 
+    void get(char &adr, char &ifs, QByteArray &dat, char &x) const;
+
 private:
     char _adr, _ifs, _size, _x;
     QByteArray _dat;

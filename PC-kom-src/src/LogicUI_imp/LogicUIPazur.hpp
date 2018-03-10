@@ -8,6 +8,9 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QList>
+#include "Frame_imp/utils_Pazur/Confirm.hpp"
+#include "Frame_imp/utils_Pazur/Message.hpp"
 #include "../Utils/Restorable.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
@@ -26,6 +29,7 @@ public slots:
 
 protected slots:
     void InitGlobals();
+    void InitConfirms();
 
     void Send();
 
@@ -37,6 +41,11 @@ protected:
     QSpinBox* sbId = nullptr;
     QCheckBox* cbFast = nullptr;
     QCheckBox* cbIncrement = nullptr;
+
+    QComboBox* cbcfgs = nullptr;
+
+    QList<QList<Confirm> > _cfs;
+    QList<QList<Message> > _msgs;
 };
 
 #endif

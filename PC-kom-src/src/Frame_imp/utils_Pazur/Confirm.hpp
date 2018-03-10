@@ -13,6 +13,8 @@ public:
     QString toQString() const;
     QChar toPureData() const;
 
+    void get(char &adr, char &id) const;
+
 private:
     char _id, _adr;
     QChar _dat;

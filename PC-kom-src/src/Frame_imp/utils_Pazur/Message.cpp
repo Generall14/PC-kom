@@ -55,3 +55,11 @@ QByteArray Message::toPureData() const
 {
     return _dat;
 }
+
+void Message::get(char &adr, char &ifs, QByteArray &dat, char &x) const
+{
+    adr = _adr;
+    ifs = _ifs;
+    dat = _dat;
+    x = _x;
+}

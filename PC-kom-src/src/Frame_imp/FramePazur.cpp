@@ -134,7 +134,7 @@ void FramePazur::parse()
     _id |= (pck.at(0)>>7)&0x01;
     _id |= (pck.at(3)>>6)&0x02;
 
-    // Potwierdzenia:
+
     _cfs = Confirms(pck.mid(4, _confs+1), _confs);
     _msgs = Messages(pck.mid(4+_confs+1), _dataSize, _crc10add);
 }

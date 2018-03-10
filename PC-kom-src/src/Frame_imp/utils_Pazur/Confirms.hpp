@@ -9,7 +9,7 @@
 class Confirms
 {
 public:
-    Confirms(QByteArray dat, int cnt);
+    Confirms(QByteArray dat, uint cnt);
     Confirms(QList<Confirm> cfs);
     Confirms();
 

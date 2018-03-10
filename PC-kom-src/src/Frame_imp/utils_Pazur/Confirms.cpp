@@ -1,21 +1,33 @@
 #include "Confirms.hpp"
 #include <QDebug>
+#include "Utils/CRC.hpp"
 
 Confirms::Confirms()
 {
 }
 
-Confirms::Confirms(QByteArray dat, int cnt):
+Confirms::Confirms(QByteArray dat, uint cnt):
     _dat(dat)
 {
-    if(dat.size()!=cnt+1)
+    if(cnt==0)
+    {
+        isEmpty = true;
+        return;
+    }
+    if((uint)dat.size()!=cnt+1)
     {
         isValid = false;
         errorMessage = " Invalid data length";
         return;
     }
-    // crc...
-    for(int i=0;i<cnt;++i)
+    uchar crc = CRC::crc8(dat.mid(0, dat.size()-1));
+    if(crc!=dat.at(dat.size()-1))
+    {
+        isValid = false;
+        errorMessage = " Invalid crc";
+        return;
+    }
+    for(uint i=0;i<cnt;++i)
         _cfs.push_back(Confirm(dat.at(i)));
     isValid = true;
 }

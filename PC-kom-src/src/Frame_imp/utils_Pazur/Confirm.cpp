@@ -24,3 +24,9 @@ QChar Confirm::toPureData() const
 {
     return _dat;
 }
+
+void Confirm::get(char &adr, char &id) const
+{
+    adr = _adr;
+    id = _id;
+}
