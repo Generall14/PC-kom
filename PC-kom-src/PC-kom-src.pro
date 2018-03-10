@@ -71,7 +71,11 @@ SOURCES += main.cpp\
     src/Utils/CRC.cpp \
     src/FrameBuilder_imp/FrameBuilderPazur.cpp \
     src/Frame_imp/FramePazur.cpp \
-    src/Mendium_imp/MendiumEcho.cpp
+    src/Mendium_imp/MendiumEcho.cpp \
+    src/Frame_imp/utils_Pazur/Confirm.cpp \
+    src/Frame_imp/utils_Pazur/Confirms.cpp \
+    src/Frame_imp/utils_Pazur/Message.cpp \
+    src/Frame_imp/utils_Pazur/Messages.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -127,7 +131,11 @@ HEADERS  += mainwindow.h \
     src/Utils/CRC.hpp \
     src/FrameBuilder_imp/FrameBuilderPazur.hpp \
     src/Frame_imp/FramePazur.hpp \
-    src/Mendium_imp/MendiumEcho.hpp
+    src/Mendium_imp/MendiumEcho.hpp \
+    src/Frame_imp/utils_Pazur/Confirm.hpp \
+    src/Frame_imp/utils_Pazur/Confirms.hpp \
+    src/Frame_imp/utils_Pazur/Message.hpp \
+    src/Frame_imp/utils_Pazur/Messages.hpp
 
 DISTFILES += \
     configs.xml \

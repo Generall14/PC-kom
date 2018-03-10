@@ -2,29 +2,36 @@
 #include "../Utils/CRC.hpp"
 #include <stdint.h>
 #include <assert.h>
+#include <QDebug>
 
 FramePazur::FramePazur(QByteArray ba)
     :Frame(ba)
 {
     Desc::description = "FramePazur";
+
+    if(isHeaderOk())
+    {
+        isItOk = true;
+        parse();
+    }
 }
 
 bool FramePazur::isValid()
 {
-    if(!isHeaderOk())
-        return false;
-    return true;
+    return isItOk;
 }
 
 QString FramePazur::toQString()
 {
     QString temp;
 
-    if(isHeaderOk())
+    if(isItOk)
     {
+        temp.append("\r\n");
         temp.append(dispHeader());
-        for(int i=4;i<pck.size();++i)
-            temp.append(QString("0x%1 ").arg(((int)(pck.at(i)))&0xFF, 2, 16, QChar('0')));
+        temp.append(_cfs.toQString());
+        temp.append(_msgs.toQString());
+        temp.append("\r\n\r\n\r\n");
     }
     else
     {
@@ -59,22 +66,40 @@ bool FramePazur::isHeaderOk()
     return true;
 }
 
-QString FramePazur::dispHeader()
+void FramePazur::parse()
 {
     assert(pck.size()>=4);
+
+    // dane naglowka:
+    _from = (int)pck.at(0)&0x3F;
+
+    _to = (int)pck.at(1)&0x3F;
+
+    _dataSize = 0;
+    _dataSize |= (pck.at(2)>>3)&0x1f;
+    _dataSize |= (pck.at(1)>>2)&0x60;
+    _dataSize -= 1;
+
+    _confs = pck.at(2)&0x07;
+
+    _fast = (pck.at(0)>>6)&0x01;
+
+    _crc10add = pck.at(3)&0x03;
+
+    _id = 0;
+    _id |= (pck.at(0)>>7)&0x01;
+    _id |= (pck.at(3)>>6)&0x02;
+
+    // Potwierdzenia:
+    _cfs = Confirms(pck.mid(4, _confs+1), _confs);
+    _msgs = Messages(pck.mid(4+_confs+1), _dataSize, _crc10add);
+}
+
+QString FramePazur::dispHeader()
+{
     QString temp = "[";
-    temp.append(QString("0x%1->0x%2").arg(((int)(pck.at(0)))&0x3F, 2, 16, QChar('0')).arg(((int)(pck.at(1)))&0x3F, 2, 16, QChar('0')));
-    int dat = 0;
-    dat |= (pck.at(2)>>3)&0x1f;
-    dat |= (pck.at(1)>>2)&0x60;
-    dat -= 1;
-    int conf = pck.at(2)&0x07;
-    temp.append(", conf: " + QString::number(conf) + ", dat: " + QString::number(dat));
-    int f = 0, id = 0, sl = 0;
-    f = (pck.at(0)>>6)&0x01;
-    sl = pck.at(3)&0x03;
-    id |= (pck.at(0)>>7)&0x01;
-    id |= (pck.at(3)>>6)&0x02;
-    temp.append(", F: " + QString::number(f) + ", ID: " + QString::number(id) + ", sl: " + QString::number(sl) + "]");
+    temp.append(QString("0x%1->0x%2").arg(_from, 2, 16, QChar('0')).arg(_to, 2, 16, QChar('0')));
+    temp.append(", conf: " + QString::number(_confs) + ", dat: " + QString::number(_dataSize));
+    temp.append(", F: " + QString::number(_fast) + ", ID: " + QString::number(_id) + ", sl: " + QString::number(_crc10add) + "] ");
     return temp;
 }

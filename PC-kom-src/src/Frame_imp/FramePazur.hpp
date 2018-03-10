@@ -3,6 +3,8 @@
 
 #include <QByteArray>
 #include "../Frame.hpp"
+#include "utils_Pazur/Confirms.hpp"
+#include "utils_Pazur/Messages.hpp"
 
 class FramePazur : public Frame
 {
@@ -17,8 +19,16 @@ public:
 
 private:
     bool isHeaderOk();
+    void parse();
+    bool isItOk = false;
 
     QString dispHeader();
+
+    uchar _from, _to, _id, _dataSize, _confs, _crc10add;
+    bool _fast;
+
+    Confirms _cfs;
+    Messages _msgs;
 };
 
 #endif
