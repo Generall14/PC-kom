@@ -70,7 +70,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.cpp \
     src/Utils/CRC.cpp \
     src/FrameBuilder_imp/FrameBuilderPazur.cpp \
-    src/Frame_imp/FramePazur.cpp
+    src/Frame_imp/FramePazur.cpp \
+    src/Mendium_imp/MendiumEcho.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -125,7 +126,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.hpp \
     src/Utils/CRC.hpp \
     src/FrameBuilder_imp/FrameBuilderPazur.hpp \
-    src/Frame_imp/FramePazur.hpp
+    src/Frame_imp/FramePazur.hpp \
+    src/Mendium_imp/MendiumEcho.hpp
 
 DISTFILES += \
     configs.xml \

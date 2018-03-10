@@ -19,6 +19,7 @@
 #include "Mendium_imp/MendiumRS.hpp"
 #include "Mendium_imp/MendiumFakeSG1.hpp"
 #include "Mendium_imp/MendiumFakeStawrow.hpp"
+#include "Mendium_imp/MendiumEcho.hpp"
 
 #include "LogicUI_imp/LogicUIEmpty.hpp"
 #include "LogicUI_imp/LogicUISG-1.hpp"
@@ -124,6 +125,8 @@ Mendium* Factory::newMendium()
         return new MendiumFakeSG1();
     else if(_mendium=="MendiumFakeStawrow")
         return new MendiumFakeStawrow();
+    else if(_mendium=="MendiumEcho")
+        return new MendiumEcho();
     else
         Factory::terminate("Invalid _mendium specifier: \"" + _mendium + "\".");
 

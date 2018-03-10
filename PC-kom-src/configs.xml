@@ -18,11 +18,11 @@
 	<universal_set>
 		<Implementations Frame="FrameTransparent" FrameBuilder="FrameBuilderTerminal" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUITerminal" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
 		<Descriptions Ico="ikona.ico" Name="Terminal" Descrioption="Uniwersalny terminal portu szeregowego." />
-		<fake Mendium="MendiumFakeStawrow" />
+		<fake Mendium="MendiumEcho" />
 	</universal_set>
 	<pazur_set>
 		<Implementations Frame="FramePazur" FrameBuilder="FrameBuilderPazur" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUITerminal" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
 		<Descriptions Ico="ikona.ico" Name="Pazurowy podglądacz" Descrioption="Nasłuch magistrali opartych na protokole 'Pazur'." />
-		<fake Mendium="MendiumFakeStawrow" />
+		<fake Mendium="MendiumEcho" />
 	</pazur_set>
 </PC-KOM-configs>
