@@ -28,9 +28,10 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     _cfs = Confirms(cfs);
     _confs = cfs.size();
     _msgs = Messages(msgs);
-    _dataSize = _msgs.toPureData().size()+1;
+    _dataSize = _msgs.toPureData().size();
     _crc10add = _msgs.addCrc10();
 
+    pck.clear();
     char temp = 0x00;
     temp |= _from&0x3F;
     temp |= (_id<<7)&0x80;
@@ -49,9 +50,9 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     pck.append(temp);
 
     temp = 0x00;
-    // crc
-    // temp |= (crc5<<2)&0x7C;
-    temp |= _crc10add&0x30;
+    uchar crc5 = CRC::crc5(pck.mid(0, 3));
+    temp |= (crc5<<2)&0x7C;
+    temp |= _crc10add&0x03;
     temp |= (_id<<6)&0x80;
     pck.append(temp);
 
@@ -102,8 +103,8 @@ bool FramePazur::isHeaderOk()
 {
     if(pck.size()<4)
         return false;
-    uint8_t crca = (pck.at(3)>>2)&0x1f;
-    uint8_t crcb = CRC::crc5(pck.mid(0, 3));
+    uint8_t crca = ((pck.at(3)&0x7C)>>2);
+    uint8_t crcb = CRC::crc5(pck.mid(0, 3))&0x1F;
     if(crca!=crcb)
         return false;
     return true;

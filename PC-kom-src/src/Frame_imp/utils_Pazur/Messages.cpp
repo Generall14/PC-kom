@@ -39,9 +39,13 @@ Messages::Messages(QByteArray dat, int siz, char addcrc):
 Messages::Messages(QList<Message> msgs):
     _msgs(msgs)
 {
-    if(msgs.isEmpty())
-        isEmpty = true;
+    _dat.clear();
     isValid = true;
+    if(msgs.isEmpty())
+    {
+        isEmpty = true;
+        return;
+    }
 
     for(auto a: msgs)
         _dat.append(a.toPureData());

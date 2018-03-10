@@ -7,6 +7,7 @@
 #include <QSpinBox>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
 #include "../Utils/Restorable.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
@@ -24,9 +25,18 @@ public slots:
     virtual void FrameReaded(QSharedPointer<Frame>);
 
 protected slots:
+    void InitGlobals();
+
+    void Send();
 
 protected:
     void LoadConfigs();
+    QVBoxLayout* mainLay = nullptr;
+
+    QLineEdit* leMyAdr = nullptr;
+    QSpinBox* sbId = nullptr;
+    QCheckBox* cbFast = nullptr;
+    QCheckBox* cbIncrement = nullptr;
 };
 
 #endif

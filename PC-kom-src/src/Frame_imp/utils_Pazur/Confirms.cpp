@@ -23,9 +23,13 @@ Confirms::Confirms(QByteArray dat, int cnt):
 Confirms::Confirms(QList<Confirm> cfs):
     _cfs(cfs)
 {
-    if(cfs.isEmpty())
-        isEmpty = true;
+    _dat.clear();
     isValid = true;
+    if(cfs.isEmpty())
+    {
+        isEmpty = true;
+        return;
+    }
 
     for(auto a: cfs)
         _dat.append(a.toPureData());
