@@ -5,8 +5,6 @@ Messages::Messages(QByteArray dat, int siz, char addcrc):
     _dat(dat),
     _addcrc(addcrc)
 {
-    qDebug() << dat;
-    qDebug() << siz;
     if(dat.isEmpty())
     {
         isEmpty = true;

@@ -10,6 +10,7 @@ class FramePazur : public Frame
 {
 public:
     FramePazur(QByteArray ba);
+    FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm> cfs, QList<Message> msgs);
     ~FramePazur(){}
 
     virtual bool isValid();

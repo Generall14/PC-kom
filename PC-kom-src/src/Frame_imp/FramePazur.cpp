@@ -16,6 +16,48 @@ FramePazur::FramePazur(QByteArray ba)
     }
 }
 
+FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm> cfs, QList<Message> msgs):
+    Frame(QByteArray()),
+    _from(from),
+    _to(to),
+    _id(id),
+    _fast(fast)
+{
+    Desc::description = "FramePazur";
+    isItOk = true;
+    _cfs = Confirms(cfs);
+    _confs = cfs.size();
+    _msgs = Messages(msgs);
+    _dataSize = _msgs.toPureData().size()+1;
+    _crc10add = _msgs.addCrc10();
+
+    char temp = 0x00;
+    temp |= _from&0x3F;
+    temp |= (_id<<7)&0x80;
+    if(_fast)
+        temp |= 0x40;
+    pck.append(temp);
+
+    temp = 0x00;
+    temp |= _to&0x3F;
+    temp |= (_dataSize<<1)&0xC0;
+    pck.append(temp);
+
+    temp = 0x00;
+    temp |= _confs&0x07;
+    temp |= (_dataSize<<3)&0xF8;
+    pck.append(temp);
+
+    temp = 0x00;
+    // crc
+    temp |= _crc10add&0x30;
+    temp |= (_id<<6)&0x80;
+    pck.append(temp);
+
+    pck.append(_cfs.toPureData());
+    pck.append(_msgs.toPureData());
+}
+
 bool FramePazur::isValid()
 {
     return isItOk;
