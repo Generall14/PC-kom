@@ -1,6 +1,9 @@
 #include "CRC.hpp"
 #include <assert.h>
 
+#include <QString>
+#include <QDebug>
+
 /**
  * Oblicza crc5 sposobem łopatologicznym, nie nadaje się do rekurencyjnego doliczania crc, uzupełnia wejściowy ciąg danych o bajty zerowe
  * przepychające crc.

@@ -1,7 +1,8 @@
 #include "Messages.hpp"
 #include <QDebug>
+#include "Utils/CRC.hpp"
 
-Messages::Messages(QByteArray dat, int siz, char addcrc):
+Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
     _dat(dat),
     _addcrc(addcrc)
 {
@@ -16,12 +17,20 @@ Messages::Messages(QByteArray dat, int siz, char addcrc):
         errorMessage = " Invalid data length";
         return;
     }
-    // crc
+    uint16_t crc = CRC::crc10(dat.mid(0, dat.size()-1), 0x155^id);
+    uchar crch = (crc>>8)&0x03;
+    uchar crcl = crc&0xFF;
+    if((crcl!=(uchar)dat.at(dat.size()-1))||(crch!=(uchar)addcrc))
+    {
+        isValid = false;
+        errorMessage = " Invalid crc";
+        return;
+    }
     while(dat.size()>0)
     {
         if(dat.size()==1)
             break;
-        if(dat.size()<3)
+        if(dat.size()<2)
         {
             _msgs.push_back(Message(dat));
             break;
@@ -38,7 +47,7 @@ Messages::Messages(QByteArray dat, int siz, char addcrc):
     isValid = true;
 }
 
-Messages::Messages(QList<Message> msgs):
+Messages::Messages(QList<Message> msgs, uchar id):
     _msgs(msgs)
 {
     _dat.clear();
@@ -51,7 +60,11 @@ Messages::Messages(QList<Message> msgs):
 
     for(auto a: msgs)
         _dat.append(a.toPureData());
-    _dat.append(0xFF);//crc...
+    uint16_t crc = CRC::crc10(_dat, 0x155^id);
+
+    _addcrc = (crc>>8)&0x03;
+    uchar crcl = crc&0xFF;
+    _dat.append(crcl);
 }
 
 Messages::Messages()

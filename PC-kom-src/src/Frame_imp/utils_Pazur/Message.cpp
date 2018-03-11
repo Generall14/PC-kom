@@ -3,7 +3,7 @@
 Message::Message(QByteArray arr):
     _dat(arr)
 {
-    if(arr.size()<3)
+    if(arr.size()<2)
     {
         _isValid = false;
         return;

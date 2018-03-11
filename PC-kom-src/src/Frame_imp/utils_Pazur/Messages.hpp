@@ -9,8 +9,8 @@
 class Messages
 {
 public:
-    Messages(QByteArray dat, int siz, char addcrc);
-    Messages(QList<Message> msgs);
+    Messages(QByteArray dat, int siz, char addcrc, char id);
+    Messages(QList<Message> msgs, uchar id);
     Messages();
 
     QString toQString() const;

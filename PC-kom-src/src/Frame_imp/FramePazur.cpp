@@ -27,7 +27,7 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     isItOk = true;
     _cfs = Confirms(cfs);
     _confs = cfs.size();
-    _msgs = Messages(msgs);
+    _msgs = Messages(msgs, id);
     _dataSize = _msgs.toPureData().size()+1;
     _crc10add = _msgs.addCrc10();
 
@@ -136,9 +136,9 @@ void FramePazur::parse()
 
     _cfs = Confirms(pck.mid(4, _confs+1), _confs);
     if(_confs)
-        _msgs = Messages(pck.mid(4+_confs+1), _dataSize, _crc10add);
+        _msgs = Messages(pck.mid(4+_confs+1), _dataSize, _crc10add, _id);
     else
-        _msgs = Messages(pck.mid(4), _dataSize, _crc10add);
+        _msgs = Messages(pck.mid(4), _dataSize, _crc10add, _id);
 }
 
 QString FramePazur::dispHeader()
