@@ -17,6 +17,7 @@ public:
 
 private:
     char _adr, _ifs, _size, _x;
+    QByteArray _pureDat;
     QByteArray _dat;
     bool _isValid;
 };

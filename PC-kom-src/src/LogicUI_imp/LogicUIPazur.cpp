@@ -19,6 +19,7 @@ LogicUIPazur::LogicUIPazur(QFrame* parent):
 LogicUIPazur::~LogicUIPazur()
 {
     Store("configs/LogicUIPazurleMyAdr.cfg", leMyAdr->text());
+    Store("configs/LogicUIPazurleToAdr.cfg", leToAdr->text());
     Store("configs/LogicUIPazursbId.cfg", QString::number(sbId->value()));
     Store("configs/LogicUIPazucbFast.cfg", QString::number(cbFast->isChecked()));
     Store("configs/LogicUIPazucbIncrement.cfg", QString::number(cbIncrement->isChecked()));
@@ -32,6 +33,8 @@ void LogicUIPazur::LoadConfigs()
 
     if(!Restore("configs/LogicUIPazurleMyAdr.cfg", temp))
         leMyAdr->setText(temp);
+    if(!Restore("configs/LogicUIPazurleToAdr.cfg", temp))
+        leToAdr->setText(temp);
     bool ok;
     int value;
     if(!Restore("configs/LogicUIPazursbId.cfg", temp))
@@ -61,6 +64,7 @@ void LogicUIPazur::Init()
 
     InitGlobals();
     InitConfirms();
+    InitMessages();
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
@@ -82,6 +86,16 @@ void LogicUIPazur::InitGlobals()
     leMyAdr->setInputMask("HH");
     leMyAdr->setMaximumWidth(40);
     myAdrLay->addWidget(leMyAdr);
+
+    QHBoxLayout* toAdrLay = new QHBoxLayout();
+    mainGlobalne->addLayout(toAdrLay);
+    lab = new QLabel("Adres docelowy:");
+    toAdrLay->addWidget(lab);
+    toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    leToAdr = new QLineEdit("FF");
+    leToAdr->setInputMask("HH");
+    leToAdr->setMaximumWidth(40);
+    toAdrLay->addWidget(leToAdr);
 
     QHBoxLayout* idLay = new QHBoxLayout();
     mainGlobalne->addLayout(idLay);
@@ -125,6 +139,27 @@ void LogicUIPazur::InitConfirms()
     _cfsTable = new ConfsPacket(mainPotwierdzenia);
 }
 
+void LogicUIPazur::InitMessages()
+{
+    QGroupBox* groupBoxKomunikaty = new QGroupBox("Komunikaty");
+    mainLay->addWidget(groupBoxKomunikaty);
+    QVBoxLayout* mainKomunikaty = new QVBoxLayout(groupBoxKomunikaty);
+
+    QHBoxLayout* msgsLay = new QHBoxLayout();
+    mainKomunikaty->addLayout(msgsLay);
+    cbmsgs = new QComboBox();
+    connect(cbmsgs, SIGNAL(currentIndexChanged(int)), this, SLOT(MsgSetChanged()));
+    msgsLay->addWidget(cbmsgs);
+    QPushButton* btn = new QPushButton("Dodaj");
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(MsgAddNewSet()));
+    msgsLay->addWidget(btn);
+    btn = new QPushButton("Usuń");
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(MsgRemoveSet()));
+    msgsLay->addWidget(btn);
+
+    _msgTable = new MsgPacket(mainKomunikaty);
+}
+
 void LogicUIPazur::Connected()
 {
     cParent->setEnabled(true);
@@ -142,8 +177,8 @@ void LogicUIPazur::FrameReaded(QSharedPointer<Frame>)
 void LogicUIPazur::Send()
 {
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
-    uchar to = 0x11;
-    FramePazur* t = new FramePazur( from, to, sbId->value(), cbFast->isChecked(), _cfsTable->getCurrent());
+    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
+    FramePazur* t = new FramePazur( from, to, sbId->value(), cbFast->isChecked(), _cfsTable->getCurrent(), _msgTable->getCurrent() );
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())
     {
@@ -181,6 +216,8 @@ void LogicUIPazur::ConfsRemoveSet()
         t.append(QString::number(i));
     cbcfgs->clear();
     cbcfgs->addItems(t);
+    if((last==0)&&(cbcfgs->count()>0))
+        last = 1;
     cbcfgs->setCurrentIndex(last-1);
 }
 
@@ -193,5 +230,47 @@ void LogicUIPazur::ConfsSetChanged()
         return;
 
     _cfsTable->SetActive(&_cfs, cbcfgs->currentIndex());
+}
 
+void LogicUIPazur::MsgAddNewSet()
+{
+    _msgTable->Release();
+
+    _msgs.push_back(QList<Message>());
+    QStringList t;
+    for(int i=0;i<_msgs.size();++i)
+        t.append(QString::number(i));
+    cbmsgs->clear();
+    cbmsgs->addItems(t);
+    cbmsgs->setCurrentIndex(_msgs.size()-1);
+}
+
+void LogicUIPazur::MsgRemoveSet()
+{
+    _msgTable->Release();
+
+    if(_msgs.isEmpty())
+        return;
+
+    int last = cbmsgs->currentIndex();
+    _msgs.removeAt(last);
+    QStringList t;
+    for(int i=0;i<_msgs.size();++i)
+        t.append(QString::number(i));
+    cbmsgs->clear();
+    cbmsgs->addItems(t);
+    if((last==0)&&(cbmsgs->count()>0))
+        last = 1;
+    cbmsgs->setCurrentIndex(last-1);
+}
+
+void LogicUIPazur::MsgSetChanged()
+{
+    _msgTable->Release();
+    if(cbmsgs->currentIndex()<0)
+        return;
+    if(cbmsgs->currentIndex()>=_msgs.size())
+        return;
+
+    _msgTable->SetActive(&_msgs, cbmsgs->currentIndex());
 }

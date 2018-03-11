@@ -24,7 +24,7 @@ FrameBuilderPazur::~FrameBuilderPazur()
 
 void FrameBuilderPazur::ByteReaded(QByteArray ba)
 {
-    timer->start(100);
+    timer->start(10);
 
     QMutexLocker locker(&mutex);
     while(ba.size())
@@ -105,7 +105,6 @@ void FrameBuilderPazur::Run()
 
 void FrameBuilderPazur::TimeoutedReciev()
 {
-    qDebug() << "timeouted";
     QMutexLocker locker(&mutex);
     if(!trash.isEmpty())
     {

@@ -65,8 +65,8 @@ void ConfsPacket::SetActive(QList<QList<Confirm> > *cfs, int active)
 void ConfsPacket::Init(QBoxLayout *upperLayout)
 {
     table = new QTableWidget(0, 2);
-    table->setItemDelegateForColumn(0, new HexItemDelegate());
-    table->setItemDelegateForColumn(1, new HexItemDelegate());
+    table->setItemDelegateForColumn(0, new HexItemDelegate(1, 1));
+    table->setItemDelegateForColumn(1, new HexItemDelegate(1, 1));
     QStringList t = {"Adres", "Id"};
     table->setHorizontalHeaderLabels(t);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -97,10 +97,10 @@ void ConfsPacket::TableChanged()
         QTableWidgetItem* it;
         it = table->item(r, 0);
         if(it!=nullptr)
-            adr = it->text().left(2).toUInt(nullptr, 16);
+            adr = it->text().left(2).toUInt(nullptr, 16)&0x3F;
         it = table->item(r, 1);
         if(it!=nullptr)
-            id = it->text().left(2).toUInt(nullptr, 16);
+            id = it->text().left(2).toUInt(nullptr, 16)&0x03;
         (*_cfs)[_active].append(Confirm(adr, id));
     }
 }

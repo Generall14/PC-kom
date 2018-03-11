@@ -22,13 +22,19 @@ Message::Message(QByteArray arr):
 
 Message::Message(char adr, char ifs, QByteArray dat, char x)
 {
+    _isValid = false;
     if(dat.size()>0x3F)
         return;
-    if(dat.isEmpty())
-        return;
-    _dat.append((adr&0x3F) || ((ifs)&0xC0));
-    _dat.append((dat.size()&0x3F) || ((x)&0xC0));
-    _dat.append(dat);
+    _adr = adr&0x3F;
+    _ifs = ifs&0x03;
+    _size = dat.size()&0x3F;
+    _x = x&0x03;
+    _pureDat = dat;
+    _isValid = true;
+
+    _dat.append(_adr | ((_ifs<<6)&0xC0));
+    _dat.append(_size | ((_x<<6)&0xC0));
+    _dat.append(_pureDat);
 }
 
 QString Message::toQString() const
@@ -38,15 +44,15 @@ QString Message::toQString() const
     {
         temp.append("Invalid message: ");
         for(auto a: _dat)
-            temp.append(QString("0x%1 ").arg(a, 2, 16, QChar('0')));
+            temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
     }
     else
     {
-        temp.append(QString("adr: 0x%1, size: 0x%2, if: ").arg(_adr, 2, 16, QChar('0')).arg(_size, 2, 16, QChar('0')));
+        temp.append(QString("adr: 0x%1, size: 0x%2, if: ").arg((uint)_adr&0xFF, 2, 16, QChar('0')).arg((uint)_size&0xFF, 2, 16, QChar('0')));
         temp.append(QString::number(_ifs)+", x: "+QString::number(_x)+". ");
         temp.append("Data: ");
         for(int i =2;i<_dat.size();++i)
-            temp.append(QString("0x%1 ").arg(_dat.at(i), 2, 16, QChar('0')));
+            temp.append(QString("0x%1 ").arg((uint)_dat.at(i)&0xFF, 2, 16, QChar('0')));
     }
     return temp;
 }
@@ -60,6 +66,6 @@ void Message::get(char &adr, char &ifs, QByteArray &dat, char &x) const
 {
     adr = _adr;
     ifs = _ifs;
-    dat = _dat;
+    dat = _pureDat;
     x = _x;
 }

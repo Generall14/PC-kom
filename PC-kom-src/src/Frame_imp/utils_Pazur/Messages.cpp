@@ -19,6 +19,8 @@ Messages::Messages(QByteArray dat, int siz, char addcrc):
     // crc
     while(dat.size()>0)
     {
+        if(dat.size()==1)
+            break;
         if(dat.size()<3)
         {
             _msgs.push_back(Message(dat));
@@ -65,7 +67,7 @@ QString Messages::toQString() const
         {
             temp.append(errorMessage + "\r\n");
             for(auto ch: _dat)
-                temp.append(QString("0x%1 ").arg(ch, 2, 16, QChar('0')));
+                temp.append(QString("0x%1 ").arg((uint)ch&0xFF, 2, 16, QChar('0')));
         }
         else
         {
