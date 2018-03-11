@@ -76,7 +76,9 @@ SOURCES += main.cpp\
     src/Frame_imp/utils_Pazur/Confirms.cpp \
     src/Frame_imp/utils_Pazur/Message.cpp \
     src/Frame_imp/utils_Pazur/Messages.cpp \
-    src/LogicUI_imp/LogicUIPazur.cpp
+    src/LogicUI_imp/LogicUIPazur.cpp \
+    src/LogicUI_imp/utils_Pazur/ConfsPacket.cpp \
+    src/Utils/HexItemDelegate.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -137,7 +139,9 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/utils_Pazur/Confirms.hpp \
     src/Frame_imp/utils_Pazur/Message.hpp \
     src/Frame_imp/utils_Pazur/Messages.hpp \
-    src/LogicUI_imp/LogicUIPazur.hpp
+    src/LogicUI_imp/LogicUIPazur.hpp \
+    src/LogicUI_imp/utils_Pazur/ConfsPacket.hpp \
+    src/Utils/HexItemDelegate.hpp
 
 DISTFILES += \
     configs.xml \

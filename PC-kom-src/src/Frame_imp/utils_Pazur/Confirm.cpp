@@ -7,7 +7,9 @@ Confirm::Confirm(char dat):
     _id = (dat&0xC0)>>6;
 }
 
-Confirm::Confirm(char adr, char id)
+Confirm::Confirm(char adr, char id):
+    _id(id),
+    _adr(adr)
 {
     char x = 0x00;
     x |= adr&0x3f;

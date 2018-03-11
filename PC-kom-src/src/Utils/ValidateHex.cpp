@@ -44,6 +44,8 @@ QValidator::State HexValidator::validate(QString &input, int&) const
     }
     for(int i=toRemove.size()-1;i>=0;--i)
         input.remove(toRemove.at(i), 1);
+    if(input.isEmpty())
+        return QValidator::Acceptable;
     if(input.at(0)==' ')
         input.remove(0, 1);
 

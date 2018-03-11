@@ -13,6 +13,7 @@
 #include "Frame_imp/utils_Pazur/Confirm.hpp"
 #include "Frame_imp/utils_Pazur/Message.hpp"
 #include "../Utils/Restorable.hpp"
+#include "utils_Pazur/ConfsPacket.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
 {
@@ -54,6 +55,7 @@ protected:
 
     QList<QList<Confirm> > _cfs;
     QList<QList<Message> > _msgs;
+    ConfsPacket* _cfsTable = nullptr;
 };
 
 #endif
