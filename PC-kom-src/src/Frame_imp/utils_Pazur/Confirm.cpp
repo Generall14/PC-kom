@@ -15,6 +15,7 @@ Confirm::Confirm(char adr, char id):
     x |= adr&0x3f;
     x |= (id<<6)&0xC0;
     _dat = x;
+    x = 0;
 }
 
 QString Confirm::toQString() const
@@ -22,7 +23,7 @@ QString Confirm::toQString() const
     return QString("adr: 0x%1, id: ").arg((int)_adr, 2, 16, QChar('0'))+QString::number(_id);
 }
 
-QChar Confirm::toPureData() const
+char Confirm::toPureData() const
 {
     return _dat;
 }

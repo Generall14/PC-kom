@@ -9,6 +9,7 @@
 ConfsPacket::ConfsPacket(QBoxLayout *upperLayout)
 {
     Init(upperLayout);
+    Release();
 }
 
 void ConfsPacket::Release()
@@ -17,7 +18,17 @@ void ConfsPacket::Release()
     _active = -1;
     table->setRowCount(0);
     table->setEnabled(false);
+    btnd->setEnabled(false);
+    btnu->setEnabled(false);
     table->disconnect();
+}
+
+QList<Confirm> ConfsPacket::getCurrent()
+{
+    if((_cfs==nullptr)||(_active<0))
+        return QList<Confirm>();
+    QList<Confirm> load = (*_cfs)[_active];
+    return load;
 }
 
 void ConfsPacket::SetActive(QList<QList<Confirm> > *cfs, int active)
@@ -29,6 +40,8 @@ void ConfsPacket::SetActive(QList<QList<Confirm> > *cfs, int active)
     }
 
     table->setEnabled(true);
+    btnd->setEnabled(true);
+    btnu->setEnabled(true);
     _cfs = cfs;
     _active = active;
     table->disconnect();
@@ -62,13 +75,12 @@ void ConfsPacket::Init(QBoxLayout *upperLayout)
 
     QHBoxLayout* btnLay = new QHBoxLayout();
     upperLayout->addLayout(btnLay );
-    QPushButton* btn = new QPushButton("Dodaj");
-    connect(btn, SIGNAL(clicked(bool)), this, SLOT(AddConf()));
-    btnLay ->addWidget(btn);
-    btn = new QPushButton("Usuń");
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(ConfsAddRemoveConf()));
-//    connect(btn, &QPushButton::clicked, [this](){twcfgs->removeRow(twcfgs->currentIndex().row());});
-    btnLay ->addWidget(btn);
+    btnd = new QPushButton("Dodaj");
+    connect(btnd, &QPushButton::clicked, [this](){table->insertRow(0);});
+    btnLay ->addWidget(btnd);
+    btnu = new QPushButton("Usuń");
+    connect(btnu, SIGNAL(clicked(bool)), this, SLOT(RemoveConf()));
+    btnLay ->addWidget(btnu);
 }
 
 void ConfsPacket::TableChanged()
@@ -93,7 +105,8 @@ void ConfsPacket::TableChanged()
     }
 }
 
-void ConfsPacket::AddConf()
+void ConfsPacket::RemoveConf()
 {
-    table->insertRow(0);
+    table->removeRow(table->currentRow());
+    TableChanged();
 }

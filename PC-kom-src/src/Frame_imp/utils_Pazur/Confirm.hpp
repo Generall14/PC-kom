@@ -11,13 +11,13 @@ public:
     Confirm(char adr, char id);
 
     QString toQString() const;
-    QChar toPureData() const;
+    char toPureData() const;
 
     void get(char &adr, char &id) const;
 
 private:
     char _id, _adr;
-    QChar _dat;
+    char _dat;
 };
 
 #endif

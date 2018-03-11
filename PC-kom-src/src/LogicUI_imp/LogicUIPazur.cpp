@@ -119,25 +119,8 @@ void LogicUIPazur::InitConfirms()
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(ConfsAddNewSet()));
     cfgsLay->addWidget(btn);
     btn = new QPushButton("Usuń");
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(Send()));
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(ConfsRemoveSet()));
     cfgsLay->addWidget(btn);
-
-//    twcfgs = new QTableWidget(0, 2);
-//    QStringList t = {"Adres", "Id"};
-//    twcfgs->setHorizontalHeaderLabels(t);
-//    twcfgs->setSelectionMode(QAbstractItemView::SingleSelection);
-//    twcfgs->setSelectionBehavior(QAbstractItemView::SelectRows);
-//    mainPotwierdzenia->addWidget(twcfgs);
-
-//    QHBoxLayout* tabcfgsLay = new QHBoxLayout();
-//    mainPotwierdzenia->addLayout(tabcfgsLay);
-//    btn = new QPushButton("Dodaj");
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(ConfsAddNewConf()));
-//    tabcfgsLay->addWidget(btn);
-//    btn = new QPushButton("Usuń");
-////    connect(btn, SIGNAL(clicked(bool)), this, SLOT(ConfsAddRemoveConf()));
-//    connect(btn, &QPushButton::clicked, [this](){twcfgs->removeRow(twcfgs->currentIndex().row());});
-//    tabcfgsLay->addWidget(btn);
 
     _cfsTable = new ConfsPacket(mainPotwierdzenia);
 }
@@ -160,7 +143,8 @@ void LogicUIPazur::Send()
 {
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
     uchar to = 0x11;
-    emit WriteFrame(QSharedPointer<Frame>(new FramePazur(from, to, sbId->value(), cbFast->isChecked())));
+    FramePazur* t = new FramePazur( from, to, sbId->value(), cbFast->isChecked(), _cfsTable->getCurrent());
+    emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())
     {
         if(sbId->value()==sbId->maximum())
@@ -170,15 +154,8 @@ void LogicUIPazur::Send()
     }
 }
 
-//Confs:
-void LogicUIPazur::ConfStoreCurrent()
-{
-//piach?
-}
-
 void LogicUIPazur::ConfsAddNewSet()
 {
-//    ConfStoreCurrent();
     _cfsTable->Release();
 
     _cfs.push_back(QList<Confirm>());
@@ -187,19 +164,24 @@ void LogicUIPazur::ConfsAddNewSet()
         t.append(QString::number(i));
     cbcfgs->clear();
     cbcfgs->addItems(t);
-    currentConf = _cfs.size()-1;
-    cbcfgs->setCurrentIndex(currentConf);
+    cbcfgs->setCurrentIndex(_cfs.size()-1);
 }
 
-void LogicUIPazur::ConfsAddNewConf()
+void LogicUIPazur::ConfsRemoveSet()
 {
-//    twcfgs->insertRow(0);
-//    QLineEdit* edit = new QLineEdit(twcfgs);
-//    edit->setValidator(new HexValidator(1, 1));
-//    twcfgs->setCellWidget(0, 0, edit);
-//    edit = new QLineEdit(twcfgs);
-//    edit->setValidator(new HexValidator(1, 1));
-//    twcfgs->setCellWidget(0, 1, edit);
+    _cfsTable->Release();
+
+    if(_cfs.isEmpty())
+        return;
+
+    int last = cbcfgs->currentIndex();
+    _cfs.removeAt(last);
+    QStringList t;
+    for(int i=0;i<_cfs.size();++i)
+        t.append(QString::number(i));
+    cbcfgs->clear();
+    cbcfgs->addItems(t);
+    cbcfgs->setCurrentIndex(last-1);
 }
 
 void LogicUIPazur::ConfsSetChanged()
@@ -210,19 +192,6 @@ void LogicUIPazur::ConfsSetChanged()
     if(cbcfgs->currentIndex()>=_cfs.size())
         return;
 
-//    QList<Confirm> *a = &(_cfs.at(cbcfgs->currentIndex()));
     _cfsTable->SetActive(&_cfs, cbcfgs->currentIndex());
 
-    //store
-
-
-//    currentConf = cbcfgs->currentIndex();
-//    if(currentConf<0)
-//    {
-//        twcfgs->setRowCount(0);
-//        twcfgs->setEnabled(false);
-//        return;
-//    }
-
-//    twcfgs->setEnabled(true);
 }

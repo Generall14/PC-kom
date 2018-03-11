@@ -21,7 +21,7 @@ Confirms::Confirms(QByteArray dat, uint cnt):
         return;
     }
     uchar crc = CRC::crc8(dat.mid(0, dat.size()-1));
-    if(crc!=dat.at(dat.size()-1))
+    if(crc!=(uchar)dat.at(dat.size()-1))
     {
         isValid = false;
         errorMessage = " Invalid crc";
@@ -45,7 +45,8 @@ Confirms::Confirms(QList<Confirm> cfs):
 
     for(auto a: cfs)
         _dat.append(a.toPureData());
-    _dat.append(0xFF);//crc...
+    uchar crc = CRC::crc8(_dat);
+    _dat.append(crc);
 }
 
 QString Confirms::toQString() const
@@ -57,7 +58,7 @@ QString Confirms::toQString() const
         {
             temp.append(errorMessage + "\r\n");
             for(auto ch: _dat)
-                temp.append(QString("0x%1 ").arg(ch, 2, 16, QChar('0')));
+                temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
         }
         else
         {

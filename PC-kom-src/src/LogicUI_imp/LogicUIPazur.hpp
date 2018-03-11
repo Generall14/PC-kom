@@ -33,10 +33,9 @@ protected slots:
     void InitGlobals();
     void InitConfirms();
 
-    void ConfStoreCurrent();
     void ConfsAddNewSet();
+    void ConfsRemoveSet();
     void ConfsSetChanged();
-    void ConfsAddNewConf();
 
     void Send();
 
@@ -51,7 +50,6 @@ protected:
 
     QComboBox* cbcfgs = nullptr;
     QTableWidget* twcfgs = nullptr;
-    int currentConf=-1;
 
     QList<QList<Confirm> > _cfs;
     QList<QList<Message> > _msgs;
