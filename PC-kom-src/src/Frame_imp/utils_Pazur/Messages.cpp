@@ -11,7 +11,8 @@ Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
         isEmpty = true;
         return;
     }
-    if(dat.size()!=siz)
+
+    if((dat.size()-1)!=siz)
     {
         isValid = false;
         errorMessage = " Invalid data length";

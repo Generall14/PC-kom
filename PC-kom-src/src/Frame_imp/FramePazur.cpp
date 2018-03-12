@@ -28,7 +28,9 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     _cfs = Confirms(cfs);
     _confs = cfs.size();
     _msgs = Messages(msgs, id);
-    _dataSize = _msgs.toPureData().size()+1;
+    _dataSize = _msgs.toPureData().size()-1;
+    if(_dataSize>0)
+        _dataSize++;
     _crc10add = _msgs.addCrc10();
 
     pck.clear();
