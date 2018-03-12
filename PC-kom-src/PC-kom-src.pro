@@ -79,7 +79,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/LogicUIPazur.cpp \
     src/LogicUI_imp/utils_Pazur/ConfsPacket.cpp \
     src/Utils/HexItemDelegate.cpp \
-    src/LogicUI_imp/utils_Pazur/MsgPacket.cpp
+    src/LogicUI_imp/utils_Pazur/MsgPacket.cpp \
+    src/Utils/GlobalXmlFile.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -143,7 +144,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/LogicUIPazur.hpp \
     src/LogicUI_imp/utils_Pazur/ConfsPacket.hpp \
     src/Utils/HexItemDelegate.hpp \
-    src/LogicUI_imp/utils_Pazur/MsgPacket.hpp
+    src/LogicUI_imp/utils_Pazur/MsgPacket.hpp \
+    src/Utils/GlobalXmlFile.hpp
 
 DISTFILES += \
     configs.xml \

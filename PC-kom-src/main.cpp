@@ -6,10 +6,12 @@
 
 #include <Frame.hpp>
 #include <Factory.hpp>
+#include "Utils/GlobalXmlFile.hpp"
 
 int main(int argc, char *argv[])
 {
-    Factory::CreateExampleXML();
+//    Factory::CreateExampleXML();
+    GlobalXmlFile::get();
 
     qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
 
