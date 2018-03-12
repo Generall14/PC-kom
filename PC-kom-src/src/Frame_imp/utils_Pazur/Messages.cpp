@@ -37,13 +37,14 @@ Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
             break;
         }
         char s = dat.at(1)&0x3F;
-        if(dat.size()<s+2)
+        s += 3;
+        if(dat.size()<s)
         {
             _msgs.push_back(Message(dat));
             break;
         }
-        _msgs.push_back(Message(dat.mid(0, s+2)));
-        dat.remove(0, s+2);
+        _msgs.push_back(Message(dat.mid(0, s)));
+        dat.remove(0, s);
     }
     isValid = true;
 }

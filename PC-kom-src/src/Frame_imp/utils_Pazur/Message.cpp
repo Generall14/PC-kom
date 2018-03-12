@@ -9,6 +9,7 @@ Message::Message(QByteArray arr):
         return;
     }
     _size = arr.at(1)&0x3F;
+    _size++;
     if(arr.size()!=_size+2)
     {
         _isValid = false;
@@ -28,6 +29,8 @@ Message::Message(char adr, char ifs, QByteArray dat, char x)
     _adr = adr&0x3F;
     _ifs = ifs&0x03;
     _size = dat.size()&0x3F;
+    if(_size>0)
+        _size--;
     _x = x&0x03;
     _pureDat = dat;
     _isValid = true;
