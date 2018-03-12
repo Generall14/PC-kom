@@ -60,6 +60,9 @@ void ConfsPacket::SetActive(QList<QList<Confirm> > *cfs, int active)
     }
 
     connect(table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(TableChanged()));
+
+    table->resizeColumnsToContents();
+    table->resizeRowsToContents();
 }
 
 void ConfsPacket::Init(QBoxLayout *upperLayout)
@@ -103,6 +106,9 @@ void ConfsPacket::TableChanged()
             id = it->text().left(2).toUInt(nullptr, 16)&0x03;
         (*_cfs)[_active].append(Confirm(adr, id));
     }
+
+    table->resizeColumnsToContents();
+    table->resizeRowsToContents();
 }
 
 void ConfsPacket::RemoveConf()

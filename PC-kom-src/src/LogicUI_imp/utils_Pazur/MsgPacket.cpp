@@ -73,6 +73,9 @@ void MsgPacket::SetActive(QList<QList<Message> > *msg, int active)
     }
 
     connect(table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(TableChanged()));
+
+    table->resizeColumnsToContents();
+    table->resizeRowsToContents();
 }
 
 void MsgPacket::Init(QBoxLayout *upperLayout)
@@ -143,6 +146,9 @@ void MsgPacket::TableChanged()
 
         (*_mags)[_active].append(Message(adr, in, dat, x));
     }
+
+    table->resizeColumnsToContents();
+    table->resizeRowsToContents();
 }
 
 void MsgPacket::RemoveMsg()

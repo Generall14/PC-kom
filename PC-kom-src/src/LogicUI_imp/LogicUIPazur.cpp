@@ -118,6 +118,7 @@ void LogicUIPazur::InitGlobals()
     idLay->addWidget(cbIncrement);
 
     cbFast = new QCheckBox("Marker wymuszenia szybkiego obiegu");
+    cbFast->setMinimumWidth(350);
     mainGlobalne->addWidget(cbFast);
 
     QPushButton* btn = new QPushButton("Wyślij");
