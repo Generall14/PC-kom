@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include "Utils/ValidateHex.hpp"
+#include "Utils/pugixml.hpp"
 
 LogicUIPazur::LogicUIPazur(QFrame* parent):
     LogicUI(parent)
@@ -24,7 +25,10 @@ LogicUIPazur::~LogicUIPazur()
     Store("configs/LogicUIPazucbFast.cfg", QString::number(cbFast->isChecked()));
     Store("configs/LogicUIPazucbIncrement.cfg", QString::number(cbIncrement->isChecked()));
 
+    StoreLists();
+
     delete _cfsTable;
+    delete _msgTable;
 }
 
 void LogicUIPazur::LoadConfigs()
@@ -69,6 +73,9 @@ void LogicUIPazur::Init()
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     LoadConfigs();
+    RestoreLists();
+    ConfsReload();
+    MsgReload();
 }
 
 void LogicUIPazur::InitGlobals()
@@ -194,6 +201,12 @@ void LogicUIPazur::ConfsAddNewSet()
     _cfsTable->Release();
 
     _cfs.push_back(QList<Confirm>());
+
+    ConfsReload();
+}
+
+void LogicUIPazur::ConfsReload()
+{
     QStringList t;
     for(int i=0;i<_cfs.size();++i)
         t.append(QString::number(i));
@@ -211,11 +224,7 @@ void LogicUIPazur::ConfsRemoveSet()
 
     int last = cbcfgs->currentIndex();
     _cfs.removeAt(last);
-    QStringList t;
-    for(int i=0;i<_cfs.size();++i)
-        t.append(QString::number(i));
-    cbcfgs->clear();
-    cbcfgs->addItems(t);
+    ConfsReload();
     if((last==0)&&(cbcfgs->count()>0))
         last = 1;
     cbcfgs->setCurrentIndex(last-1);
@@ -237,6 +246,11 @@ void LogicUIPazur::MsgAddNewSet()
     _msgTable->Release();
 
     _msgs.push_back(QList<Message>());
+    MsgReload();
+}
+
+void LogicUIPazur::MsgReload()
+{
     QStringList t;
     for(int i=0;i<_msgs.size();++i)
         t.append(QString::number(i));
@@ -254,11 +268,7 @@ void LogicUIPazur::MsgRemoveSet()
 
     int last = cbmsgs->currentIndex();
     _msgs.removeAt(last);
-    QStringList t;
-    for(int i=0;i<_msgs.size();++i)
-        t.append(QString::number(i));
-    cbmsgs->clear();
-    cbmsgs->addItems(t);
+    MsgReload();
     if((last==0)&&(cbmsgs->count()>0))
         last = 1;
     cbmsgs->setCurrentIndex(last-1);
@@ -273,4 +283,107 @@ void LogicUIPazur::MsgSetChanged()
         return;
 
     _msgTable->SetActive(&_msgs, cbmsgs->currentIndex());
+}
+
+void LogicUIPazur::StoreLists()
+{
+    pugi::xml_document xmldoc;
+
+    pugi::xml_node confsnode = xmldoc.append_child("Confirm-store");
+    for(int i=0;i<_cfs.size();++i)
+    {
+        QList<Confirm> list = _cfs.at(i);
+        pugi::xml_node listnode = confsnode.append_child(QString("list_"+QString::number(i)).toStdString().c_str());
+        for(int l=0;l<list.size();l++)
+        {
+            char adr, id;
+            Confirm c = list.at(l);
+            c.get(adr, id);
+            pugi::xml_node cnfnode = listnode.append_child(QString("confirm_"+QString::number(l)).toStdString().c_str());
+            cnfnode.append_attribute("adr") = adr;
+            cnfnode.append_attribute("id") = id;
+        }
+    }
+
+    pugi::xml_node msgnode = xmldoc.append_child("Message-store");
+    for(int i=0;i<_msgs.size();++i)
+    {
+        QList<Message> list = _msgs.at(i);
+        pugi::xml_node listnode = msgnode.append_child(QString("list_"+QString::number(i)).toStdString().c_str());
+        for(int l=0;l<list.size();l++)
+        {
+            char adr, ifs, x;
+            QByteArray dat;
+            Message m = list.at(i);
+            m.get(adr, ifs, dat, x);
+            QString str;
+            for(auto a: dat)
+                str.append(QString::number((uint)a&0xFF, 16).toUpper()+" ");
+            pugi::xml_node msgnode = listnode.append_child(QString("message_"+QString::number(l)).toStdString().c_str());
+            msgnode.append_attribute("adr") = adr;
+            msgnode.append_attribute("ifs") = ifs;
+            msgnode.append_attribute("x") = x;
+            msgnode.append_attribute("dat") = str.toStdString().c_str();
+        }
+    }
+
+    xmldoc.save_file("configs/LogicUIPazur.xml");
+}
+
+void LogicUIPazur::RestoreLists()
+{
+    pugi::xml_document dok;
+    pugi::xml_parse_result wynik = dok.load_file("configs/LogicUIPazur.xml");
+    if(!wynik)
+        return;
+
+    pugi::xml_node confsnode = dok.child("Confirm-store");
+    if(!confsnode.empty())
+    {
+        for(pugi::xml_node_iterator lit = confsnode.begin(); lit != confsnode.end(); ++lit)
+        {
+            QList<Confirm> list;
+            for(pugi::xml_node_iterator cit = lit->begin(); cit != lit->end(); ++cit)
+            {
+                char adr, id;
+                adr = cit->attribute("adr").as_uint();
+                id = cit->attribute("id").as_uint();
+                Confirm c(adr, id);
+                list.push_back(c);
+            }
+            _cfs.push_back(list);
+        }
+    }
+
+    pugi::xml_node msgsnode = dok.child("Message-store");
+    if(!msgsnode.empty())
+    {
+        for(pugi::xml_node_iterator lit = msgsnode.begin(); lit != msgsnode.end(); ++lit)
+        {
+            QList<Message> list;
+            for(pugi::xml_node_iterator mit = lit->begin(); mit != lit->end(); ++mit)
+            {
+                char adr, ifs, x;
+                QByteArray dat;
+                QString str;
+                adr = mit->attribute("adr").as_uint();
+                ifs = mit->attribute("ifs").as_uint();
+                x = mit->attribute("x").as_uint();
+                str = mit->attribute("dat").as_string();
+                str.remove(' ');
+                bool ok;
+                int val;
+                while(!str.isEmpty())
+                {
+                    val = str.left(2).toInt(&ok, 16);
+                    if(ok)
+                        dat.push_back((char)val);
+                    str = str.mid(2);
+                }
+                Message m(adr, ifs, dat, x);
+                list.push_back(m);
+            }
+            _msgs.push_back(list);
+        }
+    }
 }

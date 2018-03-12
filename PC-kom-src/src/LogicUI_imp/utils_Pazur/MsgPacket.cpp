@@ -70,8 +70,6 @@ void MsgPacket::SetActive(QList<QList<Message> > *msg, int active)
             str.append(QString::number((uint)a&0xFF, 16).toUpper()+" ");
         it = new QTableWidgetItem(str, 0);
         table->setItem(r, 3, it);
-
-        qDebug() << "in " << (uchar)adr << " " << (uchar)in << " " << (uchar)x << " " << str;
     }
 
     connect(table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(TableChanged()));

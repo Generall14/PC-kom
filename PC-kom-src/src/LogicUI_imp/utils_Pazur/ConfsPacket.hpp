@@ -7,6 +7,7 @@
 #include <QTableWidget>
 #include <QPushButton>
 #include "Frame_imp/utils_Pazur/Confirm.hpp"
+#include "Utils/pugixml.hpp"
 
 class ConfsPacket : QObject
 {

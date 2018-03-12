@@ -36,10 +36,12 @@ protected slots:
     void InitMessages();
 
     void ConfsAddNewSet();
+    void ConfsReload();
     void ConfsRemoveSet();
     void ConfsSetChanged();
 
     void MsgAddNewSet();
+    void MsgReload();
     void MsgRemoveSet();
     void MsgSetChanged();
 
@@ -47,6 +49,8 @@ protected slots:
 
 protected:
     void LoadConfigs();
+    void StoreLists();
+    void RestoreLists();
     QVBoxLayout* mainLay = nullptr;
 
     QLineEdit* leMyAdr = nullptr;
