@@ -44,15 +44,17 @@ public:
 
     static void LoadConfig(QString setName = "") throw(std::runtime_error);
     static void CreateExampleXML();
-    static void ForceFrame(QString newType);
 
     static void setFake(bool fake = true);
+    static void setTransparent(bool transparentReq);
+    static bool getTransparent();
 
 private:
     static QString windowName;
     static QString icoPath;
     static QString descConfig;
     static bool fakeVer;
+    static bool transparent;
 
     static QString _frame;
     static QString _mediumUi;

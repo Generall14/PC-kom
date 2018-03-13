@@ -40,6 +40,11 @@ void LogUITerm::Init()
     selectionLayout->addWidget(chb);
     connect(chb, SIGNAL(toggled(bool)), this, SLOT(WrapSelect(bool)));
 
+    chbtr = new QCheckBox("Wymuś FrameTransparent");
+    selectionLayout->addWidget(chbtr);
+    chbtr->setChecked(Factory::getTransparent());
+    connect(chbtr, SIGNAL(toggled(bool)), this, SLOT(FrameTransparentSelect(bool)));
+
     selectionLayout->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
     btnclr = new QPushButton("Wyczyść");
@@ -81,4 +86,9 @@ void LogUITerm::WrapSelect(bool sel)
         tedit->setWordWrapMode(QTextOption::WordWrap);
     else
         tedit->setWordWrapMode(QTextOption::NoWrap);
+}
+
+void LogUITerm::FrameTransparentSelect(bool sel)
+{
+    Factory::setTransparent(sel);
 }

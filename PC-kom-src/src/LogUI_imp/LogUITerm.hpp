@@ -23,9 +23,10 @@ public slots:
     virtual void LogString(QString str, bool);
 
 protected:
-    QTextEdit* tedit = NULL;
-    QPushButton* btnclr = NULL;
-    QCheckBox* chb = NULL;
+    QTextEdit* tedit = nullptr;
+    QPushButton* btnclr = nullptr;
+    QCheckBox* chb = nullptr;
+    QCheckBox* chbtr = nullptr;
 
     int lineCounter = 0;
 
@@ -38,6 +39,7 @@ protected:
 protected slots:
     void Clear();
     void WrapSelect(bool sel);
+    void FrameTransparentSelect(bool sel);
 };
 
 #endif

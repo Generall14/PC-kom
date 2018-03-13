@@ -46,6 +46,7 @@ QString Factory::windowName = "XXX";
 QString Factory::icoPath = "ikona.ico";
 QString Factory::descConfig = "brak opisu";
 bool Factory::fakeVer = false;
+bool Factory::transparent = false;
 QString Factory::_frame = "";
 QString Factory::_mediumUi = "";
 QString Factory::_mendium = "";
@@ -61,6 +62,9 @@ QString Factory::_logFormater = "";
  */
 Frame* Factory::newFrame(QByteArray ba)
 {
+    if(transparent)
+        return new FrameTransparent(ba);
+
     if(_frame=="FrameEmpty")
         return new FrameEmpty(ba);
     else if(_frame=="FrameSG1")
@@ -340,17 +344,26 @@ void Factory::CreateExampleXML()
     xmldoc.save_file("example.xml");
 }
 
-void Factory::ForceFrame(QString newType)
-{
-    _frame = newType;
-}
-
 /**
  * Ustawia tryb testowy, funkcja aby zadziałała musi być wywołana przed LoadConfig().
  */
 void Factory::setFake(bool fake)
 {
     fakeVer = fake;
+}
+
+/**
+ * Funkcja określa czy klasy implementacja Frame ma być generowane według ustalonego schematu (false) lub ma być wymuszona
+ * FrameTransparent (true).
+ */
+void Factory::setTransparent(bool transparentReq)
+{
+    transparent = transparentReq;
+}
+
+bool Factory::getTransparent()
+{
+    return transparent;
 }
 
 void Factory::terminate(QString arg)

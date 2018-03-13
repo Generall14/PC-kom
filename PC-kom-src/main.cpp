@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    bool fake = false;
+    bool fake = false, transparent = false;
     QString set;
     for(QString arg:QApplication::arguments())
     {
@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
             fake = true;
         if(arg.lastIndexOf("-s")==0)
             set = arg.mid(2);
+        if(arg=="-tr")
+            transparent = true;
     }
     Factory::setFake(fake);
 
@@ -36,6 +38,8 @@ int main(int argc, char *argv[])
         QMessageBox::critical(nullptr, "FATAL ERROR!", ex.what(), QMessageBox::Abort);
         return -1;
     }
+
+    Factory::setTransparent(transparent);
 
     MainWindow w;
     w.show();
