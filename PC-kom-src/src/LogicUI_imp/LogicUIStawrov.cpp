@@ -6,7 +6,8 @@
 #include <QMap>
 
 LogicUIStawrov::LogicUIStawrov(QFrame* parent):
-    LogicUI(parent)
+    LogicUI(parent),
+    Restorable("LogicUIStawrov")
 {
     Desc::description = "LogicUIStawrov";
     logg = new STawrovLogger();
@@ -32,19 +33,19 @@ LogicUIStawrov::~LogicUIStawrov()
 {
     meanTimer->stop();
 
-    Store("configs/LogicUIStawrovAdr.cfg", leAdr->text());
-    Store("configs/LogicUIStawrovData.cfg", leData->text());
-    Store("configs/LogicUIStawrovFileLog.cfg", fileAdr->text());
-    Store("configs/LogicUIStawrovlekAdr.cfg", lekAdr->text());
-    Store("configs/LogicUIStawrovlekAdrLoc.cfg", lekAdrLoc->text());
-    Store("configs/LogicUIStawrovleHV.cfg", leHV->text());
-    Store("configs/LogicUIStawrovleMaxHV.cfg", leMaxHV->text());
-    Store("configs/LogicUIStawrovlekcbox.cfg", kcbox->currentText());
-    Store("configs/LogicUIStawrovmetrozniczkowanie.cfg", QString::number((int)rozniczkowanie->isChecked()));
-    Store("configs/LogicUIStawrovleOFFSET.cfg", leOFFSET->text());
-    Store("configs/LogicUIStawrovleTRIGGER.cfg", leTRIGGER->text());
-    Store("configs/LogicUIStawrovleKANALY.cfg", leKANALY->text());
-    Store("configs/LogicUIStawrovsbseconds.cfg", QString::number(sbseconds->value()));
+    Store("Adr", leAdr->text());
+    Store("Data", leData->text());
+    Store("FileLog", fileAdr->text());
+    Store("lekAdr", lekAdr->text());
+    Store("lekAdrLoc", lekAdrLoc->text());
+    Store("leHV", leHV->text());
+    Store("leMaxHV", leMaxHV->text());
+    Store("lekcbox", kcbox->currentText());
+    Store("metrozniczkowanie", rozniczkowanie->isChecked());
+    Store("leOFFSET", leOFFSET->text());
+    Store("leTRIGGER", leTRIGGER->text());
+    Store("leKANALY", leKANALY->text());
+    Store("sbseconds", sbseconds->value());
 
     delete logg;
     delete meanTimer;
@@ -296,48 +297,19 @@ void LogicUIStawrov::InitTests()
 
 void LogicUIStawrov::LoadConfigs()
 {
-    QString temp;
-
-    if(!Restore("configs/LogicUIStawrovAdr.cfg", temp))
-        leAdr->setText(temp);
-    if(!Restore("configs/LogicUIStawrovData.cfg", temp))
-        leData->setText(temp);
-    if(!Restore("configs/LogicUIStawrovFileLog.cfg", temp))
-    {
-        fileAdr->setText(temp);
-        logg->Reset(temp);
-    }
-    else
-        logg->Reset("pustyPlikKropkaTeIksTe.txt");
-    if(!Restore("configs/LogicUIStawrovlekAdr.cfg", temp))
-        lekAdr->setText(temp);
-    if(!Restore("configs/LogicUIStawrovlekAdrLoc.cfg", temp))
-        lekAdrLoc->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleHV.cfg", temp))
-        leHV->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleMaxHV.cfg", temp))
-        leMaxHV->setText(temp);
-    if(!Restore("configs/LogicUIStawrovlekcbox.cfg", temp))
-        kcbox->setCurrentText(temp);
-    if(!Restore("configs/LogicUIStawrovleOFFSET.cfg", temp))
-        leOFFSET->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleTRIGGER.cfg", temp))
-        leTRIGGER->setText(temp);
-    if(!Restore("configs/LogicUIStawrovleKANALY.cfg", temp))
-        leKANALY->setText(temp);
-    if(!Restore("configs/LogicUIStawrovmetrozniczkowanie.cfg", temp))
-    {
-        bool first = temp.toInt();
-        if(first)
-            rozniczkowanie->setChecked(true);
-    }
-    if(!Restore("configs/LogicUIStawrovsbseconds.cfg", temp))
-    {
-        bool ok;
-        int vv = temp.toInt(&ok);
-        if(ok)
-            sbseconds->setValue(vv);
-    }
+    leAdr->setText(RestoreAsString("Adr", "FE"));
+    fileAdr->setText(RestoreAsString("FileLog", "defaultFileName.txt"));
+    leData->setText(RestoreAsString("Data", "ff aa 55"));
+    lekAdr->setText(RestoreAsString("lekAdr", "FF"));
+    lekAdrLoc->setText(RestoreAsString("lekAdrLoc", "FF"));
+    leHV->setText(RestoreAsString("leHV", "01FF"));
+    leMaxHV->setText(RestoreAsString("leMaxHV", "01FF"));
+    kcbox->setCurrentText(RestoreAsString("lekcbox", ""));
+    rozniczkowanie->setChecked(RestoreAsBool("metrozniczkowanie", false));
+    leOFFSET->setText(RestoreAsString("leOFFSET", "0000"));
+    leTRIGGER->setText(RestoreAsString("leTRIGGER", "0000"));
+    leKANALY->setText(RestoreAsString("leKANALY", "0666 AAAA"));
+    sbseconds->setValue(RestoreAsInt("sbseconds", 12));
 }
 
 void LogicUIStawrov::Connected()

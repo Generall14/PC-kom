@@ -13,18 +13,19 @@
 #include "Utils/GlobalXmlFile.hpp"
 
 LogicUIPazur::LogicUIPazur(QFrame* parent):
-    LogicUI(parent)
+    LogicUI(parent),
+    Restorable("LogicUIPazur")
 {
     Desc::description = "LogicUIPazur";
 }
 
 LogicUIPazur::~LogicUIPazur()
 {
-    Store("configs/LogicUIPazurleMyAdr.cfg", leMyAdr->text());
-    Store("configs/LogicUIPazurleToAdr.cfg", leToAdr->text());
-    Store("configs/LogicUIPazursbId.cfg", QString::number(sbId->value()));
-    Store("configs/LogicUIPazucbFast.cfg", QString::number(cbFast->isChecked()));
-    Store("configs/LogicUIPazucbIncrement.cfg", QString::number(cbIncrement->isChecked()));
+    Store("leMyAdr", leMyAdr->text());
+    Store("leToAdr", leToAdr->text());
+    Store("sbId", sbId->value());
+    Store("cbFast", cbFast->isChecked());
+    Store("cbIncrement", cbIncrement->isChecked());
 
     StoreLists();
 
@@ -34,32 +35,11 @@ LogicUIPazur::~LogicUIPazur()
 
 void LogicUIPazur::LoadConfigs()
 {
-    QString temp;
-
-    if(!Restore("configs/LogicUIPazurleMyAdr.cfg", temp))
-        leMyAdr->setText(temp);
-    if(!Restore("configs/LogicUIPazurleToAdr.cfg", temp))
-        leToAdr->setText(temp);
-    bool ok;
-    int value;
-    if(!Restore("configs/LogicUIPazursbId.cfg", temp))
-    {
-        value = temp.toInt(&ok);
-        if(ok)
-            sbId->setValue(value);
-    }
-    if(!Restore("configs/LogicUIPazucbFast.cfg", temp))
-    {
-        value = temp.toInt(&ok);
-        if(ok)
-            cbFast->setChecked(value);
-    }
-    if(!Restore("configs/LogicUIPazucbIncrement.cfg", temp))
-    {
-        value = temp.toInt(&ok);
-        if(ok)
-            cbIncrement->setChecked(value);
-    }
+    leMyAdr->setText(RestoreAsString("leMyAdr", "FF"));
+    leToAdr->setText(RestoreAsString("leToAdr", "FF"));
+    sbId->setValue(RestoreAsInt("sbId", 0));
+    cbFast->setChecked(RestoreAsBool("cbFast", false));
+    cbIncrement->setChecked(RestoreAsBool("cbIncrement", true));
 }
 
 void LogicUIPazur::Init()

@@ -11,13 +11,10 @@
 class Restorable
 {
 public:
-    Restorable(QString className = "XXX");
+    Restorable(QString className);
+
 protected:
-    bool Store(QString fileName, QString textValue); // <TODO> w przyszlosci do usuniecia
-    bool Restore(QString fileName, QString& textValue); // <TODO> w przyszlosci do usuniecia
-
-
-    template<typename T> void StoreData(QString name, T value)
+    template<typename T> void Store(QString name, T value)
     {
         pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
         if(node.empty())
@@ -25,8 +22,8 @@ protected:
         node.remove_attribute(name.toStdString().c_str());
         node.append_attribute(name.toStdString().c_str()) = value;
     }
-    void StoreData(QString name, QString value);
-    void StoreData(QString name, QByteArray value);
+    void Store(QString name, QString value);
+    void Store(QString name, QByteArray value);
 
 
     int RestoreAsInt(QString name, int onFail);
@@ -37,8 +34,6 @@ protected:
     QByteArray RestoreAsByteArray(QString name, QByteArray onFail);
 
 private:
-    QFile _file; // piach
-    QTextStream _textStream; // piach
     QString _className;
 };
 

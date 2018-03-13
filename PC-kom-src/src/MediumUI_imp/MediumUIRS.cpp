@@ -8,15 +8,16 @@
 #include <QDebug>
 
 MediumUiRS::MediumUiRS(QFrame* parent):
-    MediumUI(parent)
+    MediumUI(parent),
+    Restorable("MediumUiRS")
 {
     Desc::description = "MediumUiRS";
 }
 
 MediumUiRS::~MediumUiRS()
 {
-    Store("configs/MediumUiRSbaudrate.cfg", QString::number(speedBox->currentIndex()));
-    Store("configs/MediumUiRSport.cfg", portBox->currentText());
+    Store("baudrate", speedBox->currentIndex());
+    Store("port", portBox->currentText());
 }
 
 void MediumUiRS::Init()
@@ -65,16 +66,8 @@ void MediumUiRS::Init()
 
 void MediumUiRS::LoadConfigs()
 {
-    QString temp;
-
-    if(!(Restore("configs/MediumUiRSbaudrate.cfg", temp)))
-        speedBox->setCurrentIndex(temp.toInt());
-    if(!(Restore("configs/MediumUiRSport.cfg", temp)))
-    {
-        int ind = portBox->findText(temp);
-        if((ind>-1)&&(ind<portBox->count()))
-            portBox->setCurrentIndex(ind);
-    }
+    speedBox->setCurrentIndex(RestoreAsInt("baudrate", 0));
+    portBox->setCurrentText(RestoreAsString("port", ""));
 }
 
 void MediumUiRS::Refresh()

@@ -4,58 +4,19 @@
 Restorable::Restorable(QString className):
     _className(className)
 {
-    _textStream.setDevice(&_file);
 }
 
-/**
- * Zapisuje tekst textValue do pliku (nadpisuje plik)
- * @param fileName - nazwa pliku
- * @param textValue - tekst
- * @return 0 - ok, 1 - błąd
- */
-bool Restorable::Store(QString fileName, QString textValue)
+void Restorable::Store(QString name, QString value)
 {
-    _file.setFileName(fileName);
-    if(_file.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
-    {
-        _textStream << textValue;
-        _textStream.flush();
-        _file.close();
-        return 0;
-    }
-    return 1;
+    Store<>(name, value.toStdString().c_str());
 }
 
-/**
- * Odczytuje tekst z pliku fileName i umieszcza go w textValue
- * @param fileName - nazwa pliku
- * @param textValue - odczytany tekst
- * @return 0 - ok, 1 - błąd
- */
-bool Restorable::Restore(QString fileName, QString& textValue)
-{
-    textValue.clear();
-    _file.setFileName(fileName);
-    if(_file.open(QIODevice::Text | QIODevice::ReadOnly))
-    {
-        textValue = _textStream.readLine();
-        _file.close();
-        return 0;
-    }
-    return 1;
-}
-
-void Restorable::StoreData(QString name, QString value)
-{
-    StoreData<>(name, value.toStdString().c_str());
-}
-
-void Restorable::StoreData(QString name, QByteArray value)
+void Restorable::Store(QString name, QByteArray value)
 {
     QString str;
     for(auto a: value)
         str.append(QString("%1 ").arg(a&0xFF, 2, 16, QChar('0')));
-    StoreData<>(name, str.toStdString().c_str());
+    Store<>(name, str.toStdString().c_str());
 }
 
 int Restorable::RestoreAsInt(QString name, int onFail)

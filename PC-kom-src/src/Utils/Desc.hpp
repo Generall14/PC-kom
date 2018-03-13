@@ -8,7 +8,7 @@ class Desc
 public:
     QString Description();
 protected:
-    QString description = "brak opisu";
+    QString description = "default_desc";
 };
 
 #endif

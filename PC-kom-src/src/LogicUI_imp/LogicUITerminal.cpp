@@ -7,22 +7,23 @@
 #include <QDebug>
 
 LogicUITerminal::LogicUITerminal(QFrame* parent):
-    LogicUI(parent)
+    LogicUI(parent),
+    Restorable("LogicUITerminal")
 {
     Desc::description = "LogicUITerminal";
 }
 
 LogicUITerminal::~LogicUITerminal()
 {
-    Store("configs/LogicUITerminalsbBytes.cfg", sbBytes->text());
-    Store("configs/LogicUITerminalleSHexSign.cfg", leSHexSign->text());
-    Store("configs/LogicUITerminalinputsMethods.cfg", kbSWprowadzanie->currentText());
-    Store("configs/LogicUITerminalkbRWyswietanie.cfg", kbRWyswietanie->currentText());
-    Store("configs/LogicUITerminalleRHexSign.cfg", leRHexSign->text());
-    Store("configs/LogicUITerminalleRInvalid.cfg", leRInvalid->text());
+    Store("sbBytes", sbBytes->text());
+    Store("leSHexSign", leSHexSign->text());
+    Store("inputsMethods", kbSWprowadzanie->currentText());
+    Store("kbRWyswietanie", kbRWyswietanie->currentText());
+    Store("leRHexSign", leRHexSign->text());
+    Store("leRInvalid", leRInvalid->text());
 
     for(int i=0;i<sends.length();i++)
-        Store("configs/LogicUITerminalleSend"+QString::number(i)+".cfg", sends.at(i)->Store());
+        Store("leSend"+QString::number(i), sends.at(i)->Store());
 
     for(int i=0;i<sends.length();i++)
         delete sends[i];
@@ -31,31 +32,15 @@ LogicUITerminal::~LogicUITerminal()
 
 void LogicUITerminal::LoadConfigs()
 {
-    QString temp;
+    sbBytes->setValue(RestoreAsInt("sbBytes", 10));
+    leSHexSign->setText(RestoreAsString("leSHexSign", "$"));
+    kbSWprowadzanie->setCurrentText(RestoreAsString("inputsMethods", ""));
+    kbRWyswietanie->setCurrentText(RestoreAsString("kbRWyswietanie", ""));
+    leRHexSign->setText(RestoreAsString("leRHexSign", "$"));
+    leRInvalid->setText(RestoreAsString("leRInvalid", "?"));
 
-    if(!Restore("configs/LogicUITerminalleSHexSign.cfg", temp))
-        leSHexSign->setText(temp);
-    if(!Restore("configs/LogicUITerminalinputsMethods.cfg", temp))
-        kbSWprowadzanie->setCurrentText(temp);
-    if(!Restore("configs/LogicUITerminalkbRWyswietanie.cfg", temp))
-        kbRWyswietanie->setCurrentText(temp);
-    if(!Restore("configs/LogicUITerminalleRHexSign.cfg", temp))
-        leRHexSign->setText(temp);
-    if(!Restore("configs/LogicUITerminalleRInvalid.cfg", temp))
-        leRInvalid->setText(temp);
-    bool ok;
-    int vale;
-    if(!Restore("configs/LogicUITerminalsbBytes.cfg", temp))
-    {
-        vale = temp.toInt(&ok);
-        if(ok)
-            sbBytes->setValue(vale);
-    }
     for(int i=0;i<sends.length();i++)
-    {
-        if(!Restore("configs/LogicUITerminalleSend"+QString::number(i)+".cfg", temp))
-            sends.at(i)->Restore(temp);
-    }
+        sends.at(i)->Restore(RestoreAsString("leSend"+QString::number(i), ""));
 }
 
 void LogicUITerminal::Init()
@@ -130,7 +115,7 @@ void LogicUITerminal::InitDisplay()
     lab = new QLabel("Znacznik hex:");
     bytesHexSign->addWidget(lab);
     bytesHexSign->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    leRHexSign = new QLineEdit("\\");
+    leRHexSign = new QLineEdit("$");
     leRHexSign->setInputMask("X");
     leRHexSign->setMaximumWidth(40);
     connect(leRHexSign, SIGNAL(textChanged(QString)), this, SLOT(SendDisplayParams()));
@@ -175,7 +160,7 @@ void LogicUITerminal::InitSend()
     lab->setToolTip(tooltip);
     bytesHexSign->addWidget(lab);
     bytesHexSign->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    leSHexSign = new QLineEdit("\\");
+    leSHexSign = new QLineEdit("$");
     leSHexSign->setToolTip(tooltip);
     leSHexSign->setInputMask("X");
     leSHexSign->setMaximumWidth(40);

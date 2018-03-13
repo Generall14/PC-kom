@@ -6,21 +6,20 @@
 #include <QSpacerItem>
 
 LogUITerm::LogUITerm(QFrame* parent):
-    LogUI(parent)
+    LogUI(parent),
+    Restorable("LogUITerm")
 {
     Desc::description = "LogUITerm";
 }
 
 LogUITerm::~LogUITerm()
 {
-    Store("configs/LogUITermWrapLines.cfg", QString::number((int)(chb->isChecked())));
+    Store("WrapLines", chb->isChecked());
 }
 
 void LogUITerm::LoadConfigs()
 {
-    QString temp;
-    if(!Restore("configs/LogUITermWrapLines.cfg", temp))
-        chb->setChecked(temp.toInt());
+    chb->setChecked(RestoreAsBool("WrapLines", false));
 }
 
 void LogUITerm::Init()
