@@ -12,7 +12,6 @@
 #include "../FrameBuilder.hpp"
 #include "../LogFormater.hpp"
 #include "../LogFile.hpp"
-#include "../BusDevice.hpp"
 
 About::About(QString mediumUI, QString logicUI, QString logUI, QWidget* parent):
     QDialog(parent),

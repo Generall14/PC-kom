@@ -22,7 +22,6 @@
 #include "LogUI.hpp"
 #include "LogFile.hpp"
 #include "LogFormater.hpp"
-#include "BusDevice.hpp"
 
 class Factory
 {

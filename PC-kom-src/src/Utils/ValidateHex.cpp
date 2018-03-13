@@ -1,5 +1,7 @@
 #include "ValidateHex.hpp"
 #include <QDebug>
+#include <QStringList>
+#include <QString>
 
 const QString HexValidator::znakiHEX = "0123456789ABCDEF ";
 
@@ -17,7 +19,7 @@ HexValidator::HexValidator(int rozmiarSlowa, int liczbaSlow, QObject* parent):
 /**
  * Obrzydliwa funkcja
  */
-QValidator::State HexValidator::validate(QString &input, int&) const
+QValidator::State HexValidator::validate(QString &input, int& ii) const
 {
     int counter = 0;
     QList<int> toRemove;
@@ -79,5 +81,16 @@ QValidator::State HexValidator::validate(QString &input, int&) const
     }
     if(_liczba)
         input = input.left(_liczba*(2*_slowo)+1);
+
+    QStringList xxx = input.split(" ");
+    if(!xxx.isEmpty())
+    {
+        if(xxx.last().size()==_slowo*2)
+        {
+            input.append(" ");
+            ii++;
+        }
+    }
+
     return QValidator::Acceptable;
 }

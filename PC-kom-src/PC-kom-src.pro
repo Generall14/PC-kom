@@ -118,7 +118,6 @@ HEADERS  += mainwindow.h \
     src/LogFormater_imp/LogFormaterHtml.hpp \
     src/Utils/Desc.hpp \
     src/Utils/About.hpp \
-    src/BusDevice.hpp \
     src/LogicUI_imp/utils_Stawrov/StawrovLogger.hpp \
     src/Utils/ValidateHex.hpp \
     src/Utils/ValidateDumbFloat.hpp \
