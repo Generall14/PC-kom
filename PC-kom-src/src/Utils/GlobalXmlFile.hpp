@@ -9,6 +9,8 @@ public:
     ~GlobalXmlFile();
     static GlobalXmlFile& get();
 
+    pugi::xml_document *root();
+
 private:
     GlobalXmlFile();
 

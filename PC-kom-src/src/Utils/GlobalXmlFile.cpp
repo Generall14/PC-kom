@@ -18,3 +18,8 @@ GlobalXmlFile& GlobalXmlFile::get()
     static GlobalXmlFile instance;
     return instance;
 }
+
+pugi::xml_document *GlobalXmlFile::root()
+{
+    return &file;
+}

@@ -1,6 +1,8 @@
 #include "Restorable.hpp"
+#include <QDebug>
 
-Restorable::Restorable()
+Restorable::Restorable(QString className):
+    _className(className)
 {
     _textStream.setDevice(&_file);
 }
@@ -13,6 +15,13 @@ Restorable::Restorable()
  */
 bool Restorable::Store(QString fileName, QString textValue)
 {
+//    pugi::xml_document* dok = GlobalXmlFile::get().root();
+//    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+//    if(node.empty())
+//        node = dok->append_child(_className.toStdString().c_str());
+//    node.remove_attribute(fileName.toStdString().c_str());
+//    node.append_attribute(fileName.toStdString().c_str()) = textValue.toStdString().c_str();
+
     _file.setFileName(fileName);
     if(_file.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
     {
@@ -41,4 +50,27 @@ bool Restorable::Restore(QString fileName, QString& textValue)
         return 0;
     }
     return 1;
+}
+
+void Restorable::StoreData(QString name, QString value)
+{
+    StoreData<>(name, value.toStdString().c_str());
+}
+
+void Restorable::StoreData(QString name, QByteArray value)
+{
+    QString str;
+    for(auto a: value)
+        str.append(QString("%1 ").arg(a&0xFF, 2, 16, QChar('0')));
+    StoreData<>(name, str.toStdString().c_str());
+}
+
+int Restorable::RestoreAsInt(QString name, int onFail)
+{
+    pugi::xml_document* dok = GlobalXmlFile::get().root();
+    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    if(node.empty())
+        return onFail;
+
+    return node.attribute(name.toStdString().c_str()).as_int(onFail);
 }

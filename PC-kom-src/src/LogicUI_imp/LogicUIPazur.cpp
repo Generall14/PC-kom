@@ -10,11 +10,15 @@
 #include <QDebug>
 #include "Utils/ValidateHex.hpp"
 #include "Utils/pugixml.hpp"
+#include "Utils/GlobalXmlFile.hpp"
 
 LogicUIPazur::LogicUIPazur(QFrame* parent):
     LogicUI(parent)
 {
     Desc::description = "LogicUIPazur";
+
+    qDebug() << RestoreAsInt("X1", -1);
+    qDebug() << RestoreAsInt("X7", -1);
 }
 
 LogicUIPazur::~LogicUIPazur()
@@ -24,6 +28,16 @@ LogicUIPazur::~LogicUIPazur()
     Store("configs/LogicUIPazursbId.cfg", QString::number(sbId->value()));
     Store("configs/LogicUIPazucbFast.cfg", QString::number(cbFast->isChecked()));
     Store("configs/LogicUIPazucbIncrement.cfg", QString::number(cbIncrement->isChecked()));
+
+    QString s = "asdfaaaaaa";
+    QByteArray a;
+    a.append(0x01);
+    a.append(0x02);
+    a.append(0x03);
+    StoreData("X1", 2);
+    StoreData("X2", 3.14);
+    StoreData("X3", s);
+    StoreData("X4", a);
 
     StoreLists();
 
@@ -288,9 +302,12 @@ void LogicUIPazur::MsgSetChanged()
 
 void LogicUIPazur::StoreLists()
 {
-    pugi::xml_document xmldoc;
+    pugi::xml_document* xmldoc = GlobalXmlFile::get().root();
 
-    pugi::xml_node confsnode = xmldoc.append_child("Confirm-store");
+    xmldoc->remove_child("Confirm-store");
+    xmldoc->remove_child("Message-store");
+
+    pugi::xml_node confsnode = xmldoc->append_child("Confirm-store");
     for(int i=0;i<_cfs.size();++i)
     {
         QList<Confirm> list = _cfs.at(i);
@@ -306,7 +323,7 @@ void LogicUIPazur::StoreLists()
         }
     }
 
-    pugi::xml_node msgnode = xmldoc.append_child("Message-store");
+    pugi::xml_node msgnode = xmldoc->append_child("Message-store");
     for(int i=0;i<_msgs.size();++i)
     {
         QList<Message> list = _msgs.at(i);
@@ -315,7 +332,7 @@ void LogicUIPazur::StoreLists()
         {
             char adr, ifs, x;
             QByteArray dat;
-            Message m = list.at(i);
+            Message m = list.at(l);
             m.get(adr, ifs, dat, x);
             QString str;
             for(auto a: dat)
@@ -327,18 +344,14 @@ void LogicUIPazur::StoreLists()
             msgnode.append_attribute("dat") = str.toStdString().c_str();
         }
     }
-
-    xmldoc.save_file("configs/LogicUIPazur.xml");
 }
 
 void LogicUIPazur::RestoreLists()
 {
-    pugi::xml_document dok;
-    pugi::xml_parse_result wynik = dok.load_file("configs/LogicUIPazur.xml");
-    if(!wynik)
-        return;
+    pugi::xml_document* xmldoc = GlobalXmlFile::get().root();
+    qDebug() << xmldoc->text().as_string();
 
-    pugi::xml_node confsnode = dok.child("Confirm-store");
+    pugi::xml_node confsnode = xmldoc->child("Confirm-store");
     if(!confsnode.empty())
     {
         for(pugi::xml_node_iterator lit = confsnode.begin(); lit != confsnode.end(); ++lit)
@@ -356,7 +369,7 @@ void LogicUIPazur::RestoreLists()
         }
     }
 
-    pugi::xml_node msgsnode = dok.child("Message-store");
+    pugi::xml_node msgsnode = xmldoc->child("Message-store");
     if(!msgsnode.empty())
     {
         for(pugi::xml_node_iterator lit = msgsnode.begin(); lit != msgsnode.end(); ++lit)
@@ -364,6 +377,7 @@ void LogicUIPazur::RestoreLists()
             QList<Message> list;
             for(pugi::xml_node_iterator mit = lit->begin(); mit != lit->end(); ++mit)
             {
+                qDebug() << mit->text().as_string();
                 char adr, ifs, x;
                 QByteArray dat;
                 QString str;
