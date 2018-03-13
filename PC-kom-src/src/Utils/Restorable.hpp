@@ -31,14 +31,15 @@ protected:
 
 
     int RestoreAsInt(QString name, int onFail);
+    unsigned int RestoreAsInt(QString name, unsigned int onFail);
     float RestoreAsFloat(QString name, float onFail);
     bool RestoreAsBool(QString name, bool onFail);
     QString RestoreAsString(QString name, QString onFail);
     QByteArray RestoreAsByteArray(QString name, QByteArray onFail);
 
 private:
-    QFile _file;
-    QTextStream _textStream;
+    QFile _file; // piach
+    QTextStream _textStream; // piach
     QString _className;
 };
 

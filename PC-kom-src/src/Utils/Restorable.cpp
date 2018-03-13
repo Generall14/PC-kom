@@ -75,6 +75,16 @@ int Restorable::RestoreAsInt(QString name, int onFail)
     return node.attribute(name.toStdString().c_str()).as_int(onFail);
 }
 
+unsigned int Restorable::RestoreAsInt(QString name, unsigned int onFail)
+{
+    pugi::xml_document* dok = GlobalXmlFile::get().root();
+    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    if(node.empty())
+        return onFail;
+
+    return node.attribute(name.toStdString().c_str()).as_uint(onFail);
+}
+
 float Restorable::RestoreAsFloat(QString name, float onFail)
 {
     pugi::xml_document* dok = GlobalXmlFile::get().root();
