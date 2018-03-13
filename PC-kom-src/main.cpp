@@ -11,7 +11,6 @@
 int main(int argc, char *argv[])
 {
 //    Factory::CreateExampleXML();
-    GlobalXmlFile::get();
 
     qRegisterMetaType<QSharedPointer<Frame> >("QSharedPointer<Frame>");
 

@@ -15,13 +15,6 @@ Restorable::Restorable(QString className):
  */
 bool Restorable::Store(QString fileName, QString textValue)
 {
-//    pugi::xml_document* dok = GlobalXmlFile::get().root();
-//    pugi::xml_node node = dok->child(_className.toStdString().c_str());
-//    if(node.empty())
-//        node = dok->append_child(_className.toStdString().c_str());
-//    node.remove_attribute(fileName.toStdString().c_str());
-//    node.append_attribute(fileName.toStdString().c_str()) = textValue.toStdString().c_str();
-
     _file.setFileName(fileName);
     if(_file.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly))
     {
@@ -67,8 +60,7 @@ void Restorable::StoreData(QString name, QByteArray value)
 
 int Restorable::RestoreAsInt(QString name, int onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 
@@ -77,8 +69,7 @@ int Restorable::RestoreAsInt(QString name, int onFail)
 
 unsigned int Restorable::RestoreAsInt(QString name, unsigned int onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 
@@ -87,19 +78,16 @@ unsigned int Restorable::RestoreAsInt(QString name, unsigned int onFail)
 
 float Restorable::RestoreAsFloat(QString name, float onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 
     return node.attribute(name.toStdString().c_str()).as_float(onFail);
-
 }
 
 bool Restorable::RestoreAsBool(QString name, bool onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 
@@ -108,8 +96,7 @@ bool Restorable::RestoreAsBool(QString name, bool onFail)
 
 QString Restorable::RestoreAsString(QString name, QString onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 
@@ -118,8 +105,7 @@ QString Restorable::RestoreAsString(QString name, QString onFail)
 
 QByteArray Restorable::RestoreAsByteArray(QString name, QByteArray onFail)
 {
-    pugi::xml_document* dok = GlobalXmlFile::get().root();
-    pugi::xml_node node = dok->child(_className.toStdString().c_str());
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
     if(node.empty())
         return onFail;
 

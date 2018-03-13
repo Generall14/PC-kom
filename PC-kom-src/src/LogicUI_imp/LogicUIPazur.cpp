@@ -289,12 +289,10 @@ void LogicUIPazur::MsgSetChanged()
 
 void LogicUIPazur::StoreLists()
 {
-    pugi::xml_document* xmldoc = GlobalXmlFile::get().root();
+    GlobalXmlFile::getMainNode().remove_child("Confirm-store");
+    GlobalXmlFile::getMainNode().remove_child("Message-store");
 
-    xmldoc->remove_child("Confirm-store");
-    xmldoc->remove_child("Message-store");
-
-    pugi::xml_node confsnode = xmldoc->append_child("Confirm-store");
+    pugi::xml_node confsnode = GlobalXmlFile::getMainNode().append_child("Confirm-store");
     for(int i=0;i<_cfs.size();++i)
     {
         QList<Confirm> list = _cfs.at(i);
@@ -310,7 +308,7 @@ void LogicUIPazur::StoreLists()
         }
     }
 
-    pugi::xml_node msgnode = xmldoc->append_child("Message-store");
+    pugi::xml_node msgnode = GlobalXmlFile::getMainNode().append_child("Message-store");
     for(int i=0;i<_msgs.size();++i)
     {
         QList<Message> list = _msgs.at(i);
@@ -335,10 +333,7 @@ void LogicUIPazur::StoreLists()
 
 void LogicUIPazur::RestoreLists()
 {
-    pugi::xml_document* xmldoc = GlobalXmlFile::get().root();
-    qDebug() << xmldoc->text().as_string();
-
-    pugi::xml_node confsnode = xmldoc->child("Confirm-store");
+    pugi::xml_node confsnode = GlobalXmlFile::getMainNode().child("Confirm-store");
     if(!confsnode.empty())
     {
         for(pugi::xml_node_iterator lit = confsnode.begin(); lit != confsnode.end(); ++lit)
@@ -356,7 +351,7 @@ void LogicUIPazur::RestoreLists()
         }
     }
 
-    pugi::xml_node msgsnode = xmldoc->child("Message-store");
+    pugi::xml_node msgsnode = GlobalXmlFile::getMainNode().child("Message-store");
     if(!msgsnode.empty())
     {
         for(pugi::xml_node_iterator lit = msgsnode.begin(); lit != msgsnode.end(); ++lit)
@@ -364,7 +359,6 @@ void LogicUIPazur::RestoreLists()
             QList<Message> list;
             for(pugi::xml_node_iterator mit = lit->begin(); mit != lit->end(); ++mit)
             {
-                qDebug() << mit->text().as_string();
                 char adr, ifs, x;
                 QByteArray dat;
                 QString str;

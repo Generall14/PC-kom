@@ -7,9 +7,7 @@ class GlobalXmlFile
 {
 public:
     ~GlobalXmlFile();
-    static GlobalXmlFile& get();
-
-    pugi::xml_document *root();
+    static pugi::xml_node getMainNode();
 
 private:
     GlobalXmlFile();

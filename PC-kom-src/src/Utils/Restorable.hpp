@@ -19,10 +19,9 @@ protected:
 
     template<typename T> void StoreData(QString name, T value)
     {
-        pugi::xml_document* dok = GlobalXmlFile::get().root();
-        pugi::xml_node node = dok->child(_className.toStdString().c_str());
+        pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
         if(node.empty())
-            node = dok->append_child(_className.toStdString().c_str());
+            node = GlobalXmlFile::getMainNode().append_child(_className.toStdString().c_str());
         node.remove_attribute(name.toStdString().c_str());
         node.append_attribute(name.toStdString().c_str()) = value;
     }

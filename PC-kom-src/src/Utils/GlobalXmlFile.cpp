@@ -4,6 +4,9 @@
 GlobalXmlFile::GlobalXmlFile()
 {
     file.load_file("configs/GlobalConfigFile.xml");
+    pugi::xml_node r = file.child("GlobalXmlFile");
+    if(r.empty())
+        file.append_child("GlobalXmlFile");
     qDebug() << "Konstruktor";
 }
 
@@ -13,13 +16,8 @@ GlobalXmlFile::~GlobalXmlFile()
     qDebug() << "Destruktor";
 }
 
-GlobalXmlFile& GlobalXmlFile::get()
+pugi::xml_node GlobalXmlFile::getMainNode()
 {
     static GlobalXmlFile instance;
-    return instance;
-}
-
-pugi::xml_document *GlobalXmlFile::root()
-{
-    return &file;
+    return instance.file.child("GlobalXmlFile");
 }
