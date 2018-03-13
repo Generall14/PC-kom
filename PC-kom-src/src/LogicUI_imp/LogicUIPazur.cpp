@@ -18,7 +18,10 @@ LogicUIPazur::LogicUIPazur(QFrame* parent):
     Desc::description = "LogicUIPazur";
 
     qDebug() << RestoreAsInt("X1", -1);
-    qDebug() << RestoreAsInt("X7", -1);
+    qDebug() << RestoreAsFloat("X2", -1);
+    qDebug() << RestoreAsBool("X5", false);
+    qDebug() << RestoreAsString("X3", "nic");
+    qDebug() << RestoreAsByteArray("X4", QByteArray());
 }
 
 LogicUIPazur::~LogicUIPazur()
@@ -34,10 +37,12 @@ LogicUIPazur::~LogicUIPazur()
     a.append(0x01);
     a.append(0x02);
     a.append(0x03);
+    qDebug() << a;
     StoreData("X1", 2);
     StoreData("X2", 3.14);
     StoreData("X3", s);
     StoreData("X4", a);
+    StoreData("X5", true);
 
     StoreLists();
 

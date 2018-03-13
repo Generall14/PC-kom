@@ -31,6 +31,10 @@ protected:
 
 
     int RestoreAsInt(QString name, int onFail);
+    float RestoreAsFloat(QString name, float onFail);
+    bool RestoreAsBool(QString name, bool onFail);
+    QString RestoreAsString(QString name, QString onFail);
+    QByteArray RestoreAsByteArray(QString name, QByteArray onFail);
 
 private:
     QFile _file;
