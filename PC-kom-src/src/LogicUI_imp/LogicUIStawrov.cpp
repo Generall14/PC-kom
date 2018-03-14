@@ -432,7 +432,7 @@ void LogicUIStawrov::makeRESET_MASTER()
 void LogicUIStawrov::makeSET_HIGH_VOLTAGE()
 {
     ograniczHV("");
-    int hvval = leHV->text().toInt(NULL, 16);
+    int hvval = leHV->text().toInt(nullptr, 16);
     QByteArray temp;
     temp.append(0x05);
     bool ok;
@@ -450,8 +450,8 @@ void LogicUIStawrov::makeSET_HIGH_VOLTAGE()
 
 void LogicUIStawrov::makeSET_GAIN_OFFSET_AND_TRIGGER()
 {
-    int offval = leOFFSET->text().toInt(NULL, 16);
-    int trival = leTRIGGER->text().toInt(NULL, 16);
+    int offval = leOFFSET->text().toInt(nullptr, 16);
+    int trival = leTRIGGER->text().toInt(nullptr, 16);
     QByteArray temp;
     temp.append(0x06);
     bool ok;
@@ -484,7 +484,7 @@ void LogicUIStawrov::makeSET_CHANNELS()
     QStringList vals = inString.split(' ');
     values.clear();
     for(QString str: vals)
-        values.append(str.toInt(NULL, 16));
+        values.append(str.toInt(nullptr, 16));
     if(values.isEmpty())
     {
         emit Error("Brak zakresów");

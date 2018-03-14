@@ -43,7 +43,7 @@ signals:
     void WritePureData(QByteArray data);                                                /**<Żądanie wysłania czystych danych*/
 
 protected:
-    QFrame* cParent=NULL;                                                               /**<Wskaźnik na podstawę interfejsu użytkownika*/
+    QFrame* cParent=nullptr;                                                               /**<Wskaźnik na podstawę interfejsu użytkownika*/
 };
 
 #endif

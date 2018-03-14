@@ -34,7 +34,7 @@ signals:
     void Error(QString msg);                                                            /**<Informowanie o błędzie*/
 
 protected:
-    QFrame* cParent=NULL;                                                               /**<Wskaźnik na podstawę interfejsu użytkownika*/
+    QFrame* cParent=nullptr;                                                               /**<Wskaźnik na podstawę interfejsu użytkownika*/
 };
 
 #endif

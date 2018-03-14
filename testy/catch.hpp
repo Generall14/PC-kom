@@ -1282,7 +1282,7 @@ namespace Catch {
         {}
     };
 
-    // Specialised comparison functions to handle equality comparisons between ints and pointers (NULL deduces as an int)
+    // Specialised comparison functions to handle equality comparisons between ints and pointers (nullptr deduces as an int)
     template<typename LhsT, typename RhsT>
     auto compareEqual( LhsT const& lhs, RhsT const& rhs ) -> bool { return static_cast<bool>(lhs == rhs); }
     template<typename T>
@@ -9122,11 +9122,11 @@ namespace Catch {
         char **utf8Argv = new char *[ argc ];
 
         for ( int i = 0; i < argc; ++i ) {
-            int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, NULL, 0, NULL, NULL );
+            int bufSize = WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, nullptr, 0, nullptr, nullptr );
 
             utf8Argv[ i ] = new char[ bufSize ];
 
-            WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, NULL, NULL );
+            WideCharToMultiByte( CP_UTF8, 0, argv[i], -1, utf8Argv[i], bufSize, nullptr, nullptr );
         }
 
         int returnCode = run( argc, utf8Argv );

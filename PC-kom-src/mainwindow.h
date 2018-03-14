@@ -30,17 +30,17 @@ public:
     ~MainWindow();
 
 private:
-    QFrame* frameMedium = NULL;
-    QFrame* frameLogicUI = NULL;
-    QFrame* frameLogUI = NULL;
+    QFrame* frameMedium = nullptr;
+    QFrame* frameLogicUI = nullptr;
+    QFrame* frameLogUI = nullptr;
 
-    MediumUI* mediumUI = NULL;
-    Mendium* mendium = NULL;
-    LogicUI* logicUI = NULL;
-    FrameBuilder* frameBuilder = NULL;
-    LogUI* logUI = NULL;
-    LogFile* logFile = NULL;
-    LogFormater* logFormater = NULL;
+    MediumUI* mediumUI = nullptr;
+    Mendium* mendium = nullptr;
+    LogicUI* logicUI = nullptr;
+    FrameBuilder* frameBuilder = nullptr;
+    LogUI* logUI = nullptr;
+    LogFile* logFile = nullptr;
+    LogFormater* logFormater = nullptr;
 
     void InitGUI();
     void InitStructure();

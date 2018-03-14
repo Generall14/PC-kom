@@ -14,7 +14,7 @@ class STawrovLogger : public QObject
 {
     Q_OBJECT
 public:
-    STawrovLogger(QObject* parent = NULL);
+    STawrovLogger(QObject* parent = nullptr);
     ~STawrovLogger();
     void Reset(QString fileName);
 

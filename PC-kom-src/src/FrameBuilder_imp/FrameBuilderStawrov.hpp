@@ -21,7 +21,7 @@ public slots:
 
 protected:
     virtual void Run();
-    QTimer* timer = NULL;
+    QTimer* timer = nullptr;
     QByteArray recievedbuf;
 
 protected slots:

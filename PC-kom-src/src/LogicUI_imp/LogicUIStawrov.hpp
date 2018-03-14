@@ -56,29 +56,29 @@ protected:
     void InitTests();
     void LoadConfigs();
 
-    QVBoxLayout* mainLay = NULL;
+    QVBoxLayout* mainLay = nullptr;
 
-    QPushButton* btn = NULL;
-    QPushButton* btnE = NULL;
+    QPushButton* btn = nullptr;
+    QPushButton* btnE = nullptr;
 
-    QLineEdit* leAdr = NULL;
-    QLineEdit* leData = NULL;
+    QLineEdit* leAdr = nullptr;
+    QLineEdit* leData = nullptr;
 
-    STawrovLogger* logg = NULL;
+    STawrovLogger* logg = nullptr;
 
-    QLabel* statusLabel = NULL;
-    QLabel* fileLabel = NULL;
-    QLabel* channelsLabel = NULL;
-    QLineEdit* fileAdr = NULL;
+    QLabel* statusLabel = nullptr;
+    QLabel* fileLabel = nullptr;
+    QLabel* channelsLabel = nullptr;
+    QLineEdit* fileAdr = nullptr;
 
-    QLineEdit* leHV = NULL;
-    QLineEdit* leMaxHV = NULL;
-    QLineEdit* leOFFSET = NULL;
-    QLineEdit* leTRIGGER = NULL;
+    QLineEdit* leHV = nullptr;
+    QLineEdit* leMaxHV = nullptr;
+    QLineEdit* leOFFSET = nullptr;
+    QLineEdit* leTRIGGER = nullptr;
     QLineEdit* leKANALY = nullptr;
 
-    QLineEdit* lekAdr = NULL;
-    QLineEdit* lekAdrLoc = NULL;
+    QLineEdit* lekAdr = nullptr;
+    QLineEdit* lekAdrLoc = nullptr;
 
     QComboBox* kcbox = nullptr;
     QCheckBox* rozniczkowanie = nullptr;

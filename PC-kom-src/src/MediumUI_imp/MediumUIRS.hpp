@@ -22,11 +22,11 @@ public slots:
     virtual void Disconnected();
 
 protected:
-    QComboBox* portBox = NULL;
-    QComboBox* speedBox = NULL;
-    QPushButton* refreshButton = NULL;
-    QPushButton* connectButton = NULL;
-    QPushButton* disconnectButton = NULL;
+    QComboBox* portBox = nullptr;
+    QComboBox* speedBox = nullptr;
+    QPushButton* refreshButton = nullptr;
+    QPushButton* connectButton = nullptr;
+    QPushButton* disconnectButton = nullptr;
 
     void LoadConfigs();
 

@@ -23,8 +23,8 @@ private slots:
     void makeStupidError();
 
 protected:
-    QPushButton* btn = NULL;
-    QPushButton* btnE = NULL;
+    QPushButton* btn = nullptr;
+    QPushButton* btnE = nullptr;
 };
 
 #endif

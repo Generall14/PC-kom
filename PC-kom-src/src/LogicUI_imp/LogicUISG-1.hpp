@@ -50,58 +50,58 @@ protected:
 
     int errorCounter = 0;
 
-    QFrame* dbgFrame = NULL;
-    QFrame* calFrame = NULL;
+    QFrame* dbgFrame = nullptr;
+    QFrame* calFrame = nullptr;
 
     //debug:
-    QLabel* lblHello = NULL;
-    QLabel* lblCounts = NULL;
-    QLabel* lblTemp = NULL;
-    QLabel* lblZatk = NULL;
-    QLabel* lblLevels = NULL;
-    QLabel* lblVSiPM = NULL;
-    QLabel* lblVbr = NULL;
-    QLabel* lblVBat = NULL;
+    QLabel* lblHello = nullptr;
+    QLabel* lblCounts = nullptr;
+    QLabel* lblTemp = nullptr;
+    QLabel* lblZatk = nullptr;
+    QLabel* lblLevels = nullptr;
+    QLabel* lblVSiPM = nullptr;
+    QLabel* lblVbr = nullptr;
+    QLabel* lblVBat = nullptr;
 
-    QCheckBox* chkCounts = NULL;
-    QCheckBox* chkTemp = NULL;
-    QCheckBox* chkZatk = NULL;
-    QCheckBox* chkLevels = NULL;
-    QCheckBox* chkVSiPM = NULL;
-    QCheckBox* chkACal = NULL;
+    QCheckBox* chkCounts = nullptr;
+    QCheckBox* chkTemp = nullptr;
+    QCheckBox* chkZatk = nullptr;
+    QCheckBox* chkLevels = nullptr;
+    QCheckBox* chkVSiPM = nullptr;
+    QCheckBox* chkACal = nullptr;
 
     QVector<QSpinBox*> calV;
-    QSpinBox* baseV = NULL;
-    QSpinBox* tempOffset = NULL;
+    QSpinBox* baseV = nullptr;
+    QSpinBox* tempOffset = nullptr;
 
-    QLabel* errorLabel = NULL;
+    QLabel* errorLabel = nullptr;
     QPalette errorPalette;
     QPalette standardPalette;
 
-    QSpinBox* chkDAC = NULL;
+    QSpinBox* chkDAC = nullptr;
 
-    QSpinBox* readOffset = NULL;
-    QSpinBox* writeOffset = NULL;
-    QSpinBox* writeData = NULL;
+    QSpinBox* readOffset = nullptr;
+    QSpinBox* writeOffset = nullptr;
+    QSpinBox* writeData = nullptr;
 
     //kalibracja:
-    QSpinBox* chkProbki = NULL;
-    QRadioButton* rbtImp = NULL;
-    QRadioButton* rbtRap = NULL;
-    QCheckBox* chkContin = NULL;
-    QPushButton* btnStop = NULL;
-    QPushButton* btnStart = NULL;
+    QSpinBox* chkProbki = nullptr;
+    QRadioButton* rbtImp = nullptr;
+    QRadioButton* rbtRap = nullptr;
+    QCheckBox* chkContin = nullptr;
+    QPushButton* btnStop = nullptr;
+    QPushButton* btnStart = nullptr;
 
-    QLabel* mPomiar = NULL;
-    QLabel* sPomiar = NULL;
-    QLabel* oPomiar = NULL;
-    QLabel* pPomiar = NULL;
-    QProgressBar* progressBar = NULL;
+    QLabel* mPomiar = nullptr;
+    QLabel* sPomiar = nullptr;
+    QLabel* oPomiar = nullptr;
+    QLabel* pPomiar = nullptr;
+    QProgressBar* progressBar = nullptr;
 
-    QListWidget* lstKal = NULL;
+    QListWidget* lstKal = nullptr;
 
     QVector<QSpinBox*> calDst;
-    QComboBox* cmbMetoda = NULL;
+    QComboBox* cmbMetoda = nullptr;
 
     QByteArray data;
 

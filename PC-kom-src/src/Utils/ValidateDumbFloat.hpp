@@ -9,7 +9,7 @@ class ValidateDumbFloat : public QValidator
 {
     Q_OBJECT
 public:
-    ValidateDumbFloat(QObject* parent = NULL);
+    ValidateDumbFloat(QObject* parent = nullptr);
 
     virtual State validate(QString &input, int&) const;
 

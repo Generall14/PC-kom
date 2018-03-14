@@ -19,8 +19,8 @@ public slots:
     virtual void LogString(QString str, bool dirin);
 
 protected:
-    QLabel* inLabel = NULL;
-    QLabel* outLabel = NULL;
+    QLabel* inLabel = nullptr;
+    QLabel* outLabel = nullptr;
 };
 
 #endif

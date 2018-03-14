@@ -22,7 +22,7 @@ class EQThread : public QThread
 {
     Q_OBJECT
 public:
-    EQThread(QObject* parent = NULL);
+    EQThread(QObject* parent = nullptr);
     virtual ~EQThread(){}
 
     void run() final;                                                                   /**<Główna pętla wątku*/
