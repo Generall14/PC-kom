@@ -73,11 +73,11 @@ QString FramePazur::toQString()
 
     if(isItOk)
     {
-        temp.append("\r\n");
+        temp.append("");
         temp.append(dispHeader());
         temp.append(_cfs.toQString());
         temp.append(_msgs.toQString());
-        temp.append("\r\n\r\n\r\n");
+        temp.append("\n\n");
     }
     else
     {

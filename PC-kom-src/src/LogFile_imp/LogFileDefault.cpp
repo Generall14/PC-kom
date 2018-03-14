@@ -25,6 +25,10 @@ LogFileDefault::~LogFileDefault()
 
 void LogFileDefault::LogString(QString str)
 {
+    QString templ = "=========================================== "+QDate::currentDate().toString("yyyy-MM-dd, ")+
+            QTime::currentTime().toString("HH:mm:ss/zzz")+":\n";
+    str.insert(0, templ);
+    str.append("\n\n");
     buffor.append(str);
     if(buffor.size()>BUFFOR_SIZE_TR)
         Flush();

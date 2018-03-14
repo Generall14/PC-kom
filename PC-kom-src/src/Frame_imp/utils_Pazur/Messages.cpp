@@ -77,19 +77,19 @@ QString Messages::toQString() const
 {
     if(!isEmpty)
     {
-        QString temp = "\r\n[Messages: ";
+        QString temp = "\n[Messages: ";
         if(!isValid)
         {
-            temp.append(errorMessage + "\r\n");
+            temp.append(errorMessage + "\n");
             for(auto ch: _dat)
                 temp.append(QString("0x%1 ").arg((uint)ch&0xFF, 2, 16, QChar('0')));
         }
         else
         {
             for(auto a: _msgs)
-                temp.push_back("\r\n\t( "+a.toQString()+" )");
+                temp.push_back("\n\t( "+a.toQString()+" )");
         }
-        temp.append("\r\n]");
+        temp.append("\n]");
         return temp;
     }
     else
