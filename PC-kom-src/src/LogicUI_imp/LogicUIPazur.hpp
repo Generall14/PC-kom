@@ -58,6 +58,7 @@ protected:
     QSpinBox* sbId = nullptr;
     QCheckBox* cbFast = nullptr;
     QCheckBox* cbIncrement = nullptr;
+    QCheckBox* cbKwitowanie = nullptr;
 
     QComboBox* cbcfgs = nullptr;
     QList<QList<Confirm> > _cfs;

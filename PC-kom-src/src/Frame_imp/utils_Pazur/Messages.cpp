@@ -57,6 +57,7 @@ Messages::Messages(QList<Message> msgs, uchar id):
     if(msgs.isEmpty())
     {
         isEmpty = true;
+        _dat.append(0xFF);
         return;
     }
 

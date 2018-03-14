@@ -26,6 +26,7 @@ LogicUIPazur::~LogicUIPazur()
     Store("sbId", sbId->value());
     Store("cbFast", cbFast->isChecked());
     Store("cbIncrement", cbIncrement->isChecked());
+    Store("cbKwitowanie", cbKwitowanie->isChecked());
 
     StoreLists();
 
@@ -40,6 +41,7 @@ void LogicUIPazur::LoadConfigs()
     sbId->setValue(RestoreAsInt("sbId", 0));
     cbFast->setChecked(RestoreAsBool("cbFast", false));
     cbIncrement->setChecked(RestoreAsBool("cbIncrement", true));
+    cbKwitowanie->setChecked(RestoreAsBool("cbKwitowanie", false));
 }
 
 void LogicUIPazur::Init()
@@ -101,6 +103,9 @@ void LogicUIPazur::InitGlobals()
     cbFast = new QCheckBox("Marker wymuszenia szybkiego obiegu");
     cbFast->setMinimumWidth(350);
     mainGlobalne->addWidget(cbFast);
+
+    cbKwitowanie = new QCheckBox("Kwitowanie");
+    mainGlobalne->addWidget(cbKwitowanie);
 
     QPushButton* btn = new QPushButton("Wyślij");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(Send()));
@@ -167,7 +172,7 @@ void LogicUIPazur::Send()
 {
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    FramePazur* t = new FramePazur( from, to, sbId->value(), cbFast->isChecked(), _cfsTable->getCurrent(), _msgTable->getCurrent() );
+    FramePazur* t = new FramePazur( from, to, sbId->value(), cbFast->isChecked(), _cfsTable->getCurrent(), _msgTable->getCurrent(), cbKwitowanie->isChecked());
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())
     {

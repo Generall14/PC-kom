@@ -16,7 +16,7 @@ FramePazur::FramePazur(QByteArray ba)
     }
 }
 
-FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm> cfs, QList<Message> msgs):
+FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm> cfs, QList<Message> msgs, bool kwitowanie):
     Frame(QByteArray()),
     _from(from),
     _to(to),
@@ -28,9 +28,14 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     _cfs = Confirms(cfs);
     _confs = cfs.size();
     _msgs = Messages(msgs, id);
-    _dataSize = _msgs.toPureData().size()-1;
-    if(_dataSize>0)
-        _dataSize++;
+    _dataSize = _msgs.toPureData().size();
+    if(_dataSize<=1)
+    {
+        if(kwitowanie)
+            _dataSize = 1;
+        else
+            _dataSize = 0;
+    }
     _crc10add = _msgs.addCrc10();
 
     pck.clear();
@@ -59,7 +64,8 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     pck.append(temp);
 
     pck.append(_cfs.toPureData());
-    pck.append(_msgs.toPureData());
+    if(_dataSize>1)
+        pck.append(_msgs.toPureData());
 }
 
 bool FramePazur::isValid()
@@ -147,7 +153,13 @@ QString FramePazur::dispHeader()
 {
     QString temp = "[";
     temp.append(QString("0x%1->0x%2").arg(_from, 2, 16, QChar('0')).arg(_to, 2, 16, QChar('0')));
-    temp.append(", conf: " + QString::number(_confs) + ", dat: " + QString::number(_dataSize));
+    temp.append(", conf: " + QString::number(_confs) + ", dat: ");
+    if(_dataSize==0xFF)
+        temp.append("0");
+    else if(_dataSize==0x00)
+        temp.append("K");
+    else
+        temp.append(QString::number(_dataSize));
     temp.append(", F: " + QString::number(_fast) + ", ID: " + QString::number(_id) + ", sl: " + QString::number(_crc10add) + "] ");
     return temp;
 }
