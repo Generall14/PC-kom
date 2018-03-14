@@ -1,5 +1,6 @@
 *.pro.user
 *.ico
 *.user*
+*.pdf
 doc_doxygen/
 stats/*

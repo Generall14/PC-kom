@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="2394.7085"
+   height="1693.2284"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.92.1 r15371"
+   version="1.0"
+   sodipodi:docname="PC-kom.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   style="display:inline">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.50000006"
+     inkscape:cx="944.7026"
+     inkscape:cy="1943.6916"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer4"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1023"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true"
+     inkscape:object-nodes="false"
+     inkscape:object-paths="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-intersection-paths="false"
+     inkscape:snap-grids="true"
+     inkscape:snap-midpoints="false"
+     units="mm"
+     inkscape:snap-nodes="true"
+     inkscape:snap-to-guides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3215"
+       visible="true"
+       enabled="true"
+       empspacing="5"
+       snapvisiblegridlinesonly="true"
+       originx="0"
+       originy="0"
+       spacingx="1.1377778"
+       spacingy="1.1377778" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:description>Ed 1.a - korekta literówki &quot;władzie&quot;
+Ed 1.b - opis fałszywek na JC,
+- zamaskowanie niemontowanych
+- dodanie warna przy montażu</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Warstwa#1"
+     transform="translate(0,495.87404)"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="ramka"
+     style="display:inline"
+     transform="translate(0,495.87404)">
+    <g
+       id="g3019"
+       transform="translate(233.24445,25.600037)">
+      <text
+         id="text2985"
+         y="-1161.2704"
+         x="417.34479"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="-1161.2704"
+           x="417.34479"
+           id="tspan2983"
+           sodipodi:role="line">MainWindow</tspan></text>
+      <text
+         id="text2989"
+         y="-1144.0526"
+         x="368.7309"
+         style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="-1144.0526"
+           x="368.7309"
+           id="tspan2987"
+           sodipodi:role="line">ErrorMessage(QString)</tspan></text>
+      <text
+         id="text2993"
+         y="-1115.6082"
+         x="532.86493"
+         style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="-1115.6082"
+           x="532.86493"
+           id="tspan2991"
+           sodipodi:role="line">FakeDiscinnect()</tspan></text>
+      <text
+         id="text2997"
+         y="-1087.1742"
+         x="586.36493"
+         style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         xml:space="preserve"><tspan
+           y="-1087.1742"
+           x="586.36493"
+           id="tspan2995"
+           sodipodi:role="line">HALT()</tspan></text>
+      <rect
+         y="-1180.6013"
+         x="352.71112"
+         height="108.08896"
+         width="284.44446"
+         id="rect2999"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3001"
+         d="m 352.60757,-1157.8457 v 22.7555 l 11.37777,-11.3778 z"
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 625.67424,-1129.4012 v 22.7555 l 11.37777,-11.3778 z"
+         id="path3003"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3005"
+         d="m 625.67424,-1100.9568 v 22.7555 l 11.37777,-11.3778 z"
+         style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g3045"
+       transform="translate(172.47732,450.42231)">
+      <g
+         id="g3107">
+        <g
+           id="g3654">
+          <g
+             id="g3614">
+            <text
+               id="text3023"
+               y="-1190.2148"
+               x="412.14291"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1190.2148"
+                 x="412.14291"
+                 id="tspan3021"
+                 sodipodi:role="line">FrameBuilder</tspan></text>
+            <rect
+               y="-1209.5458"
+               x="351.50403"
+               height="253.65556"
+               width="285.65155"
+               id="rect3037"
+               style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+               rx="0"
+               ry="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3039"
+               d="m 352.00402,-1158.3457 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 625.67424,-1069.6679 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3041"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3043"
+               d="m 625.67424,-1041.2235 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 352.00402,-1129.9013 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3047"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3049"
+               d="m 352.00402,-1101.4569 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 625.67424,-1012.779 v 22.75546 l 11.37777,-11.37776 z"
+               id="path3051"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3053"
+               d="m 625.67424,-984.33457 v 22.75546 l 11.37777,-11.37776 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <text
+               id="text3057"
+               y="-1143.4978"
+               x="368.12735"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1143.4978"
+                 x="368.12735"
+                 id="tspan3055"
+                 sodipodi:role="line">ByteReaded(QByteArray)</tspan></text>
+            <text
+               id="text3061"
+               y="-1114.2408"
+               x="368.12735"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1114.2408"
+                 x="368.12735"
+                 id="tspan3059"
+                 sodipodi:role="line">FrameWrite(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3065"
+               y="-1086.609"
+               x="368.12735"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1086.609"
+                 x="368.12735"
+                 id="tspan3063"
+                 sodipodi:role="line">PureDataWrite(QByteArray)</tspan></text>
+            <text
+               id="text3069"
+               y="-1055.8749"
+               x="449.92743"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1055.8749"
+                 x="449.92743"
+                 id="tspan3067"
+                 sodipodi:role="line">Write(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3073"
+               y="-1027.4304"
+               x="404.67743"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1027.4304"
+                 x="404.67743"
+                 id="tspan3071"
+                 sodipodi:role="line">FrameReaded(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3077"
+               y="-998.98602"
+               x="404.11493"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-998.98602"
+                 x="404.11493"
+                 id="tspan3075"
+                 sodipodi:role="line">IgnoredFrame(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3081"
+               y="-970.54156"
+               x="546.3858"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-970.54156"
+                 x="546.3858"
+                 id="tspan3079"
+                 sodipodi:role="line">Error(QString)</tspan></text>
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 351.40047,-1186.7902 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3581"
+               inkscape:connector-curvature="0" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="367.86755"
+               y="-1173.0076"
+               id="text3585"><tspan
+                 sodipodi:role="line"
+                 id="tspan3583"
+                 x="367.86755"
+                 y="-1173.0076">Stop()</tspan></text>
+          </g>
+          <text
+             id="text3618"
+             y="-1195.6562"
+             x="596.06989"
+             style="font-style:normal;font-weight:normal;font-size:8px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1195.6562"
+               x="596.06989"
+               id="tspan3616"
+               sodipodi:role="line">(Thread)</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g
+       id="g3133"
+       transform="translate(1052.4445,586.20564)">
+      <g
+         id="g3152">
+        <text
+           id="text3111"
+           y="-1161.6459"
+           x="450.23602"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+           xml:space="preserve"><tspan
+             y="-1161.6459"
+             x="450.23602"
+             id="tspan3109"
+             sodipodi:role="line">LogFile</tspan></text>
+        <rect
+           y="-1180.6013"
+           x="352.71112"
+           height="79.144447"
+           width="283.84088"
+           id="rect3125"
+           style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path3127"
+           d="m 352.60757,-1157.8457 v 22.7555 l 11.37777,-11.3778 z"
+           style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 625.67424,-1129.4012 v 22.7555 l 11.37777,-11.3778 z"
+           id="path3129"
+           inkscape:connector-curvature="0" />
+        <text
+           id="text3137"
+           y="-1143.4978"
+           x="368.12735"
+           style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+           xml:space="preserve"><tspan
+             y="-1143.4978"
+             x="368.12735"
+             id="tspan3135"
+             sodipodi:role="line">LogString(QString)</tspan></text>
+        <text
+           id="text3141"
+           y="-1116.1083"
+           x="545.78223"
+           style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+           xml:space="preserve"><tspan
+             y="-1116.1083"
+             x="545.78223"
+             id="tspan3139"
+             sodipodi:role="line">Error(QString)</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g3249"
+       transform="translate(301.51112,574.32778)">
+      <g
+         id="g3204"
+         transform="translate(364.69244,137.03341)">
+        <g
+           id="g3202">
+          <text
+             id="text3156"
+             y="-1158.5607"
+             x="416.22562"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1158.5607"
+               x="416.22562"
+               id="tspan3154"
+               sodipodi:role="line">LogFormater</tspan></text>
+          <rect
+             y="-1180.6013"
+             x="352.71112"
+             height="192.92223"
+             width="283.84091"
+             id="rect3158"
+             style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path3160"
+             d="m 352.00402,-1158.3457 v 22.7555 l 11.37777,-11.3778 z"
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 625.0707,-1073.0124 v 22.7555 l 11.37777,-11.3778 z"
+             id="path3162"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path3164"
+             d="m 625.0707,-1044.568 v 22.7555 l 11.37777,-11.3778 z"
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 352.00402,-1129.9013 v 22.7555 l 11.37777,-11.3778 z"
+             id="path3166"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path3168"
+             d="m 352.00402,-1101.4569 v 22.7555 l 11.37777,-11.3778 z"
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path3172"
+             d="m 625.0707,-1016.1235 v 22.75546 l 11.37777,-11.37776 z"
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <text
+             id="text3200"
+             y="-1002.3305"
+             x="545.78223"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1002.3305"
+               x="545.78223"
+               id="tspan3198"
+               sodipodi:role="line">Error(QString)</tspan></text>
+          <text
+             id="text3208"
+             y="-1142.6853"
+             x="368.12738"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1142.6853"
+               x="368.12738"
+               id="tspan3206"
+               sodipodi:role="line">FrameWrite(QSharedPointer&lt;Frame&gt;)</tspan></text>
+          <text
+             id="text3212"
+             y="-1114.2408"
+             x="368.12738"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1114.2408"
+               x="368.12738"
+               id="tspan3210"
+               sodipodi:role="line">FrameReaded(QSharedPointer&lt;Frame&gt;)</tspan></text>
+          <text
+             id="text3216"
+             y="-1086.609"
+             x="368.12738"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1086.609"
+               x="368.12738"
+               id="tspan3214"
+               sodipodi:role="line">FrameIgnored(QSharedPointer&lt;Frame&gt;)</tspan></text>
+          <text
+             id="text3220"
+             y="-1059.2194"
+             x="503.07388"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1059.2194"
+               x="503.07388"
+               id="tspan3218"
+               sodipodi:role="line">LogFileString(QString)</tspan></text>
+          <text
+             id="text3224"
+             y="-1030.7749"
+             x="480.40723"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1030.7749"
+               x="480.40723"
+               id="tspan3222"
+               sodipodi:role="line">LogUIString(QString, bool)</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g
+       id="g3297"
+       transform="translate(330.55912,-4.0859372e-6)">
+      <g
+         transform="translate(364.69244,137.03341)"
+         id="g3295">
+        <g
+           id="g3293">
+          <g
+             id="g3340">
+            <text
+               id="text3253"
+               y="-1163.9215"
+               x="449.3252"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1163.9215"
+                 x="449.3252"
+                 id="tspan3251"
+                 sodipodi:role="line">LogicUI</tspan></text>
+            <rect
+               y="-1180.6013"
+               x="352.71112"
+               height="192.92223"
+               width="283.84091"
+               id="rect3255"
+               style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3257"
+               d="m 352.00402,-1158.3457 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 625.0707,-1073.0124 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3259"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3261"
+               d="m 625.0707,-1044.568 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 352.00402,-1129.9013 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3263"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3265"
+               d="m 352.00402,-1101.4569 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3267"
+               d="m 625.0707,-1016.1235 v 22.75546 l 11.37777,-11.37776 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <text
+               id="text3271"
+               y="-1002.3305"
+               x="545.78223"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1002.3305"
+                 x="545.78223"
+                 id="tspan3269"
+                 sodipodi:role="line">Error(QString)</tspan></text>
+            <text
+               id="text3301"
+               y="-1142.6853"
+               x="367.97171"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1142.6853"
+                 x="367.97171"
+                 id="tspan3299"
+                 sodipodi:role="line">Connected()</tspan></text>
+            <text
+               id="text3305"
+               y="-1114.2408"
+               x="367.5238"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1114.2408"
+                 x="367.5238"
+                 id="tspan3303"
+                 sodipodi:role="line">Disconnected()</tspan></text>
+            <text
+               id="text3309"
+               y="-1085.7965"
+               x="367.5238"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1085.7965"
+                 x="367.5238"
+                 id="tspan3307"
+                 sodipodi:role="line">FrameReaded(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3313"
+               y="-1059.2194"
+               x="415.44949"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1059.2194"
+                 x="415.44949"
+                 id="tspan3311"
+                 sodipodi:role="line">WriteFrame(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               id="text3317"
+               y="-1030.7749"
+               x="472.55365"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               xml:space="preserve"><tspan
+                 y="-1030.7749"
+                 x="472.55365"
+                 id="tspan3315"
+                 sodipodi:role="line">WritePureData(QByteArray)</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+       transform="translate(1302.7556,768.25008)"
+       id="g3362">
+      <g
+         id="g3360">
+        <g
+           id="g3377">
+          <text
+             id="text3344"
+             y="-1164.2496"
+             x="459.92874"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1164.2496"
+               x="459.92874"
+               id="tspan3342"
+               sodipodi:role="line">LogUI</tspan></text>
+          <rect
+             y="-1180.6013"
+             x="352.71112"
+             height="79.144447"
+             width="283.84088"
+             id="rect3346"
+             style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path3348"
+             d="m 352.60757,-1157.8457 v 22.7555 l 11.37777,-11.3778 z"
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 625.67424,-1129.4012 v 22.7555 l 11.37777,-11.3778 z"
+             id="path3350"
+             inkscape:connector-curvature="0" />
+          <text
+             id="text3358"
+             y="-1116.1083"
+             x="545.78223"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1116.1083"
+               x="545.78223"
+               id="tspan3356"
+               sodipodi:role="line">Error(QString)</tspan></text>
+          <text
+             id="text3366"
+             y="-1143.4978"
+             x="368.12735"
+             style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+             xml:space="preserve"><tspan
+               y="-1143.4978"
+               x="368.12735"
+               id="tspan3364"
+               sodipodi:role="line">LogString(QString, bool)</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g
+       id="g3459"
+       transform="translate(-1024,-227.55556)">
+      <g
+         id="g3427"
+         transform="translate(330.55912,238.93333)">
+        <g
+           transform="translate(364.69244,137.03341)"
+           id="g3425">
+          <g
+             id="g3423">
+            <g
+               id="g3421">
+              <text
+                 id="text3381"
+                 y="-1161.7704"
+                 x="433.2002"
+                 style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1161.7704"
+                   x="433.2002"
+                   id="tspan3379"
+                   sodipodi:role="line">MediumUI</tspan></text>
+              <rect
+                 y="-1180.6013"
+                 x="352.71112"
+                 height="164.47778"
+                 width="283.84088"
+                 id="rect3383"
+                 style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+              <path
+                 inkscape:connector-curvature="0"
+                 id="path3385"
+                 d="m 352.00402,-1158.3457 v 22.7555 l 11.37777,-11.3778 z"
+                 style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+              <path
+                 style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                 d="m 625.0707,-1073.0124 v 22.7555 l 11.37777,-11.3778 z"
+                 id="path3387"
+                 inkscape:connector-curvature="0" />
+              <path
+                 inkscape:connector-curvature="0"
+                 id="path3389"
+                 d="m 625.0707,-1044.568 v 22.7555 l 11.37777,-11.3778 z"
+                 style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+              <path
+                 style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                 d="m 352.00402,-1129.9013 v 22.7555 l 11.37777,-11.3778 z"
+                 id="path3391"
+                 inkscape:connector-curvature="0" />
+              <path
+                 inkscape:connector-curvature="0"
+                 id="path3395"
+                 d="m 624.46714,-1101.4568 v 22.7554 l 11.37777,-11.3777 z"
+                 style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+              <text
+                 id="text3399"
+                 y="-1030.7749"
+                 x="545.17865"
+                 style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1030.7749"
+                   x="545.17865"
+                   id="tspan3397"
+                   sodipodi:role="line">Error(QString)</tspan></text>
+              <text
+                 id="text3403"
+                 y="-1142.6853"
+                 x="367.97171"
+                 style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1142.6853"
+                   x="367.97171"
+                   id="tspan3401"
+                   sodipodi:role="line">Connected()</tspan></text>
+              <text
+                 id="text3407"
+                 y="-1114.2408"
+                 x="367.5238"
+                 style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1114.2408"
+                   x="367.5238"
+                   id="tspan3405"
+                   sodipodi:role="line">Disconnected()</tspan></text>
+              <text
+                 id="text3431"
+                 y="-1087.6638"
+                 x="483.72034"
+                 style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1087.6638"
+                   x="483.72034"
+                   id="tspan3429"
+                   sodipodi:role="line">ConnectRequest(QString)</tspan></text>
+              <text
+                 id="text3435"
+                 y="-1059.2194"
+                 x="508.82449"
+                 style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+                 xml:space="preserve"><tspan
+                   y="-1059.2194"
+                   x="508.82449"
+                   id="tspan3433"
+                   sodipodi:role="line">DisconnectRequest()</tspan></text>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+       id="g3693"
+       transform="translate(-329.35201,34.133336)">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:8px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         x="926.02545"
+         y="-1121.7007"
+         id="text3622"
+         transform="translate(-328.74846,341.83341)"><tspan
+           sodipodi:role="line"
+           id="tspan3620"
+           x="926.02545"
+           y="-1121.7007">(Thread)</tspan></text>
+      <g
+         id="g3511"
+         transform="translate(1.207098,387.34452)">
+        <g
+           id="g3509">
+          <g
+             id="g3579">
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="438.10126"
+               y="-1161.7704"
+               id="text3463"><tspan
+                 sodipodi:role="line"
+                 id="tspan3461"
+                 x="438.10126"
+                 y="-1161.7704">Mendium</tspan></text>
+            <rect
+               style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+               id="rect3465"
+               width="284.44446"
+               height="283.94446"
+               x="352.71112"
+               y="-1180.6013" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 352.00402,-1158.3457 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3467"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3469"
+               d="m 624.46714,-925.10129 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 624.46714,-953.54573 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3471"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3473"
+               d="m 352.00402,-1129.9013 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 352.00402,-1101.4569 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3475"
+               inkscape:connector-curvature="0" />
+            <path
+               inkscape:connector-curvature="0"
+               id="path3477"
+               d="m 625.67424,-1012.779 v 22.75546 l 11.37777,-11.37776 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 625.67424,-984.33457 v 22.75546 l 11.37777,-11.37776 z"
+               id="path3479"
+               inkscape:connector-curvature="0" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="545.17865"
+               y="-911.30823"
+               id="text3507"><tspan
+                 sodipodi:role="line"
+                 id="tspan3505"
+                 x="545.17865"
+                 y="-911.30823">Error(QString)</tspan></text>
+            <path
+               inkscape:connector-curvature="0"
+               id="path3513"
+               d="m 351.40047,-1073.0124 v 22.7555 l 11.37777,-11.3778 z"
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+            <path
+               style="fill:#000000;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 351.40047,-1044.568 v 22.7555 l 11.37777,-11.3778 z"
+               id="path3515"
+               inkscape:connector-curvature="0" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="569.63702"
+               y="-996.6416"
+               id="text3519"><tspan
+                 sodipodi:role="line"
+                 id="tspan3517"
+                 x="569.63702"
+                 y="-996.6416">Opened()</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="575.63702"
+               y="-968.19714"
+               id="text3523"><tspan
+                 sodipodi:role="line"
+                 id="tspan3521"
+                 x="575.63702"
+                 y="-968.19714">Closed()</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="509.80368"
+               y="-939.75269"
+               id="text3527"><tspan
+                 sodipodi:role="line"
+                 id="tspan3525"
+                 x="509.80368"
+                 y="-939.75269">Readed(QByteArray)</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="367.86755"
+               y="-1144.5631"
+               id="text3531"><tspan
+                 sodipodi:role="line"
+                 id="tspan3529"
+                 x="367.86755"
+                 y="-1144.5631">Stop()</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="367.97174"
+               y="-1116.1083"
+               id="text3535"><tspan
+                 sodipodi:role="line"
+                 id="tspan3533"
+                 x="367.97174"
+                 y="-1116.1083">Open(QString)</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="367.97174"
+               y="-1087.6638"
+               id="text3539"><tspan
+                 sodipodi:role="line"
+                 id="tspan3537"
+                 x="367.97174"
+                 y="-1087.6638">Close()</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="368.21652"
+               y="-1059.2194"
+               id="text3543"><tspan
+                 sodipodi:role="line"
+                 id="tspan3541"
+                 x="368.21652"
+                 y="-1059.2194">Write(QSharedPointer&lt;Frame&gt;)</tspan></text>
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-weight:normal;font-size:10.66666698px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+               x="367.5238"
+               y="-1030.7749"
+               id="text3547"><tspan
+                 sodipodi:role="line"
+                 id="tspan3545"
+                 x="367.5238"
+                 y="-1030.7749">Flush()</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="ovrl"
+     style="display:none;opacity:0.45416667"
+     transform="translate(0,495.87404)" />
+</svg>
