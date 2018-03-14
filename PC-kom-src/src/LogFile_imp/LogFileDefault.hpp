@@ -24,7 +24,7 @@ protected:
     void Flush();
     QString GenerateFileName();
 
-    static const int MAX_FILE_BYTES = 100*1024;
+    static const int MAX_FILE_BYTES = 1*1024*1024;
     static const int BUFFOR_SIZE_TR = 20;
 };
 
