@@ -129,7 +129,7 @@ void FramePazur::parse()
 
     _dataSize = 0;
     _dataSize |= (pck.at(2)>>3)&0x1f;
-    _dataSize |= (pck.at(1)>>2)&0x60;
+    _dataSize |= (pck.at(1)>>1)&0x60;
     _dataSize -= 1;
 
     _confs = pck.at(2)&0x07;
