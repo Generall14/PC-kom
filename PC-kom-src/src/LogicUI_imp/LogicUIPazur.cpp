@@ -11,6 +11,7 @@
 #include "Utils/ValidateHex.hpp"
 #include "Utils/pugixml.hpp"
 #include "Utils/GlobalXmlFile.hpp"
+#include <QScrollArea>
 
 LogicUIPazur::LogicUIPazur(QFrame* parent):
     LogicUI(parent),
@@ -48,7 +49,6 @@ void LogicUIPazur::Init()
 
     InitGlobals();
     InitTabs();
-    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     LoadConfigs();
 }
@@ -103,12 +103,16 @@ void LogicUIPazur::InitGlobals()
 void LogicUIPazur::InitTabs()
 {
     tw = new QTabWidget();
+    tw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLay->addWidget(tw);
 
     QFrame* fr = new QFrame();
     _pure = new Pure(fr);
     connect(_pure, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
-    tw->addTab(fr, "Pure");
+    QScrollArea* sa = new QScrollArea();
+    sa->setWidget(fr);
+    sa->setWidgetResizable(true);
+    tw->addTab(sa, "Pure");
 }
 
 void LogicUIPazur::Connected()

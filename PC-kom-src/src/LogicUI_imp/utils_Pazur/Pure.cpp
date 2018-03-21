@@ -1,5 +1,6 @@
 #include "Pure.hpp"
 #include <QGroupBox>
+#include <QScrollArea>
 
 Pure::Pure(QFrame* parent):
     Restorable("LogicUIPazur"),
