@@ -109,6 +109,7 @@ void LogicUIPazur::InitTabs()
     QFrame* fr = new QFrame();
     _pure = new Pure(fr);
     connect(_pure, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
+    connect(_pure, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
     QScrollArea* sa = new QScrollArea();
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
