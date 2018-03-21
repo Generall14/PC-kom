@@ -14,6 +14,7 @@
 #include <QProgressBar>
 #include <QListWidget>
 #include <QComboBox>
+#include <QTabWidget>
 #include "../Factory.hpp"
 
 class LogicUISG1 : public LogicUI

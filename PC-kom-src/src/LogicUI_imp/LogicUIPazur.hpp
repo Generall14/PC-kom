@@ -15,6 +15,7 @@
 #include "../Utils/Restorable.hpp"
 #include "utils_Pazur/ConfsPacket.hpp"
 #include "utils_Pazur/MsgPacket.hpp"
+#include "utils_Pazur/Pure.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
 {
@@ -32,25 +33,12 @@ public slots:
 
 protected slots:
     void InitGlobals();
-    void InitConfirms();
-    void InitMessages();
+    void InitTabs();
 
-    void ConfsAddNewSet();
-    void ConfsReload();
-    void ConfsRemoveSet();
-    void ConfsSetChanged();
-
-    void MsgAddNewSet();
-    void MsgReload();
-    void MsgRemoveSet();
-    void MsgSetChanged();
-
-    void Send();
+    void Send(QList<Confirm> c, QList<Message> m);
 
 protected:
     void LoadConfigs();
-    void StoreLists();
-    void RestoreLists();
     QVBoxLayout* mainLay = nullptr;
 
     QLineEdit* leMyAdr = nullptr;
@@ -60,13 +48,8 @@ protected:
     QCheckBox* cbIncrement = nullptr;
     QCheckBox* cbKwitowanie = nullptr;
 
-    QComboBox* cbcfgs = nullptr;
-    QList<QList<Confirm> > _cfs;
-    ConfsPacket* _cfsTable = nullptr;
-
-    QComboBox* cbmsgs = nullptr;
-    QList<QList<Message> > _msgs;
-    MsgPacket* _msgTable = nullptr;
+    QTabWidget* tw = nullptr;
+    Pure* _pure = nullptr;
 };
 
 #endif
