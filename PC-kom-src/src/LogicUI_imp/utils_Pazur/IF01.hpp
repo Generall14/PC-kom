@@ -26,8 +26,7 @@ signals:
 
 protected slots:
     void InitRest();
-
-    void SendwiRDCONST();
+    void SendMessage(QByteArray arr);
 
 protected:
     void Init();

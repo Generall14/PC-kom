@@ -1,6 +1,7 @@
 #include "IF01.hpp"
 #include <QLabel>
 #include <QPushButton>
+#include "Frame_imp/utils_Pazur/PureMessage.hpp"
 
 IF01::IF01(QFrame* parent):
     Restorable("IF01"),
@@ -38,7 +39,7 @@ void IF01::InitRest()
     QHBoxLayout* wiRDCONSTLay = new QHBoxLayout();
     mainLay->addLayout(wiRDCONSTLay);
     QPushButton* pb = new QPushButton("wiRDCONST");
-    connect(pb, SIGNAL(clicked(bool)), this, SLOT(SendwiRDCONST()));
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(sbwiRDCONST->value()));});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wiRDCONSTLay->addWidget(pb);
@@ -63,7 +64,10 @@ void IF01::Init()
     LoadConfigs();
 }
 
-void IF01::SendwiRDCONST()
+void IF01::SendMessage(QByteArray arr)
 {
-
+    QList<Message> m;
+    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
+    m.append(Message(to, 1, arr));
+    emit Send(QList<Confirm>(), m);
 }
