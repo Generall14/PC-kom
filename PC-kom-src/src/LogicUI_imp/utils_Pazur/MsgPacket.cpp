@@ -67,7 +67,7 @@ void MsgPacket::SetActive(QList<QList<Message> > *msg, int active)
 
         QString str;
         for(auto a: dat)
-            str.append(QString::number((uint)a&0xFF, 16).toUpper()+" ");
+            str.append(QString("%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
         it = new QTableWidgetItem(str, 0);
         table->setItem(r, 3, it);
     }

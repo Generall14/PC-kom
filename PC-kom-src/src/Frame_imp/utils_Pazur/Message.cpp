@@ -1,4 +1,5 @@
 #include "Message.hpp"
+#include "PureMessage.hpp"
 
 Message::Message(QByteArray arr):
     _dat(arr)
@@ -53,9 +54,7 @@ QString Message::toQString() const
     {
         temp.append(QString("adr: 0x%1, size: 0x%2, if: ").arg((uint)_adr&0xFF, 2, 16, QChar('0')).arg((uint)_size&0xFF, 2, 16, QChar('0')));
         temp.append(QString::number(_ifs)+", x: "+QString::number(_x)+". ");
-        temp.append("Data: ");
-        for(int i =2;i<_dat.size();++i)
-            temp.append(QString("0x%1 ").arg((uint)_dat.at(i)&0xFF, 2, 16, QChar('0')));
+        temp.append(PureMessage(_dat).desc());
     }
     return temp;
 }

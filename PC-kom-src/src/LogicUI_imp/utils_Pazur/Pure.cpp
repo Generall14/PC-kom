@@ -199,7 +199,7 @@ void Pure::StoreLists()
             m.get(adr, ifs, dat, x);
             QString str;
             for(auto a: dat)
-                str.append(QString::number((uint)a&0xFF, 16).toUpper()+" ");
+                str.append(QString("%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
             pugi::xml_node msgnode = listnode.append_child(QString("message_"+QString::number(l)).toStdString().c_str());
             msgnode.append_attribute("adr") = adr;
             msgnode.append_attribute("ifs") = ifs;
