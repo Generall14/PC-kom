@@ -30,6 +30,7 @@ LogicUIPazur::~LogicUIPazur()
     Store("cbKwitowanie", cbKwitowanie->isChecked());
 
     delete _pure;
+    delete _if01;
 }
 
 void LogicUIPazur::LoadConfigs()
@@ -114,6 +115,15 @@ void LogicUIPazur::InitTabs()
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
     tw->addTab(sa, "Pure");
+
+    fr = new QFrame();
+    _if01 = new IF01(fr);
+    connect(_if01, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
+    connect(_if01, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    sa = new QScrollArea();
+    sa->setWidget(fr);
+    sa->setWidgetResizable(true);
+    tw->addTab(sa, "IF01");
 }
 
 void LogicUIPazur::Connected()

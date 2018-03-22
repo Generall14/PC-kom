@@ -82,7 +82,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_Pazur/MsgPacket.cpp \
     src/Utils/GlobalXmlFile.cpp \
     src/LogicUI_imp/utils_Pazur/Pure.cpp \
-    src/Frame_imp/utils_Pazur/PureMessage.cpp
+    src/Frame_imp/utils_Pazur/PureMessage.cpp \
+    src/LogicUI_imp/utils_Pazur/IF01.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -148,7 +149,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_Pazur/MsgPacket.hpp \
     src/Utils/GlobalXmlFile.hpp \
     src/LogicUI_imp/utils_Pazur/Pure.hpp \
-    src/Frame_imp/utils_Pazur/PureMessage.hpp
+    src/Frame_imp/utils_Pazur/PureMessage.hpp \
+    src/LogicUI_imp/utils_Pazur/IF01.hpp
 
 DISTFILES += \
     configs.xml \

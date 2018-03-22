@@ -16,6 +16,7 @@
 #include "utils_Pazur/ConfsPacket.hpp"
 #include "utils_Pazur/MsgPacket.hpp"
 #include "utils_Pazur/Pure.hpp"
+#include "utils_Pazur/IF01.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
 {
@@ -50,6 +51,7 @@ protected:
 
     QTabWidget* tw = nullptr;
     Pure* _pure = nullptr;
+    IF01* _if01 = nullptr;
 };
 
 #endif

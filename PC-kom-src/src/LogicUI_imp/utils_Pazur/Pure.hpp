@@ -19,8 +19,6 @@ public:
     Pure(QFrame* parent);
     ~Pure();
 
-    void Init();
-
 signals:
     void Error(QString msg);
     void Send(QList<Confirm> c, QList<Message> m);
@@ -42,6 +40,7 @@ protected slots:
 protected:
     void StoreLists();
     void RestoreLists();
+    void Init();
 
     QFrame* cParent=nullptr;
     QVBoxLayout* mainLay = nullptr;
