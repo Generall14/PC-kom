@@ -14,12 +14,16 @@ IF01::~IF01()
 {
     Store("leToAdr", leToAdr->text());
     Store("sbwiRDCONST", sbwiRDCONST->value());
+    Store("sbwiRDSECTION", sbwiRDSECTION->value());
+    Store("cbwiRDSECTION", cbwiRDSECTION->isChecked());
 }
 
 void IF01::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
     sbwiRDCONST->setValue(RestoreAsInt("sbwiRDCONST", 0));
+    sbwiRDSECTION->setValue(RestoreAsInt("sbwiRDSECTION", 0));
+    cbwiRDSECTION->setChecked(RestoreAsInt("cbwiRDSECTION", false));
 }
 
 void IF01::InitRest()
@@ -50,6 +54,23 @@ void IF01::InitRest()
     sbwiRDCONST->setMaximum(0xFFFFF);
     sbwiRDCONST->setMinimum(0);
     wiRDCONSTLay->addWidget(sbwiRDCONST);
+
+    QHBoxLayout* wiRDSECTIONLay = new QHBoxLayout();
+    mainLay->addLayout(wiRDSECTIONLay);
+    pb = new QPushButton("wiRDSECTION(dev)");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDSECTION_dev(sbwiRDSECTION->value(), cbwiRDSECTION->isChecked()));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wiRDSECTIONLay->addWidget(pb);
+    wiRDSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbwiRDSECTION = new QCheckBox("Prot");
+    wiRDSECTIONLay->addWidget(cbwiRDSECTION);
+    lab = new QLabel("Nr:");
+    wiRDSECTIONLay->addWidget(lab);
+    sbwiRDSECTION = new QSpinBox();
+    sbwiRDSECTION->setMaximum(0x3F);
+    sbwiRDSECTION->setMinimum(0);
+    wiRDSECTIONLay->addWidget(sbwiRDSECTION);
 }
 
 void IF01::Init()

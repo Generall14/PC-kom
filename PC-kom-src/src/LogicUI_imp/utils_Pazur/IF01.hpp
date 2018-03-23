@@ -12,6 +12,7 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QCheckBox>
 
 class IF01 : public QObject, public Restorable
 {
@@ -37,6 +38,9 @@ protected:
     QLineEdit* leToAdr = nullptr;
 
     QSpinBox* sbwiRDCONST = nullptr;
+
+    QSpinBox* sbwiRDSECTION = nullptr;
+    QCheckBox* cbwiRDSECTION = nullptr;
 };
 
 #endif

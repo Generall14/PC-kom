@@ -23,7 +23,7 @@ QString PureMessage::desc() const
         uchar code01 = _arr.at(2)&0x0F;
         switch (code01)
         {
-        case 0x00:
+        case wiRDCONST_c:
         {
             if(_arr.size()!=5)
                 break;
@@ -35,7 +35,7 @@ QString PureMessage::desc() const
             done = true;
             break;
         }
-        case 0x01:
+        case wiRDCONSTo_c:
         {
             if(_arr.size()<5)
                 break;
@@ -48,6 +48,44 @@ QString PureMessage::desc() const
                 temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
             break;
+        }
+        case wiRDSECTION_c:
+        {
+            if(_arr.size()<4)
+                break;
+            QByteArray xxx;
+            for(int i=0;i<5;++i)
+            {
+                if(3+i>=_arr.size())
+                    break;
+                xxx.append(_arr.at(3+i));
+                if(!(_arr.at(3+i)&0x80))
+                    break;
+            }
+            if(_arr.size()!=(xxx.size()+3))
+                break;
+            temp.append(QString("wiRDSECTION"));
+            bool dev = false;
+            if(xxx.size()==5)
+            {
+                if(xxx.at(4)&0x80)
+                    dev = true;
+            }
+            if(dev)
+            {
+                if(xxx.at(4)&0x40)
+                    temp.append(" (prot)");
+                else
+                    temp.append(" (dev)");
+                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
+            }
+            else
+            {
+                temp.append(", nr: ");
+                for(auto a: xxx)
+                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            }
+            done = true;
         }
         }
         break;
@@ -76,5 +114,17 @@ QByteArray PureMessage::wiRDCONST(uint offset)
     temp.append((offset>>12)&0xF0);
     temp.append((offset>>0)&0xFF);
     temp.append((offset>>8)&0xFF);
+    return temp;
+}
+
+QByteArray PureMessage::wiRDSECTION_dev(uint nr, bool prot)
+{
+    QByteArray temp;
+    temp.append(wiRDSECTION_c);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
     return temp;
 }

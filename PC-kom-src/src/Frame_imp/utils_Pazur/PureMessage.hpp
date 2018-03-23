@@ -13,8 +13,13 @@ public:
     QString desc() const;
 
     static QByteArray wiRDCONST(uint offset); // same dane wlasciwe (bez bajtow adresu i rozmiaru)
+    static QByteArray wiRDSECTION_dev(uint nr, bool prot);
 private:
     QByteArray _arr;
+
+    static const uchar wiRDCONST_c = 0x00;
+    static const uchar wiRDCONSTo_c = 0x01;
+    static const uchar wiRDSECTION_c = 0x02;
 };
 
 #endif
