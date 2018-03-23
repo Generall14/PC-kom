@@ -46,6 +46,7 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("leTRIGGER", leTRIGGER->text());
     Store("leKANALY", leKANALY->text());
     Store("sbseconds", sbseconds->value());
+    Store("cbIgnoreFirst", cbIgnoreFirst->isChecked());
 
     delete logg;
     delete meanTimer;
@@ -61,6 +62,7 @@ void LogicUIStawrov::Init()
     LoadConfigs();
 
     ograniczHV("");
+    logg->setIgnoringFirstChannel(cbIgnoreFirst->isChecked());
 }
 
 void LogicUIStawrov::InitTests()
@@ -166,6 +168,10 @@ void LogicUIStawrov::InitTests()
     QLabel* lllx = new QLabel("[s]");
     mainZbieranieLay5->addWidget(lllx);
     lllx->setToolTip(tooltip);
+
+    cbIgnoreFirst = new QCheckBox("Ignoruj pierwszy kanał");
+    mainZbieranieLay->addWidget(cbIgnoreFirst);
+    connect(cbIgnoreFirst, &QCheckBox::toggled, [this](){logg->setIgnoringFirstChannel(cbIgnoreFirst->isChecked());});
 
     //=======================Grupa konfiguracja===================================================
     QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
@@ -310,6 +316,7 @@ void LogicUIStawrov::LoadConfigs()
     leTRIGGER->setText(RestoreAsString("leTRIGGER", "0000"));
     leKANALY->setText(RestoreAsString("leKANALY", "0666 AAAA"));
     sbseconds->setValue(RestoreAsInt("sbseconds", 12));
+    cbIgnoreFirst->setChecked(RestoreAsBool("cbIgnoreFirst", false));
 }
 
 void LogicUIStawrov::Connected()

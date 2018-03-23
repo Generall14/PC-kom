@@ -86,7 +86,7 @@ QString PureMessage::desc() const
                     temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
             }
             done = true;
-        }
+        }//<TODO> odpowiedz
         }
         break;
     }

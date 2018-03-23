@@ -80,6 +80,9 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         cargo.remove(0, 2);
     }
 
+    if(ignoringFirstChannel&&temp.size()>0)
+        temp.removeFirst();
+
 //    for(int i:temp)
 //    {
 //        if(i>255)
@@ -325,12 +328,20 @@ void STawrovLogger::displayMean()
 
 QString STawrovLogger::meanString()
 {
-    QString temp = QString("Liczba pomiarow: %1\r\nZliczenia: ").arg(counts);
+    int sum = 0;
+    for(auto i: total)
+        sum += i;
+    QString temp = QString("Liczba pomiarow: %1\r\nZliczenia (suma = %2): ").arg(counts).arg(sum);
     for(auto i: total)
         temp.append(QString("[%1]  ").arg(i));
-    temp.append("\r\nUsrednione: ");
+    temp.append(QString("\r\nUsrednione (suma = %1): ").arg(float(sum)/float(counts)*float(5), 0, 'f', 2));
     for(auto i: total)
         temp.append(QString("[%1]  ").arg(float(i)/float(counts)*float(5), 0, 'f', 2));
     temp.append("\r\n\r\n");
     return temp;
+}
+
+void STawrovLogger::setIgnoringFirstChannel(bool ignore)
+{
+    ignoringFirstChannel = ignore;
 }

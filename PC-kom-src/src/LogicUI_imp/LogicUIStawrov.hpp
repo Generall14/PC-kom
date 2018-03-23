@@ -84,6 +84,8 @@ protected:
     QCheckBox* rozniczkowanie = nullptr;
     QCheckBox* ograniczenie = nullptr;
 
+    QCheckBox* cbIgnoreFirst = nullptr;
+
     bool modeFromSizes = true;
     QStringList gnam;
     QMap<QString, uchar> gval;

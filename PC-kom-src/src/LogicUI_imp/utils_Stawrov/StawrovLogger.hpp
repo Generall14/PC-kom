@@ -51,6 +51,8 @@ private:
     bool push = false;
     void toFile();
 
+    bool ignoringFirstChannel = false;
+
     void OccOn();
     void OccOff();
     void OccReset();
@@ -62,6 +64,8 @@ public slots:
     void startMeaning();
     void stopMeaning();
     void displayMean();
+
+    void setIgnoringFirstChannel(bool ignore);
 
 signals:
     void Error(QString msg);
