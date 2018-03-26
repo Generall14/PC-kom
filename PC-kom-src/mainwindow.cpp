@@ -7,6 +7,7 @@
 #include <QLayout>
 #include <QDebug>
 #include <QScrollArea>
+#include <QSizePolicy>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -106,10 +107,17 @@ void MainWindow::InitGUI()
 
     frameLogUI = new QFrame(this);
     frameLogUI->setFrameShape(QFrame::StyledPanel);
+    frameLogUI->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    auto sp = frameLogUI->sizePolicy();
+    sp.setHorizontalStretch(17);
+    frameLogUI->setSizePolicy(sp);
     mainLay->addWidget(frameLogUI);
 
     QFrame* rightFrame = new QFrame(this);
-    rightFrame->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    rightFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    auto sp2 = rightFrame->sizePolicy();
+    sp2.setHorizontalStretch(10);
+    rightFrame->setSizePolicy(sp2);
     mainLay->addWidget(rightFrame);
 
     QVBoxLayout* rightLay = new QVBoxLayout();
