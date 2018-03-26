@@ -2,6 +2,7 @@
 #define STATICUTILS_HPP
 
 #include <QByteArray>
+#include <QString>
 
 class SU
 {
@@ -11,7 +12,6 @@ public:
 
     static float byteArray2Float32(QByteArray b);
     static QByteArray float32toByteArray(float f);
-
 
     static int byteArray2Int16(QByteArray b);
     static QByteArray int16ToByteArray(int i);
@@ -24,6 +24,9 @@ public:
 
     static bool byteArray2bool(QByteArray b);
     static QByteArray boolToByteArray(bool b);
+
+    static QByteArray string2ByteArray(QString str);
+    static QString byteArray2String(QByteArray arr);
 
 private:
     union FI;

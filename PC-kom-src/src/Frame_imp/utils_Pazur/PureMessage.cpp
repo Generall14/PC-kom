@@ -1,6 +1,6 @@
 #include "PureMessage.hpp"
 #include <cassert>
-#include <qDebug>
+#include <QDebug>
 
 PureMessage::PureMessage(QByteArray arr):
     _arr(arr)
@@ -126,5 +126,20 @@ QByteArray PureMessage::wiRDSECTION_dev(uint nr, bool prot)
     temp.append(0x80);
     temp.append(0x80);
     temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
+    return temp;
+}
+
+QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data)
+{
+    QByteArray temp;
+    temp.append(wiWRSECTION_c);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80);
+    temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
+    temp.append(data);
     return temp;
 }

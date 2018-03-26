@@ -41,6 +41,11 @@ protected:
 
     QSpinBox* sbwiRDSECTION = nullptr;
     QCheckBox* cbwiRDSECTION = nullptr;
+
+    QSpinBox* sbwiWRSECTION = nullptr;
+    QCheckBox* cbwiWRSECTION = nullptr;
+    QLineEdit* lewiWRSECTIONmagic = nullptr;
+    QLineEdit* lewiWRSECTION = nullptr;
 };
 
 #endif

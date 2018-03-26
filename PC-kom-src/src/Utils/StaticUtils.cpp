@@ -139,3 +139,28 @@ QByteArray SU::boolToByteArray(bool b)
     temp.append(t);
     return temp;
 }
+
+QByteArray SU::string2ByteArray(QString str)
+{
+    QByteArray temp;
+    str.remove(' ');
+    bool ok;
+    int val;
+    while(!str.isEmpty())
+    {
+        val = str.mid(0, 2).toInt(&ok, 16);
+        if(!ok)
+            return QByteArray();
+        temp.push_back((char)val);
+        str = str.mid(2);
+    }
+    return temp;
+}
+
+QString SU::byteArray2String(QByteArray arr)
+{
+    QString str;
+    for(auto a: arr)
+        str.append(QString("%1 ").arg(a&0xFF, 2, 16, QChar('0')));
+    return str;
+}
