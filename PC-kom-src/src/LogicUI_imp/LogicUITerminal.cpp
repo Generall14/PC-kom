@@ -169,7 +169,7 @@ void LogicUITerminal::InitSend()
     lab = new QLabel("Wyślij dane:");
     mainWysylanie->addWidget(lab);
 
-    for(int i=0;i<6;i++)
+    for(int i=0;i<5;i++)
     {
         Terminal_SendSection* temp = new Terminal_SendSection(mainWysylanie);
         connect(temp, SIGNAL(Send(QString)), this, SLOT(SendData(QString)));

@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QLayout>
 #include <QDebug>
+#include <QScrollArea>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -15,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
         cdir.mkpath(".");
 
     this->InitGUI();
-    this->InitStructure();
 
     connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));
     emit FakeDiscinnect();
@@ -94,7 +94,7 @@ void MainWindow::InitGUI()
     else
         this->setWindowTitle(Factory::WindowName());
 
-    this->resize(1100, 690);
+    this->resize(1100, 750);
 
     QWidget* centralWidget = new QWidget(this);
     this->setCentralWidget(centralWidget);
@@ -123,7 +123,13 @@ void MainWindow::InitGUI()
 
     frameLogicUI = new QFrame(this);
     frameLogicUI->setFrameShape(QFrame::StyledPanel);
-    rightLay->addWidget(frameLogicUI);
+
+    this->InitStructure();
+
+    QScrollArea* sa = new QScrollArea();
+    sa->setWidget(frameLogicUI);
+    sa->setWidgetResizable(true);
+    rightLay->addWidget(sa);
 }
 
 void MainWindow::ErrorMessage(QString er)
