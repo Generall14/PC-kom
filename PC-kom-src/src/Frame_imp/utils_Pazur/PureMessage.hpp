@@ -21,6 +21,7 @@ private:
     static const uchar wiRDCONST_c = 0x00;
     static const uchar wiRDCONSTo_c = 0x01;
     static const uchar wiRDSECTION_c = 0x02;
+    static const uchar wiRDSECTIONo_c = 0x03;
     static const uchar wiWRSECTION_c = 0x04;
 };
 

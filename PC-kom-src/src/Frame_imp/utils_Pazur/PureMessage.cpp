@@ -86,7 +86,89 @@ QString PureMessage::desc() const
                     temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
             }
             done = true;
-        }//<TODO> odpowiedz
+            break;
+        }
+        case wiRDSECTIONo_c:
+        {
+            if(_arr.size()<4)
+                break;
+            QByteArray xxx;
+            for(int i=0;i<5;++i)
+            {
+                if(3+i>=_arr.size())
+                    break;
+                xxx.append(_arr.at(3+i));
+                if(!(_arr.at(3+i)&0x80))
+                    break;
+            }
+            temp.append(QString("wiRDSECTIONo"));
+            bool dev = false;
+            if(xxx.size()==5)
+            {
+                if(xxx.at(4)&0x80)
+                    dev = true;
+            }
+            if(dev)
+            {
+                if(xxx.at(4)&0x40)
+                    temp.append(" (prot)");
+                else
+                    temp.append(" (dev)");
+                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
+            }
+            else
+            {
+                temp.append(", nr: ");
+                for(auto a: xxx)
+                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            }
+            temp.append(", data: ");
+            for(int i=xxx.size()+3;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            done = true;
+            break;
+        }
+        case wiWRSECTION_c:
+        {
+            if(_arr.size()<6)
+                break;
+            QByteArray xxx;
+            for(int i=0;i<5;++i)
+            {
+                if(5+i>=_arr.size())
+                    break;
+                xxx.append(_arr.at(5+i));
+                if(!(_arr.at(5+i)&0x80))
+                    break;
+            }
+            temp.append(QString("wiWRSECTION"));
+            bool dev = false;
+            if(xxx.size()==5)
+            {
+                if(xxx.at(4)&0x80)
+                    dev = true;
+            }
+            if(dev)
+            {
+                if(xxx.at(4)&0x40)
+                    temp.append(" (prot)");
+                else
+                    temp.append(" (dev)");
+                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
+            }
+            else
+            {
+                temp.append(", nr: ");
+                for(auto a: xxx)
+                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            }
+            temp.append(QString(", magic: 0x%1%2, data: ").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            for(int i=xxx.size()+5;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            done = true;
+            break;
+        }
         }
         break;
     }
