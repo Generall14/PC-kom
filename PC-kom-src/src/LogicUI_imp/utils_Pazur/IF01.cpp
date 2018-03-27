@@ -100,6 +100,8 @@ void IF01::InitRest()
     pb->setMinimumWidth(MIN_PB_W);
     wiRDSECTIONLay2->addWidget(pb);
     wiRDSECTIONLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Nr:");
+    wiRDSECTIONLay2->addWidget(lab);
     lewiRDSECTION = new QLineEdit();
     lewiRDSECTION->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
     lewiRDSECTION->setMaximumWidth(150);
