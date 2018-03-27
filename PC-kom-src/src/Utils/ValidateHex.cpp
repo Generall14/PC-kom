@@ -80,7 +80,7 @@ QValidator::State HexValidator::validate(QString &input, int& ii) const
         }
     }
     if(_liczba)
-        input = input.left(_liczba*(2*_slowo)+1);
+        input = input.left(_liczba*(2*_slowo+1));
 
     QStringList xxx = input.split(" ");
     if(!xxx.isEmpty())

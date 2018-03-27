@@ -22,6 +22,10 @@ IF01::~IF01()
     Store("cbwiWRSECTION", cbwiWRSECTION->isChecked());
     Store("lewiWRSECTION", lewiWRSECTION->text());
     Store("lewiWRSECTIONmagic", lewiWRSECTIONmagic->text());
+    Store("lewiRDSECTION", lewiRDSECTION->text());
+    Store("lewiWRSECTIONmagic2", lewiWRSECTIONmagic2->text());
+    Store("lewiWRSECTIONnr2", lewiWRSECTIONnr2->text());
+    Store("lewiWRSECTION2", lewiWRSECTION2->text());
 }
 
 void IF01::LoadConfigs()
@@ -34,6 +38,10 @@ void IF01::LoadConfigs()
     cbwiWRSECTION->setChecked(RestoreAsBool("cbwiWRSECTION", false));
     lewiWRSECTION->setText(RestoreAsString("lewiWRSECTION", ""));
     lewiWRSECTIONmagic->setText(RestoreAsString("lewiWRSECTIONmagic", "0000"));
+    lewiRDSECTION->setText(RestoreAsString("lewiRDSECTION", ""));
+    lewiWRSECTIONmagic2->setText(RestoreAsString("lewiWRSECTIONmagic2", ""));
+    lewiWRSECTIONnr2->setText(RestoreAsString("lewiWRSECTIONnr2", ""));
+    lewiWRSECTION2->setText(RestoreAsString("lewiWRSECTION2", ""));
 }
 
 void IF01::InitRest()
@@ -83,6 +91,20 @@ void IF01::InitRest()
     sbwiRDSECTION->setMinimum(0);
     wiRDSECTIONLay->addWidget(sbwiRDSECTION);
 
+    QHBoxLayout* wiRDSECTIONLay2 = new QHBoxLayout();
+    mainLay->addLayout(wiRDSECTIONLay2);
+    pb = new QPushButton("wiRDSECTION(long)");
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRDSECTION_long(SU::string2ByteArray(lewiRDSECTION->text())));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wiRDSECTIONLay2->addWidget(pb);
+    wiRDSECTIONLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lewiRDSECTION = new QLineEdit();
+    lewiRDSECTION->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiRDSECTION->setMaximumWidth(150);
+    wiRDSECTIONLay2->addWidget(lewiRDSECTION);
+
     QHBoxLayout* wiWRSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(wiWRSECTIONLay);
     pb = new QPushButton("wiWRSECTION(dev)");
@@ -111,6 +133,33 @@ void IF01::InitRest()
     lewiWRSECTION = new QLineEdit("fe");
     lewiWRSECTION->setValidator(new HexValidator(1, 0, lewiWRSECTION));
     mainLay->addWidget(lewiWRSECTION);
+
+    QHBoxLayout* wiWRSECTIONLay2 = new QHBoxLayout();
+    mainLay->addLayout(wiWRSECTIONLay2);
+    pb = new QPushButton("wiWRSECTION(long)");
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWRSECTION_long(SU::string2ByteArray(lewiWRSECTIONnr2->text()),
+                    lewiWRSECTIONmagic2->text().toInt(nullptr, 16),
+                    SU::string2ByteArray(lewiWRSECTION2->text())));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wiWRSECTIONLay2->addWidget(pb);
+    wiWRSECTIONLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Magic:");
+    wiWRSECTIONLay2->addWidget(lab);
+    lewiWRSECTIONmagic2 = new QLineEdit();
+    lewiWRSECTIONmagic2->setValidator(new HexValidator(2, 1, lewiWRSECTIONmagic2));
+    lewiWRSECTIONmagic2->setMaximumWidth(50);
+    wiWRSECTIONLay2->addWidget(lewiWRSECTIONmagic2);
+    lab = new QLabel("Nr:");
+    wiWRSECTIONLay2->addWidget(lab);
+    lewiWRSECTIONnr2 = new QLineEdit();
+    lewiWRSECTIONnr2->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiWRSECTIONnr2->setMaximumWidth(150);
+    wiWRSECTIONLay2->addWidget(lewiWRSECTIONnr2);
+    lewiWRSECTION2 = new QLineEdit("fe");
+    lewiWRSECTION2->setValidator(new HexValidator(1, 0, lewiWRSECTION2));
+    mainLay->addWidget(lewiWRSECTION2);
 }
 
 void IF01::Init()

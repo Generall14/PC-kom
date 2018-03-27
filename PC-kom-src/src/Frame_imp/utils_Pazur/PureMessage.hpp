@@ -14,7 +14,9 @@ public:
 
     static QByteArray wiRDCONST(uint offset); // same dane wlasciwe (bez bajtow adresu i rozmiaru)
     static QByteArray wiRDSECTION_dev(uint nr, bool prot);
+    static QByteArray wiRDSECTION_long(QByteArray nr);
     static QByteArray wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data);
+    static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
 private:
     QByteArray _arr;
 

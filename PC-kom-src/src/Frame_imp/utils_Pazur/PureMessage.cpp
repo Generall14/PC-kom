@@ -241,6 +241,21 @@ QByteArray PureMessage::wiRDSECTION_dev(uint nr, bool prot)
     return temp;
 }
 
+QByteArray PureMessage::wiRDSECTION_long(QByteArray nr)
+{
+    QByteArray temp;
+    temp.append(wiRDSECTION_c);
+    for(int i=0;i<5;++i)
+    {
+        if(i>=nr.size())
+            break;
+        temp.append(nr.at(i));
+        if(!(nr.at(i)&0x80))
+            break;
+    }
+    return temp;
+}
+
 QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data)
 {
     QByteArray temp;
@@ -252,6 +267,24 @@ QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByt
     temp.append(0x80);
     temp.append(0x80);
     temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
+    temp.append(data);
+    return temp;
+}
+
+QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data)
+{
+    QByteArray temp;
+    temp.append(wiWRSECTION_c);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+    for(int i=0;i<5;++i)
+    {
+        if(i>=nr.size())
+            break;
+        temp.append(nr.at(i));
+        if(!(nr.at(i)&0x80))
+            break;
+    }
     temp.append(data);
     return temp;
 }
