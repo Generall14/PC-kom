@@ -169,6 +169,36 @@ QString PureMessage::desc() const
             done = true;
             break;
         }
+        case wiWARN_c:
+        {
+            if(_arr.size()<4)
+                break;
+            temp.append("wiWARN, flags: ");
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0b%1-%2").arg((uint)(_arr.at(i)>>4)&0x0F, 4, 2, QChar('0')).arg((uint)_arr.at(i)&0x0F, 4, 2, QChar('0')));
+            done = true;
+            break;
+        }
+        case wiFAULT_c:
+        {
+            if(_arr.size()<4)
+                break;
+            temp.append("wiFAULT, flags: ");
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0b%1-%2").arg((uint)(_arr.at(i)>>4)&0x0F, 4, 2, QChar('0')).arg((uint)_arr.at(i)&0x0F, 4, 2, QChar('0')));
+            done = true;
+            break;
+        }
+        case wiSERVICE_c:
+        {
+            if(_arr.size()<4)
+                break;
+            temp.append("wiSERVICE, flags: ");
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0b%1-%2").arg((uint)(_arr.at(i)>>4)&0x0F, 4, 2, QChar('0')).arg((uint)_arr.at(i)&0x0F, 4, 2, QChar('0')));
+            done = true;
+            break;
+        }
         }
         break;
     }

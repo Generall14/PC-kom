@@ -23,6 +23,9 @@ private:
     static const uchar wiRDSECTION_c = 0x02;
     static const uchar wiRDSECTIONo_c = 0x03;
     static const uchar wiWRSECTION_c = 0x04;
+    static const uchar wiWARN_c = 0x07;
+    static const uchar wiFAULT_c = 0x08;
+    static const uchar wiSERVICE_c = 0x09;
 };
 
 #endif
