@@ -102,6 +102,9 @@ QString PureMessage::desc() const
                     break;
             }
             temp.append(QString("wiRDSECTIONo"));
+            bool fatal = false;
+            if(_arr.at(2)&0x10)
+                fatal = true;
             bool dev = false;
             if(xxx.size()==5)
             {
@@ -122,9 +125,14 @@ QString PureMessage::desc() const
                 for(auto a: xxx)
                     temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
             }
-            temp.append(", data: ");
-            for(int i=xxx.size()+3;i<_arr.size();++i)
-                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            if(!fatal)
+            {
+                temp.append(", data: ");
+                for(int i=xxx.size()+3;i<_arr.size();++i)
+                    temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            }
+            else
+                temp.append(", nie rozpoznano sekcji");
             done = true;
             break;
         }
