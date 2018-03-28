@@ -26,6 +26,8 @@ IF01::~IF01()
     Store("lewiWRSECTIONmagic2", lewiWRSECTIONmagic2->text());
     Store("lewiWRSECTIONnr2", lewiWRSECTIONnr2->text());
     Store("lewiWRSECTION2", lewiWRSECTION2->text());
+    Store("cbwiGFDA", cbwiGFDA->isChecked());
+    Store("lewiGFDA", lewiGFDA->text());
 }
 
 void IF01::LoadConfigs()
@@ -42,6 +44,8 @@ void IF01::LoadConfigs()
     lewiWRSECTIONmagic2->setText(RestoreAsString("lewiWRSECTIONmagic2", ""));
     lewiWRSECTIONnr2->setText(RestoreAsString("lewiWRSECTIONnr2", ""));
     lewiWRSECTION2->setText(RestoreAsString("lewiWRSECTION2", ""));
+    cbwiGFDA->setChecked(RestoreAsBool("cbwiGFDA", false));
+    lewiGFDA->setText(RestoreAsString("lewiGFDA", ""));
 }
 
 void IF01::InitRest()
@@ -106,6 +110,24 @@ void IF01::InitRest()
     lewiRDSECTION->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
     lewiRDSECTION->setMaximumWidth(150);
     wiRDSECTIONLay2->addWidget(lewiRDSECTION);
+
+    QHBoxLayout* wiGFDALay = new QHBoxLayout();
+    mainLay->addLayout(wiGFDALay);
+    pb = new QPushButton("wiGFDA");
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiGFDA(cbwiGFDA->isChecked(), SU::string2ByteArray(lewiGFDA->text())));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wiGFDALay->addWidget(pb);
+    wiGFDALay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbwiGFDA = new QCheckBox("UTKAK");
+    wiGFDALay->addWidget(cbwiGFDA);
+    lab = new QLabel("Nr:");
+    wiGFDALay->addWidget(lab);
+    lewiGFDA = new QLineEdit();
+    lewiGFDA->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiGFDA->setMaximumWidth(150);
+    wiGFDALay->addWidget(lewiGFDA);
 
     QHBoxLayout* wiWRSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(wiWRSECTIONLay);

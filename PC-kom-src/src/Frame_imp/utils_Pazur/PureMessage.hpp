@@ -17,6 +17,8 @@ public:
     static QByteArray wiRDSECTION_long(QByteArray nr);
     static QByteArray wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data);
     static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
+    static QByteArray wiGFDA(bool utkak, QByteArray nr);
+
 private:
     QByteArray _arr;
 
@@ -25,9 +27,12 @@ private:
     static const uchar wiRDSECTION_c = 0x02;
     static const uchar wiRDSECTIONo_c = 0x03;
     static const uchar wiWRSECTION_c = 0x04;
+    static const uchar wiGFDA_c = 0x05;
+    static const uchar wiGFDAo_c = 0x06;
     static const uchar wiWARN_c = 0x07;
     static const uchar wiFAULT_c = 0x08;
     static const uchar wiSERVICE_c = 0x09;
+
 };
 
 #endif

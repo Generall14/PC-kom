@@ -51,6 +51,9 @@ protected:
     QLineEdit* lewiWRSECTIONmagic2 = nullptr;
     QLineEdit* lewiWRSECTIONnr2 = nullptr;
     QLineEdit* lewiWRSECTION2 = nullptr;
+
+    QLineEdit* lewiGFDA = nullptr;
+    QCheckBox* cbwiGFDA = nullptr;
 };
 
 #endif

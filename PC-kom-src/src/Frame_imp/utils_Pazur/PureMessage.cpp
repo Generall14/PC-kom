@@ -207,6 +207,60 @@ QString PureMessage::desc() const
             done = true;
             break;
         }
+        case wiGFDA_c:
+        {
+            if(_arr.size()<4)
+                break;
+            QByteArray xxx;
+            for(int i=0;i<5;++i)
+            {
+                if(3+i>=_arr.size())
+                    break;
+                xxx.append(_arr.at(3+i));
+                if(!(_arr.at(3+i)&0x80))
+                    break;
+            }
+            temp.append(QString("wiGFDA"));
+            if(_arr.at(2)&0x40)
+                temp.append(", UTKAK, code: ");
+            else
+                temp.append(", UTKK, code:");
+            for(auto a: xxx)
+                temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            done = true;
+            break;
+        }
+        case wiGFDAo_c:
+        {
+            if(_arr.size()<4)
+                break;
+            QByteArray xxx;
+            for(int i=0;i<5;++i)
+            {
+                if(3+i>=_arr.size())
+                    break;
+                xxx.append(_arr.at(3+i));
+                if(!(_arr.at(3+i)&0x80))
+                    break;
+            }
+            temp.append(QString("wiGFDAo"));
+            if(_arr.at(2)&0x40)
+                temp.append(", UTKAK, code: ");
+            else
+                temp.append(", UTKK, code: ");
+            for(auto a: xxx)
+                temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            if(_arr.at(2)&0x80)
+                temp.append(", nie rozpoznano sekcji");
+            else
+            {
+                temp.append(", data: ");
+                for(int i=xxx.size()+3;i<_arr.size();++i)
+                    temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            }
+            done = true;
+            break;
+        }
         }
         break;
     }
@@ -294,5 +348,26 @@ QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArr
             break;
     }
     temp.append(data);
+    return temp;
+}
+
+QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
+{
+    QByteArray temp;
+    temp.append(wiGFDA_c);
+    int end = 5;
+    if(utkak)
+    {
+        end = 3;
+        temp[0] = temp[0]|0x40;
+    }
+    for(int i=0;i<end;++i)
+    {
+        if(i>=nr.size())
+            break;
+        temp.append(nr.at(i));
+        if(!(nr.at(i)&0x80))
+            break;
+    }
     return temp;
 }
