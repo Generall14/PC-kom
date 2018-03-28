@@ -17,6 +17,11 @@ public:
     virtual QString toQString();
     virtual QString toShortQString();
     virtual QByteArray magicNumbers();
+    virtual QByteArray srcAdr();
+
+    Confirms getConsirms() const;
+    Messages getMessages() const;
+    uchar getId() const;
 
 private:
     bool isHeaderOk();

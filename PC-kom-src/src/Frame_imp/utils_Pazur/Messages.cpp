@@ -106,3 +106,8 @@ char Messages::addCrc10() const
 {
     return _addcrc;
 }
+
+QList<Message> Messages::getMessages()
+{
+    return _msgs;
+}

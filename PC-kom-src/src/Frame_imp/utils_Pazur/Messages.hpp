@@ -17,6 +17,8 @@ public:
     QByteArray toPureData() const;
     char addCrc10() const;
 
+    QList<Message> getMessages();
+
 private:
     QByteArray _dat;
     bool isValid = false;

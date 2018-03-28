@@ -76,3 +76,8 @@ QByteArray Confirms::toPureData() const
 {
     return _dat;
 }
+
+QList<Confirm> Confirms::getConfirms()
+{
+    return _cfs;
+}

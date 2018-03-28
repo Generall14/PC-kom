@@ -163,3 +163,25 @@ QString FramePazur::dispHeader()
     temp.append(", F: " + QString::number(_fast) + ", ID: " + QString::number(_id) + ", sl: " + QString::number(_crc10add) + "] ");
     return temp;
 }
+
+Confirms FramePazur::getConsirms() const
+{
+    return _cfs;
+}
+
+Messages FramePazur::getMessages() const
+{
+    return _msgs;
+}
+
+QByteArray FramePazur::srcAdr()
+{
+    QByteArray temp;
+    temp.append(pck.at(0)&0x3F);
+    return temp;
+}
+
+uchar FramePazur::getId() const
+{
+    return _id;
+}

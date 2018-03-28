@@ -28,6 +28,7 @@ LogicUIPazur::~LogicUIPazur()
     Store("cbFast", cbFast->isChecked());
     Store("cbIncrement", cbIncrement->isChecked());
     Store("cbKwitowanie", cbKwitowanie->isChecked());
+    Store("cbAutoConfirm", cbAutoConfirm->isChecked());
 
     delete _pure;
     delete _if01;
@@ -41,6 +42,7 @@ void LogicUIPazur::LoadConfigs()
     cbFast->setChecked(RestoreAsBool("cbFast", false));
     cbIncrement->setChecked(RestoreAsBool("cbIncrement", true));
     cbKwitowanie->setChecked(RestoreAsBool("cbKwitowanie", false));
+    cbAutoConfirm->setChecked(RestoreAsBool("cbAutoConfirm", false));
 }
 
 void LogicUIPazur::Init()
@@ -99,6 +101,9 @@ void LogicUIPazur::InitGlobals()
 
     cbKwitowanie = new QCheckBox("Kwitowanie");
     mainGlobalne->addWidget(cbKwitowanie);
+
+    cbAutoConfirm = new QCheckBox("Automatyczne potwierdzanie");
+    mainGlobalne->addWidget(cbAutoConfirm);
 }
 
 void LogicUIPazur::InitTabs()
@@ -136,15 +141,40 @@ void LogicUIPazur::Disconnected()
     tw->setEnabled(false);
 }
 
-void LogicUIPazur::FrameReaded(QSharedPointer<Frame>)
+void LogicUIPazur::FrameReaded(QSharedPointer<Frame> fr)
 {
+    if(!cbAutoConfirm->isChecked())
+        return;
+
+    uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
+
+    QList<Confirm> c;
+    QList<Message> m;
+    FramePazur paz(fr->pureData());
+    bool need_to_send = false;
+    for(auto m: paz.getMessages().getMessages())
+    {
+        char adr, ifs, x;
+        QByteArray dat;
+        m.get(adr, ifs, dat, x);
+        if(adr==from)
+        {
+            c.append(Confirm(paz.srcAdr().at(0), paz.getId()));
+            need_to_send = true;
+        }
+    }
+
+    if(need_to_send)
+        Send(c, m, true);
 }
 
-void LogicUIPazur::Send(QList<Confirm> c, QList<Message> m)
+void LogicUIPazur::Send(QList<Confirm> c, QList<Message> m, bool kwitowanie)
 {
+    if(!kwitowanie)
+        cbKwitowanie->isChecked();
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    FramePazur* t = new FramePazur(from, to, sbId->value(), cbFast->isChecked(), c, m, cbKwitowanie->isChecked());
+    FramePazur* t = new FramePazur(from, to, sbId->value(), cbFast->isChecked(), c, m, kwitowanie);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())
     {

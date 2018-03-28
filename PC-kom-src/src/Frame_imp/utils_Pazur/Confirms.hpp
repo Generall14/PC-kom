@@ -16,6 +16,8 @@ public:
     QString toQString() const;
     QByteArray toPureData() const;
 
+    QList<Confirm> getConfirms();
+
 private:
     QByteArray _dat;
     bool isValid = false;

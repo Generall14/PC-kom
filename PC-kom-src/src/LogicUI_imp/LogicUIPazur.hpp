@@ -30,13 +30,13 @@ public:
 public slots:
     virtual void Connected();
     virtual void Disconnected();
-    virtual void FrameReaded(QSharedPointer<Frame>);
+    virtual void FrameReaded(QSharedPointer<Frame> fr);
 
 protected slots:
     void InitGlobals();
     void InitTabs();
 
-    void Send(QList<Confirm> c, QList<Message> m);
+    void Send(QList<Confirm> c, QList<Message> m, bool kwitowanie = false);
 
 protected:
     void LoadConfigs();
@@ -48,6 +48,7 @@ protected:
     QCheckBox* cbFast = nullptr;
     QCheckBox* cbIncrement = nullptr;
     QCheckBox* cbKwitowanie = nullptr;
+    QCheckBox* cbAutoConfirm = nullptr;
 
     QTabWidget* tw = nullptr;
     Pure* _pure = nullptr;
