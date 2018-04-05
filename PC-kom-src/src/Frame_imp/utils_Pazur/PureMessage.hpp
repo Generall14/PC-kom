@@ -20,6 +20,11 @@ public:
     static QByteArray wiGFDA(bool utkak, QByteArray nr);
 
     static QByteArray wkpSTORE();
+    static QByteArray wkpCONNECT();
+    static QByteArray wkpCONNECTo(QByteArray next);
+    static QByteArray wkpBUILD();
+    static QByteArray wkpBUILDo();
+    static QByteArray wkpRESET();
 
 private:
     QByteArray _arr;
@@ -36,7 +41,11 @@ private:
     static const uchar wiSERVICE_c = 0x09;
 
     static const uchar wkpSTORE_c = 0x02;
-
+    static const uchar wkpCONNECT_c = 0x03;
+    static const uchar wkpCONNECTo_c = 0x13;
+    static const uchar wkpBUILD_c = 0x04;
+    static const uchar wkpBUILDo_c = 0x14;
+    static const uchar wkpRESET_c = 0x05;
 };
 
 #endif

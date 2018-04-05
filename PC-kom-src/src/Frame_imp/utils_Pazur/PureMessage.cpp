@@ -13,13 +13,14 @@ QString PureMessage::desc() const
     QString temp = " [";
     uchar inf = (_arr.at(0)>>6)&0x03;
     bool done = false;
-    uchar code01 = _arr.at(2)&0x0F;
 
-    switch (inf)
+    switch(inf)
     {
+        //=====================================================================================================================
     case 0b00:
     {
-        switch(code01)
+        uchar code00 = _arr.at(2)&0x1F;
+        switch(code00)
         {
         case wkpSTORE_c:
         {
@@ -29,10 +30,53 @@ QString PureMessage::desc() const
             done = true;
             break;
         }
+        case wkpCONNECT_c:
+        {
+            if(3!=_arr.size())
+                break;
+            temp.append(QString("wkpCONNECT"));
+            done = true;
+            break;
         }
+        case wkpCONNECTo_c:
+        {
+            if(4!=_arr.size())
+                break;
+            temp.append(QString("wkpCONNECTo, nastepnik: 0x%1").arg(_arr.at(3)&0x3F, 2, 16, QChar('0')));
+            done = true;
+            break;
+        }
+        case wkpBUILD_c:
+        {
+            if(3!=_arr.size())
+                break;
+            temp.append(QString("wkpBUILD"));
+            done = true;
+            break;
+        }
+        case wkpBUILDo_c:
+        {
+            if(3!=_arr.size())
+                break;
+            temp.append(QString("wkpBUILDo"));
+            done = true;
+            break;
+        }
+        case wkpRESET_c:
+        {
+            if(3!=_arr.size())
+                break;
+            temp.append(QString("wkpRESET"));
+            done = true;
+            break;
+        }
+        }
+        break;
     }
+        //=====================================================================================================================
     case 0b01:
     {
+        uchar code01 = _arr.at(2)&0x0F;
         switch (code01)
         {
         case wiRDCONST_c:
@@ -276,10 +320,12 @@ QString PureMessage::desc() const
         }
         break;
     }
+        //=====================================================================================================================
     case 0b10:
-        break;
+        //=====================================================================================================================
     case 0b11:
         break;
+        //=====================================================================================================================
     default:
         break;
     }
@@ -388,5 +434,43 @@ QByteArray PureMessage::wkpSTORE()
 {
     QByteArray temp;
     temp.append(wkpSTORE_c);
+    return temp;
+}
+
+QByteArray PureMessage::wkpCONNECT()
+{
+    QByteArray temp;
+    temp.append(wkpCONNECT_c);
+    return temp;
+}
+
+QByteArray PureMessage::wkpCONNECTo(QByteArray next)
+{
+    if(next.isEmpty())
+        return QByteArray();
+    QByteArray temp;
+    temp.append(wkpCONNECTo_c);
+    temp.append(next.at(0));
+    return temp;
+}
+
+QByteArray PureMessage::wkpBUILD()
+{
+    QByteArray temp;
+    temp.append(wkpBUILD_c);
+    return temp;
+}
+
+QByteArray PureMessage::wkpBUILDo()
+{
+    QByteArray temp;
+    temp.append(wkpBUILDo_c);
+    return temp;
+}
+
+QByteArray PureMessage::wkpRESET()
+{
+    QByteArray temp;
+    temp.append(wkpRESET_c);
     return temp;
 }
