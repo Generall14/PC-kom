@@ -19,6 +19,8 @@ public:
     static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
     static QByteArray wiGFDA(bool utkak, QByteArray nr);
 
+    static QByteArray wkpSTORE();
+
 private:
     QByteArray _arr;
 
@@ -32,6 +34,8 @@ private:
     static const uchar wiWARN_c = 0x07;
     static const uchar wiFAULT_c = 0x08;
     static const uchar wiSERVICE_c = 0x09;
+
+    static const uchar wkpSTORE_c = 0x02;
 
 };
 

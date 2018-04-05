@@ -13,14 +13,26 @@ QString PureMessage::desc() const
     QString temp = " [";
     uchar inf = (_arr.at(0)>>6)&0x03;
     bool done = false;
+    uchar code01 = _arr.at(2)&0x0F;
 
     switch (inf)
     {
     case 0b00:
-        break;
+    {
+        switch(code01)
+        {
+        case wkpSTORE_c:
+        {
+            if(3!=_arr.size())
+                break;
+            temp.append(QString("wkpSTORE"));
+            done = true;
+            break;
+        }
+        }
+    }
     case 0b01:
     {
-        uchar code01 = _arr.at(2)&0x0F;
         switch (code01)
         {
         case wiRDCONST_c:
@@ -369,5 +381,12 @@ QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
         if(!(nr.at(i)&0x80))
             break;
     }
+    return temp;
+}
+
+QByteArray PureMessage::wkpSTORE()
+{
+    QByteArray temp;
+    temp.append(wkpSTORE_c);
     return temp;
 }

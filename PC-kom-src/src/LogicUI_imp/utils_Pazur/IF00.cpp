@@ -36,14 +36,14 @@ void IF00::InitRest()
     leToAdr->setMaximumWidth(40);
     toAdrLay->addWidget(leToAdr);
 
-//    QHBoxLayout* wiRDCONSTLay = new QHBoxLayout();
-//    mainLay->addLayout(wiRDCONSTLay);
-//    QPushButton* pb = new QPushButton("wiRDCONST");
-//    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(sbwiRDCONST->value()));});
-//    pb->setMaximumWidth(MIN_PB_W);
-//    pb->setMinimumWidth(MIN_PB_W);
-//    wiRDCONSTLay->addWidget(pb);
-//    wiRDCONSTLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    QHBoxLayout* wkpSTORELay = new QHBoxLayout();
+    mainLay->addLayout(wkpSTORELay);
+    QPushButton* pb = new QPushButton("wkpSTORE");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpSTORE());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wkpSTORELay->addWidget(pb);
+    wkpSTORELay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 //    lab = new QLabel("Offset:");
 //    wiRDCONSTLay->addWidget(lab);
 //    sbwiRDCONST = new QSpinBox();
@@ -176,6 +176,6 @@ void IF00::SendMessage(QByteArray arr)
 {
     QList<Message> m;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, 1, arr));
+    m.append(Message(to, 0, arr));
     emit Send(QList<Confirm>(), m);
 }
