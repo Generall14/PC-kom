@@ -31,6 +31,7 @@ LogicUIPazur::~LogicUIPazur()
     Store("cbAutoConfirm", cbAutoConfirm->isChecked());
 
     delete _pure;
+    delete _if00;
     delete _if01;
 }
 
@@ -120,6 +121,15 @@ void LogicUIPazur::InitTabs()
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
     tw->addTab(sa, "Pure");
+
+    fr = new QFrame();
+    _if00 = new IF00(fr);
+    connect(_if00, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
+    connect(_if00, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    sa = new QScrollArea();
+    sa->setWidget(fr);
+    sa->setWidgetResizable(true);
+    tw->addTab(sa, "IF00");
 
     fr = new QFrame();
     _if01 = new IF01(fr);
