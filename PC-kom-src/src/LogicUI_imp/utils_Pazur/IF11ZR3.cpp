@@ -16,12 +16,16 @@ IF11ZR3::~IF11ZR3()
 {
     Store("leToAdr", leToAdr->text());
     Store("letechREQmagic", letechREQmagic->text());
+    Store("letechACCmagic", letechACCmagic->text());
+    Store("letechACCrnd", letechACCrnd->text());
 }
 
 void IF11ZR3::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
     letechREQmagic->setText(RestoreAsString("letechREQmagic", "1234"));
+    letechACCmagic->setText(RestoreAsString("letechACCmagic", "1234"));
+    letechACCrnd->setText(RestoreAsString("letechACCrnd", "1234"));
 }
 
 void IF11ZR3::InitRest()
@@ -119,6 +123,28 @@ void IF11ZR3::InitRest()
     letechREQmagic->setValidator(new HexValidator(2, 1, letechREQmagic));
     letechREQmagic->setMaximumWidth(50);
     techREQLay->addWidget(letechREQmagic);
+
+    QHBoxLayout* techACCLay = new QHBoxLayout();
+    mainLay->addLayout(techACCLay);
+    pb = new QPushButton("techACC");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(
+                    PureMessageZR3::techACC(letechACCmagic->text().toInt(nullptr, 16), letechACCrnd->text().toInt(nullptr, 16)));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techACCLay->addWidget(pb);
+    techACCLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Recieved rnd:");
+    techACCLay->addWidget(lab);
+    letechACCrnd = new QLineEdit();
+    letechACCrnd->setValidator(new HexValidator(2, 1, letechACCrnd));
+    letechACCrnd->setMaximumWidth(50);
+    techACCLay->addWidget(letechACCrnd);
+    lab = new QLabel("Magic:");
+    techACCLay->addWidget(lab);
+    letechACCmagic = new QLineEdit();
+    letechACCmagic->setValidator(new HexValidator(2, 1, letechACCmagic));
+    letechACCmagic->setMaximumWidth(50);
+    techACCLay->addWidget(letechACCmagic);
 
 //    QHBoxLayout* wiWRSECTIONLay2 = new QHBoxLayout();
 //    mainLay->addLayout(wiWRSECTIONLay2);

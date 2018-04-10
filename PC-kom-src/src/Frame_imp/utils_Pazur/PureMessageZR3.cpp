@@ -32,6 +32,15 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techINV_c:
+        {
+            if(_arr.size()!=5)
+                break;
+            temp.append(QString("techINV, rnd: 0x%1%2").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            *found = true;
+            break;
+        }
         }
         break;
     }
@@ -42,7 +51,7 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
     return temp;
 }
 
-//QString PureMessage::desc() const
+//QString PureMessage::desc()
 //{
 //    QString temp = " [";
 //
@@ -374,141 +383,6 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
 //    return temp;
 //}
 
-//QByteArray PureMessage::wiRDCONST(uint offset)
-//{
-//    QByteArray temp;
-//    temp.append((offset>>12)&0xF0);
-//    temp.append((offset>>0)&0xFF);
-//    temp.append((offset>>8)&0xFF);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wiRDSECTION_dev(uint nr, bool prot)
-//{
-//    QByteArray temp;
-//    temp.append(wiRDSECTION_c);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
-//    return temp;
-//}
-
-//QByteArray PureMessage::wiRDSECTION_long(QByteArray nr)
-//{
-//    QByteArray temp;
-//    temp.append(wiRDSECTION_c);
-//    for(int i=0;i<5;++i)
-//    {
-//        if(i>=nr.size())
-//            break;
-//        temp.append(nr.at(i));
-//        if(!(nr.at(i)&0x80))
-//            break;
-//    }
-//    return temp;
-//}
-
-//QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data)
-//{
-//    QByteArray temp;
-//    temp.append(wiWRSECTION_c);
-//    temp.append(magic&0xFF);
-//    temp.append((magic>>8)&0xFF);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80);
-//    temp.append(0x80 | ((uint(prot)<<6)&0x40) | (nr&0x3F));
-//    temp.append(data);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data)
-//{
-//    QByteArray temp;
-//    temp.append(wiWRSECTION_c);
-//    temp.append(magic&0xFF);
-//    temp.append((magic>>8)&0xFF);
-//    for(int i=0;i<5;++i)
-//    {
-//        if(i>=nr.size())
-//            break;
-//        temp.append(nr.at(i));
-//        if(!(nr.at(i)&0x80))
-//            break;
-//    }
-//    temp.append(data);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
-//{
-//    QByteArray temp;
-//    temp.append(wiGFDA_c);
-//    int end = 5;
-//    if(utkak)
-//    {
-//        end = 3;
-//        temp[0] = temp[0]|0x40;
-//    }
-//    for(int i=0;i<end;++i)
-//    {
-//        if(i>=nr.size())
-//            break;
-//        temp.append(nr.at(i));
-//        if(!(nr.at(i)&0x80))
-//            break;
-//    }
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpSTORE()
-//{
-//    QByteArray temp;
-//    temp.append(wkpSTORE_c);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpCONNECT()
-//{
-//    QByteArray temp;
-//    temp.append(wkpCONNECT_c);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpCONNECTo(QByteArray next)
-//{
-//    if(next.isEmpty())
-//        return QByteArray();
-//    QByteArray temp;
-//    temp.append(wkpCONNECTo_c);
-//    temp.append(next.at(0));
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpBUILD()
-//{
-//    QByteArray temp;
-//    temp.append(wkpBUILD_c);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpBUILDo()
-//{
-//    QByteArray temp;
-//    temp.append(wkpBUILDo_c);
-//    return temp;
-//}
-
-//QByteArray PureMessage::wkpRESET()
-//{
-//    QByteArray temp;
-//    temp.append(wkpRESET_c);
-//    return temp;
-//}
-
 QByteArray PureMessageZR3::techREQ(uint16_t magic)
 {
     QByteArray temp;
@@ -519,5 +393,23 @@ QByteArray PureMessageZR3::techREQ(uint16_t magic)
     temp.append(0x75);
     temp.append(0x70);
     temp.append(0x61);
+    return temp;
+}
+
+QByteArray PureMessageZR3::techACC(uint16_t magic, uint16_t rnd)
+{
+    QByteArray temp;
+    temp.append(techACC_c);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+    temp.append(rnd&0xFF);
+    temp.append((rnd>>8)&0xFF);
+    temp.append(0x77);
+    temp.append(0x63);
+    temp.append(0x68);
+    temp.append(0x6F);
+    temp.append(0x64);
+    temp.append(0x7A);
+    temp.append(0x65);
     return temp;
 }
