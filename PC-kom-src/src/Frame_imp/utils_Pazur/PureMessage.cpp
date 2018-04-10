@@ -1,6 +1,7 @@
 #include "PureMessage.hpp"
 #include <cassert>
 #include <QDebug>
+#include "PureMessageZR3.hpp"
 
 PureMessage::PureMessage(QByteArray arr):
     _arr(arr)
@@ -321,12 +322,8 @@ QString PureMessage::desc() const
         break;
     }
         //=====================================================================================================================
-    case 0b10:
-        //=====================================================================================================================
-    case 0b11:
-        break;
-        //=====================================================================================================================
     default:
+        temp.append(PureMessageZR3::desc(_arr, &done));
         break;
     }
     if(!done)

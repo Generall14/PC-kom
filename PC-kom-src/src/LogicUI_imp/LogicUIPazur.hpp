@@ -18,6 +18,7 @@
 #include "utils_Pazur/Pure.hpp"
 #include "utils_Pazur/IF00.hpp"
 #include "utils_Pazur/IF01.hpp"
+#include "utils_Pazur/IF11ZR3.hpp"
 
 class LogicUIPazur : public LogicUI, public Restorable
 {
@@ -55,6 +56,7 @@ protected:
     Pure* _pure = nullptr;
     IF00* _if00 = nullptr;
     IF01* _if01 = nullptr;
+    IF11ZR3* _if11 = nullptr;
 };
 
 #endif
