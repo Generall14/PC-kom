@@ -19,6 +19,18 @@ void Restorable::Store(QString name, QByteArray value)
     Store<>(name, str.toStdString().c_str());
 }
 
+void Restorable::Store(QString name, QStringList list)
+{
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
+    if(node.empty())
+        node = GlobalXmlFile::getMainNode().append_child(_className.toStdString().c_str());
+
+    node.remove_child(QString("qsl"+name).toStdString().c_str());
+    pugi::xml_node listnode = node.append_child(QString("qsl"+name).toStdString().c_str());
+    for(int i=0;i<list.size();++i)
+        listnode.append_attribute(("str"+QString::number(i)).toStdString().c_str()) = list.at(i).toStdString().c_str();
+}
+
 int Restorable::RestoreAsInt(QString name, int onFail)
 {
     pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
@@ -87,4 +99,23 @@ QByteArray Restorable::RestoreAsByteArray(QString name, QByteArray onFail)
     }
 
     return dat;
+}
+
+QStringList Restorable::RestoreAsQStringList(QString name, QStringList onFail)
+{
+    pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());
+    if(node.empty())
+        return onFail;
+
+    pugi::xml_node lnode = node.child(QString("qsl"+name).toStdString().c_str());
+    if(lnode.empty())
+        return onFail;
+
+    QStringList acc;
+    for(auto n: lnode.attributes())
+        acc.append(n.as_string(""));
+
+    if(!acc.isEmpty())
+        return acc;
+    return onFail;
 }

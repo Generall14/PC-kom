@@ -47,6 +47,12 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("leKANALY", leKANALY->text());
     Store("sbseconds", sbseconds->value());
     Store("cbIgnoreFirst", cbIgnoreFirst->isChecked());
+    Store("leNewAdr", leNewAdr->text());
+
+    QStringList tabs;
+    for(int i=0;i<tw->count();++i)
+        tabs.append(tw->tabText(i));
+    Store("tabs", tabs);
 
     delete logg;
     delete meanTimer;
@@ -91,8 +97,8 @@ void LogicUIStawrov::InitTests()
 //    groupBoxWyslijCosZ->addWidget(leData);
 
     btn = new QPushButton("Wyślij coś");
-//    mainWyslijCosLay->addWidget(btn);
-    connect(btn, SIGNAL(clicked(bool)), this, SLOT(makeStupidMessage()));
+    mainWyslijCosLay->addWidget(btn);
+//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(makeStupidMessage()));
 
     //=======================Grupa zbieranie danych===============================================
     QGroupBox* groupBoxZbieranie = new QGroupBox("Zbieranie danych");
@@ -170,24 +176,89 @@ void LogicUIStawrov::InitTests()
     lllx->setToolTip(tooltip);
 
     cbIgnoreFirst = new QCheckBox("Ignoruj pierwszy kanał");
+    cbIgnoreFirst->setToolTip("Zaznaczenie tej opcji spowoduje programowe odrzucenie pierwszego kanału, \n"
+                              "nie wpływa na działanie kontrolerów. Ogranicza efektywną liczę kanałów\n"
+                              "o jeden.");
     mainZbieranieLay->addWidget(cbIgnoreFirst);
     connect(cbIgnoreFirst, &QCheckBox::toggled, [this](){logg->setIgnoringFirstChannel(cbIgnoreFirst->isChecked());});
 
     //=======================Grupa konfiguracja===================================================
-    QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
-    mainLay->addWidget(groupBoxKonfiguracja);
-    QVBoxLayout* mainKonfiguracjaLay = new QVBoxLayout(groupBoxKonfiguracja);
+    QGroupBox* groupBoxAll = new QGroupBox("Globalnie");
+    mainLay->addWidget(groupBoxAll);
+    QVBoxLayout* mainAllLay = new QVBoxLayout(groupBoxAll);
 
     QHBoxLayout* groupBoxKonfiguracja22 = new QHBoxLayout();
-    mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja22);
-    QLabel* tl23 = new QLabel("Wyślij na adres:");
+    QString ttxx = "Według specyfikacji protokołu adres kontrolera zliczającego. Według logiki zbędny, \n"
+                   "nic nie wnoszący, mylący, dowolny adres. No ale specyfikacja to rzecz święta, więc jest.";
+    mainAllLay->addLayout(groupBoxKonfiguracja22);
+    QLabel* tl23 = new QLabel("Adres kontrolera zliczającego:");
+    tl23->setToolTip(ttxx);
     groupBoxKonfiguracja22->addWidget(tl23);
     lekAdr = new QLineEdit("FF");
+    lekAdr->setToolTip(ttxx);
     lekAdr->setMaximumWidth(50);
-    lekAdr->setToolTip("Adres docelowy komendy z konfiguracją szerokości kanałów.");
     lekAdr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     lekAdr->setValidator(new HexValidator(1, 1, lekAdr));
     groupBoxKonfiguracja22->addWidget(lekAdr);
+
+    QFrame* groupBoxKAN = new QFrame();
+    groupBoxKAN->setToolTip("Konfiguracja kanałów (max 12?). Każda wartość określa górną granicę wysokości\n"
+                            "impulsu (według ADC, 12 bit?) który będzie zaliczony do tego kanału. Każdy \n"
+                            "mierzony impuls jest dodawany ostatniego kanału w którego zakresie się zmieści.\n"
+                            "Odcięcie od dołu jest ustawione przez trigger. Przykładowo, jeżeli podano kanały\n"
+                            "0010 0020 to w pierwszym kanale znajdą się impulsy z zakresu trigger-0010, w \n"
+                            "drugim z zakresu 0011-0020. Zaznaczenie opcji \"Ignoruj pierwszy kanał\" \n"
+                            "spowoduje programowe odrzucenie pierwszego kanału.");
+    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
+    mainAllLay->addWidget(groupBoxKAN);
+    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
+    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
+    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
+    QLabel* kanl = new QLabel("Kanały:");
+    groupBoxKonfiguracjaKAN1->addWidget(kanl);
+    leKANALY = new QLineEdit("0666 AAAA");
+    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
+    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
+    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
+    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
+    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
+    connect(leKANALY, SIGNAL(returnPressed()), btnKAN, SLOT(click()));
+
+    //=======================Grupa kontrolery pomiarowe===========================================
+    QGroupBox* groupBoxPomiarowe = new QGroupBox("Kontrolery pomiarowe");
+    mainLay->addWidget(groupBoxPomiarowe);
+    QVBoxLayout* mainPomiaroweLay = new QVBoxLayout(groupBoxPomiarowe);
+
+    QHBoxLayout* mainPomiaroweLay5 = new QHBoxLayout();
+    mainPomiaroweLay->addLayout(mainPomiaroweLay5);
+    btnremove = new QPushButton("Usuń aktywny");
+    btnremove->setEnabled(false);
+    btnremove->setToolTip("Usuwa aktywną zakładkę z kontrolerem pomiarowym.");
+    mainPomiaroweLay5->addWidget(btnremove);
+    connect(btnremove, SIGNAL(clicked(bool)), this, SLOT(RemoveTab()));
+    QPushButton* btnx = new QPushButton("Dodaj");
+    btnx->setToolTip("Dodaje nową zakładkę z kontrolerem pomiarowym o adresie podanym w polu po prawej.");
+    mainPomiaroweLay5->addWidget(btnx);
+    connect(btnx, &QPushButton::clicked, [this](){AddTab(leNewAdr->text());});
+    QLabel* tlXXX = new QLabel("Dadaj adres:");
+    mainPomiaroweLay5->addWidget(tlXXX);
+    leNewAdr = new QLineEdit("FF");
+    leNewAdr->setToolTip("Adres kontrolera pomiarowego jaki zostanie przypisany do nowo \n"
+                         "utworzonej zakładki.");
+    leNewAdr->setMaximumWidth(50);
+    leNewAdr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    leNewAdr->setValidator(new HexValidator(1, 1, lekAdr));
+    mainPomiaroweLay5->addWidget(leNewAdr);
+    connect(leNewAdr, SIGNAL(returnPressed()), btnx, SLOT(click()));
+
+    tw = new QTabWidget();
+    tw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainPomiaroweLay->addWidget(tw);
+
+    //=======================Grupa konfiguracja===================================================
+    QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
+//    mainLay->addWidget(groupBoxKonfiguracja);
+    QVBoxLayout* mainKonfiguracjaLay = new QVBoxLayout(groupBoxKonfiguracja);
 
     QHBoxLayout* groupBoxKonfiguracja23 = new QHBoxLayout();
     mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja23);
@@ -283,21 +354,6 @@ void LogicUIStawrov::InitTests()
     connect(btnGOT, SIGNAL(clicked(bool)), this, SLOT(makeSET_GAIN_OFFSET_AND_TRIGGER()));
     groupBoxKonfiguracjaGOT->addWidget(btnGOT);
 
-    QFrame* groupBoxKAN = new QFrame();
-    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
-    mainKonfiguracjaLay->addWidget(groupBoxKAN);
-    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
-    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
-    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
-    QLabel* kanl = new QLabel("Kanały:");
-    groupBoxKonfiguracjaKAN1->addWidget(kanl);
-    leKANALY = new QLineEdit("0666 AAAA");
-    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
-    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
-    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
-    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
-    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
-
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
@@ -317,6 +373,11 @@ void LogicUIStawrov::LoadConfigs()
     leKANALY->setText(RestoreAsString("leKANALY", "0666 AAAA"));
     sbseconds->setValue(RestoreAsInt("sbseconds", 12));
     cbIgnoreFirst->setChecked(RestoreAsBool("cbIgnoreFirst", false));
+    leNewAdr->setText(RestoreAsString("leNewAdr", "FF"));
+
+    QStringList tablist = RestoreAsQStringList("tabs", QStringList());
+    for(auto aadr: tablist)
+        AddTab(aadr);
 }
 
 void LogicUIStawrov::Connected()
@@ -465,7 +526,7 @@ void LogicUIStawrov::makeSET_GAIN_OFFSET_AND_TRIGGER()
     int tempi = lekAdrLoc->text().toInt(&ok, 16);
     if(!ok)
     {
-        emit Error("Nie można odczytać adresu: " + lekAdr->text());
+        emit Error("Nie można odczytać adresu: " + lekAdrLoc->text());
         return;
     }
     temp.append(tempi);
@@ -567,4 +628,44 @@ void LogicUIStawrov::TimeoutedMean()
         if(secondsOfMeaning>=sbseconds->value())
             this->StopMeaning();
     }
+}
+
+void LogicUIStawrov::RemoveTab()
+{
+    tw->removeTab(tw->currentIndex());
+
+    if(tw->count()<=0)
+        btnremove->setEnabled(false);
+}
+
+void LogicUIStawrov::AddTab(QString adr)
+{
+    bool ok;
+    int tempi = adr.toInt(&ok, 16);
+    if(!ok)
+    {
+        emit Error("Nie można odczytać adresu: " + adr);
+        return;
+    }
+
+    if(tempi>0xFF)
+    {
+        emit Error("Nieprawidłowy adres: " + QString(tempi));
+        return;
+    }
+
+    QString numstr = QString("%1").arg((uint)tempi&0xFF, 2, 16, QChar('0')).toUpper();
+
+    for(int i=0;i<tw->count();++i)
+    {
+        if(!tw->tabText(i).compare(numstr))
+        {
+            emit Error("Zakładka z adresem kontrolera pomiarowego "+numstr+" już istnieje.");
+            return;
+        }
+    }
+
+    QFrame* fr = new QFrame();
+    tw->addTab(fr, numstr);
+    btnremove->setEnabled(true);
 }

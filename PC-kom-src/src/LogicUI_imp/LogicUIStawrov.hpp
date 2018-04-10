@@ -52,6 +52,9 @@ private slots:
     void StopMeaning();
     void TimeoutedMean();
 
+    void RemoveTab();
+    void AddTab(QString adr);
+
 protected:
     void InitTests();
     void LoadConfigs();
@@ -96,6 +99,10 @@ protected:
     QPushButton* btnms = nullptr;
     QTimer* meanTimer = nullptr;
     int secondsOfMeaning = 0;
+
+    QTabWidget* tw = nullptr;
+    QPushButton* btnremove = nullptr;
+    QLineEdit* leNewAdr = nullptr;
 };
 
 #endif

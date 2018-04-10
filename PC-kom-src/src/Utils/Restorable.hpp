@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QByteArray>
+#include <QStringList>
 #include "GlobalXmlFile.hpp"
 #include "pugixml.hpp"
 
@@ -24,7 +25,7 @@ protected:
     }
     void Store(QString name, QString value);
     void Store(QString name, QByteArray value);
-
+    void Store(QString name, QStringList list);
 
     int RestoreAsInt(QString name, int onFail);
     unsigned int RestoreAsInt(QString name, unsigned int onFail);
@@ -32,6 +33,7 @@ protected:
     bool RestoreAsBool(QString name, bool onFail);
     QString RestoreAsString(QString name, QString onFail);
     QByteArray RestoreAsByteArray(QString name, QByteArray onFail);
+    QStringList RestoreAsQStringList(QString name, QStringList onFail);
 
 private:
     QString _className;
