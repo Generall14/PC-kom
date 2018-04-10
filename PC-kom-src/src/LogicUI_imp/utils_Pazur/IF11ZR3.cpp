@@ -4,6 +4,8 @@
 #include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
+#include <qdebug.h>
+#include "Frame_imp/FramePazur.hpp"
 
 IF11ZR3::IF11ZR3(QFrame* parent):
     Restorable("IF11ZR3"),
@@ -192,4 +194,22 @@ void IF11ZR3::SendMessage(QByteArray arr)
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
     m.append(Message(to, 3, arr));
     emit Send(QList<Confirm>(), m);
+}
+
+void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
+{
+    if(!(*fr).isValid())
+        return;
+    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
+        return;
+    FramePazur paz(fr->pureData());
+    for(auto msg: paz.getMessages().getMessages())
+    {
+        if(msg.toPureData().at(2)==0x01)
+        {
+            letechACCrnd->setText(QString("%1%2").arg((uint)msg.toPureData().at(4)&0xFF, 2, 16, QChar('0'))
+                                  .arg((uint)msg.toPureData().at(3)&0xFF, 2, 16, QChar('0')).toUpper());
+            return;
+        }
+    }
 }

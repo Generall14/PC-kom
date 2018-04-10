@@ -8,6 +8,7 @@
 #include "Frame_imp/utils_Pazur/Confirm.hpp"
 #include "Frame_imp/utils_Pazur/Message.hpp"
 #include "../../Utils/Restorable.hpp"
+#include "../../Frame.hpp"
 #include <QComboBox>
 #include <QLayout>
 #include <QLineEdit>
@@ -28,6 +29,9 @@ signals:
 protected slots:
     void InitRest();
     void SendMessage(QByteArray arr);
+
+public slots:
+    void internalFrameReaded(QSharedPointer<Frame> fr);
 
 protected:
     void Init();

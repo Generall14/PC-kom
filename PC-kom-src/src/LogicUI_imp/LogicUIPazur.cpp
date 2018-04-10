@@ -145,6 +145,7 @@ void LogicUIPazur::InitTabs()
     _if11 = new IF11ZR3(fr);
     connect(_if11, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
     connect(_if11, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(this, SIGNAL(internalFrameReaded(QSharedPointer<Frame>)), _if11, SLOT(internalFrameReaded(QSharedPointer<Frame>)));
     sa = new QScrollArea();
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
@@ -163,6 +164,7 @@ void LogicUIPazur::Disconnected()
 
 void LogicUIPazur::FrameReaded(QSharedPointer<Frame> fr)
 {
+    emit internalFrameReaded(fr);
     if(!cbAutoConfirm->isChecked())
         return;
 
