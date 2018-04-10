@@ -16,6 +16,7 @@ public:
 //    static QByteArray wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data);
 //    static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
 //    static QByteArray wiGFDA(bool utkak, QByteArray nr);
+    static QByteArray techREQ(uint16_t magic);
 
 //    static QByteArray wkpSTORE();
 //    static QByteArray wkpCONNECT();
@@ -26,9 +27,8 @@ public:
 
 private:
     PureMessageZR3(){}
-//    QByteArray _arr;
 
-//    static const uchar wiRDCONST_c = 0x00;
+    static const uchar techREQ_c = 0x00;
 //    static const uchar wiRDCONSTo_c = 0x01;
 //    static const uchar wiRDSECTION_c = 0x02;
 //    static const uchar wiRDSECTIONo_c = 0x03;

@@ -18,6 +18,21 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
         //=====================================================================================================================
     case 0b11:
     {
+        uchar code11 = _arr.at(2)&0x3F;
+        switch(code11)
+        {
+        case techREQ_c:
+        {
+            if(_arr.size()!=9)
+                break;
+            if((_arr.at(5)!=0x70)||(_arr.at(6)!=0x75)||(_arr.at(7)!=0x70)||(_arr.at(8)!=0x61))
+                break;
+            temp.append(QString("techREQ, magic: 0x%1%2").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            *found = true;
+            break;
+        }
+        }
         break;
     }
     default:
@@ -493,3 +508,16 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
 //    temp.append(wkpRESET_c);
 //    return temp;
 //}
+
+QByteArray PureMessageZR3::techREQ(uint16_t magic)
+{
+    QByteArray temp;
+    temp.append(techREQ_c);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+    temp.append(0x70);
+    temp.append(0x75);
+    temp.append(0x70);
+    temp.append(0x61);
+    return temp;
+}

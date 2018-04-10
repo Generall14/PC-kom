@@ -27,7 +27,7 @@ signals:
 
 protected slots:
     void InitRest();
-//    void SendMessage(QByteArray arr);
+    void SendMessage(QByteArray arr);
 
 protected:
     void Init();
@@ -45,7 +45,7 @@ protected:
 
 //    QSpinBox* sbwiWRSECTION = nullptr;
 //    QCheckBox* cbwiWRSECTION = nullptr;
-//    QLineEdit* lewiWRSECTIONmagic = nullptr;
+    QLineEdit* letechREQmagic = nullptr;
 //    QLineEdit* lewiWRSECTION = nullptr;
 
 //    QLineEdit* lewiWRSECTIONmagic2 = nullptr;

@@ -1,7 +1,7 @@
 #include "IF11ZR3.hpp"
 #include <QLabel>
 #include <QPushButton>
-//#include "Frame_imp/utils_Pazur/PureMessage.hpp"
+#include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
 
@@ -15,11 +15,13 @@ IF11ZR3::IF11ZR3(QFrame* parent):
 IF11ZR3::~IF11ZR3()
 {
     Store("leToAdr", leToAdr->text());
+    Store("letechREQmagic", letechREQmagic->text());
 }
 
 void IF11ZR3::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
+    letechREQmagic->setText(RestoreAsString("letechREQmagic", "1234"));
 }
 
 void IF11ZR3::InitRest()
@@ -103,34 +105,20 @@ void IF11ZR3::InitRest()
 //    lewiGFDA->setMaximumWidth(150);
 //    wiGFDALay->addWidget(lewiGFDA);
 
-//    QHBoxLayout* wiWRSECTIONLay = new QHBoxLayout();
-//    mainLay->addLayout(wiWRSECTIONLay);
-//    pb = new QPushButton("wiWRSECTION(dev)");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_dev(sbwiWRSECTION->value(), cbwiWRSECTION->isChecked(),
-//                    lewiWRSECTIONmagic->text().toInt(nullptr, 16),
-//                    SU::string2ByteArray(lewiWRSECTION->text())));});
-//    pb->setMaximumWidth(MIN_PB_W);
-//    pb->setMinimumWidth(MIN_PB_W);
-//    wiWRSECTIONLay->addWidget(pb);
-//    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-//    lab = new QLabel("Magic:");
-//    wiWRSECTIONLay->addWidget(lab);
-//    lewiWRSECTIONmagic = new QLineEdit();
-//    lewiWRSECTIONmagic->setValidator(new HexValidator(2, 1, lewiWRSECTIONmagic));
-//    lewiWRSECTIONmagic->setMaximumWidth(50);
-//    wiWRSECTIONLay->addWidget(lewiWRSECTIONmagic);
-//    cbwiWRSECTION = new QCheckBox("Prot");
-//    wiWRSECTIONLay->addWidget(cbwiWRSECTION);
-//    lab = new QLabel("Nr:");
-//    wiWRSECTIONLay->addWidget(lab);
-//    sbwiWRSECTION = new QSpinBox();
-//    sbwiWRSECTION->setMaximum(0x3F);
-//    sbwiWRSECTION->setMinimum(0);
-//    wiWRSECTIONLay->addWidget(sbwiWRSECTION);
-//    lewiWRSECTION = new QLineEdit("fe");
-//    lewiWRSECTION->setValidator(new HexValidator(1, 0, lewiWRSECTION));
-//    mainLay->addWidget(lewiWRSECTION);
+    QHBoxLayout* techREQLay = new QHBoxLayout();
+    mainLay->addLayout(techREQLay);
+    QPushButton* pb = new QPushButton("techREQ");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techREQ(letechREQmagic->text().toInt(nullptr, 16)));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techREQLay->addWidget(pb);
+    techREQLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Magic:");
+    techREQLay->addWidget(lab);
+    letechREQmagic = new QLineEdit();
+    letechREQmagic->setValidator(new HexValidator(2, 1, letechREQmagic));
+    letechREQmagic->setMaximumWidth(50);
+    techREQLay->addWidget(letechREQmagic);
 
 //    QHBoxLayout* wiWRSECTIONLay2 = new QHBoxLayout();
 //    mainLay->addLayout(wiWRSECTIONLay2);
@@ -172,10 +160,10 @@ void IF11ZR3::Init()
     LoadConfigs();
 }
 
-//void IF01::SendMessage(QByteArray arr)
-//{
-//    QList<Message> m;
-//    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-//    m.append(Message(to, 1, arr));
-//    emit Send(QList<Confirm>(), m);
-//}
+void IF11ZR3::SendMessage(QByteArray arr)
+{
+    QList<Message> m;
+    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
+    m.append(Message(to, 3, arr));
+    emit Send(QList<Confirm>(), m);
+}
