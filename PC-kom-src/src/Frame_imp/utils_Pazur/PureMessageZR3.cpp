@@ -41,6 +41,29 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techACC_c:
+        {
+            if(_arr.size()!=14)
+                break;
+            if((_arr.at(7)!=0x77)||(_arr.at(8)!=0x63)||(_arr.at(9)!=0x68)||(_arr.at(10)!=0x6F))
+                break;
+            if((_arr.at(11)!=0x64)||(_arr.at(12)!=0x7A)||(_arr.at(13)!=0x65))
+                break;
+            temp.append(QString("techACC, magic: 0x%1%2, rnd: 0x%3%4").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')).arg((uint)_arr.at(6)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(5)&0xFF, 2, 16, QChar('0')));
+            *found = true;
+            break;
+        }
+        case techCONF_c:
+        {
+            if(_arr.size()!=5)
+                break;
+            temp.append(QString("techCONF, wersja programu: 0x%1%2").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            *found = true;
+            break;
+        }
         }
         break;
     }

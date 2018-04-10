@@ -19,6 +19,7 @@ private:
     static const uchar techREQ_c = 0x00;
     static const uchar techINV_c = 0x01;
     static const uchar techACC_c = 0x02;
+    static const uchar techCONF_c = 0x03;
 };
 
 #endif
