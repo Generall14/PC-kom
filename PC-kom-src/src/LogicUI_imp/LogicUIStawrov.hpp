@@ -37,13 +37,6 @@ private slots:
     void setFile(QString s);
     void setChannels(int s);
 
-    void ograniczHV(QString);
-
-    void makeSYNCH_AND_START();
-    void makeRESET_SLAVE();
-    void makeRESET_MASTER();
-    void makeSET_HIGH_VOLTAGE();
-    void makeSET_GAIN_OFFSET_AND_TRIGGER();
     void makeSET_CHANNELS();
 
     void PackAndSend(QByteArray data);
@@ -74,18 +67,9 @@ protected:
     QLabel* channelsLabel = nullptr;
     QLineEdit* fileAdr = nullptr;
 
-    QLineEdit* leHV = nullptr;
-    QLineEdit* leMaxHV = nullptr;
-    QLineEdit* leOFFSET = nullptr;
-    QLineEdit* leTRIGGER = nullptr;
     QLineEdit* leKANALY = nullptr;
 
     QLineEdit* lekAdr = nullptr;
-    QLineEdit* lekAdrLoc = nullptr;
-
-    QComboBox* kcbox = nullptr;
-    QCheckBox* rozniczkowanie = nullptr;
-    QCheckBox* ograniczenie = nullptr;
 
     QCheckBox* cbIgnoreFirst = nullptr;
 

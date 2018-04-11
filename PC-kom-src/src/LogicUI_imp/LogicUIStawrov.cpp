@@ -1,6 +1,7 @@
 #include "LogicUIStawrov.hpp"
 #include "../Factory.hpp"
 #include "../Frame_imp/FrameStawrov.hpp"
+#include "utils_Stawrov/KontrolerPomiarowy.hpp"
 #include <QLabel>
 #include <QDebug>
 #include <QMap>
@@ -37,13 +38,6 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("Data", leData->text());
     Store("FileLog", fileAdr->text());
     Store("lekAdr", lekAdr->text());
-    Store("lekAdrLoc", lekAdrLoc->text());
-    Store("leHV", leHV->text());
-    Store("leMaxHV", leMaxHV->text());
-    Store("lekcbox", kcbox->currentText());
-    Store("metrozniczkowanie", rozniczkowanie->isChecked());
-    Store("leOFFSET", leOFFSET->text());
-    Store("leTRIGGER", leTRIGGER->text());
     Store("leKANALY", leKANALY->text());
     Store("sbseconds", sbseconds->value());
     Store("cbIgnoreFirst", cbIgnoreFirst->isChecked());
@@ -67,7 +61,6 @@ void LogicUIStawrov::Init()
 
     LoadConfigs();
 
-    ograniczHV("");
     logg->setIgnoringFirstChannel(cbIgnoreFirst->isChecked());
 }
 
@@ -190,8 +183,19 @@ void LogicUIStawrov::InitTests()
     QHBoxLayout* groupBoxKonfiguracja22 = new QHBoxLayout();
     QString ttxx = "Według specyfikacji protokołu adres kontrolera zliczającego. Według logiki zbędny, \n"
                    "nic nie wnoszący, mylący, dowolny adres. No ale specyfikacja to rzecz święta, więc jest.";
+    QString ttyy = "Według specyfikacji coś tam, kiedyś miało robić, teraz tylko zawiesza urządzenia.";
     mainAllLay->addLayout(groupBoxKonfiguracja22);
-    QLabel* tl23 = new QLabel("Adres kontrolera zliczającego:");
+    QPushButton* btns = new QPushButton("SYNCH_AND_START");
+    btns->setToolTip(ttyy);
+    btns->setEnabled(false);
+    connect(btns, &QPushButton::clicked, [this](){QByteArray a;a.append(char(0x02));PackAndSend(a);});
+    groupBoxKonfiguracja22->addWidget(btns);
+    btns = new QPushButton("RESET_MASTER");
+    btns->setEnabled(false);
+    btns->setToolTip(ttyy);
+    connect(btns, &QPushButton::clicked, [this](){QByteArray a;a.append(char(0x04));PackAndSend(a);});
+    groupBoxKonfiguracja22->addWidget(btns);
+    QLabel* tl23 = new QLabel("Adres master:");
     tl23->setToolTip(ttxx);
     groupBoxKonfiguracja22->addWidget(tl23);
     lekAdr = new QLineEdit("FF");
@@ -255,105 +259,6 @@ void LogicUIStawrov::InitTests()
     tw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainPomiaroweLay->addWidget(tw);
 
-    //=======================Grupa konfiguracja===================================================
-    QGroupBox* groupBoxKonfiguracja = new QGroupBox("Konfiguracja kontrolerów");
-//    mainLay->addWidget(groupBoxKonfiguracja);
-    QVBoxLayout* mainKonfiguracjaLay = new QVBoxLayout(groupBoxKonfiguracja);
-
-    QHBoxLayout* groupBoxKonfiguracja23 = new QHBoxLayout();
-    mainKonfiguracjaLay->addLayout(groupBoxKonfiguracja23);
-    tl23 = new QLabel("Wyślij na adres lokalny:");
-    groupBoxKonfiguracja23->addWidget(tl23);
-    lekAdrLoc = new QLineEdit("FF");
-    lekAdrLoc->setMaximumWidth(50);
-    lekAdrLoc->setToolTip("Docelowy adres lokalny komendy z konfiguracją szerokości kanałów.");
-    lekAdrLoc->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    lekAdrLoc->setValidator(new HexValidator(1, 1, lekAdrLoc));
-
-    groupBoxKonfiguracja23->addWidget(lekAdrLoc);
-
-    QFrame* groupBoxS = new QFrame();
-    groupBoxS->setFrameShape(QFrame::StyledPanel);
-    mainKonfiguracjaLay->addWidget(groupBoxS);
-    QHBoxLayout* groupBoxKonfiguracjaSimple = new QHBoxLayout(groupBoxS);
-
-    QPushButton* btns = new QPushButton("SYNCH_AND_START");
-    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeSYNCH_AND_START()));
-    groupBoxKonfiguracjaSimple->addWidget(btns);
-    btns = new QPushButton("RESET_SLAVE");
-    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeRESET_SLAVE()));
-    groupBoxKonfiguracjaSimple->addWidget(btns);
-    btns = new QPushButton("RESET_MASTER");
-    connect(btns, SIGNAL(clicked(bool)), this, SLOT(makeRESET_MASTER()));
-    groupBoxKonfiguracjaSimple->addWidget(btns);
-
-    QFrame* groupBoxHV = new QFrame();
-    groupBoxHV->setFrameShape(QFrame::StyledPanel);
-    mainKonfiguracjaLay->addWidget(groupBoxHV);
-    QVBoxLayout* groupBoxKonfiguracjaHV = new QVBoxLayout(groupBoxHV);
-
-    QHBoxLayout* groupBoxKonfiguracjaHV2 = new QHBoxLayout();
-    groupBoxKonfiguracjaHV->addLayout(groupBoxKonfiguracjaHV2);
-    ograniczenie = new QCheckBox("Ograniczenie:");
-    groupBoxKonfiguracjaHV2->addWidget(ograniczenie);
-    connect(ograniczenie, &QCheckBox::toggled, [=](bool checked){leMaxHV->setEnabled(checked);});
-    leMaxHV = new QLineEdit("01FF");
-    leMaxHV->setMaximumWidth(50);
-    leMaxHV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leMaxHV->setValidator(new HexValidator(2, 1, leMaxHV));
-    leMaxHV->setToolTip("Maksymalne napięcie pracy, magiczna, niewyskalowana liczba.");
-    connect(leMaxHV, SIGNAL(textChanged(QString)), this, SLOT(ograniczHV(QString)));
-    groupBoxKonfiguracjaHV2->addWidget(leMaxHV);
-    ograniczenie->setChecked(true);
-
-    QHBoxLayout* groupBoxKonfiguracjaHV1 = new QHBoxLayout();
-    groupBoxKonfiguracjaHV->addLayout(groupBoxKonfiguracjaHV1);
-    QLabel* hvl = new QLabel("Napięcie:");
-    groupBoxKonfiguracjaHV1->addWidget(hvl);
-    leHV = new QLineEdit("01FF");
-    leHV->setMaximumWidth(50);
-    leHV->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leHV->setValidator(new HexValidator(2, 1, leHV));
-    leHV->setToolTip("Napięcie pracy, magiczna, niewyskalowana liczba.");
-    connect(leHV, SIGNAL(textChanged(QString)), this, SLOT(ograniczHV(QString)));
-    groupBoxKonfiguracjaHV1->addWidget(leHV);
-    QPushButton* btnHV = new QPushButton("SET_HIGH_VOLTAGE");
-    connect(btnHV, SIGNAL(clicked(bool)), this, SLOT(makeSET_HIGH_VOLTAGE()));
-    groupBoxKonfiguracjaHV->addWidget(btnHV);
-
-    QFrame* groupBoxGOT = new QFrame();
-    groupBoxGOT->setFrameShape(QFrame::StyledPanel);
-    mainKonfiguracjaLay->addWidget(groupBoxGOT);
-    QVBoxLayout* groupBoxKonfiguracjaGOT = new QVBoxLayout(groupBoxGOT);
-    QHBoxLayout* groupBoxKonfiguracjaGOT1 = new QHBoxLayout();
-    groupBoxKonfiguracjaGOT->addLayout(groupBoxKonfiguracjaGOT1);
-    QLabel* gotl = new QLabel("Wzmocnienie:");
-    groupBoxKonfiguracjaGOT1->addWidget(gotl);
-    kcbox = new QComboBox();
-    kcbox->addItems(gnam);
-    groupBoxKonfiguracjaGOT1->addWidget(kcbox);
-    rozniczkowanie = new QCheckBox("Różniczkowanie");
-    groupBoxKonfiguracjaGOT->addWidget(rozniczkowanie);
-    QHBoxLayout* groupBoxKonfiguracjaGOT2 = new QHBoxLayout();
-    groupBoxKonfiguracjaGOT->addLayout(groupBoxKonfiguracjaGOT2);
-    gotl = new QLabel("Offset:");
-    groupBoxKonfiguracjaGOT2->addWidget(gotl);
-    leOFFSET = new QLineEdit("0000");
-    leOFFSET->setMaximumWidth(50);
-    leOFFSET->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leOFFSET->setValidator(new HexValidator(2, 1, leOFFSET));
-    groupBoxKonfiguracjaGOT2->addWidget(leOFFSET);
-    gotl = new QLabel("Trigger:");
-    groupBoxKonfiguracjaGOT2->addWidget(gotl);
-    leTRIGGER = new QLineEdit("0000");
-    leTRIGGER->setMaximumWidth(50);
-    leTRIGGER->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leTRIGGER->setValidator(new HexValidator(2, 1, leTRIGGER));
-    groupBoxKonfiguracjaGOT2->addWidget(leTRIGGER);
-    QPushButton* btnGOT = new QPushButton("SET_GAIN_OFFSET_AND_TRIGGER");
-    connect(btnGOT, SIGNAL(clicked(bool)), this, SLOT(makeSET_GAIN_OFFSET_AND_TRIGGER()));
-    groupBoxKonfiguracjaGOT->addWidget(btnGOT);
-
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
@@ -363,13 +268,6 @@ void LogicUIStawrov::LoadConfigs()
     fileAdr->setText(RestoreAsString("FileLog", "defaultFileName.txt"));
     leData->setText(RestoreAsString("Data", "ff aa 55"));
     lekAdr->setText(RestoreAsString("lekAdr", "FF"));
-    lekAdrLoc->setText(RestoreAsString("lekAdrLoc", "FF"));
-    leHV->setText(RestoreAsString("leHV", "01FF"));
-    leMaxHV->setText(RestoreAsString("leMaxHV", "01FF"));
-    kcbox->setCurrentText(RestoreAsString("lekcbox", ""));
-    rozniczkowanie->setChecked(RestoreAsBool("metrozniczkowanie", false));
-    leOFFSET->setText(RestoreAsString("leOFFSET", "0000"));
-    leTRIGGER->setText(RestoreAsString("leTRIGGER", "0000"));
     leKANALY->setText(RestoreAsString("leKANALY", "0666 AAAA"));
     sbseconds->setValue(RestoreAsInt("sbseconds", 12));
     cbIgnoreFirst->setChecked(RestoreAsBool("cbIgnoreFirst", false));
@@ -457,90 +355,6 @@ void LogicUIStawrov::setChannels(int s)
     channelsLabel->setText(QString::number(s));
 }
 
-void LogicUIStawrov::ograniczHV(QString)
-{
-    if(!ograniczenie->isChecked())
-        return;
-
-    int max = leMaxHV->text().toInt(nullptr, 16);
-    int current = leHV->text().toInt(nullptr, 16);
-    if(current>max)
-        leHV->setText(leMaxHV->text());
-}
-
-void LogicUIStawrov::makeSYNCH_AND_START()
-{
-    QByteArray temp;
-    temp.append(0x02);
-    PackAndSend(temp);
-}
-
-void LogicUIStawrov::makeRESET_SLAVE()
-{
-    QByteArray temp;
-    temp.append(0x03);
-    bool ok;
-    int tempi = lekAdrLoc->text().toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Nie można odczytać adresu: " + lekAdr->text());
-        return;
-    }
-    temp.append(tempi);
-    PackAndSend(temp);
-}
-
-void LogicUIStawrov::makeRESET_MASTER()
-{
-    QByteArray temp;
-    temp.append(0x04);
-    PackAndSend(temp);
-}
-
-void LogicUIStawrov::makeSET_HIGH_VOLTAGE()
-{
-    ograniczHV("");
-    int hvval = leHV->text().toInt(nullptr, 16);
-    QByteArray temp;
-    temp.append(0x05);
-    bool ok;
-    int tempi = lekAdrLoc->text().toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Nie można odczytać adresu: " + lekAdr->text());
-        return;
-    }
-    temp.append(tempi);
-    temp.append(hvval&0xFF);
-    temp.append((hvval>>8)&0xFF);
-    PackAndSend(temp);
-}
-
-void LogicUIStawrov::makeSET_GAIN_OFFSET_AND_TRIGGER()
-{
-    int offval = leOFFSET->text().toInt(nullptr, 16);
-    int trival = leTRIGGER->text().toInt(nullptr, 16);
-    QByteArray temp;
-    temp.append(0x06);
-    bool ok;
-    int tempi = lekAdrLoc->text().toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Nie można odczytać adresu: " + lekAdrLoc->text());
-        return;
-    }
-    temp.append(tempi);
-    uchar gain = gval.value(kcbox->currentText(), 0);
-    if(rozniczkowanie->isChecked())
-        gain |= 0x08;
-    temp.append(gain);
-    temp.append(offval&0xFF);
-    temp.append((offval>>8)&0xFF);
-    temp.append(trival&0xFF);
-    temp.append((trival>>8)&0xFF);
-    PackAndSend(temp);
-}
-
 void LogicUIStawrov::makeSET_CHANNELS()
 {
     QList<int> values;
@@ -561,14 +375,7 @@ void LogicUIStawrov::makeSET_CHANNELS()
 
     QByteArray temp;
     temp.append(0x01);
-    bool ok;
-    int tempi = lekAdrLoc->text().toInt(&ok, 16);
-    if(!ok)
-    {
-        emit Error("Nie można odczytać adresu: " + lekAdr->text());
-        return;
-    }
-    temp.append(tempi);
+    temp.append(0xFF);
     temp.append(values.size());
 
     for(int i: values)
@@ -632,7 +439,10 @@ void LogicUIStawrov::TimeoutedMean()
 
 void LogicUIStawrov::RemoveTab()
 {
-    tw->removeTab(tw->currentIndex());
+    if(tw->currentIndex()<0)
+        return;
+
+    delete tw->currentWidget();
 
     if(tw->count()<=0)
         btnremove->setEnabled(false);
@@ -665,7 +475,9 @@ void LogicUIStawrov::AddTab(QString adr)
         }
     }
 
-    QFrame* fr = new QFrame();
+    QFrame* fr = new QFrame(cParent);
+    KontrolerPomiarowy* kp = new KontrolerPomiarowy(tempi, fr);
+    connect(kp, SIGNAL(Send(QByteArray)), this, SLOT(PackAndSend(QByteArray)));
     tw->addTab(fr, numstr);
     btnremove->setEnabled(true);
 }
