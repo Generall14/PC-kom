@@ -14,6 +14,7 @@ public:
     static QByteArray techACC(uint16_t magic, uint16_t rnd);
     static QByteArray techRDSECTION(uint nr);
     static QByteArray techWRSECTION(uint nr, uint16_t magic, QByteArray data);
+    static QByteArray techRESET();
 
 private:
     PureMessageZR3(){}
@@ -25,6 +26,7 @@ private:
     static const uchar techRDSECTION_c = 0x3F;
     static const uchar techRDSECTIONo_c = 0x3E;
     static const uchar techWRSECTION_c = 0x3D;
+    static const uchar techRESET_c = 0x3C;
 };
 
 #endif

@@ -98,6 +98,14 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techRESET_c:
+        {
+            if(_arr.size()!=3)
+                break;
+            temp.append(QString("techRESET"));
+            *found = true;
+            break;
+        }
         }
         break;
     }
@@ -155,5 +163,12 @@ QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, QByteArray dat
     temp.append((magic>>8)&0xFF);
     temp.append(nr&0xFF);
     temp.append(data);
+    return temp;
+}
+
+QByteArray PureMessageZR3::techRESET()
+{
+    QByteArray temp;
+    temp.append(techRESET_c);
     return temp;
 }

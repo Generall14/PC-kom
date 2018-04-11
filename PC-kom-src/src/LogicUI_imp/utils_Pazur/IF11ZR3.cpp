@@ -89,6 +89,15 @@ void IF11ZR3::InitRest()
     letechACCmagic->setMaximumWidth(50);
     techACCLay->addWidget(letechACCmagic);
 
+    QHBoxLayout* techRSTLay = new QHBoxLayout();
+    mainLay->addLayout(techRSTLay);
+    pb = new QPushButton("techRESET");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRESET());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techRSTLay->addWidget(pb);
+    techRSTLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
     QHBoxLayout* techRDSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(techRDSECTIONLay);
     pb = new QPushButton("techRDSECTION");
