@@ -41,25 +41,12 @@ protected:
     QVBoxLayout* mainLay = nullptr;
     QLineEdit* leToAdr = nullptr;
 
-//    QSpinBox* sbwiRDCONST = nullptr;
-
-//    QSpinBox* sbwiRDSECTION = nullptr;
-//    QCheckBox* cbwiRDSECTION = nullptr;
-//    QLineEdit* lewiRDSECTION = nullptr;
-
-//    QSpinBox* sbwiWRSECTION = nullptr;
-//    QCheckBox* cbwiWRSECTION = nullptr;
     QLineEdit* letechREQmagic = nullptr;
 
     QLineEdit* letechACCmagic = nullptr;
     QLineEdit* letechACCrnd = nullptr;
 
-//    QLineEdit* lewiWRSECTIONmagic2 = nullptr;
-//    QLineEdit* lewiWRSECTIONnr2 = nullptr;
-//    QLineEdit* lewiWRSECTION2 = nullptr;
-
-//    QLineEdit* lewiGFDA = nullptr;
-//    QCheckBox* cbwiGFDA = nullptr;
+    QSpinBox* sbtechRDSECTION = nullptr;
 };
 
 #endif
