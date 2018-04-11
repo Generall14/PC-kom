@@ -86,6 +86,18 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techWRSECTION_c:
+        {
+            if(_arr.size()<6)
+                break;
+            temp.append(QString("techWRSECTION, nr: 0x%1").arg((uint)_arr.at(5)&0xFF, 2, 16, QChar('0')));
+            temp.append(QString(", magic: 0x%1%2, data: ").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
+                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            for(int i=6;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            *found = true;
+            break;
+        }
         }
         break;
     }
@@ -132,5 +144,16 @@ QByteArray PureMessageZR3::techRDSECTION(uint nr)
     QByteArray temp;
     temp.append(techRDSECTION_c);
     temp.append(nr&0xFF);
+    return temp;
+}
+
+QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, QByteArray data)
+{
+    QByteArray temp;
+    temp.append(techWRSECTION_c);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+    temp.append(nr&0xFF);
+    temp.append(data);
     return temp;
 }

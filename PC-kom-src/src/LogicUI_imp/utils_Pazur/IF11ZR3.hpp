@@ -47,6 +47,10 @@ protected:
     QLineEdit* letechACCrnd = nullptr;
 
     QSpinBox* sbtechRDSECTION = nullptr;
+
+    QLineEdit* letechWRSECTIONmagic = nullptr;
+    QSpinBox* sbtechWRSECTION = nullptr;
+    QLineEdit* letechWRSECTION = nullptr;
 };
 
 #endif

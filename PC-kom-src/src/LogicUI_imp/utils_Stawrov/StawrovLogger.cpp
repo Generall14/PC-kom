@@ -307,7 +307,7 @@ void STawrovLogger::stopMeaning()
     if(!counts)
         return;
 
-    QFile file("Pomiary/mean.txt");
+    QFile file("Pomiary/mean.ods");
     if(!file.open(QIODevice::Text | QIODevice::Append))
     {
         emit Error(QString("Nie można otworzyć pliku %1.").arg(file.fileName()));
@@ -331,12 +331,12 @@ QString STawrovLogger::meanString()
     int sum = 0;
     for(auto i: total)
         sum += i;
-    QString temp = QString("Liczba pomiarow: %1\r\nZliczenia (suma = %2): ").arg(counts).arg(sum);
+    QString temp = QString("Liczba pomiarow: %1\r\nZliczenia (suma = %2): ;").arg(counts).arg(sum);
     for(auto i: total)
-        temp.append(QString("[%1]  ").arg(i));
-    temp.append(QString("\r\nUsrednione (suma = %1): ").arg(float(sum)/float(counts)*float(5), 0, 'f', 2));
+        temp.append(QString("%1;").arg(i));
+    temp.append(QString("\r\nUsrednione (suma = %1): ;").arg(float(sum)/float(counts)*float(5), 0, 'f', 2));
     for(auto i: total)
-        temp.append(QString("[%1]  ").arg(float(i)/float(counts)*float(5), 0, 'f', 2));
+        temp.append(QString("%1;").arg(float(i)/float(counts)*float(5), 0, 'f', 2));
     temp.append("\r\n\r\n");
     return temp;
 }
