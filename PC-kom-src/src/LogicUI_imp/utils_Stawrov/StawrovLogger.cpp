@@ -96,6 +96,7 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
     }
     else
     {
+        push=false;
         if(temp.size()!=acc.size())
         {
             OccReset();
@@ -104,11 +105,18 @@ void STawrovLogger::FrameReaded(QSharedPointer<Frame> frame)
         {
             for(int i=0;i<temp.size();i++)
                 acc[i] += temp[i];
+            for(int i:acc)
+            {
+                if(i>3000)
+                {
+                    acc.clear();
+                    return;
+                }
+            }
             DoSomeStuff(acc, zajety);
             addToMean(acc);
         }
         acc.clear();
-        push=false;
     }
 }
 
