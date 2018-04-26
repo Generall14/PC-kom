@@ -35,7 +35,7 @@ void IF01::LoadConfigs()
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
     sbwiRDCONST->setValue(RestoreAsInt("sbwiRDCONST", 0));
     sbwiRDSECTION->setValue(RestoreAsInt("sbwiRDSECTION", 0));
-    cbwiRDSECTION->setChecked(RestoreAsInt("cbwiRDSECTION", false));
+    cbwiRDSECTION->setChecked(RestoreAsBool("cbwiRDSECTION", false));
     sbwiWRSECTION->setValue(RestoreAsInt("sbwiWRSECTION", 0));
     cbwiWRSECTION->setChecked(RestoreAsBool("cbwiWRSECTION", false));
     lewiWRSECTION->setText(RestoreAsString("lewiWRSECTION", ""));
