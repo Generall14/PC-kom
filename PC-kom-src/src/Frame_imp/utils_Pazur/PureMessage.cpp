@@ -120,47 +120,15 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<4)
                 break;
-            QByteArray xxx;
-            for(int i=0;i<5;++i)
-            {
-                if(3+i>=_arr.size())
-                    break;
-                xxx.append(_arr.at(3+i));
-                if(!(_arr.at(3+i)&0x80))
-                    break;
-            }
             temp.append(QString("wiRDSECTIONo"));
             bool fatal = false;
             if(_arr.at(2)&0x10)
                 fatal = true;
-            bool dev = false;
-            if(xxx.size()==5)
-            {
-                if(xxx.at(4)&0x80)
-                    dev = true;
-            }
-            if(dev)
-            {
-                if(xxx.at(4)&0x40)
-                    temp.append(" (prot)");
-                else
-                    temp.append(" (dev)");
-                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
-            }
-            else
-            {
-                temp.append(", nr: ");
-                for(auto a: xxx)
-                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
-            }
-            if(!fatal)
-            {
-                temp.append(", data: ");
-                for(int i=xxx.size()+3;i<_arr.size();++i)
-                    temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
-            }
-            else
-                temp.append(", nie rozpoznano sekcji");
+            if(fatal)
+                temp.append(", nie rozpoznano sekcji, ");
+            temp.append(", all:");
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
             break;
         }
@@ -208,7 +176,7 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<4)
                 break;
-            temp.append(QString("wiGFDA, nr: "));
+            temp.append(QString("wiGFDA, all: "));
             for(int i=3;i<_arr.size();++i)
                 temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
@@ -219,30 +187,15 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<4)
                 break;
-            QByteArray xxx;
-            for(int i=0;i<5;++i)
-            {
-                if(3+i>=_arr.size())
-                    break;
-                xxx.append(_arr.at(3+i));
-                if(!(_arr.at(3+i)&0x80))
-                    break;
-            }
             temp.append(QString("wiGFDAo"));
-            if(_arr.at(2)&0x40)
-                temp.append(", UTKAK, code: ");
-            else
-                temp.append(", UTKK, code: ");
-            for(auto a: xxx)
-                temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            bool fatal = false;
             if(_arr.at(2)&0x80)
-                temp.append(", nie rozpoznano sekcji");
-            else
-            {
-                temp.append(", data: ");
-                for(int i=xxx.size()+3;i<_arr.size();++i)
-                    temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
-            }
+                fatal = true;
+            if(fatal)
+                temp.append(", nie rozpoznano sekcji, ");
+            temp.append(", all:");
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
             break;
         }
