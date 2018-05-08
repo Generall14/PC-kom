@@ -107,7 +107,7 @@ void IF01::InitRest()
     lab = new QLabel("Nr:");
     wiRDSECTIONLay2->addWidget(lab);
     lewiRDSECTION = new QLineEdit();
-    lewiRDSECTION->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiRDSECTION->setValidator(new HexValidator(1, 8, lewiWRSECTIONmagic));
     lewiRDSECTION->setMaximumWidth(150);
     wiRDSECTIONLay2->addWidget(lewiRDSECTION);
 
@@ -125,7 +125,7 @@ void IF01::InitRest()
     lab = new QLabel("Nr:");
     wiGFDALay->addWidget(lab);
     lewiGFDA = new QLineEdit();
-    lewiGFDA->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiGFDA->setValidator(new HexValidator(1, 8, lewiWRSECTIONmagic));
     lewiGFDA->setMaximumWidth(150);
     wiGFDALay->addWidget(lewiGFDA);
 
@@ -178,7 +178,7 @@ void IF01::InitRest()
     lab = new QLabel("Nr:");
     wiWRSECTIONLay2->addWidget(lab);
     lewiWRSECTIONnr2 = new QLineEdit();
-    lewiWRSECTIONnr2->setValidator(new HexValidator(1, 5, lewiWRSECTIONmagic));
+    lewiWRSECTIONnr2->setValidator(new HexValidator(1, 8, lewiWRSECTIONmagic));
     lewiWRSECTIONnr2->setMaximumWidth(150);
     wiWRSECTIONLay2->addWidget(lewiWRSECTIONnr2);
     lewiWRSECTION2 = new QLineEdit("fe");

@@ -110,38 +110,9 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<4)
                 break;
-            QByteArray xxx;
-            for(int i=0;i<5;++i)
-            {
-                if(3+i>=_arr.size())
-                    break;
-                xxx.append(_arr.at(3+i));
-                if(!(_arr.at(3+i)&0x80))
-                    break;
-            }
-            if(_arr.size()!=(xxx.size()+3))
-                break;
-            temp.append(QString("wiRDSECTION"));
-            bool dev = false;
-            if(xxx.size()==5)
-            {
-                if(xxx.at(4)&0x80)
-                    dev = true;
-            }
-            if(dev)
-            {
-                if(xxx.at(4)&0x40)
-                    temp.append(" (prot)");
-                else
-                    temp.append(" (dev)");
-                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
-            }
-            else
-            {
-                temp.append(", nr: ");
-                for(auto a: xxx)
-                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
-            }
+            temp.append(QString("wiRDSECTION, nr: "));
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
             break;
         }
@@ -197,39 +168,8 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<6)
                 break;
-            QByteArray xxx;
-            for(int i=0;i<5;++i)
-            {
-                if(5+i>=_arr.size())
-                    break;
-                xxx.append(_arr.at(5+i));
-                if(!(_arr.at(5+i)&0x80))
-                    break;
-            }
-            temp.append(QString("wiWRSECTION"));
-            bool dev = false;
-            if(xxx.size()==5)
-            {
-                if(xxx.at(4)&0x80)
-                    dev = true;
-            }
-            if(dev)
-            {
-                if(xxx.at(4)&0x40)
-                    temp.append(" (prot)");
-                else
-                    temp.append(" (dev)");
-                temp.append(QString(", nr: ")+QString::number(xxx.at(4)&0x3F));
-            }
-            else
-            {
-                temp.append(", nr: ");
-                for(auto a: xxx)
-                    temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
-            }
-            temp.append(QString(", magic: 0x%1%2, data: ").arg((uint)_arr.at(4)&0xFF, 2, 16, QChar('0'))
-                        .arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
-            for(int i=xxx.size()+5;i<_arr.size();++i)
+            temp.append(QString("wiWRSECTION, all: "));
+            for(int i=3;i<_arr.size();++i)
                 temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
             done = true;
             break;
@@ -268,22 +208,10 @@ QString PureMessage::desc() const
         {
             if(_arr.size()<4)
                 break;
-            QByteArray xxx;
-            for(int i=0;i<5;++i)
-            {
-                if(3+i>=_arr.size())
-                    break;
-                xxx.append(_arr.at(3+i));
-                if(!(_arr.at(3+i)&0x80))
-                    break;
-            }
-            temp.append(QString("wiGFDA"));
-            if(_arr.at(2)&0x40)
-                temp.append(", UTKAK, code: ");
-            else
-                temp.append(", UTKK, code:");
-            for(auto a: xxx)
-                temp.append(QString("0x%1 ").arg((uint)a&0xFF, 2, 16, QChar('0')));
+            temp.append(QString("wiGFDA, nr: "));
+            for(int i=3;i<_arr.size();++i)
+                temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            done = true;
             done = true;
             break;
         }
@@ -362,13 +290,11 @@ QByteArray PureMessage::wiRDSECTION_long(QByteArray nr)
 {
     QByteArray temp;
     temp.append(wiRDSECTION_c);
-    for(int i=0;i<5;++i)
+    for(int i=0;i<8;++i)
     {
         if(i>=nr.size())
             break;
         temp.append(nr.at(i));
-        if(!(nr.at(i)&0x80))
-            break;
     }
     return temp;
 }
@@ -394,13 +320,11 @@ QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArr
     temp.append(wiWRSECTION_c);
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
-    for(int i=0;i<5;++i)
+    for(int i=0;i<8;++i)
     {
         if(i>=nr.size())
             break;
         temp.append(nr.at(i));
-        if(!(nr.at(i)&0x80))
-            break;
     }
     temp.append(data);
     return temp;
@@ -410,7 +334,7 @@ QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
 {
     QByteArray temp;
     temp.append(wiGFDA_c);
-    int end = 5;
+    int end = 8;
     if(utkak)
     {
         end = 3;
@@ -421,8 +345,6 @@ QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
         if(i>=nr.size())
             break;
         temp.append(nr.at(i));
-        if(!(nr.at(i)&0x80))
-            break;
     }
     return temp;
 }
