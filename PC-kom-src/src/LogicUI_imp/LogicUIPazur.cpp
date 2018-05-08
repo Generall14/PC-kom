@@ -74,15 +74,20 @@ void LogicUIPazur::InitGlobals()
     leMyAdr->setMaximumWidth(40);
     myAdrLay->addWidget(leMyAdr);
 
-    QHBoxLayout* toAdrLay = new QHBoxLayout();
-    mainGlobalne->addLayout(toAdrLay);
+//    QHBoxLayout* toAdrLay = new QHBoxLayout();
+//    mainGlobalne->addLayout(toAdrLay);
     lab = new QLabel("Adres docelowy:");
-    toAdrLay->addWidget(lab);
-    toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    myAdrLay->addWidget(lab);
+    myAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     leToAdr = new QLineEdit("FF");
     leToAdr->setInputMask("HH");
     leToAdr->setMaximumWidth(40);
-    toAdrLay->addWidget(leToAdr);
+    myAdrLay->addWidget(leToAdr);
+
+    QPushButton* pbtn = new QPushButton("Wyślij pusty");
+    myAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    connect(pbtn, &QPushButton::clicked, [this](){Send(QList<Confirm>(), QList<Message>(), cbKwitowanie->isChecked());});
+    myAdrLay->addWidget(pbtn);
 
     QHBoxLayout* idLay = new QHBoxLayout();
     mainGlobalne->addLayout(idLay);
