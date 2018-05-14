@@ -172,3 +172,11 @@ QByteArray PureMessageZR3::techRESET()
     temp.append(techRESET_c);
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3ReadDose()
+{
+    QByteArray temp;
+    temp.append(0x21);
+    temp.append(0x04);
+    return temp;
+}

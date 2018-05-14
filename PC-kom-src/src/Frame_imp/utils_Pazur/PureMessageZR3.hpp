@@ -16,6 +16,8 @@ public:
     static QByteArray techWRSECTION(uint nr, uint16_t magic, QByteArray data);
     static QByteArray techRESET();
 
+    static QByteArray zr3ReadDose();
+
 private:
     PureMessageZR3(){}
 

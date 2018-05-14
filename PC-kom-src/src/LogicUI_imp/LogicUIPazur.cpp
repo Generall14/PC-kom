@@ -34,6 +34,7 @@ LogicUIPazur::~LogicUIPazur()
     delete _if00;
     delete _if01;
     delete _if11;
+    delete _if10;
 }
 
 void LogicUIPazur::LoadConfigs()
@@ -155,6 +156,16 @@ void LogicUIPazur::InitTabs()
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
     tw->addTab(sa, "IF11ZR3");
+
+    fr = new QFrame();
+    _if10 = new IF10ZR3s(fr);
+    connect(_if10, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
+    connect(_if10, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(this, SIGNAL(internalFrameReaded(QSharedPointer<Frame>)), _if10, SLOT(internalFrameReaded(QSharedPointer<Frame>)));
+    sa = new QScrollArea();
+    sa->setWidget(fr);
+    sa->setWidgetResizable(true);
+    tw->addTab(sa, "IF10ZR3");
 }
 
 void LogicUIPazur::Connected()
