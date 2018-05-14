@@ -14,6 +14,8 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QDoubleSpinBox>
+#include <QLabel>
 
 class IF10ZR3s : public QObject, public Restorable
 {
@@ -31,7 +33,7 @@ protected slots:
     void SendMessage(QByteArray arr);
 
 public slots:
-    void internalFrameReaded(QSharedPointer<Frame>);
+    void internalFrameReaded(QSharedPointer<Frame> fr);
 
 protected:
     void Init();
@@ -41,7 +43,8 @@ protected:
     QVBoxLayout* mainLay = nullptr;
     QLineEdit* leToAdr = nullptr;
 
-//    QLineEdit* letechREQmagic = nullptr;
+    QLabel* labDose = nullptr;
+    QDoubleSpinBox* dsbzr3SetDose = nullptr;
 
 //    QLineEdit* letechACCmagic = nullptr;
 //    QLineEdit* letechACCrnd = nullptr;

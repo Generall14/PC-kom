@@ -164,3 +164,80 @@ QString SU::byteArray2String(QByteArray arr)
         str.append(QString("%1 ").arg(a&0xFF, 2, 16, QChar('0')));
     return str;
 }
+
+/**
+ * Zamienia float32 na ciąg bajtów (little endian).
+ */
+QByteArray SU::float322ByteArray(float f)
+{
+    SU::FI temp;
+    temp.f = f;
+    QByteArray ta;
+    ta.append((temp.i>>0)&0xFF);
+    ta.append((temp.i>>8)&0xFF);
+    ta.append((temp.i>>16)&0xFF);
+    ta.append((temp.i>>24)&0xFF);
+    return ta;
+}
+
+/**
+ * Odczytuje ciąg bajtów (little endian) i zamienia je na float32.
+ */
+float SU::byteArray322Float32(QByteArray b)
+{
+    if(b.size()!=4)
+        return -1.0;
+    SU::FI temp;
+    temp.i = 0;
+    temp.i |= (b.at(0)<<0)&0xFF;
+    temp.i |= (b.at(1)<<8)&0xFF00;
+    temp.i |= (b.at(2)<<16)&0xFF0000;
+    temp.i |= (b.at(3)<<24)&0xFF000000;
+    return temp.f;
+}
+
+QString SU::displayFloat(float f, uint precision)
+{
+    float s = 1;
+    if(f<0)
+        s = -1;
+    f *= s;
+    QString pre = "jhgj";
+    if(f>1e9)
+    {
+        pre = "G";
+        f /= 1e9;
+    }
+    else if(f>1e6)
+    {
+        pre = "M";
+        f /= 1e6;
+    }
+    else if(f>1e3)
+    {
+        pre = "K";
+        f /= 1e3;
+    }
+    else if(f<1e-9)
+    {
+        pre = "p";
+        f *= 1e12;
+    }
+    else if(f<1e-6)
+    {
+        pre = "n";
+        f *= 1e9;
+    }
+    else if(f<1e-3)
+    {
+        pre = "u";
+        f *= 1e6;
+    }
+    else if(f<1)
+    {
+        pre = "m";
+        f *= 1e3;
+    }
+    f *= s;
+    return QString::number(f, 'g', precision)+" "+pre;
+}

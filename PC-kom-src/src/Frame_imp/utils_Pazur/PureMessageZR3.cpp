@@ -1,6 +1,7 @@
 #include "PureMessageZR3.hpp"
 #include <cassert>
 #include <QDebug>
+#include "src/Utils/StaticUtils.hpp"
 
 QString PureMessageZR3::desc(QByteArray _arr, bool* found)
 {
@@ -178,5 +179,14 @@ QByteArray PureMessageZR3::zr3ReadDose()
     QByteArray temp;
     temp.append(0x21);
     temp.append(0x04);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetDose(float dose)
+{
+    QByteArray temp;
+    temp.append(0x22);
+    temp.append(0x04);
+    temp.append(SU::float322ByteArray(dose));
     return temp;
 }

@@ -18,6 +18,8 @@ IF10ZR3s::IF10ZR3s(QFrame* parent):
 IF10ZR3s::~IF10ZR3s()
 {
     Store("leToAdr", leToAdr->text());
+//    Store("lezr3SetDose", lezr3SetDose->text());
+    Store("dsbzr3SetDose", dsbzr3SetDose->value());
 //    Store("letechREQmagic", letechREQmagic->text());
 //    Store("letechACCmagic", letechACCmagic->text());
 //    Store("letechACCrnd", letechACCrnd->text());
@@ -30,6 +32,8 @@ IF10ZR3s::~IF10ZR3s()
 void IF10ZR3s::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
+//    lezr3SetDose->setText(RestoreAsString("lezr3SetDose", ""));
+    dsbzr3SetDose->setValue(RestoreAsFloat("dsbzr3SetDose", 0.0));
 //    letechREQmagic->setText(RestoreAsString("letechREQmagic", "1234"));
 //    letechACCmagic->setText(RestoreAsString("letechACCmagic", "1234"));
 //    letechACCrnd->setText(RestoreAsString("letechACCrnd", "1234"));
@@ -54,6 +58,12 @@ void IF10ZR3s::InitRest()
     toAdrLay->addWidget(leToAdr);
 
     //=============================================================================================
+    QGroupBox* mocDawki = new QGroupBox("Pomiar/szacowanie mocy dawki");
+    mainLay->addWidget(mocDawki);
+    QVBoxLayout* mdLay = new QVBoxLayout(mocDawki);
+    mdLay->setMargin(2);
+
+    //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");
     mainLay->addWidget(dawka);
     QVBoxLayout* dLay = new QVBoxLayout(dawka);
@@ -66,12 +76,26 @@ void IF10ZR3s::InitRest()
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     dRead->addWidget(pb);
+    dRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labDose = new QLabel("-");
+    dRead->addWidget(labDose);
 
-    //=============================================================================================
-    QGroupBox* mocDawki = new QGroupBox("Pomiar/szacowanie mocy dawki");
-    mainLay->addWidget(mocDawki);
-    QVBoxLayout* mdLay = new QVBoxLayout(mocDawki);
-    mdLay->setMargin(2);
+    QHBoxLayout* dSet = new QHBoxLayout();
+    dLay->addLayout(dSet);
+    pb = new QPushButton("Ustaw");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetDose(dsbzr3SetDose->value()));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    dSet->addWidget(pb);
+    dSet->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    dsbzr3SetDose = new QDoubleSpinBox();
+    dSet->addWidget(dsbzr3SetDose);
+    dsbzr3SetDose->setMaximumWidth(100);
+    dsbzr3SetDose->setMinimumWidth(100);
+    dsbzr3SetDose->setDecimals(10);
+
+
 
 //    QHBoxLayout* techREQLay = new QHBoxLayout();
 //    mainLay->addLayout(techREQLay);
@@ -178,24 +202,23 @@ void IF10ZR3s::SendMessage(QByteArray arr)
 {
     QList<Message> m;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, 3, arr));
+    m.append(Message(to, 2, arr));
     emit Send(QList<Confirm>(), m);
 }
 
-void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame>)
+void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
 {
-//    if(!(*fr).isValid())
-//        return;
-//    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
-//        return;
-//    FramePazur paz(fr->pureData());
-//    for(auto msg: paz.getMessages().getMessages())
-//    {
-//        if(msg.toPureData().at(2)==0x01)
-//        {
-//            letechACCrnd->setText(QString("%1%2").arg((uint)msg.toPureData().at(4)&0xFF, 2, 16, QChar('0'))
-//                                  .arg((uint)msg.toPureData().at(3)&0xFF, 2, 16, QChar('0')).toUpper());
-//            return;
-//        }
-//    }
+    if(!(*fr).isValid())
+        return;
+    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
+        return;
+    FramePazur paz(fr->pureData());
+    for(auto msg: paz.getMessages().getMessages())
+    {
+        QByteArray mm = msg.toPureData().mid(2);
+        if((mm.at(0)==0x20)&&(mm.at(0)==0x20))
+        {
+            labDose->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv");
+        }
+    }
 }

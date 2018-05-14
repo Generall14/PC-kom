@@ -28,6 +28,11 @@ public:
     static QByteArray string2ByteArray(QString str);
     static QString byteArray2String(QByteArray arr);
 
+    static QByteArray float322ByteArray(float f);
+    static float byteArray322Float32(QByteArray b);
+
+    static QString displayFloat(float f, uint precision = 2);
+
 private:
     union FI;
 };
