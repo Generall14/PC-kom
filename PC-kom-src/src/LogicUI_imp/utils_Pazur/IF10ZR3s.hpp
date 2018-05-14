@@ -39,6 +39,8 @@ protected:
     void Init();
     void LoadConfigs();
 
+    QString ReadMeasure(QByteArray dat, QString unit);
+
     QFrame* cParent=nullptr;
     QVBoxLayout* mainLay = nullptr;
     QLineEdit* leToAdr = nullptr;
@@ -48,6 +50,12 @@ protected:
 
     QLabel* labDoseRate = nullptr;
     QLabel* labDoseRateProbe = nullptr;
+
+    QLabel* labEstimatedEnergy = nullptr;
+
+    QLabel* labEstimatedNeutron = nullptr;
+
+    QLabel* labEstimatedGammaDoseRate = nullptr;
 
 //    QLineEdit* letechACCmagic = nullptr;
 //    QLineEdit* letechACCrnd = nullptr;

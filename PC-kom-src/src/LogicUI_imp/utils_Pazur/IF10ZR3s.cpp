@@ -18,29 +18,13 @@ IF10ZR3s::IF10ZR3s(QFrame* parent):
 IF10ZR3s::~IF10ZR3s()
 {
     Store("leToAdr", leToAdr->text());
-//    Store("lezr3SetDose", lezr3SetDose->text());
     Store("dsbzr3SetDose", dsbzr3SetDose->value());
-//    Store("letechREQmagic", letechREQmagic->text());
-//    Store("letechACCmagic", letechACCmagic->text());
-//    Store("letechACCrnd", letechACCrnd->text());
-//    Store("sbtechRDSECTION", sbtechRDSECTION->value());
-//    Store("letechWRSECTIONmagic", letechWRSECTIONmagic->text());
-//    Store("letechWRSECTION", letechWRSECTION->text());
-//    Store("sbtechWRSECTION", sbtechWRSECTION->value());
 }
 
 void IF10ZR3s::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
-//    lezr3SetDose->setText(RestoreAsString("lezr3SetDose", ""));
     dsbzr3SetDose->setValue(RestoreAsFloat("dsbzr3SetDose", 0.0));
-//    letechREQmagic->setText(RestoreAsString("letechREQmagic", "1234"));
-//    letechACCmagic->setText(RestoreAsString("letechACCmagic", "1234"));
-//    letechACCrnd->setText(RestoreAsString("letechACCrnd", "1234"));
-//    sbtechRDSECTION->setValue(RestoreAsInt("sbtechRDSECTION", 0));
-//    letechWRSECTIONmagic->setText(RestoreAsString("letechWRSECTIONmagic", "1234"));
-//    letechWRSECTION->setText(RestoreAsString("letechWRSECTION", ""));
-//    sbtechWRSECTION->setValue(RestoreAsInt("sbtechWRSECTION", 0));
 }
 
 void IF10ZR3s::InitRest()
@@ -76,10 +60,15 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* drProbeRead = new QHBoxLayout();
     mdLay->addLayout(drProbeRead);
+    pb = new QPushButton("Rst");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstDoseRateProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    drProbeRead->addWidget(pb);
     pb = new QPushButton("Próbka");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRateProbe());});
-    pb->setMaximumWidth(MIN_PB_W);
-    pb->setMinimumWidth(MIN_PB_W);
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
     drProbeRead->addWidget(pb);
     drProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     labDoseRateProbe = new QLabel("-");
@@ -113,9 +102,60 @@ void IF10ZR3s::InitRest()
 
     dsbzr3SetDose = new QDoubleSpinBox();
     dSet->addWidget(dsbzr3SetDose);
-    dsbzr3SetDose->setMaximumWidth(100);
-    dsbzr3SetDose->setMinimumWidth(100);
+    dsbzr3SetDose->setMaximumWidth(120);
+    dsbzr3SetDose->setMinimumWidth(120);
     dsbzr3SetDose->setDecimals(12);
+
+    //=============================================================================================
+    QGroupBox* energia = new QGroupBox("(G) Szacowanie dominującej energii gamma");
+    mainLay->addWidget(energia);
+    QVBoxLayout* seLay = new QVBoxLayout(energia);
+    seLay->setMargin(2);
+
+    QHBoxLayout* eeRead = new QHBoxLayout();
+    seLay->addLayout(eeRead);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergy());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    eeRead->addWidget(pb);
+    eeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedEnergy = new QLabel("-");
+    eeRead->addWidget(labEstimatedEnergy);
+
+    //=============================================================================================
+    QGroupBox* estNeutron = new QGroupBox("(G) Szacowanie strumienia neutronow");
+    mainLay->addWidget(estNeutron);
+    QVBoxLayout* enLay = new QVBoxLayout(estNeutron);
+    enLay->setMargin(2);
+
+    QHBoxLayout* enRead = new QHBoxLayout();
+    enLay->addLayout(enRead);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronB());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    enRead->addWidget(pb);
+    enRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedNeutron = new QLabel("-");
+    enRead->addWidget(labEstimatedNeutron);
+
+    //=============================================================================================
+    QGroupBox* estGamma = new QGroupBox("(N) Szacowanie mocy dawki gamma");
+    mainLay->addWidget(estGamma);
+    QVBoxLayout* egLay = new QVBoxLayout(estGamma);
+    egLay->setMargin(2);
+
+    QHBoxLayout* egRead = new QHBoxLayout();
+    egLay->addLayout(egRead);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRate());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    egRead->addWidget(pb);
+    egRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedGammaDoseRate = new QLabel("-");
+    egRead->addWidget(labEstimatedGammaDoseRate);
 
 
 
@@ -244,35 +284,41 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
                 return;
             labDose->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv");
         }
-        else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
-        {
-            if(mm.size()<11)
-                return;
-            QString text = SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv/h";
-            text.append(QString(" +%1\% -%2\%")
-                        .arg(int(SU::byteArray2f5_11(mm.mid(6, 2))*100))
-                        .arg(int(SU::byteArray2f5_11(mm.mid(8, 2))*100))
-                        );
-            if(mm.at(10)&0x01)
-                text.append(" !DGZ!");
-            if(mm.at(10)&0x02)
-                text.append(" !GGZ!");
-            labDoseRate->setText(text);
-        }
         else if((mm.at(0)==0x70))
         {
-            if(mm.size()<10)
-                return;
-            QString text = SU::displayFloat(SU::byteArray322Float32(mm.mid(1, 4)), 3)+"Sv/h";
-            text.append(QString(" +%1\% -%2\%")
-                        .arg(int(SU::byteArray2f5_11(mm.mid(5, 2))*100))
-                        .arg(int(SU::byteArray2f5_11(mm.mid(7, 2))*100))
-                        );
-            if(mm.at(9)&0x01)
-                text.append(" !DGZ!");
-            if(mm.at(9)&0x02)
-                text.append(" !GGZ!");
-            labDoseRateProbe->setText(text);
+            labDoseRateProbe->setText(ReadMeasure(mm.mid(1), "Sv/h"));
+        }
+        else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
+        {
+            labDoseRate->setText(ReadMeasure(mm.mid(2), "Sv/h"));
+        }
+        else if((mm.at(0)==0x20)&&(mm.at(1)==0x15))
+        {
+            labEstimatedEnergy->setText(ReadMeasure(mm.mid(2), "eV"));
+        }
+        else if((mm.at(0)==0x20)&&(mm.at(1)==0x05))
+        {
+            labEstimatedNeutron->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
+        }
+        else if(((uchar)mm.at(0)==0xA0)&&(mm.at(1)==0x20)&&(mm.at(2)==0x02))
+        {
+            labEstimatedGammaDoseRate->setText(ReadMeasure(mm.mid(3), "Sv/h"));
         }
     }
+}
+
+QString IF10ZR3s::ReadMeasure(QByteArray dat, QString unit)
+{
+    if(dat.size()<9)
+        return "ERROR";
+    QString text = SU::displayFloat(SU::byteArray322Float32(dat.mid(0, 4)), 3)+unit;
+    text.append(QString(" +%1\% -%2\%")
+                .arg(int(SU::byteArray2f5_11(dat.mid(4, 2))*100))
+                .arg(int(SU::byteArray2f5_11(dat.mid(6, 2))*100))
+                );
+    if(dat.at(8)&0x01)
+        text.append(" !DGZ!");
+    if(dat.at(8)&0x02)
+        text.append(" !GGZ!");
+    return text;
 }

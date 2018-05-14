@@ -203,7 +203,7 @@ QString SU::displayFloat(float f, uint precision)
     if(f<0)
         s = -1;
     f *= s;
-    QString pre = "jhgj";
+    QString pre = "";
     if(f>1e9)
     {
         pre = "G";

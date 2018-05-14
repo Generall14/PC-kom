@@ -182,6 +182,31 @@ QByteArray PureMessageZR3::zr3ReadDose()
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3ReadEstimatedEnergy()
+{
+    QByteArray temp;
+    temp.append(0x21);
+    temp.append(0x15);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3ReadEstimatedNeutronB()
+{
+    QByteArray temp;
+    temp.append(0x21);
+    temp.append(0x05);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3ReadEstimatedGammaDoseRate()
+{
+    QByteArray temp;
+    temp.append(0xA1);
+    temp.append(0x20);
+    temp.append(0x02);
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3ReadDoseRate()
 {
     QByteArray temp;
@@ -194,6 +219,13 @@ QByteArray PureMessageZR3::zr3ReadDoseRateProbe()
 {
     QByteArray temp;
     temp.append(0x71);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3RstDoseRateProbe()
+{
+    QByteArray temp;
+    temp.append(0x72);
     return temp;
 }
 
