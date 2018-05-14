@@ -31,6 +31,8 @@ public:
     static QByteArray float322ByteArray(float f);
     static float byteArray322Float32(QByteArray b);
 
+    static float byteArray2f5_11(QByteArray b);
+
     static QString displayFloat(float f, uint precision = 2);
 
 private:

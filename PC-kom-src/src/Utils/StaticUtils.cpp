@@ -1,4 +1,5 @@
 #include "StaticUtils.hpp"
+#include <cmath>
 
 union SU::FI
 {
@@ -240,4 +241,14 @@ QString SU::displayFloat(float f, uint precision)
     }
     f *= s;
     return QString::number(f, 'g', precision)+" "+pre;
+}
+
+float SU::byteArray2f5_11(QByteArray b)
+{
+    if(b.size()!=2)
+        return -1.0;
+    int t = 0;
+    t |= b.at(0)&0xFF;
+    t |= (b.at(1)<<8)&0xFF00;
+    return (float(t))*pow(2, -11);
 }

@@ -182,6 +182,14 @@ QByteArray PureMessageZR3::zr3ReadDose()
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3ReadDoseRate()
+{
+    QByteArray temp;
+    temp.append(0x21);
+    temp.append(0x02);
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3SetDose(float dose)
 {
     QByteArray temp;

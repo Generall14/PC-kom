@@ -63,6 +63,17 @@ void IF10ZR3s::InitRest()
     QVBoxLayout* mdLay = new QVBoxLayout(mocDawki);
     mdLay->setMargin(2);
 
+    QHBoxLayout* drRead = new QHBoxLayout();
+    mdLay->addLayout(drRead);
+    QPushButton* pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRate());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    drRead->addWidget(pb);
+    drRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labDoseRate = new QLabel("-");
+    drRead->addWidget(labDoseRate);
+
     //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");
     mainLay->addWidget(dawka);
@@ -71,7 +82,7 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* dRead = new QHBoxLayout();
     dLay->addLayout(dRead);
-    QPushButton* pb = new QPushButton("Odczytaj");
+    pb = new QPushButton("Odczytaj");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDose());});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
@@ -93,7 +104,7 @@ void IF10ZR3s::InitRest()
     dSet->addWidget(dsbzr3SetDose);
     dsbzr3SetDose->setMaximumWidth(100);
     dsbzr3SetDose->setMinimumWidth(100);
-    dsbzr3SetDose->setDecimals(10);
+    dsbzr3SetDose->setDecimals(12);
 
 
 
@@ -216,9 +227,26 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
     for(auto msg: paz.getMessages().getMessages())
     {
         QByteArray mm = msg.toPureData().mid(2);
-        if((mm.at(0)==0x20)&&(mm.at(0)==0x20))
+        if((mm.at(0)==0x20)&&(mm.at(1)==0x04))
         {
+            if(mm.size()<11)
+                return;
             labDose->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv");
+        }
+        else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
+        {
+            if(mm.size()<11)
+                return;
+            QString text = SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv/h";
+            text.append(QString(" +%1\% -%2\%")
+                        .arg(int(SU::byteArray2f5_11(mm.mid(6, 2))*100))
+                        .arg(int(SU::byteArray2f5_11(mm.mid(8, 2))*100))
+                        );
+            if(mm.at(10)&0x01)
+                text.append(" !DGZ!");
+            if(mm.at(10)&0x02)
+                text.append(" !GGZ!");
+            labDoseRate->setText(text);
         }
     }
 }
