@@ -47,6 +47,7 @@ protected:
     QDoubleSpinBox* dsbzr3SetDose = nullptr;
 
     QLabel* labDoseRate = nullptr;
+    QLabel* labDoseRateProbe = nullptr;
 
 //    QLineEdit* letechACCmagic = nullptr;
 //    QLineEdit* letechACCrnd = nullptr;

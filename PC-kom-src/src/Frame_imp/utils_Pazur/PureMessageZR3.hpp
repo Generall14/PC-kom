@@ -19,6 +19,7 @@ public:
     static QByteArray zr3ReadDose();
     static QByteArray zr3SetDose(float dose);
     static QByteArray zr3ReadDoseRate();
+    static QByteArray zr3ReadDoseRateProbe();
 
 private:
     PureMessageZR3(){}
