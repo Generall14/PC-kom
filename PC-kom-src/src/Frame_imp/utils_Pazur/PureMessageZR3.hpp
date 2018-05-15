@@ -24,6 +24,12 @@ public:
     static QByteArray zr3ReadEstimatedEnergy();
     static QByteArray zr3ReadEstimatedNeutronB();
     static QByteArray zr3ReadEstimatedGammaDoseRate();
+    static QByteArray zr3RstEstimatedEnergyProbe();
+    static QByteArray zr3ReadEstimatedEnergyProbe();
+    static QByteArray zr3RstEstimatedNeutronBProbe();
+    static QByteArray zr3ReadEstimatedNeutronBProbe();
+    static QByteArray zr3RstEstimatedGammaDoseRateProbe();
+    static QByteArray zr3ReadEstimatedGammaDoseRateProbe();
 
 private:
     PureMessageZR3(){}

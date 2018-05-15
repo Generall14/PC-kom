@@ -52,10 +52,13 @@ protected:
     QLabel* labDoseRateProbe = nullptr;
 
     QLabel* labEstimatedEnergy = nullptr;
+    QLabel* labEstimatedEnergyProbe = nullptr;
 
     QLabel* labEstimatedNeutron = nullptr;
+    QLabel* labEstimatedNeutronProbe = nullptr;
 
     QLabel* labEstimatedGammaDoseRate = nullptr;
+    QLabel* labEstimatedGammaDoseRateProbe = nullptr;
 
 //    QLineEdit* letechACCmagic = nullptr;
 //    QLineEdit* letechACCrnd = nullptr;

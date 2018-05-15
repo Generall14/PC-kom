@@ -123,6 +123,23 @@ void IF10ZR3s::InitRest()
     labEstimatedEnergy = new QLabel("-");
     eeRead->addWidget(labEstimatedEnergy);
 
+    QHBoxLayout* eeProbeRead = new QHBoxLayout();
+    seLay->addLayout(eeProbeRead);
+    pb = new QPushButton("Rst");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedEnergyProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    eeProbeRead->addWidget(pb);
+    pb = new QPushButton("Próbka");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergyProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    eeProbeRead->addWidget(pb);
+    eeProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedEnergyProbe = new QLabel("-");
+    eeProbeRead->addWidget(labEstimatedEnergyProbe);
+
+
     //=============================================================================================
     QGroupBox* estNeutron = new QGroupBox("(G) Szacowanie strumienia neutronow");
     mainLay->addWidget(estNeutron);
@@ -140,6 +157,22 @@ void IF10ZR3s::InitRest()
     labEstimatedNeutron = new QLabel("-");
     enRead->addWidget(labEstimatedNeutron);
 
+    QHBoxLayout* snProbeRead = new QHBoxLayout();
+    enLay->addLayout(snProbeRead);
+    pb = new QPushButton("Rst");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedNeutronBProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    snProbeRead->addWidget(pb);
+    pb = new QPushButton("Próbka");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronBProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    snProbeRead->addWidget(pb);
+    snProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedNeutronProbe = new QLabel("-");
+    snProbeRead->addWidget(labEstimatedNeutronProbe);
+
     //=============================================================================================
     QGroupBox* estGamma = new QGroupBox("(N) Szacowanie mocy dawki gamma");
     mainLay->addWidget(estGamma);
@@ -156,6 +189,22 @@ void IF10ZR3s::InitRest()
     egRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     labEstimatedGammaDoseRate = new QLabel("-");
     egRead->addWidget(labEstimatedGammaDoseRate);
+
+    QHBoxLayout* edrProbeRead = new QHBoxLayout();
+    egLay->addLayout(edrProbeRead);
+    pb = new QPushButton("Rst");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedGammaDoseRateProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    edrProbeRead->addWidget(pb);
+    pb = new QPushButton("Próbka");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRateProbe());});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    edrProbeRead->addWidget(pb);
+    edrProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labEstimatedGammaDoseRateProbe = new QLabel("-");
+    edrProbeRead->addWidget(labEstimatedGammaDoseRateProbe);
 
 
 
@@ -296,13 +345,26 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
         {
             labEstimatedEnergy->setText(ReadMeasure(mm.mid(2), "eV"));
         }
+        else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
+        {
+            labEstimatedEnergyProbe->setText(ReadMeasure(mm.mid(2), "eV"));
+        }
         else if((mm.at(0)==0x20)&&(mm.at(1)==0x05))
         {
             labEstimatedNeutron->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
         }
+        else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x40))
+        {
+            labEstimatedNeutronProbe->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
+        }
         else if(((uchar)mm.at(0)==0xA0)&&(mm.at(1)==0x20)&&(mm.at(2)==0x02))
         {
             labEstimatedGammaDoseRate->setText(ReadMeasure(mm.mid(3), "Sv/h"));
+        }
+
+        if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
+        {
+            labEstimatedGammaDoseRateProbe->setText(ReadMeasure(mm.mid(2), "Sv/h"));
         }
     }
 }
