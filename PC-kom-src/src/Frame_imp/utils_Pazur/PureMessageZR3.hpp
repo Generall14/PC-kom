@@ -30,6 +30,9 @@ public:
     static QByteArray zr3ReadEstimatedNeutronBProbe();
     static QByteArray zr3RstEstimatedGammaDoseRateProbe();
     static QByteArray zr3ReadEstimatedGammaDoseRateProbe();
+    static QByteArray zr3ForceDoseRate(bool toAdres);
+    static QByteArray zr3ForceDose(bool toAdres);
+    static QByteArray zr3ForceEsts(bool toAdres);
 
 private:
     PureMessageZR3(){}

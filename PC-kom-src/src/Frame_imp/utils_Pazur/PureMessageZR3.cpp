@@ -285,3 +285,38 @@ QByteArray PureMessageZR3::zr3ReadEstimatedGammaDoseRateProbe()
     temp.append(0x21);
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3ForceDoseRate(bool toAdres)
+{
+    QByteArray temp;
+    temp.append(0x10);
+    if(toAdres)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3ForceDose(bool toAdres)
+{
+    QByteArray temp;
+    temp.append(0x90);
+    temp.append(0x20);
+    if(toAdres)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3ForceEsts(bool toAdres)
+{
+    QByteArray temp;
+    temp.append(0x90);
+    temp.append(0x60);
+    if(toAdres)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    return temp;
+}

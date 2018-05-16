@@ -47,9 +47,13 @@ protected:
 
     QLabel* labDose = nullptr;
     QDoubleSpinBox* dsbzr3SetDose = nullptr;
+    QCheckBox* cbForceDoseAdr = nullptr;
 
     QLabel* labDoseRate = nullptr;
     QLabel* labDoseRateProbe = nullptr;
+    QCheckBox* cbForceDoseRateAdr = nullptr;
+
+    QCheckBox* cbForceEstsAdr = nullptr;
 
     QLabel* labEstimatedEnergy = nullptr;
     QLabel* labEstimatedEnergyProbe = nullptr;
