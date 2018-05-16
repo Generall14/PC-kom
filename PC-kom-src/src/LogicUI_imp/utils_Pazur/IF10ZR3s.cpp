@@ -22,6 +22,16 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbForceDoseRateAdr", cbForceDoseRateAdr->isChecked());
     Store("cbForceDoseAdr", cbForceDoseAdr->isChecked());
     Store("cbForceEstsAdr", cbForceEstsAdr->isChecked());
+    Store("leMagic", leMagic->text());
+    Store("cbEnAutoDoseRate", cbEnAutoDoseRate->isChecked());
+    Store("leAdrAutoDoseRate", leAdrAutoDoseRate->text());
+    Store("sbMsAutoDoseRate", sbMsAutoDoseRate->value());
+    Store("cbEnAutoDose", cbEnAutoDose->isChecked());
+    Store("leAdrAutoDose", leAdrAutoDose->text());
+    Store("sbMsAutoDose", sbMsAutoDose->value());
+    Store("cbEnAutoEst", cbEnAutoEst->isChecked());
+    Store("leAdrAutoEst", leAdrAutoEst->text());
+    Store("sbMsAutoEst", sbMsAutoEst->value());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -31,6 +41,16 @@ void IF10ZR3s::LoadConfigs()
     cbForceDoseRateAdr->setChecked(RestoreAsBool("cbForceDoseRateAdr", false));
     cbForceDoseAdr->setChecked(RestoreAsBool("cbForceDoseAdr", false));
     cbForceEstsAdr->setChecked(RestoreAsBool("cbForceEstsAdr", false));
+    leMagic->setText(RestoreAsString("leMagic", "0000"));
+    cbEnAutoDoseRate->setChecked(RestoreAsBool("cbEnAutoDoseRate", false));
+    leAdrAutoDoseRate->setText(RestoreAsString("leAdrAutoDoseRate", "3F"));
+    sbMsAutoDoseRate->setValue(RestoreAsInt("sbMsAutoDoseRate", 100));
+    cbEnAutoDose->setChecked(RestoreAsBool("cbEnAutoDose", "false"));
+    leAdrAutoDose->setText(RestoreAsString("leAdrAutoDose", "3F"));
+    sbMsAutoDose->setValue(RestoreAsInt("sbMsAutoDose", 100));
+    cbEnAutoEst->setChecked(RestoreAsBool("cbEnAutoEst", "false"));
+    leAdrAutoEst->setText(RestoreAsString("leAdrAutoEst", "3F"));
+    sbMsAutoEst->setValue(RestoreAsInt("sbMsAutoEst", 100));
 }
 
 void IF10ZR3s::InitRest()
@@ -39,9 +59,15 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* toAdrLay = new QHBoxLayout();
     mainLay->addLayout(toAdrLay);
-    QLabel* lab = new QLabel("Adres docelowy:");
+    QLabel* lab = new QLabel("Magic:");
     toAdrLay->addWidget(lab);
+    leMagic = new QLineEdit("0000");
+    leMagic->setInputMask("HHHH");
+    leMagic->setMaximumWidth(40);
+    toAdrLay->addWidget(leMagic);
     toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Adres docelowy:");
+    toAdrLay->addWidget(lab);
     leToAdr = new QLineEdit("FF");
     leToAdr->setInputMask("HH");
     leToAdr->setMaximumWidth(40);
@@ -91,6 +117,33 @@ void IF10ZR3s::InitRest()
     cbForceDoseRateAdr = new QCheckBox("Do adresata");
     drForce->addWidget(cbForceDoseRateAdr);
 
+    QHBoxLayout* drAuto = new QHBoxLayout();
+    mdLay->addLayout(drAuto);
+    pb = new QPushButton("Set auto");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAutoDoseRate(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                sbMsAutoDoseRate->value(),
+                                                                cbEnAutoDoseRate->isChecked(),
+                                                                leAdrAutoDoseRate->text().toInt(nullptr, 16)), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    drAuto->addWidget(pb);
+    drAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnAutoDoseRate = new QCheckBox("En");
+    drAuto->addWidget(cbEnAutoDoseRate);
+    lab = new QLabel("Adr:");
+    drAuto->addWidget(lab);
+    leAdrAutoDoseRate = new QLineEdit("FF");
+    leAdrAutoDoseRate->setInputMask("HH");
+    leAdrAutoDoseRate->setMaximumWidth(40);
+    drAuto->addWidget(leAdrAutoDoseRate);
+    lab = new QLabel("Per. [ms]:");
+    drAuto->addWidget(lab);
+    sbMsAutoDoseRate = new QSpinBox();
+    sbMsAutoDoseRate->setMinimum(1);
+    sbMsAutoDoseRate->setMaximum(0xFFFF);
+    sbMsAutoDoseRate->setValue(100);
+    drAuto->addWidget(sbMsAutoDoseRate);
+
     //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");
     mainLay->addWidget(dawka);
@@ -133,6 +186,33 @@ void IF10ZR3s::InitRest()
     cbForceDoseAdr = new QCheckBox("Do adresata");
     dForce->addWidget(cbForceDoseAdr);
 
+    QHBoxLayout* dAuto = new QHBoxLayout();
+    dLay->addLayout(dAuto);
+    pb = new QPushButton("Set auto");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAutoDose(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                sbMsAutoDose->value(),
+                                                                cbEnAutoDose->isChecked(),
+                                                                leAdrAutoDose->text().toInt(nullptr, 16)), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    dAuto->addWidget(pb);
+    dAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnAutoDose = new QCheckBox("En");
+    dAuto->addWidget(cbEnAutoDose);
+    lab = new QLabel("Adr:");
+    dAuto->addWidget(lab);
+    leAdrAutoDose = new QLineEdit("FF");
+    leAdrAutoDose->setInputMask("HH");
+    leAdrAutoDose->setMaximumWidth(40);
+    dAuto->addWidget(leAdrAutoDose);
+    lab = new QLabel("Per. [ms]:");
+    dAuto->addWidget(lab);
+    sbMsAutoDose = new QSpinBox();
+    sbMsAutoDose->setMinimum(1);
+    sbMsAutoDose->setMaximum(0xFFFF);
+    sbMsAutoDose->setValue(100);
+    dAuto->addWidget(sbMsAutoDose);
+
     //=============================================================================================
     QGroupBox* ests = new QGroupBox("Estymaty");
     mainLay->addWidget(ests);
@@ -149,6 +229,33 @@ void IF10ZR3s::InitRest()
     estForce->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     cbForceEstsAdr = new QCheckBox("Do adresata");
     estForce->addWidget(cbForceEstsAdr);
+
+    QHBoxLayout* estAuto = new QHBoxLayout();
+    esLay->addLayout(estAuto);
+    pb = new QPushButton("Set auto");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAutoEst(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                sbMsAutoEst->value(),
+                                                                cbEnAutoEst->isChecked(),
+                                                                leAdrAutoEst->text().toInt(nullptr, 16)), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    estAuto->addWidget(pb);
+    estAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnAutoEst = new QCheckBox("En");
+    estAuto->addWidget(cbEnAutoEst);
+    lab = new QLabel("Adr:");
+    estAuto->addWidget(lab);
+    leAdrAutoEst = new QLineEdit("FF");
+    leAdrAutoEst->setInputMask("HH");
+    leAdrAutoEst->setMaximumWidth(40);
+    estAuto->addWidget(leAdrAutoEst);
+    lab = new QLabel("Per. [ms]:");
+    estAuto->addWidget(lab);
+    sbMsAutoEst = new QSpinBox();
+    sbMsAutoEst->setMinimum(1);
+    sbMsAutoEst->setMaximum(0xFFFF);
+    sbMsAutoEst->setValue(100);
+    estAuto->addWidget(sbMsAutoEst);
 
     //=============================================================================================
     QGroupBox* energia = new QGroupBox("(G) Szacowanie dominującej energii gamma");
@@ -182,7 +289,6 @@ void IF10ZR3s::InitRest()
     eeProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     labEstimatedEnergyProbe = new QLabel("-");
     eeProbeRead->addWidget(labEstimatedEnergyProbe);
-
 
     //=============================================================================================
     QGroupBox* estNeutron = new QGroupBox("(G) Szacowanie strumienia neutronow");
@@ -263,11 +369,11 @@ void IF10ZR3s::Init()
     LoadConfigs();
 }
 
-void IF10ZR3s::SendMessage(QByteArray arr)
+void IF10ZR3s::SendMessage(QByteArray arr, uint ifs)
 {
     QList<Message> m;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, 2, arr));
+    m.append(Message(to, ifs, arr));
     emit Send(QList<Confirm>(), m);
 }
 

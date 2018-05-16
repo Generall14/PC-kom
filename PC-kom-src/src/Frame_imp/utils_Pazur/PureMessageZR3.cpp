@@ -320,3 +320,62 @@ QByteArray PureMessageZR3::zr3ForceEsts(bool toAdres)
         temp.append((char)0x00);
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3SetAutoDoseRate(uint16_t magic, uint16_t ms, bool en, uchar adr)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x10);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    temp.append(ms&0xFF);
+    temp.append((ms>>8)&0xFF);
+    temp.append(adr&0x3F);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAutoDose(uint16_t magic, uint16_t ms, bool en, uchar adr)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x90);
+    temp.append(0x20);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    temp.append(ms&0xFF);
+    temp.append((ms>>8)&0xFF);
+    temp.append(adr&0x3F);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAutoEst(uint16_t magic, uint16_t ms, bool en, uchar adr)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x90);
+    temp.append(0x60);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    temp.append(ms&0xFF);
+    temp.append((ms>>8)&0xFF);
+    temp.append(adr&0x3F);
+    return temp;
+}

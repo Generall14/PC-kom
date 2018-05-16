@@ -33,6 +33,9 @@ public:
     static QByteArray zr3ForceDoseRate(bool toAdres);
     static QByteArray zr3ForceDose(bool toAdres);
     static QByteArray zr3ForceEsts(bool toAdres);
+    static QByteArray zr3SetAutoDoseRate(uint16_t magic, uint16_t ms, bool en, uchar adr);
+    static QByteArray zr3SetAutoDose(uint16_t magic, uint16_t ms, bool en, uchar adr);
+    static QByteArray zr3SetAutoEst(uint16_t magic, uint16_t ms, bool en, uchar adr);
 
 private:
     PureMessageZR3(){}

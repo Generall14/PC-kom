@@ -30,7 +30,7 @@ signals:
 
 protected slots:
     void InitRest();
-    void SendMessage(QByteArray arr);
+    void SendMessage(QByteArray arr, uint ifs = 2);
 
 public slots:
     void internalFrameReaded(QSharedPointer<Frame> fr);
@@ -44,16 +44,26 @@ protected:
     QFrame* cParent=nullptr;
     QVBoxLayout* mainLay = nullptr;
     QLineEdit* leToAdr = nullptr;
+    QLineEdit* leMagic = nullptr;
 
     QLabel* labDose = nullptr;
     QDoubleSpinBox* dsbzr3SetDose = nullptr;
     QCheckBox* cbForceDoseAdr = nullptr;
+    QCheckBox* cbEnAutoDose = nullptr;
+    QLineEdit* leAdrAutoDose = nullptr;
+    QSpinBox* sbMsAutoDose = nullptr;
 
     QLabel* labDoseRate = nullptr;
     QLabel* labDoseRateProbe = nullptr;
     QCheckBox* cbForceDoseRateAdr = nullptr;
+    QCheckBox* cbEnAutoDoseRate = nullptr;
+    QLineEdit* leAdrAutoDoseRate = nullptr;
+    QSpinBox* sbMsAutoDoseRate = nullptr;
 
     QCheckBox* cbForceEstsAdr = nullptr;
+    QCheckBox* cbEnAutoEst = nullptr;
+    QLineEdit* leAdrAutoEst = nullptr;
+    QSpinBox* sbMsAutoEst = nullptr;
 
     QLabel* labEstimatedEnergy = nullptr;
     QLabel* labEstimatedEnergyProbe = nullptr;
