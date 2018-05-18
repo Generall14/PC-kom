@@ -49,6 +49,10 @@ IF10ZR3s::~IF10ZR3s()
     Store("sbAlarmStateSetPrze1", sbAlarmStateSetPrze1->value());
     Store("sbAlarmStateSetPrze2", sbAlarmStateSetPrze2->value());
     Store("sbAlarmStateSetPrze3", sbAlarmStateSetPrze3->value());
+    Store("cbForceWyAlAdr", cbForceWyAlAdr->isChecked());
+    Store("sbMsAutoWyAl", sbMsAutoWyAl->value());
+    Store("cbEnAutoWyAl", cbEnAutoWyAl->isChecked());
+    Store("leAdrAutoWyAl", leAdrAutoWyAl->text());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -85,6 +89,10 @@ void IF10ZR3s::LoadConfigs()
     sbAlarmStateSetPrze1->setValue(RestoreAsInt("sbAlarmStateSetPrze1", 6));
     sbAlarmStateSetPrze2->setValue(RestoreAsInt("sbAlarmStateSetPrze2", 6));
     sbAlarmStateSetPrze3->setValue(RestoreAsInt("sbAlarmStateSetPrze3", 6));
+    cbForceWyAlAdr->setChecked(RestoreAsBool("cbForceWyAlAdr", false));
+    sbMsAutoWyAl->setValue(RestoreAsInt("sbMsAutoWyAl", 100));
+    cbEnAutoWyAl->setChecked(RestoreAsBool("cbEnAutoWyAl", false));
+    leAdrAutoWyAl->setText(RestoreAsString("leAdrAutoWyAl", "3F"));
 }
 
 void IF10ZR3s::InitRest()
@@ -355,6 +363,50 @@ void IF10ZR3s::InitRest()
     sbMsAutoDoseRateA->setMaximum(0xFFFF);
     sbMsAutoDoseRateA->setValue(100);
     darAuto->addWidget(sbMsAutoDoseRateA);
+
+    //=============================================================================================
+    QGroupBox* wyjsciaAlarmowe = new QGroupBox("Wyjścia alarmowe");
+    mainLay->addWidget(wyjsciaAlarmowe);
+    QVBoxLayout* wyaLay = new QVBoxLayout(wyjsciaAlarmowe);
+    wyaLay->setMargin(2);
+
+    QHBoxLayout* wyaForce = new QHBoxLayout();
+    wyaLay->addLayout(wyaForce);
+    pb = new QPushButton("Force");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceWyAlarm(cbForceWyAlAdr->isChecked()));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaForce->addWidget(pb);
+    wyaForce->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbForceWyAlAdr = new QCheckBox("Do adresata");
+    wyaForce->addWidget(cbForceWyAlAdr);
+
+    QHBoxLayout* wyaAuto = new QHBoxLayout();
+    wyaLay->addLayout(wyaAuto);
+    pb = new QPushButton("Set auto");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAutoWyAlarm(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                sbMsAutoWyAl->value(),
+                                                                cbEnAutoWyAl->isChecked(),
+                                                                leAdrAutoWyAl->text().toInt(nullptr, 16)), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    wyaAuto->addWidget(pb);
+    wyaAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnAutoWyAl = new QCheckBox("En");
+    wyaAuto->addWidget(cbEnAutoWyAl);
+    lab = new QLabel("Adr:");
+    wyaAuto->addWidget(lab);
+    leAdrAutoWyAl = new QLineEdit("FF");
+    leAdrAutoWyAl->setInputMask("HH");
+    leAdrAutoWyAl->setMaximumWidth(40);
+    wyaAuto->addWidget(leAdrAutoWyAl);
+    lab = new QLabel("Per. [x100 ms]:");
+    wyaAuto->addWidget(lab);
+    sbMsAutoWyAl = new QSpinBox();
+    sbMsAutoWyAl->setMinimum(1);
+    sbMsAutoWyAl->setMaximum(0xFFFF);
+    sbMsAutoWyAl->setValue(100);
+    wyaAuto->addWidget(sbMsAutoWyAl);
 
     //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");

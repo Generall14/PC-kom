@@ -60,6 +60,11 @@ protected:
     QLineEdit* leAdrAutoDoseRate = nullptr;
     QSpinBox* sbMsAutoDoseRate = nullptr;
 
+    QCheckBox* cbForceWyAlAdr = nullptr;
+    QSpinBox* sbMsAutoWyAl = nullptr;
+    QCheckBox* cbEnAutoWyAl = nullptr;
+    QLineEdit* leAdrAutoWyAl = nullptr;
+
     QLabel* labAlarmState = nullptr;
     QCheckBox* cbAlarmStateDir = nullptr;
     QCheckBox* cbForceDoseRateAAdr = nullptr;

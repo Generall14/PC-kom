@@ -34,10 +34,12 @@ public:
     static QByteArray zr3ForceDose(bool toAdres);
     static QByteArray zr3ForceEsts(bool toAdres);
     static QByteArray zr3ForceAlarmState(bool toAdres);
+    static QByteArray zr3ForceWyAlarm(bool toAdres);
     static QByteArray zr3SetAutoDoseRate(uint16_t magic, uint16_t ms, bool en, uchar adr);
     static QByteArray zr3SetAutoDose(uint16_t magic, uint16_t ms, bool en, uchar adr);
     static QByteArray zr3SetAutoEst(uint16_t magic, uint16_t ms, bool en, uchar adr);
     static QByteArray zr3SetAutoAlarmState(uint16_t magic, uint16_t ms, bool en, uchar adr);
+    static QByteArray zr3SetAutoWyAlarm(uint16_t magic, uint16_t ms, bool en, uchar adr);
     static QByteArray zr3ReadAlarmState();
     static QByteArray zr3SetAlarmStateDir(uint16_t magic, bool dir);
     static QByteArray zr3SetAlarmStateUwag(uint16_t magic, bool en, float thr, uint prze, uint utrz);
