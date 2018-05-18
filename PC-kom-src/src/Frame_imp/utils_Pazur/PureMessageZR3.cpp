@@ -215,6 +215,13 @@ QByteArray PureMessageZR3::zr3ReadDoseRate()
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3ReadAlarmState()
+{
+    QByteArray temp;
+    temp.append(0x34);
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3ReadDoseRateProbe()
 {
     QByteArray temp;
@@ -321,6 +328,18 @@ QByteArray PureMessageZR3::zr3ForceEsts(bool toAdres)
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3ForceAlarmState(bool toAdres)
+{
+    QByteArray temp;
+    temp.append(0x90);
+    temp.append(0x40);
+    if(toAdres)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3SetAutoDoseRate(uint16_t magic, uint16_t ms, bool en, uchar adr)
 {
     QByteArray temp;
@@ -377,5 +396,105 @@ QByteArray PureMessageZR3::zr3SetAutoEst(uint16_t magic, uint16_t ms, bool en, u
     temp.append(ms&0xFF);
     temp.append((ms>>8)&0xFF);
     temp.append(adr&0x3F);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAutoAlarmState(uint16_t magic, uint16_t ms, bool en, uchar adr)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x90);
+    temp.append(0x40);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+    temp.append(ms&0xFF);
+    temp.append((ms>>8)&0xFF);
+    temp.append(adr&0x3F);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAlarmStateDir(uint16_t magic, bool dir)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x30);
+
+    if(dir)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAlarmStateUwag(uint16_t magic, bool en, float thr, uint prze, uint utrz)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x31);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    temp.append(SU::float322ByteArray(thr));
+    temp.append(utrz&0xFF);
+    temp.append(prze&0xFF);
+
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAlarmStateNieb(uint16_t magic, bool en, float thr, uint prze, uint utrz)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x32);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    temp.append(SU::float322ByteArray(thr));
+    temp.append(utrz&0xFF);
+    temp.append(prze&0xFF);
+
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3SetAlarmStateZagr(uint16_t magic, bool en, float thr, uint prze, uint utrz)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x33);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    temp.append(SU::float322ByteArray(thr));
+    temp.append(utrz&0xFF);
+    temp.append(prze&0xFF);
+
     return temp;
 }

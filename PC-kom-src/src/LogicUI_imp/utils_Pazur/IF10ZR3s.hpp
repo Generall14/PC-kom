@@ -60,6 +60,28 @@ protected:
     QLineEdit* leAdrAutoDoseRate = nullptr;
     QSpinBox* sbMsAutoDoseRate = nullptr;
 
+    QLabel* labAlarmState = nullptr;
+    QCheckBox* cbAlarmStateDir = nullptr;
+    QCheckBox* cbForceDoseRateAAdr = nullptr;
+    QSpinBox* sbMsAutoDoseRateA = nullptr;
+    QCheckBox* cbEnAutoDoseRateA = nullptr;
+    QLineEdit* leAdrAutoDoseRateA = nullptr;
+
+    QCheckBox* cbAlarmStateSetE1 = nullptr;
+    QDoubleSpinBox* cbAlarmStateSetTh1 = nullptr;
+    QSpinBox* sbAlarmStateSetPod1 = nullptr;
+    QSpinBox* sbAlarmStateSetPrze1 = nullptr;
+
+    QCheckBox* cbAlarmStateSetE2 = nullptr;
+    QDoubleSpinBox* cbAlarmStateSetTh2 = nullptr;
+    QSpinBox* sbAlarmStateSetPod2 = nullptr;
+    QSpinBox* sbAlarmStateSetPrze2 = nullptr;
+
+    QCheckBox* cbAlarmStateSetE3 = nullptr;
+    QDoubleSpinBox* cbAlarmStateSetTh3 = nullptr;
+    QSpinBox* sbAlarmStateSetPod3 = nullptr;
+    QSpinBox* sbAlarmStateSetPrze3 = nullptr;
+
     QCheckBox* cbForceEstsAdr = nullptr;
     QCheckBox* cbEnAutoEst = nullptr;
     QLineEdit* leAdrAutoEst = nullptr;
@@ -73,15 +95,6 @@ protected:
 
     QLabel* labEstimatedGammaDoseRate = nullptr;
     QLabel* labEstimatedGammaDoseRateProbe = nullptr;
-
-//    QLineEdit* letechACCmagic = nullptr;
-//    QLineEdit* letechACCrnd = nullptr;
-
-//    QSpinBox* sbtechRDSECTION = nullptr;
-
-//    QLineEdit* letechWRSECTIONmagic = nullptr;
-//    QSpinBox* sbtechWRSECTION = nullptr;
-//    QLineEdit* letechWRSECTION = nullptr;
 };
 
 #endif

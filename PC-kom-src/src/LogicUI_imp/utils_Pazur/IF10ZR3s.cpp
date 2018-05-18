@@ -32,6 +32,23 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbEnAutoEst", cbEnAutoEst->isChecked());
     Store("leAdrAutoEst", leAdrAutoEst->text());
     Store("sbMsAutoEst", sbMsAutoEst->value());
+    Store("cbForceDoseRateAAdr", cbForceDoseRateAAdr->isChecked());
+    Store("sbMsAutoDoseRateA", sbMsAutoDoseRateA->value());
+    Store("cbEnAutoDoseRateA", cbEnAutoDoseRateA->isChecked());
+    Store("leAdrAutoDoseRateA", leAdrAutoDoseRateA->text());
+    Store("cbAlarmStateDir", cbAlarmStateDir->isChecked());
+    Store("cbAlarmStateSetE1", cbAlarmStateSetE1->isChecked());
+    Store("cbAlarmStateSetE2", cbAlarmStateSetE2->isChecked());
+    Store("cbAlarmStateSetE3", cbAlarmStateSetE3->isChecked());
+    Store("cbAlarmStateSetTh1", cbAlarmStateSetTh1->value());
+    Store("cbAlarmStateSetTh2", cbAlarmStateSetTh2->value());
+    Store("cbAlarmStateSetTh3", cbAlarmStateSetTh3->value());
+    Store("sbAlarmStateSetPod1", sbAlarmStateSetPod1->value());
+    Store("sbAlarmStateSetPod2", sbAlarmStateSetPod2->value());
+    Store("sbAlarmStateSetPod3", sbAlarmStateSetPod3->value());
+    Store("sbAlarmStateSetPrze1", sbAlarmStateSetPrze1->value());
+    Store("sbAlarmStateSetPrze2", sbAlarmStateSetPrze2->value());
+    Store("sbAlarmStateSetPrze3", sbAlarmStateSetPrze3->value());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -51,6 +68,23 @@ void IF10ZR3s::LoadConfigs()
     cbEnAutoEst->setChecked(RestoreAsBool("cbEnAutoEst", "false"));
     leAdrAutoEst->setText(RestoreAsString("leAdrAutoEst", "3F"));
     sbMsAutoEst->setValue(RestoreAsInt("sbMsAutoEst", 100));
+    cbForceDoseRateAAdr->setChecked(RestoreAsBool("cbForceDoseRateAAdr", false));
+    sbMsAutoDoseRateA->setValue(RestoreAsInt("sbMsAutoDoseRateA", 100));
+    cbEnAutoDoseRateA->setChecked(RestoreAsBool("cbEnAutoDoseRateA", false));
+    leAdrAutoDoseRateA->setText(RestoreAsString("leAdrAutoDoseRateA", "3F"));
+    cbAlarmStateDir->setChecked(RestoreAsBool("cbAlarmStateDir", true));
+    cbAlarmStateSetE1->setChecked(RestoreAsBool("cbAlarmStateSetE1", true));
+    cbAlarmStateSetE2->setChecked(RestoreAsBool("cbAlarmStateSetE2", true));
+    cbAlarmStateSetE3->setChecked(RestoreAsBool("cbAlarmStateSetE3", true));
+    cbAlarmStateSetTh1->setValue(RestoreAsFloat("cbAlarmStateSetTh1", 0.001));
+    cbAlarmStateSetTh2->setValue(RestoreAsFloat("cbAlarmStateSetTh2", 0.01));
+    cbAlarmStateSetTh3->setValue(RestoreAsFloat("cbAlarmStateSetTh3", 0.1));
+    sbAlarmStateSetPod1->setValue(RestoreAsInt("sbAlarmStateSetPod1", 6));
+    sbAlarmStateSetPod2->setValue(RestoreAsInt("sbAlarmStateSetPod2", 6));
+    sbAlarmStateSetPod3->setValue(RestoreAsInt("sbAlarmStateSetPod3", 6));
+    sbAlarmStateSetPrze1->setValue(RestoreAsInt("sbAlarmStateSetPrze1", 6));
+    sbAlarmStateSetPrze2->setValue(RestoreAsInt("sbAlarmStateSetPrze2", 6));
+    sbAlarmStateSetPrze3->setValue(RestoreAsInt("sbAlarmStateSetPrze3", 6));
 }
 
 void IF10ZR3s::InitRest()
@@ -136,13 +170,191 @@ void IF10ZR3s::InitRest()
     leAdrAutoDoseRate->setInputMask("HH");
     leAdrAutoDoseRate->setMaximumWidth(40);
     drAuto->addWidget(leAdrAutoDoseRate);
-    lab = new QLabel("Per. [ms]:");
+    lab = new QLabel("Per. [x100 ms]:");
     drAuto->addWidget(lab);
     sbMsAutoDoseRate = new QSpinBox();
     sbMsAutoDoseRate->setMinimum(1);
     sbMsAutoDoseRate->setMaximum(0xFFFF);
     sbMsAutoDoseRate->setValue(100);
     drAuto->addWidget(sbMsAutoDoseRate);
+
+    //=============================================================================================
+    QGroupBox* mocDawkiAlarm = new QGroupBox("Alarm mocy dawki");
+    mainLay->addWidget(mocDawkiAlarm);
+    QVBoxLayout* mdaLay = new QVBoxLayout(mocDawkiAlarm);
+    mdaLay->setMargin(2);
+
+    QHBoxLayout* draRead = new QHBoxLayout();
+    mdaLay->addLayout(draRead);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadAlarmState());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    draRead->addWidget(pb);
+    draRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labAlarmState = new QLabel("-");
+    draRead->addWidget(labAlarmState);
+
+    QHBoxLayout* draKierunek = new QHBoxLayout();
+    mdaLay->addLayout(draKierunek);
+    pb = new QPushButton("Ustaw kierunek");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAlarmStateDir(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbAlarmStateDir->isChecked()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    draKierunek->addWidget(pb);
+    draKierunek->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbAlarmStateDir = new QCheckBox("Niebezpieczne wyższe wartości");
+    draKierunek->addWidget(cbAlarmStateDir);
+
+    QString ttthr = "Wartość progowa [Sv/h]";
+    QString ttpod = "Podtrzymanie [x500 ms]";
+    QString ttprz = "Przetrzymanie [x500 ms]";
+
+    QHBoxLayout* draUstaw1 = new QHBoxLayout();
+    mdaLay->addLayout(draUstaw1);
+    pb = new QPushButton("Set UWAG.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAlarmStateUwag(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbAlarmStateSetE1->isChecked(),
+                                                                cbAlarmStateSetTh1->value(),
+                                                                sbAlarmStateSetPrze1->value(),
+                                                                sbAlarmStateSetPod1->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    draUstaw1->addWidget(pb);
+    draUstaw1->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbAlarmStateSetE1 = new QCheckBox("En");
+    draUstaw1->addWidget(cbAlarmStateSetE1);
+    cbAlarmStateSetTh1 = new QDoubleSpinBox();
+    draUstaw1->addWidget(cbAlarmStateSetTh1);
+    cbAlarmStateSetTh1->setMaximumWidth(80);
+    cbAlarmStateSetTh1->setMinimumWidth(80);
+    cbAlarmStateSetTh1->setToolTip(ttthr);
+    cbAlarmStateSetTh1->setDecimals(6);
+    sbAlarmStateSetPod1 = new QSpinBox();
+    draUstaw1->addWidget(sbAlarmStateSetPod1);
+    sbAlarmStateSetPod1->setMaximumWidth(50);
+    sbAlarmStateSetPod1->setMinimumWidth(50);
+    sbAlarmStateSetPod1->setMinimum(0);
+    sbAlarmStateSetPod1->setMaximum(0xff);
+    sbAlarmStateSetPod1->setToolTip(ttpod);
+    sbAlarmStateSetPrze1 = new QSpinBox();
+    draUstaw1->addWidget(sbAlarmStateSetPrze1);
+    sbAlarmStateSetPrze1->setMaximumWidth(50);
+    sbAlarmStateSetPrze1->setMinimumWidth(50);
+    sbAlarmStateSetPrze1->setMinimum(0);
+    sbAlarmStateSetPrze1->setMaximum(0xff);
+    sbAlarmStateSetPrze1->setToolTip(ttprz);
+
+    QHBoxLayout* draUstaw2 = new QHBoxLayout();
+    mdaLay->addLayout(draUstaw2);
+    pb = new QPushButton("Set NIEB.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAlarmStateNieb(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbAlarmStateSetE2->isChecked(),
+                                                                cbAlarmStateSetTh2->value(),
+                                                                sbAlarmStateSetPrze2->value(),
+                                                                sbAlarmStateSetPod2->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    draUstaw2->addWidget(pb);
+    draUstaw2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbAlarmStateSetE2 = new QCheckBox("En");
+    draUstaw2->addWidget(cbAlarmStateSetE2);
+    cbAlarmStateSetTh2 = new QDoubleSpinBox();
+    draUstaw2->addWidget(cbAlarmStateSetTh2);
+    cbAlarmStateSetTh2->setMaximumWidth(80);
+    cbAlarmStateSetTh2->setMinimumWidth(80);
+    cbAlarmStateSetTh2->setToolTip(ttthr);
+    cbAlarmStateSetTh2->setDecimals(6);
+    sbAlarmStateSetPod2 = new QSpinBox();
+    draUstaw2->addWidget(sbAlarmStateSetPod2);
+    sbAlarmStateSetPod2->setMaximumWidth(50);
+    sbAlarmStateSetPod2->setMinimumWidth(50);
+    sbAlarmStateSetPod2->setMinimum(0);
+    sbAlarmStateSetPod2->setMaximum(0xff);
+    sbAlarmStateSetPod2->setToolTip(ttpod);
+    sbAlarmStateSetPrze2 = new QSpinBox();
+    draUstaw2->addWidget(sbAlarmStateSetPrze2);
+    sbAlarmStateSetPrze2->setMaximumWidth(50);
+    sbAlarmStateSetPrze2->setMinimumWidth(50);
+    sbAlarmStateSetPrze2->setMinimum(0);
+    sbAlarmStateSetPrze2->setMaximum(0xff);
+    sbAlarmStateSetPrze2->setToolTip(ttprz);
+
+    QHBoxLayout* draUstaw3 = new QHBoxLayout();
+    mdaLay->addLayout(draUstaw3);
+    pb = new QPushButton("Set ZAGR.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAlarmStateZagr(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbAlarmStateSetE3->isChecked(),
+                                                                cbAlarmStateSetTh3->value(),
+                                                                sbAlarmStateSetPrze3->value(),
+                                                                sbAlarmStateSetPod3->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    draUstaw3->addWidget(pb);
+    draUstaw3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbAlarmStateSetE3 = new QCheckBox("En");
+    draUstaw3->addWidget(cbAlarmStateSetE3);
+    cbAlarmStateSetTh3 = new QDoubleSpinBox();
+    draUstaw3->addWidget(cbAlarmStateSetTh3);
+    cbAlarmStateSetTh3->setMaximumWidth(80);
+    cbAlarmStateSetTh3->setMinimumWidth(80);
+    cbAlarmStateSetTh3->setToolTip(ttthr);
+    cbAlarmStateSetTh3->setDecimals(6);
+    sbAlarmStateSetPod3 = new QSpinBox();
+    draUstaw3->addWidget(sbAlarmStateSetPod3);
+    sbAlarmStateSetPod3->setMaximumWidth(50);
+    sbAlarmStateSetPod3->setMinimumWidth(50);
+    sbAlarmStateSetPod3->setMinimum(0);
+    sbAlarmStateSetPod3->setMaximum(0xff);
+    sbAlarmStateSetPod3->setToolTip(ttpod);
+    sbAlarmStateSetPrze3 = new QSpinBox();
+    draUstaw3->addWidget(sbAlarmStateSetPrze3);
+    sbAlarmStateSetPrze3->setMaximumWidth(50);
+    sbAlarmStateSetPrze3->setMinimumWidth(50);
+    sbAlarmStateSetPrze3->setMinimum(0);
+    sbAlarmStateSetPrze3->setMaximum(0xff);
+    sbAlarmStateSetPrze3->setToolTip(ttprz);
+
+
+    QHBoxLayout* draForce = new QHBoxLayout();
+    mdaLay->addLayout(draForce);
+    pb = new QPushButton("Force");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceAlarmState(cbForceDoseRateAAdr->isChecked()));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    draForce->addWidget(pb);
+    draForce->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbForceDoseRateAAdr = new QCheckBox("Do adresata");
+    draForce->addWidget(cbForceDoseRateAAdr);
+
+    QHBoxLayout* darAuto = new QHBoxLayout();
+    mdaLay->addLayout(darAuto);
+    pb = new QPushButton("Set auto");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetAutoAlarmState(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                sbMsAutoDoseRateA->value(),
+                                                                cbEnAutoDoseRateA->isChecked(),
+                                                                leAdrAutoDoseRateA->text().toInt(nullptr, 16)), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    darAuto->addWidget(pb);
+    darAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnAutoDoseRateA = new QCheckBox("En");
+    darAuto->addWidget(cbEnAutoDoseRateA);
+    lab = new QLabel("Adr:");
+    darAuto->addWidget(lab);
+    leAdrAutoDoseRateA = new QLineEdit("FF");
+    leAdrAutoDoseRateA->setInputMask("HH");
+    leAdrAutoDoseRateA->setMaximumWidth(40);
+    darAuto->addWidget(leAdrAutoDoseRateA);
+    lab = new QLabel("Per. [x100 ms]:");
+    darAuto->addWidget(lab);
+    sbMsAutoDoseRateA = new QSpinBox();
+    sbMsAutoDoseRateA->setMinimum(1);
+    sbMsAutoDoseRateA->setMaximum(0xFFFF);
+    sbMsAutoDoseRateA->setValue(100);
+    darAuto->addWidget(sbMsAutoDoseRateA);
 
     //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");
@@ -178,7 +390,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* dForce = new QHBoxLayout();
     dLay->addLayout(dForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDose(cbForceDoseRateAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDose(cbForceDoseAdr->isChecked()));});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     dForce->addWidget(pb);
@@ -205,7 +417,7 @@ void IF10ZR3s::InitRest()
     leAdrAutoDose->setInputMask("HH");
     leAdrAutoDose->setMaximumWidth(40);
     dAuto->addWidget(leAdrAutoDose);
-    lab = new QLabel("Per. [ms]:");
+    lab = new QLabel("Per. [x100 ms]:");
     dAuto->addWidget(lab);
     sbMsAutoDose = new QSpinBox();
     sbMsAutoDose->setMinimum(1);
@@ -249,7 +461,7 @@ void IF10ZR3s::InitRest()
     leAdrAutoEst->setInputMask("HH");
     leAdrAutoEst->setMaximumWidth(40);
     estAuto->addWidget(leAdrAutoEst);
-    lab = new QLabel("Per. [ms]:");
+    lab = new QLabel("Per. [x100 ms]:");
     estAuto->addWidget(lab);
     sbMsAutoEst = new QSpinBox();
     sbMsAutoEst->setMinimum(1);
@@ -396,6 +608,22 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
         else if((mm.at(0)==0x70))
         {
             labDoseRateProbe->setText(ReadMeasure(mm.mid(1), "Sv/h"));
+        }
+        else if((mm.at(0)==0x30))
+        {
+            labAlarmState->setText("Bezpiecznie");
+        }
+        else if((mm.at(0)==0x31))
+        {
+            labAlarmState->setText("UWAGA");
+        }
+        else if((mm.at(0)==0x32))
+        {
+            labAlarmState->setText("NIEBEZPIECZENSTWO");
+        }
+        else if((mm.at(0)==0x33))
+        {
+            labAlarmState->setText("ZAGROZENIE ZYCIA!!!");
         }
         else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
         {
