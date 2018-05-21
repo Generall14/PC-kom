@@ -64,6 +64,11 @@ protected:
     QSpinBox* sbMsAutoWyAl = nullptr;
     QCheckBox* cbEnAutoWyAl = nullptr;
     QLineEdit* leAdrAutoWyAl = nullptr;
+    QCheckBox* cbEnWyAl = nullptr;
+    QSpinBox* sbWyAlTmin = nullptr;
+    QComboBox* cmbWyAlMin = nullptr;
+    QComboBox* cmbWyAlMax = nullptr;
+    QComboBox* cmbWyAlMode = nullptr;
 
     QLabel* labAlarmState = nullptr;
     QCheckBox* cbAlarmStateDir = nullptr;

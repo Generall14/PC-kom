@@ -474,6 +474,47 @@ QByteArray PureMessageZR3::zr3SetAlarmStateDir(uint16_t magic, bool dir)
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3WyAlarmEnable(uint16_t magic, bool en)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x50);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmSetMode(uint16_t magic, uint min, uint max, uint mod, uint tmin)
+{
+    min &= 0x03;
+    max &= 0x03;
+    mod &= 0x03;
+
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x51);
+
+    uchar tt = 0x00;
+    tt |= min;
+    tt |= max<<2;
+    tt |= mod<<4;
+
+    temp.append(tt&0xFF);
+    temp.append(tmin&0xFF);
+
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3SetAlarmStateUwag(uint16_t magic, bool en, float thr, uint prze, uint utrz)
 {
     QByteArray temp;
