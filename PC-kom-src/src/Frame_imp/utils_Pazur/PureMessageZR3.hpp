@@ -47,6 +47,12 @@ public:
     static QByteArray zr3SetAlarmStateZagr(uint16_t magic, bool en, float thr, uint prze, uint utrz);
     static QByteArray zr3WyAlarmEnable(uint16_t magic, bool en);
     static QByteArray zr3WyAlarmSetMode(uint16_t magic, uint min, uint max, uint mod, uint tmin);
+    static QByteArray zr3WyAlarmTest();
+    static QByteArray zr3WyAlarmEndTest();
+    static QByteArray zr3WyAlarmBlokuj();
+    static QByteArray zr3WyAlarmOdblokuj();
+    static QByteArray zr3WyAlarmSymuluj(uint lvl);
+    static QByteArray zr3WyAlarmKoniecSymulacji();
 
 private:
     PureMessageZR3(){}

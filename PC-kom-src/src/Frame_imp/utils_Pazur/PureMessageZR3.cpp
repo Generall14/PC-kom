@@ -577,3 +577,46 @@ QByteArray PureMessageZR3::zr3SetAlarmStateZagr(uint16_t magic, bool en, float t
 
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3WyAlarmTest()
+{
+    QByteArray temp;
+    temp.append(0x55);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmEndTest()
+{
+    QByteArray temp;
+    temp.append(0x56);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmBlokuj()
+{
+    QByteArray temp;
+    temp.append(0x53);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmOdblokuj()
+{
+    QByteArray temp;
+    temp.append(0x54);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmSymuluj(uint lvl)
+{
+    QByteArray temp;
+    temp.append(0x57);
+    temp.append(lvl&0x03);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmKoniecSymulacji()
+{
+    QByteArray temp;
+    temp.append(0x58);
+    return temp;
+}

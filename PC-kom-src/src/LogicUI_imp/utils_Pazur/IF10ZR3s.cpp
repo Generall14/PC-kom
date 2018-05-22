@@ -58,6 +58,7 @@ IF10ZR3s::~IF10ZR3s()
     Store("cmbWyAlMin", cmbWyAlMin->currentIndex());
     Store("cmbWyAlMax", cmbWyAlMax->currentIndex());
     Store("cmbWyAlMode", cmbWyAlMode->currentIndex());
+    Store("cmbWyAlSymLvl", cmbWyAlSymLvl->currentIndex());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -103,6 +104,7 @@ void IF10ZR3s::LoadConfigs()
     cmbWyAlMin->setCurrentIndex(RestoreAsInt("cmbWyAlMin", 0));
     cmbWyAlMax->setCurrentIndex(RestoreAsInt("cmbWyAlMax", 0));
     cmbWyAlMode->setCurrentIndex(RestoreAsInt("cmbWyAlMode", 0));
+    cmbWyAlSymLvl->setCurrentIndex(RestoreAsInt("cmbWyAlSymLvl", 3));
 }
 
 void IF10ZR3s::InitRest()
@@ -393,6 +395,52 @@ void IF10ZR3s::InitRest()
     cbEnWyAl = new QCheckBox("Enable");
     wyaEn->addWidget(cbEnWyAl);
 
+    QHBoxLayout* wyaTst = new QHBoxLayout();
+    wyaLay->addLayout(wyaTst);
+    pb = new QPushButton("Test");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmTest());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaTst->addWidget(pb);
+    wyaTst->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Zakończ test");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmEndTest());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaTst->addWidget(pb);
+
+    QHBoxLayout* wyaBla = new QHBoxLayout();
+    wyaLay->addLayout(wyaBla);
+    pb = new QPushButton("Blokuj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmBlokuj());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaBla->addWidget(pb);
+    wyaBla->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Odblokuj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdblokuj());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaBla->addWidget(pb);
+
+    QHBoxLayout* wyaSym = new QHBoxLayout();
+    wyaLay->addLayout(wyaSym);
+    pb = new QPushButton("Symuluj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmSymuluj(cmbWyAlSymLvl->currentIndex()));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaSym->addWidget(pb);
+    cmbWyAlSymLvl = new QComboBox();
+    QStringList t1 = {"BEZP.", "UWAG.", "NIEB.", "ZAGR."};
+    cmbWyAlSymLvl->addItems(t1);
+    wyaSym->addWidget(cmbWyAlSymLvl);
+    wyaSym->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Zakończ symulacje");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKoniecSymulacji());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaSym->addWidget(pb);
+
     QHBoxLayout* wyaMod = new QHBoxLayout();
     wyaLay->addLayout(wyaMod);
     pb = new QPushButton("Set mode");
@@ -406,7 +454,6 @@ void IF10ZR3s::InitRest()
     pb->setMinimumWidth(MIN_PB_W);
     wyaMod->addWidget(pb);
     wyaMod->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    QStringList t1 = {"BEZP.", "UWAG.", "NIEB.", "ZAGR."};
     cmbWyAlMin = new QComboBox();
     cmbWyAlMin->addItems(t1);
     wyaMod->addWidget(cmbWyAlMin);
