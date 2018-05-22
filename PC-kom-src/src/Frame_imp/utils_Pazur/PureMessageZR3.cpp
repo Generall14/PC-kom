@@ -620,3 +620,17 @@ QByteArray PureMessageZR3::zr3WyAlarmKoniecSymulacji()
     temp.append(0x58);
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3WyAlarmPotwierdz()
+{
+    QByteArray temp;
+    temp.append(0x52);
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3WyAlarmOdczytaj()
+{
+    QByteArray temp;
+    temp.append(0x51);
+    return temp;
+}

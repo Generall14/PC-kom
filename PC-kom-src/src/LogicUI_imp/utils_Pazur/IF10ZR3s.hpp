@@ -70,6 +70,7 @@ protected:
     QComboBox* cmbWyAlMax = nullptr;
     QComboBox* cmbWyAlMode = nullptr;
     QComboBox* cmbWyAlSymLvl = nullptr;
+    QLabel* labWyAlState = nullptr;
 
     QLabel* labAlarmState = nullptr;
     QCheckBox* cbAlarmStateDir = nullptr;

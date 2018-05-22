@@ -53,6 +53,8 @@ public:
     static QByteArray zr3WyAlarmOdblokuj();
     static QByteArray zr3WyAlarmSymuluj(uint lvl);
     static QByteArray zr3WyAlarmKoniecSymulacji();
+    static QByteArray zr3WyAlarmPotwierdz();
+    static QByteArray zr3WyAlarmOdczytaj();
 
 private:
     PureMessageZR3(){}

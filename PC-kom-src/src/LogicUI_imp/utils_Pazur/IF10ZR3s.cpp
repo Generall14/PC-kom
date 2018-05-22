@@ -382,6 +382,26 @@ void IF10ZR3s::InitRest()
     QVBoxLayout* wyaLay = new QVBoxLayout(wyjsciaAlarmowe);
     wyaLay->setMargin(2);
 
+    QHBoxLayout* wyaRead = new QHBoxLayout();
+    wyaLay->addLayout(wyaRead);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdczytaj());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaRead->addWidget(pb);
+    wyaRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labWyAlState = new QLabel("-");
+    wyaRead->addWidget(labWyAlState);
+
+    QHBoxLayout* wyaPot = new QHBoxLayout();
+    wyaLay->addLayout(wyaPot);
+    pb = new QPushButton("Potwierdź");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmPotwierdz());});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaPot->addWidget(pb);
+    wyaPot->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
     QHBoxLayout* wyaEn = new QHBoxLayout();
     wyaLay->addLayout(wyaEn);
     pb = new QPushButton("Set enable");
@@ -776,6 +796,23 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
         else if((mm.at(0)==0x33))
         {
             labAlarmState->setText("ZAGROZENIE ZYCIA!!!");
+        }
+        else if((mm.at(0)==0x50))
+        {
+            QString ttt;
+            if(mm.at(1)&0x01)
+                ttt = "ON";
+            else
+                ttt = "OFF";
+            if(mm.at(1)&0x02)
+                ttt.append(", niepotwierdzony");
+            if(mm.at(1)&0x04)
+                ttt.append(", zablokowany");
+            if(mm.at(1)&0x08)
+                ttt.append(", test");
+            if(mm.at(1)&0x10)
+                ttt.append(", symulacja");
+            labWyAlState->setText(ttt);
         }
         else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
         {
