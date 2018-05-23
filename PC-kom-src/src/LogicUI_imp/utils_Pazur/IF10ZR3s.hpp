@@ -71,6 +71,7 @@ protected:
     QComboBox* cmbWyAlMode = nullptr;
     QComboBox* cmbWyAlSymLvl = nullptr;
     QLabel* labWyAlState = nullptr;
+    QCheckBox* cbEnKontrWyAl = nullptr;
 
     QLabel* labAlarmState = nullptr;
     QCheckBox* cbAlarmStateDir = nullptr;

@@ -59,6 +59,7 @@ IF10ZR3s::~IF10ZR3s()
     Store("cmbWyAlMax", cmbWyAlMax->currentIndex());
     Store("cmbWyAlMode", cmbWyAlMode->currentIndex());
     Store("cmbWyAlSymLvl", cmbWyAlSymLvl->currentIndex());
+    Store("cbEnKontrWyAl", cbEnKontrWyAl->isChecked());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -105,6 +106,7 @@ void IF10ZR3s::LoadConfigs()
     cmbWyAlMax->setCurrentIndex(RestoreAsInt("cmbWyAlMax", 0));
     cmbWyAlMode->setCurrentIndex(RestoreAsInt("cmbWyAlMode", 0));
     cmbWyAlSymLvl->setCurrentIndex(RestoreAsInt("cmbWyAlSymLvl", 3));
+    cbEnKontrWyAl->setChecked(RestoreAsBool("cbEnKontrWyAl", true));
 }
 
 void IF10ZR3s::InitRest()
@@ -414,6 +416,19 @@ void IF10ZR3s::InitRest()
     wyaEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     cbEnWyAl = new QCheckBox("Enable");
     wyaEn->addWidget(cbEnWyAl);
+
+    QHBoxLayout* wyaKontrEn = new QHBoxLayout();
+    wyaLay->addLayout(wyaKontrEn);
+    pb = new QPushButton("Włącz kontrole");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKontrolaEn(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbEnKontrWyAl->isChecked()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wyaKontrEn->addWidget(pb);
+    wyaKontrEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbEnKontrWyAl = new QCheckBox("Enable");
+    wyaKontrEn->addWidget(cbEnKontrWyAl);
 
     QHBoxLayout* wyaTst = new QHBoxLayout();
     wyaLay->addLayout(wyaTst);

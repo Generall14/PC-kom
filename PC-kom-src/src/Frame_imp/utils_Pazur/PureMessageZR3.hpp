@@ -55,6 +55,7 @@ public:
     static QByteArray zr3WyAlarmKoniecSymulacji();
     static QByteArray zr3WyAlarmPotwierdz();
     static QByteArray zr3WyAlarmOdczytaj();
+    static QByteArray zr3WyAlarmKontrolaEn(uint16_t magic, bool en);
 
 private:
     PureMessageZR3(){}

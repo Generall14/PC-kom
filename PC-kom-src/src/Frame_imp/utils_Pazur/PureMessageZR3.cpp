@@ -578,6 +578,23 @@ QByteArray PureMessageZR3::zr3SetAlarmStateZagr(uint16_t magic, bool en, float t
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3WyAlarmKontrolaEn(uint16_t magic, bool en)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x52);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3WyAlarmTest()
 {
     QByteArray temp;
