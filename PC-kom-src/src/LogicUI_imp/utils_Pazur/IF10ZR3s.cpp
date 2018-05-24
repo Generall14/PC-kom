@@ -18,6 +18,7 @@ IF10ZR3s::IF10ZR3s(QFrame* parent):
 IF10ZR3s::~IF10ZR3s()
 {
     Store("leToAdr", leToAdr->text());
+    Store("leObsAdr", leObsAdr->text());
     Store("dsbzr3SetDose", dsbzr3SetDose->value());
     Store("cbForceDoseRateAdr", cbForceDoseRateAdr->isChecked());
     Store("cbForceDoseAdr", cbForceDoseAdr->isChecked());
@@ -60,11 +61,18 @@ IF10ZR3s::~IF10ZR3s()
     Store("cmbWyAlMode", cmbWyAlMode->currentIndex());
     Store("cmbWyAlSymLvl", cmbWyAlSymLvl->currentIndex());
     Store("cbEnKontrWyAl", cbEnKontrWyAl->isChecked());
+    Store("cbObsEn", cbObsEn->isChecked());
+    Store("cbObsInsEn", cbObsInsEn->isChecked());
+    Store("sbObsIns", sbObsIns->value());
+    Store("cbObsOdpEn", cbObsOdpEn->isChecked());
+    Store("sbObsOdp", sbObsOdp->value());
+    Store("cbObsAdrEn", cbObsAdrEn->isChecked());
 }
 
 void IF10ZR3s::LoadConfigs()
 {
     leToAdr->setText(RestoreAsString("leToAdr", "FF"));
+    leObsAdr->setText(RestoreAsString("leObsAdr", "FF"));
     dsbzr3SetDose->setValue(RestoreAsFloat("dsbzr3SetDose", 0.0));
     cbForceDoseRateAdr->setChecked(RestoreAsBool("cbForceDoseRateAdr", false));
     cbForceDoseAdr->setChecked(RestoreAsBool("cbForceDoseAdr", false));
@@ -107,6 +115,12 @@ void IF10ZR3s::LoadConfigs()
     cmbWyAlMode->setCurrentIndex(RestoreAsInt("cmbWyAlMode", 0));
     cmbWyAlSymLvl->setCurrentIndex(RestoreAsInt("cmbWyAlSymLvl", 3));
     cbEnKontrWyAl->setChecked(RestoreAsBool("cbEnKontrWyAl", true));
+    cbObsEn->setChecked(RestoreAsBool("cbObsEn", true));
+    cbObsInsEn->setChecked(RestoreAsBool("cbObsInsEn", true));
+    sbObsIns->setValue(RestoreAsInt("sbObsIns", 0));
+    cbObsOdpEn->setChecked(RestoreAsBool("cbObsOdpEn", true));
+    sbObsOdp->setValue(RestoreAsInt("sbObsOdp", 0));
+    cbObsAdrEn->setChecked(RestoreAsBool("cbObsAdrEn", true));
 }
 
 void IF10ZR3s::InitRest()
@@ -542,6 +556,86 @@ void IF10ZR3s::InitRest()
     sbMsAutoWyAl->setMaximum(0xFFFF);
     sbMsAutoWyAl->setValue(100);
     wyaAuto->addWidget(sbMsAutoWyAl);
+
+    //=============================================================================================
+    QGroupBox* obserwator = new QGroupBox("Obserwator");
+    mainLay->addWidget(obserwator);
+    QVBoxLayout* obsLay = new QVBoxLayout(obserwator);
+    obsLay->setMargin(2);
+
+    QHBoxLayout* obsEn = new QHBoxLayout();
+    obsLay->addLayout(obsEn);
+    pb = new QPushButton("Set enable");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ObsEn(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbObsEn->isChecked()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    obsEn->addWidget(pb);
+    obsEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbObsEn = new QCheckBox("Enable");
+    obsEn->addWidget(cbObsEn);
+
+    QHBoxLayout* obsAdr = new QHBoxLayout();
+    obsLay->addLayout(obsAdr);
+    pb = new QPushButton("Adresat");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ObsNadawca(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbObsAdrEn->isChecked(),
+                                                                leObsAdr->text().toInt(nullptr, 16)&0x3F), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    obsAdr->addWidget(pb);
+    obsAdr->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbObsAdrEn = new QCheckBox("Enable");
+    obsAdr->addWidget(cbObsAdrEn);
+    lab = new QLabel("Filtrowany adres");
+    obsAdr->addWidget(lab);
+    leObsAdr = new QLineEdit("FF");
+    leObsAdr->setInputMask("HH");
+    leObsAdr->setMaximumWidth(40);
+    obsAdr->addWidget(leObsAdr);
+
+    QHBoxLayout* obsIns = new QHBoxLayout();
+    obsLay->addLayout(obsIns);
+    pb = new QPushButton("Instancja");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ObsInstancja(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbObsInsEn->isChecked(),
+                                                                sbObsIns->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    obsIns->addWidget(pb);
+    obsIns->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbObsInsEn = new QCheckBox("Enable");
+    obsIns->addWidget(cbObsInsEn);
+    lab = new QLabel("Numer instancji");
+    obsIns->addWidget(lab);
+    sbObsIns = new QSpinBox();
+    sbObsIns->setMinimum(0);
+    sbObsIns->setMaximum(0x0F);
+    obsIns->addWidget(sbObsIns);
+
+    QHBoxLayout* obsOdp = new QHBoxLayout();
+    obsLay->addLayout(obsOdp);
+    pb = new QPushButton("Odpytywanie");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ObsOdpytywanie(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbObsOdpEn->isChecked(),
+                                                                sbObsOdp->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    obsOdp->addWidget(pb);
+    obsOdp->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbObsOdpEn = new QCheckBox("Enable");
+    obsOdp->addWidget(cbObsOdpEn);
+    lab = new QLabel("Tempo (x100 ms)");
+    obsOdp->addWidget(lab);
+    sbObsOdp = new QSpinBox();
+    sbObsOdp->setMinimum(0);
+    sbObsOdp->setMaximum(0xFFFF);
+    obsOdp->addWidget(sbObsOdp);
+
 
     //=============================================================================================
     QGroupBox* dawka = new QGroupBox("Pomiar/szacowanie dawki");
