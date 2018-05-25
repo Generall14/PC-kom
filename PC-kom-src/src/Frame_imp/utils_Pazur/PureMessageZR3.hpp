@@ -60,6 +60,7 @@ public:
     static QByteArray zr3ObsNadawca(uint16_t magic, bool en, uint adr);
     static QByteArray zr3ObsInstancja(uint16_t magic, bool en, uint ins);
     static QByteArray zr3ObsOdpytywanie(uint16_t magic, bool en, uint tempo);
+    static QByteArray zr3WyStSetMode(uint16_t magic, uint tryb, uint tempo);
 
 private:
     PureMessageZR3(){}

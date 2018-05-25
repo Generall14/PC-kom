@@ -67,6 +67,8 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbObsOdpEn", cbObsOdpEn->isChecked());
     Store("sbObsOdp", sbObsOdp->value());
     Store("cbObsAdrEn", cbObsAdrEn->isChecked());
+    Store("cbWyStTryb", cbWyStTryb->currentIndex());
+    Store("sbWyStTmin", sbWyStTmin->value());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -121,6 +123,8 @@ void IF10ZR3s::LoadConfigs()
     cbObsOdpEn->setChecked(RestoreAsBool("cbObsOdpEn", true));
     sbObsOdp->setValue(RestoreAsInt("sbObsOdp", 0));
     cbObsAdrEn->setChecked(RestoreAsBool("cbObsAdrEn", true));
+    cbWyStTryb->setCurrentIndex(RestoreAsInt("cbWyStTryb", 2));
+    sbWyStTmin->setValue(RestoreAsInt("sbWyStTmin", 2));
 }
 
 void IF10ZR3s::InitRest()
@@ -393,7 +397,7 @@ void IF10ZR3s::InitRest()
     darAuto->addWidget(sbMsAutoDoseRateA);
 
     //=============================================================================================
-    QGroupBox* wyjsciaAlarmowe = new QGroupBox("Wyjścia alarmowe");
+    QGroupBox* wyjsciaAlarmowe = new QGroupBox("Wyjście alarmowe");
     mainLay->addWidget(wyjsciaAlarmowe);
     QVBoxLayout* wyaLay = new QVBoxLayout(wyjsciaAlarmowe);
     wyaLay->setMargin(2);
@@ -635,6 +639,33 @@ void IF10ZR3s::InitRest()
     sbObsOdp->setMinimum(0);
     sbObsOdp->setMaximum(0xFFFF);
     obsOdp->addWidget(sbObsOdp);
+
+
+    //=============================================================================================
+    QGroupBox* wyjsciaStanu = new QGroupBox("Wyjście stanu");
+    mainLay->addWidget(wyjsciaStanu);
+    QVBoxLayout* wysLay = new QVBoxLayout(wyjsciaStanu);
+    wysLay->setMargin(2);
+
+    QHBoxLayout* wysTryb = new QHBoxLayout();
+    wysLay->addLayout(wysTryb);
+    pb = new QPushButton("Set tryb");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyStSetMode(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbWyStTryb->currentIndex(),
+                                                                sbWyStTmin->value()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wysTryb->addWidget(pb);
+    wysTryb->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbWyStTryb = new QComboBox();
+    QStringList sl = {"Tryb 1", "Tryb 2", "Tryb 3"};
+    cbWyStTryb->addItems(sl);
+    wysTryb->addWidget(cbWyStTryb);
+    sbWyStTmin = new QSpinBox();
+    sbWyStTmin->setMinimum(0);
+    sbWyStTmin->setMaximum(0xff);
+    wysTryb->addWidget(sbWyStTmin);
 
 
     //=============================================================================================

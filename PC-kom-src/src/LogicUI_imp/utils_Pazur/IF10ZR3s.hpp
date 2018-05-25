@@ -81,6 +81,9 @@ protected:
     QCheckBox* cbObsAdrEn = nullptr;
     QLineEdit* leObsAdr = nullptr;
 
+    QComboBox* cbWyStTryb = nullptr;
+    QSpinBox* sbWyStTmin = nullptr;
+
     QLabel* labAlarmState = nullptr;
     QCheckBox* cbAlarmStateDir = nullptr;
     QCheckBox* cbForceDoseRateAAdr = nullptr;

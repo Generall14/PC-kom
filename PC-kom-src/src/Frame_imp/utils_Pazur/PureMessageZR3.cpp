@@ -666,6 +666,21 @@ QByteArray PureMessageZR3::zr3ObsOdpytywanie(uint16_t magic, bool en, uint tempo
     return temp;
 }
 
+QByteArray PureMessageZR3::zr3WyStSetMode(uint16_t magic, uint tryb, uint tempo)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
+    temp.append(0x60);
+
+    temp.append(tryb&0x03);
+    temp.append(tempo&0xFF);
+
+    return temp;
+}
+
 QByteArray PureMessageZR3::zr3WyAlarmTest()
 {
     QByteArray temp;
