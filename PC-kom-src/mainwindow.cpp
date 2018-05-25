@@ -12,10 +12,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    QDir cdir("./configs/");
-    if (!cdir.exists())
-        cdir.mkpath(".");
-
     this->InitGUI();
 
     connect(this, SIGNAL(FakeDiscinnect()), mendium, SLOT(Close()));

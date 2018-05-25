@@ -1,5 +1,6 @@
 #include "GlobalXmlFile.hpp"
 #include <QDebug>
+#include <QDir>
 
 GlobalXmlFile::GlobalXmlFile()
 {
@@ -12,6 +13,9 @@ GlobalXmlFile::GlobalXmlFile()
 
 GlobalXmlFile::~GlobalXmlFile()
 {
+    QDir cdir("./configs/");
+    if (!cdir.exists())
+        cdir.mkpath(".");
     file.save_file("configs/GlobalConfigFile.xml");
     qDebug() << "Destruktor";
 }
