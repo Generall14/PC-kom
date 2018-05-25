@@ -69,6 +69,7 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbObsAdrEn", cbObsAdrEn->isChecked());
     Store("cbWyStTryb", cbWyStTryb->currentIndex());
     Store("sbWyStTmin", sbWyStTmin->value());
+    Store("cbObsInEn", cbObsInEn->isChecked());
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -125,6 +126,7 @@ void IF10ZR3s::LoadConfigs()
     cbObsAdrEn->setChecked(RestoreAsBool("cbObsAdrEn", true));
     cbWyStTryb->setCurrentIndex(RestoreAsInt("cbWyStTryb", 2));
     sbWyStTmin->setValue(RestoreAsInt("sbWyStTmin", 2));
+    cbObsInEn->setChecked(RestoreAsBool("cbObsInEn", true));
 }
 
 void IF10ZR3s::InitRest()
@@ -566,6 +568,20 @@ void IF10ZR3s::InitRest()
     mainLay->addWidget(obserwator);
     QVBoxLayout* obsLay = new QVBoxLayout(obserwator);
     obsLay->setMargin(2);
+
+    QHBoxLayout* obsInEn = new QHBoxLayout();
+    obsLay->addLayout(obsInEn);
+    pb = new QPushButton("Wewnętrzny");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ObsInEn(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                cbObsInEn->isChecked()), 1);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    obsInEn->addWidget(pb);
+    obsInEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    cbObsInEn = new QCheckBox("Enable");
+    obsInEn->addWidget(cbObsInEn);
+
 
     QHBoxLayout* obsEn = new QHBoxLayout();
     obsLay->addLayout(obsEn);

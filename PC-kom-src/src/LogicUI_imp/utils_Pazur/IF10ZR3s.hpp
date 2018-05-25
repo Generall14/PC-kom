@@ -74,6 +74,7 @@ protected:
     QCheckBox* cbEnKontrWyAl = nullptr;
 
     QCheckBox* cbObsEn = nullptr;
+    QCheckBox* cbObsInEn = nullptr;
     QCheckBox* cbObsInsEn = nullptr;
     QSpinBox* sbObsIns = nullptr;
     QCheckBox* cbObsOdpEn = nullptr;

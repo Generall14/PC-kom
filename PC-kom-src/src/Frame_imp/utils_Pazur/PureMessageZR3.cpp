@@ -602,6 +602,24 @@ QByteArray PureMessageZR3::zr3ObsEn(uint16_t magic, bool en)
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
 
+    temp.append(0xC0);
+    temp.append(0x20);
+
+    if(en)
+        temp.append(0x01);
+    else
+        temp.append((char)0x00);
+
+    return temp;
+}
+
+QByteArray PureMessageZR3::zr3ObsInEn(uint16_t magic, bool en)
+{
+    QByteArray temp;
+    temp.append(0x04);
+    temp.append(magic&0xFF);
+    temp.append((magic>>8)&0xFF);
+
     temp.append(0x40);
 
     if(en)
@@ -619,7 +637,8 @@ QByteArray PureMessageZR3::zr3ObsNadawca(uint16_t magic, bool en, uint adr)
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
 
-    temp.append(0x41);
+    temp.append(0xC1);
+    temp.append(0x20);
 
     uchar tmp = (adr<<1)&0x7E;
     if(en)
@@ -636,7 +655,8 @@ QByteArray PureMessageZR3::zr3ObsInstancja(uint16_t magic, bool en, uint ins)
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
 
-    temp.append(0x42);
+    temp.append(0xC2);
+    temp.append(0x20);
 
     uchar tmp = (ins<<1)&0x1E;
     if(en)
@@ -653,7 +673,8 @@ QByteArray PureMessageZR3::zr3ObsOdpytywanie(uint16_t magic, bool en, uint tempo
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
 
-    temp.append(0x43);
+    temp.append(0xC3);
+    temp.append(0x20);
 
     if(en)
         temp.append(0x01);
