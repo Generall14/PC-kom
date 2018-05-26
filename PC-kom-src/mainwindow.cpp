@@ -112,7 +112,7 @@ void MainWindow::InitGUI()
     QFrame* rightFrame = new QFrame(this);
     rightFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     auto sp2 = rightFrame->sizePolicy();
-    sp2.setHorizontalStretch(10);
+    sp2.setHorizontalStretch(13);
     rightFrame->setSizePolicy(sp2);
     mainLay->addWidget(rightFrame);
 

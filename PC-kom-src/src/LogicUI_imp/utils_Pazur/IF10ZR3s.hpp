@@ -16,6 +16,7 @@
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QLabel>
+#include "src/LogicUI_imp/utils_Pazur/FlagDisplay.hpp"
 
 class IF10ZR3s : public QObject, public Restorable
 {
@@ -120,6 +121,10 @@ protected:
 
     QLabel* labEstimatedGammaDoseRate = nullptr;
     QLabel* labEstimatedGammaDoseRateProbe = nullptr;
+
+    FlagsDisplay* fsWarn = nullptr;
+    FlagsDisplay* fsFault = nullptr;
+    FlagsDisplay* fsSerwice = nullptr;
 };
 
 #endif

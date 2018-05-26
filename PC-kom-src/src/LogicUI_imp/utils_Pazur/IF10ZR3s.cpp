@@ -70,6 +70,10 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbWyStTryb", cbWyStTryb->currentIndex());
     Store("sbWyStTmin", sbWyStTmin->value());
     Store("cbObsInEn", cbObsInEn->isChecked());
+
+    delete fsSerwice;
+    delete fsWarn;
+    delete fsFault;
 }
 
 void IF10ZR3s::LoadConfigs()
@@ -148,6 +152,15 @@ void IF10ZR3s::InitRest()
     leToAdr->setInputMask("HH");
     leToAdr->setMaximumWidth(40);
     toAdrLay->addWidget(leToAdr);
+
+    //=============================================================================================
+    QHBoxLayout* flagsLay = new QHBoxLayout();
+    flagsLay->setMargin(2);
+    mainLay->addLayout(flagsLay);
+    QStringList list{"1", "2", "3", "4", "5", "6", "7", "8", "11", "12", "13", "14", "15", "16", "17", "18"};
+    fsWarn = new FlagsDisplay(flagsLay, "Warn", list);
+    fsFault = new FlagsDisplay(flagsLay, "Fault", list);
+    fsSerwice = new FlagsDisplay(flagsLay, "Service", list);
 
     //=============================================================================================
     QGroupBox* mocDawki = new QGroupBox("Pomiar/szacowanie mocy dawki");
