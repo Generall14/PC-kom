@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
+#include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
 #include <qdebug.h>
@@ -157,7 +158,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* flagsLay = new QHBoxLayout();
     flagsLay->setMargin(2);
     mainLay->addLayout(flagsLay);
-    QStringList list{"1", "2", "3", "4", "5", "6", "7", "8", "11", "12", "13", "14", "15", "16", "17", "18"};
+    QStringList list{"1", "2", "3", "4", "5", "6", "7", "8"};
     fsWarn = new FlagsDisplay(flagsLay, "Warn", list);
     fsFault = new FlagsDisplay(flagsLay, "Fault", list);
     fsSerwice = new FlagsDisplay(flagsLay, "Service", list);
@@ -939,78 +940,67 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
     FramePazur paz(fr->pureData());
     for(auto msg: paz.getMessages().getMessages())
     {
-        QByteArray mm = msg.toPureData().mid(2);
-        if((mm.at(0)==0x20)&&(mm.at(1)==0x04))
+        if((msg.toPureData().at(0)&0xC0)==0x80) // ifs = 2
         {
-            if(mm.size()<11)
-                return;
-            labDose->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv");
-        }
-        else if((mm.at(0)==0x70))
-        {
-            labDoseRateProbe->setText(ReadMeasure(mm.mid(1), "Sv/h"));
-        }
-        else if((mm.at(0)==0x30))
-        {
-            labAlarmState->setText("Bezpiecznie");
-        }
-        else if((mm.at(0)==0x31))
-        {
-            labAlarmState->setText("UWAGA");
-        }
-        else if((mm.at(0)==0x32))
-        {
-            labAlarmState->setText("NIEBEZPIECZENSTWO");
-        }
-        else if((mm.at(0)==0x33))
-        {
-            labAlarmState->setText("ZAGROZENIE ZYCIA!!!");
-        }
-        else if((mm.at(0)==0x50))
-        {
-            QString ttt;
-            if(mm.at(1)&0x01)
-                ttt = "ON";
-            else
-                ttt = "OFF";
-            if(mm.at(1)&0x02)
-                ttt.append(", niepotwierdzony");
-            if(mm.at(1)&0x04)
-                ttt.append(", zablokowany");
-            if(mm.at(1)&0x08)
-                ttt.append(", test");
-            if(mm.at(1)&0x10)
-                ttt.append(", symulacja");
-            labWyAlState->setText(ttt);
-        }
-        else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
-        {
-            labDoseRate->setText(ReadMeasure(mm.mid(2), "Sv/h"));
-        }
-        else if((mm.at(0)==0x20)&&(mm.at(1)==0x15))
-        {
-            labEstimatedEnergy->setText(ReadMeasure(mm.mid(2), "eV"));
-        }
-        else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
-        {
-            labEstimatedEnergyProbe->setText(ReadMeasure(mm.mid(2), "eV"));
-        }
-        else if((mm.at(0)==0x20)&&(mm.at(1)==0x05))
-        {
-            labEstimatedNeutron->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
-        }
-        else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x40))
-        {
-            labEstimatedNeutronProbe->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
-        }
-        else if(((uchar)mm.at(0)==0xA0)&&(mm.at(1)==0x20)&&(mm.at(2)==0x02))
-        {
-            labEstimatedGammaDoseRate->setText(ReadMeasure(mm.mid(3), "Sv/h"));
-        }
+            QByteArray mm = msg.toPureData().mid(2);
+            if((mm.at(0)==0x20)&&(mm.at(1)==0x04))
+            {
+                if(mm.size()<11)
+                    return;
+                labDose->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(2, 4)), 3)+"Sv");
+            }
+            else if((mm.at(0)==0x70))
+                labDoseRateProbe->setText(ReadMeasure(mm.mid(1), "Sv/h"));
+            else if((mm.at(0)==0x30))
+                labAlarmState->setText("Bezpiecznie");
+            else if((mm.at(0)==0x31))
+                labAlarmState->setText("UWAGA");
+            else if((mm.at(0)==0x32))
+                labAlarmState->setText("NIEBEZPIECZENSTWO");
+            else if((mm.at(0)==0x33))
+                labAlarmState->setText("ZAGROZENIE ZYCIA!!!");
+            else if((mm.at(0)==0x50))
+            {
+                QString ttt;
+                if(mm.at(1)&0x01)
+                    ttt = "ON";
+                else
+                    ttt = "OFF";
+                if(mm.at(1)&0x02)
+                    ttt.append(", niepotwierdzony");
+                if(mm.at(1)&0x04)
+                    ttt.append(", zablokowany");
+                if(mm.at(1)&0x08)
+                    ttt.append(", test");
+                if(mm.at(1)&0x10)
+                    ttt.append(", symulacja");
+                labWyAlState->setText(ttt);
+            }
+            else if((mm.at(0)==0x20)&&(mm.at(1)==0x02))
+                labDoseRate->setText(ReadMeasure(mm.mid(2), "Sv/h"));
+            else if((mm.at(0)==0x20)&&(mm.at(1)==0x15))
+                labEstimatedEnergy->setText(ReadMeasure(mm.mid(2), "eV"));
+            else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
+                labEstimatedEnergyProbe->setText(ReadMeasure(mm.mid(2), "eV"));
+            else if((mm.at(0)==0x20)&&(mm.at(1)==0x05))
+                labEstimatedNeutron->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
+            else if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x40))
+                labEstimatedNeutronProbe->setText(ReadMeasure(mm.mid(2), "1/s/cm^2"));
+            else if(((uchar)mm.at(0)==0xA0)&&(mm.at(1)==0x20)&&(mm.at(2)==0x02))
+                labEstimatedGammaDoseRate->setText(ReadMeasure(mm.mid(3), "Sv/h"));
 
-        if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
+            if(((uchar)mm.at(0)==0xF0)&&(mm.at(1)==0x20))
+                labEstimatedGammaDoseRateProbe->setText(ReadMeasure(mm.mid(2), "Sv/h"));
+        }
+        else if((msg.toPureData().at(0)&0xC0)==0x40) // ifs = 1
         {
-            labEstimatedGammaDoseRateProbe->setText(ReadMeasure(mm.mid(2), "Sv/h"));
+            QByteArray mm = msg.toPureData().mid(2);
+            if(mm.at(0)==PureMessage::wiFAULT_c)
+                fsFault->UpdateFlags(mm.mid(1));
+            else if(mm.at(0)==PureMessage::wiWARN_c)
+                fsWarn->UpdateFlags(mm.mid(1));
+            else if(mm.at(0)==PureMessage::wiSERVICE_c)
+                fsSerwice->UpdateFlags(mm.mid(1));
         }
     }
 }

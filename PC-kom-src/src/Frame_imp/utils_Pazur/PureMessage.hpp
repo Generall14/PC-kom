@@ -26,9 +26,6 @@ public:
     static QByteArray wkpBUILDo();
     static QByteArray wkpRESET();
 
-private:
-    QByteArray _arr;
-
     static const uchar wiRDCONST_c = 0x00;
     static const uchar wiRDCONSTo_c = 0x01;
     static const uchar wiRDSECTION_c = 0x02;
@@ -46,6 +43,9 @@ private:
     static const uchar wkpBUILD_c = 0x04;
     static const uchar wkpBUILDo_c = 0x14;
     static const uchar wkpRESET_c = 0x05;
+
+private:
+    QByteArray _arr;
 };
 
 #endif
