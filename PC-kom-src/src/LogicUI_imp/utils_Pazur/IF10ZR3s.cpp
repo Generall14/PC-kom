@@ -499,11 +499,11 @@ void IF10ZR3s::InitRest()
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaSym->addWidget(pb);
+    wyaSym->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     cmbWyAlSymLvl = new QComboBox();
     QStringList t1 = {"BEZP.", "UWAG.", "NIEB.", "ZAGR."};
     cmbWyAlSymLvl->addItems(t1);
     wyaSym->addWidget(cmbWyAlSymLvl);
-    wyaSym->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Zakończ symulacje");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKoniecSymulacji());});
     pb->setMaximumWidth(MIN_PB_W);
