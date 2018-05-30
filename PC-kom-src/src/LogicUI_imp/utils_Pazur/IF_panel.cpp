@@ -169,7 +169,7 @@ void IFPanel::internalFrameReaded(QSharedPointer<Frame> fr)
             {
                 if(mm.size()<14)
                     return;
-                leMagic->setText(QString("%1").arg(PureMessage::calcMagicNumber(mm.mid(3)), 16, 4, QChar('0')));
+                leMagic->setText(QString("%1").arg(PureMessage::calcMagicNumber(mm.mid(3)), 4, 16, QChar('0')));
             }
         }
     }

@@ -133,6 +133,7 @@ void LogicUIPazur::InitTabs()
     _if00 = new IF00(fr);
     connect(_if00, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
     connect(_if00, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(this, SIGNAL(internalFrameReaded(QSharedPointer<Frame>)), _if00, SLOT(internalFrameReaded(QSharedPointer<Frame>)));
     sa = new QScrollArea();
     sa->setWidget(fr);
     sa->setWidgetResizable(true);
@@ -142,6 +143,7 @@ void LogicUIPazur::InitTabs()
     _if01 = new IF01(fr);
     connect(_if01, SIGNAL(Send(QList<Confirm>,QList<Message>)), this, SLOT(Send(QList<Confirm>,QList<Message>)));
     connect(_if01, SIGNAL(Error(QString)), this, SIGNAL(Error(QString)));
+    connect(this, SIGNAL(internalFrameReaded(QSharedPointer<Frame>)), _if01, SLOT(internalFrameReaded(QSharedPointer<Frame>)));
     sa = new QScrollArea();
     sa->setWidget(fr);
     sa->setWidgetResizable(true);

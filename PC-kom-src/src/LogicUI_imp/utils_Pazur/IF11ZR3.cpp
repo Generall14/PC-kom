@@ -19,18 +19,18 @@ IF11ZR3::~IF11ZR3()
 {
     Store("letechACCrnd", letechACCrnd->text());
     Store("sbtechRDSECTION", sbtechRDSECTION->value());
-    Store("letechWRSECTIONmagic", letechWRSECTIONmagic->text());
     Store("letechWRSECTION", letechWRSECTION->text());
     Store("sbtechWRSECTION", sbtechWRSECTION->value());
+    Store("letechWrId", letechWrId->text());
 }
 
 void IF11ZR3::LoadConfigs()
 {
     letechACCrnd->setText(RestoreAsString("letechACCrnd", "1234"));
     sbtechRDSECTION->setValue(RestoreAsInt("sbtechRDSECTION", 0));
-    letechWRSECTIONmagic->setText(RestoreAsString("letechWRSECTIONmagic", "1234"));
     letechWRSECTION->setText(RestoreAsString("letechWRSECTION", ""));
     sbtechWRSECTION->setValue(RestoreAsInt("sbtechWRSECTION", 0));
+    letechWrId->setText(RestoreAsString("letechWrId", "000000"));
 }
 
 void IF11ZR3::InitRest()
@@ -89,18 +89,12 @@ void IF11ZR3::InitRest()
     pb = new QPushButton("wiWRSECTION(dev)");
     connect(pb, &QPushButton::clicked, [this](){
         SendMessage(PureMessageZR3::techWRSECTION(sbtechWRSECTION->value(),
-                    letechWRSECTIONmagic->text().toInt(nullptr, 16),
+                    leMagic->text().toInt(nullptr, 16),
                     SU::string2ByteArray(letechWRSECTION->text())), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techWRSECTIONLay->addWidget(pb);
     techWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Magic:");
-    techWRSECTIONLay->addWidget(lab);
-    letechWRSECTIONmagic = new QLineEdit();
-    letechWRSECTIONmagic->setValidator(new HexValidator(2, 1, letechWRSECTIONmagic));
-    letechWRSECTIONmagic->setMaximumWidth(50);
-    techWRSECTIONLay->addWidget(letechWRSECTIONmagic);
     lab = new QLabel("Nr:");
     techWRSECTIONLay->addWidget(lab);
     sbtechWRSECTION = new QSpinBox();
@@ -110,6 +104,48 @@ void IF11ZR3::InitRest()
     letechWRSECTION = new QLineEdit("fe");
     letechWRSECTION->setValidator(new HexValidator(1, 0, letechWRSECTION));
     mainLay->addWidget(letechWRSECTION);
+
+    QHBoxLayout* techRdsLay = new QHBoxLayout();
+    mainLay->addLayout(techRdsLay);
+    pb = new QPushButton("Rd ver.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdVer(), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    techRdsLay->addWidget(pb);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Rd date.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDate(), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    techRdsLay->addWidget(pb);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Rd FRAM r.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdFRAMFails(), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    techRdsLay->addWidget(pb);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Rd DevId");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDevId(), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    techRdsLay->addWidget(pb);
+
+    QHBoxLayout* wrIdLay = new QHBoxLayout();
+    mainLay->addLayout(wrIdLay);
+    pb = new QPushButton("Zapisz");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techWrDevId(
+                                                                leMagic->text().toInt(nullptr, 16),
+                                                                letechWrId->text().toInt(nullptr, 16)), 3);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    wrIdLay->addWidget(pb);
+    lab = new QLabel("DevId:");
+    wrIdLay->addWidget(lab);
+    letechWrId = new QLineEdit("000000");
+    letechWrId->setInputMask("HHHHHH");
+    letechWrId->setMaximumWidth(70);
+    wrIdLay->addWidget(letechWrId);
 }
 
 void IF11ZR3::Init()

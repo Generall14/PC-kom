@@ -16,6 +16,13 @@ public:
     static QByteArray techWRSECTION(uint nr, uint16_t magic, QByteArray data);
     static QByteArray techRESET();
 
+    static QByteArray techRdVer();
+    static QByteArray techRdDate();
+    static QByteArray techRdFRAMFails();
+    static QByteArray techRdDevId();
+
+    static QByteArray techWrDevId(uint16_t magic, uint id);
+
     static QByteArray zr3ReadDose();
     static QByteArray zr3SetDose(float dose);
     static QByteArray zr3ReadDoseRate();

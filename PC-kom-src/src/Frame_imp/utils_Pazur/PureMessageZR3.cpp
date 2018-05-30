@@ -81,9 +81,37 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             if(_arr.at(2)&0x40)
                 temp.append(", nie rozpoznano sekcji");
             else
-                temp.append(", data: ");
-                for(int i=4;i<_arr.size();++i)
-                    temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+            {
+                if((((uint)_arr.at(3)&0xFF)==0x00)&&(_arr.size()>=6))
+                {
+                    uint ver = 0;
+                    ver |= _arr.at(4)&0xFF;
+                    ver |= (_arr.at(5)&0xFF)<<8;
+                    temp.append(QString(", wersja programu: 0x%01").arg(ver&0xFFFF, 4, 16, QChar('0')));
+                }
+                else if((((uint)_arr.at(3)&0xFF)==0x01))
+                    temp.append(", data budowania: "+_arr.mid(4));
+                else if((((uint)_arr.at(3)&0xFF)==0x02))
+                {
+                    temp.append(", FRAM raport: ");
+                    for(int i=4;i<_arr.size();++i)
+                        temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+                }
+                if((((uint)_arr.at(3)&0xFF)==0x03)&&(_arr.size()>=7))
+                {
+                    uint ver = 0;
+                    ver |= _arr.at(4)&0xFF;
+                    ver |= (_arr.at(5)&0xFF)<<8;
+                    ver |= (_arr.at(6)&0xFF)<<16;
+                    temp.append(QString(", DevId: 0x%01").arg(ver&0xFFFFFF, 6, 16, QChar('0')));
+                }
+                else
+                {
+                    temp.append(", data: ");
+                    for(int i=4;i<_arr.size();++i)
+                        temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
+                }
+            }
             *found = true;
             break;
         }
@@ -154,6 +182,35 @@ QByteArray PureMessageZR3::techRDSECTION(uint nr)
     temp.append(techRDSECTION_c);
     temp.append(nr&0xFF);
     return temp;
+}
+
+QByteArray PureMessageZR3::techRdVer()
+{
+    return PureMessageZR3::techRDSECTION(0);
+}
+
+QByteArray PureMessageZR3::techRdDate()
+{
+    return PureMessageZR3::techRDSECTION(1);
+}
+
+QByteArray PureMessageZR3::techRdFRAMFails()
+{
+    return PureMessageZR3::techRDSECTION(2);
+}
+
+QByteArray PureMessageZR3::techRdDevId()
+{
+    return PureMessageZR3::techRDSECTION(3);
+}
+
+QByteArray PureMessageZR3::techWrDevId(uint16_t magic, uint id)
+{
+    QByteArray data;
+    data.append(id&0xFF);
+    data.append((id>>8)&0xFF);
+    data.append((id>>16)&0xFF);
+    return PureMessageZR3::techWRSECTION(3, magic, data);
 }
 
 QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, QByteArray data)

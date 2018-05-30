@@ -35,9 +35,10 @@ protected:
 
     QSpinBox* sbtechRDSECTION = nullptr;
 
-    QLineEdit* letechWRSECTIONmagic = nullptr;
     QSpinBox* sbtechWRSECTION = nullptr;
     QLineEdit* letechWRSECTION = nullptr;
+
+    QLineEdit* letechWrId = nullptr;
 };
 
 #endif
