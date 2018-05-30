@@ -14,7 +14,7 @@ class Restorable
 public:
     Restorable(QString className);
 
-protected:
+//protected:
     template<typename T> void Store(QString name, T value)
     {
         pugi::xml_node node = GlobalXmlFile::getMainNode().child(_className.toStdString().c_str());

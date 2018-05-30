@@ -9,17 +9,14 @@
 #include "Frame_imp/FramePazur.hpp"
 
 IF11ZR3::IF11ZR3(QFrame* parent):
-    Restorable("IF11ZR3"),
-    cParent(parent)
+    IFPanel(parent, "IF11ZR3base"),
+    Restorable("IF11ZR3")
 {
     Init();
 }
 
 IF11ZR3::~IF11ZR3()
 {
-    Store("leToAdr", leToAdr->text());
-    Store("letechREQmagic", letechREQmagic->text());
-    Store("letechACCmagic", letechACCmagic->text());
     Store("letechACCrnd", letechACCrnd->text());
     Store("sbtechRDSECTION", sbtechRDSECTION->value());
     Store("letechWRSECTIONmagic", letechWRSECTIONmagic->text());
@@ -29,9 +26,6 @@ IF11ZR3::~IF11ZR3()
 
 void IF11ZR3::LoadConfigs()
 {
-    leToAdr->setText(RestoreAsString("leToAdr", "FF"));
-    letechREQmagic->setText(RestoreAsString("letechREQmagic", "1234"));
-    letechACCmagic->setText(RestoreAsString("letechACCmagic", "1234"));
     letechACCrnd->setText(RestoreAsString("letechACCrnd", "1234"));
     sbtechRDSECTION->setValue(RestoreAsInt("sbtechRDSECTION", 0));
     letechWRSECTIONmagic->setText(RestoreAsString("letechWRSECTIONmagic", "1234"));
@@ -41,71 +35,35 @@ void IF11ZR3::LoadConfigs()
 
 void IF11ZR3::InitRest()
 {
-    const uint MIN_PB_W = 150;
-
-    QHBoxLayout* toAdrLay = new QHBoxLayout();
-    mainLay->addLayout(toAdrLay);
-//    QLabel* lab = new QLabel("Magic:");
-//    toAdrLay->addWidget(lab);
-//    leMagic = new QLineEdit("0000");
-//    leMagic->setInputMask("HHHH");
-//    leMagic->setMaximumWidth(40);
-//    toAdrLay->addWidget(leMagic);
-//    QPushButton* pb = new QPushButton("Oblicz");
-//    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(0), 1);});
-//    pb->setMaximumWidth(MIN_PB_W/3);
-//    pb->setMinimumWidth(MIN_PB_W/3);
-//    toAdrLay->addWidget(pb);
-
-    QLabel* lab = new QLabel("Adres docelowy:");
-    toAdrLay->addWidget(lab);
-    toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    leToAdr = new QLineEdit("FF");
-    leToAdr->setInputMask("HH");
-    leToAdr->setMaximumWidth(40);
-    toAdrLay->addWidget(leToAdr);
-
     QHBoxLayout* techREQLay = new QHBoxLayout();
     mainLay->addLayout(techREQLay);
     QPushButton* pb = new QPushButton("techREQ");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techREQ(letechREQmagic->text().toInt(nullptr, 16)));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techREQ(leMagic->text().toInt(nullptr, 16)), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techREQLay->addWidget(pb);
     techREQLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Magic:");
-    techREQLay->addWidget(lab);
-    letechREQmagic = new QLineEdit();
-    letechREQmagic->setValidator(new HexValidator(2, 1, letechREQmagic));
-    letechREQmagic->setMaximumWidth(50);
-    techREQLay->addWidget(letechREQmagic);
 
     QHBoxLayout* techACCLay = new QHBoxLayout();
     mainLay->addLayout(techACCLay);
     pb = new QPushButton("techACC");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(
-                    PureMessageZR3::techACC(letechACCmagic->text().toInt(nullptr, 16), letechACCrnd->text().toInt(nullptr, 16)));});
+                    PureMessageZR3::techACC(leMagic->text().toInt(nullptr, 16), letechACCrnd->text().toInt(nullptr, 16)), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techACCLay->addWidget(pb);
     techACCLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Recieved rnd:");
+    QLabel* lab = new QLabel("Recieved rnd:");
     techACCLay->addWidget(lab);
     letechACCrnd = new QLineEdit();
     letechACCrnd->setValidator(new HexValidator(2, 1, letechACCrnd));
     letechACCrnd->setMaximumWidth(50);
     techACCLay->addWidget(letechACCrnd);
-    lab = new QLabel("Magic:");
-    techACCLay->addWidget(lab);
-    letechACCmagic = new QLineEdit();
-    letechACCmagic->setValidator(new HexValidator(2, 1, letechACCmagic));
-    letechACCmagic->setMaximumWidth(50);
-    techACCLay->addWidget(letechACCmagic);
 
     QHBoxLayout* techRSTLay = new QHBoxLayout();
     mainLay->addLayout(techRSTLay);
     pb = new QPushButton("techRESET");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRESET());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRESET(), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techRSTLay->addWidget(pb);
@@ -114,7 +72,7 @@ void IF11ZR3::InitRest()
     QHBoxLayout* techRDSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(techRDSECTIONLay);
     pb = new QPushButton("techRDSECTION");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRDSECTION(sbtechRDSECTION->value()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRDSECTION(sbtechRDSECTION->value()), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techRDSECTIONLay->addWidget(pb);
@@ -132,7 +90,7 @@ void IF11ZR3::InitRest()
     connect(pb, &QPushButton::clicked, [this](){
         SendMessage(PureMessageZR3::techWRSECTION(sbtechWRSECTION->value(),
                     letechWRSECTIONmagic->text().toInt(nullptr, 16),
-                    SU::string2ByteArray(letechWRSECTION->text())));});
+                    SU::string2ByteArray(letechWRSECTION->text())), 3);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     techWRSECTIONLay->addWidget(pb);
@@ -156,9 +114,6 @@ void IF11ZR3::InitRest()
 
 void IF11ZR3::Init()
 {
-    mainLay = new QVBoxLayout(cParent);
-    mainLay->setMargin(2);
-
     InitRest();
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -166,16 +121,9 @@ void IF11ZR3::Init()
     LoadConfigs();
 }
 
-void IF11ZR3::SendMessage(QByteArray arr)
-{
-    QList<Message> m;
-    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, 3, arr));
-    emit Send(QList<Confirm>(), m);
-}
-
 void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
 {
+    IFPanel::internalFrameReaded(fr);
     if(!(*fr).isValid())
         return;
     if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))

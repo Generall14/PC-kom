@@ -6,42 +6,28 @@
 #include "Utils/StaticUtils.hpp"
 
 IF00::IF00(QFrame* parent):
-    Restorable("IF00"),
-    cParent(parent)
+    IFPanel(parent, "IF00base"),
+    Restorable("IF00")
 {
     Init();
 }
 
 IF00::~IF00()
 {
-    Store("leToAdr", leToAdr->text());
     Store("leConnO", leConnO->text());
 }
 
 void IF00::LoadConfigs()
 {
-    leToAdr->setText(RestoreAsString("leToAdr", "FF"));
     leConnO->setText(RestoreAsString("leConnO", "FF"));
 }
 
 void IF00::InitRest()
 {
-    const uint MIN_PB_W = 150;
-
-    QHBoxLayout* toAdrLay = new QHBoxLayout();
-    mainLay->addLayout(toAdrLay);
-    QLabel* lab = new QLabel("Adres docelowy:");
-    toAdrLay->addWidget(lab);
-    toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    leToAdr = new QLineEdit("FF");
-    leToAdr->setInputMask("HH");
-    leToAdr->setMaximumWidth(40);
-    toAdrLay->addWidget(leToAdr);
-
     QHBoxLayout* wkpSTORELay = new QHBoxLayout();
     mainLay->addLayout(wkpSTORELay);
     QPushButton* pb = new QPushButton("wkpSTORE");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpSTORE());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpSTORE(), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpSTORELay->addWidget(pb);
@@ -50,7 +36,7 @@ void IF00::InitRest()
     QHBoxLayout* wkpCONNECTLay = new QHBoxLayout();
     mainLay->addLayout(wkpCONNECTLay);
     pb = new QPushButton("wkpCONNECT");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpCONNECT());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpCONNECT(), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpCONNECTLay->addWidget(pb);
@@ -59,12 +45,12 @@ void IF00::InitRest()
     QHBoxLayout* wkpCONNECToLay = new QHBoxLayout();
     mainLay->addLayout(wkpCONNECToLay);
     pb = new QPushButton("wkpCONNECTo");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpCONNECTo(SU::string2ByteArray(leConnO->text())));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpCONNECTo(SU::string2ByteArray(leConnO->text())), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpCONNECToLay->addWidget(pb);
     wkpCONNECToLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Następnik:");
+    QLabel* lab = new QLabel("Następnik:");
     wkpCONNECToLay->addWidget(lab);
     leConnO = new QLineEdit("FF");
     leConnO->setInputMask("HH");
@@ -74,7 +60,7 @@ void IF00::InitRest()
     QHBoxLayout* wkpBUILDLay = new QHBoxLayout();
     mainLay->addLayout(wkpBUILDLay);
     pb = new QPushButton("wkpBUILD");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpBUILD());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpBUILD(), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpBUILDLay->addWidget(pb);
@@ -83,7 +69,7 @@ void IF00::InitRest()
     QHBoxLayout* wkpBUILDoLay = new QHBoxLayout();
     mainLay->addLayout(wkpBUILDoLay);
     pb = new QPushButton("wkpBUILDo");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpBUILDo());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpBUILDo(), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpBUILDoLay->addWidget(pb);
@@ -92,7 +78,7 @@ void IF00::InitRest()
     QHBoxLayout* wkpRESETLay = new QHBoxLayout();
     mainLay->addLayout(wkpRESETLay);
     pb = new QPushButton("wkpRESET");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpRESET());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wkpRESET(), 0);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wkpRESETLay->addWidget(pb);
@@ -101,20 +87,9 @@ void IF00::InitRest()
 
 void IF00::Init()
 {
-    mainLay = new QVBoxLayout(cParent);
-    mainLay->setMargin(2);
-
     InitRest();
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     LoadConfigs();
-}
-
-void IF00::SendMessage(QByteArray arr)
-{
-    QList<Message> m;
-    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, 0, arr));
-    emit Send(QList<Confirm>(), m);
 }

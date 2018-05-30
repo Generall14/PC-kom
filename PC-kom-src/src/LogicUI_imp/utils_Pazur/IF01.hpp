@@ -5,37 +5,30 @@
 #include <QString>
 #include <QObject>
 #include <QSharedPointer>
-#include "Frame_imp/utils_Pazur/Confirm.hpp"
-#include "Frame_imp/utils_Pazur/Message.hpp"
 #include "../../Utils/Restorable.hpp"
 #include <QComboBox>
 #include <QLayout>
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QCheckBox>
+#include "IF_panel.hpp"
 
-class IF01 : public QObject, public Restorable
+class IF01 : public IFPanel, public Restorable
 {
     Q_OBJECT
 public:
     IF01(QFrame* parent);
     ~IF01();
 
-signals:
-    void Error(QString msg);
-    void Send(QList<Confirm> c, QList<Message> m);
+public slots:
+    void internalFrameReaded(QSharedPointer<Frame> fr);
 
 protected slots:
     void InitRest();
-    void SendMessage(QByteArray arr);
 
 protected:
     void Init();
     void LoadConfigs();
-
-    QFrame* cParent=nullptr;
-    QVBoxLayout* mainLay = nullptr;
-    QLineEdit* leToAdr = nullptr;
 
     QSpinBox* sbwiRDCONST = nullptr;
 
@@ -45,10 +38,8 @@ protected:
 
     QSpinBox* sbwiWRSECTION = nullptr;
     QCheckBox* cbwiWRSECTION = nullptr;
-    QLineEdit* lewiWRSECTIONmagic = nullptr;
     QLineEdit* lewiWRSECTION = nullptr;
 
-    QLineEdit* lewiWRSECTIONmagic2 = nullptr;
     QLineEdit* lewiWRSECTIONnr2 = nullptr;
     QLineEdit* lewiWRSECTION2 = nullptr;
 

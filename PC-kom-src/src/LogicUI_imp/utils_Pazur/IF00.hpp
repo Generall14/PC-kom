@@ -13,29 +13,21 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QCheckBox>
+#include "IF_panel.hpp"
 
-class IF00 : public QObject, public Restorable
+class IF00 : public IFPanel, public Restorable
 {
     Q_OBJECT
 public:
     IF00(QFrame* parent);
     ~IF00();
 
-signals:
-    void Error(QString msg);
-    void Send(QList<Confirm> c, QList<Message> m);
-
 protected slots:
     void InitRest();
-    void SendMessage(QByteArray arr);
 
 protected:
     void Init();
     void LoadConfigs();
-
-    QFrame* cParent=nullptr;
-    QVBoxLayout* mainLay = nullptr;
-    QLineEdit* leToAdr = nullptr;
 
     QLineEdit* leConnO = nullptr;
 };

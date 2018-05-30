@@ -89,7 +89,8 @@ SOURCES += main.cpp\
     src/Frame_imp/utils_Pazur/PureMessageZR3.cpp \
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.cpp \
     src/LogicUI_imp/utils_Pazur/IF10ZR3s.cpp \
-    src/LogicUI_imp/utils_Pazur/FlagDisplay.cpp
+    src/LogicUI_imp/utils_Pazur/FlagDisplay.cpp \
+    src/LogicUI_imp/utils_Pazur/IF_panel.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -162,7 +163,8 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/utils_Pazur/PureMessageZR3.hpp \
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.hpp \
     src/LogicUI_imp/utils_Pazur/IF10ZR3s.hpp \
-    src/LogicUI_imp/utils_Pazur/FlagDisplay.hpp
+    src/LogicUI_imp/utils_Pazur/FlagDisplay.hpp \
+    src/LogicUI_imp/utils_Pazur/IF_panel.hpp
 
 DISTFILES += \
     configs.xml \

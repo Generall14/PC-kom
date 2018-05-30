@@ -10,15 +10,14 @@
 #include <QGroupBox>
 
 IF10ZR3s::IF10ZR3s(QFrame* parent):
-    Restorable("IF10ZR3s"),
-    cParent(parent)
+    IFPanel(parent, "IF10ZR3sbase"),
+    Restorable("IF10ZR3s")
 {
     Init();
 }
 
 IF10ZR3s::~IF10ZR3s()
 {
-    Store("leToAdr", leToAdr->text());
     Store("leObsAdr", leObsAdr->text());
     Store("dsbzr3SetDose", dsbzr3SetDose->value());
     Store("cbForceDoseRateAdr", cbForceDoseRateAdr->isChecked());
@@ -79,7 +78,6 @@ IF10ZR3s::~IF10ZR3s()
 
 void IF10ZR3s::LoadConfigs()
 {
-    leToAdr->setText(RestoreAsString("leToAdr", "FF"));
     leObsAdr->setText(RestoreAsString("leObsAdr", "FF"));
     dsbzr3SetDose->setValue(RestoreAsFloat("dsbzr3SetDose", 0.0));
     cbForceDoseRateAdr->setChecked(RestoreAsBool("cbForceDoseRateAdr", false));
@@ -136,30 +134,6 @@ void IF10ZR3s::LoadConfigs()
 
 void IF10ZR3s::InitRest()
 {
-    const uint MIN_PB_W = 150;
-
-    QHBoxLayout* toAdrLay = new QHBoxLayout();
-    mainLay->addLayout(toAdrLay);
-    QLabel* lab = new QLabel("Magic:");
-    toAdrLay->addWidget(lab);
-    leMagic = new QLineEdit("0000");
-    leMagic->setInputMask("HHHH");
-    leMagic->setMaximumWidth(40);
-    toAdrLay->addWidget(leMagic);
-    QPushButton* pb = new QPushButton("Oblicz");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(0), 1);});
-    pb->setMaximumWidth(MIN_PB_W/3);
-    pb->setMinimumWidth(MIN_PB_W/3);
-    toAdrLay->addWidget(pb);
-
-    toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Adres docelowy:");
-    toAdrLay->addWidget(lab);
-    leToAdr = new QLineEdit("FF");
-    leToAdr->setInputMask("HH");
-    leToAdr->setMaximumWidth(40);
-    toAdrLay->addWidget(leToAdr);
-
     //=============================================================================================
     QHBoxLayout* flagsLay = new QHBoxLayout();
     flagsLay->setMargin(2);
@@ -177,8 +151,8 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* drRead = new QHBoxLayout();
     mdLay->addLayout(drRead);
-    pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRate());});
+    QPushButton* pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRate(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     drRead->addWidget(pb);
@@ -189,12 +163,12 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* drProbeRead = new QHBoxLayout();
     mdLay->addLayout(drProbeRead);
     pb = new QPushButton("Rst");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstDoseRateProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstDoseRateProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     drProbeRead->addWidget(pb);
     pb = new QPushButton("Próbka");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRateProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRateProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     drProbeRead->addWidget(pb);
@@ -205,7 +179,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* drForce = new QHBoxLayout();
     mdLay->addLayout(drForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDoseRate(cbForceDoseRateAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDoseRate(cbForceDoseRateAdr->isChecked()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     drForce->addWidget(pb);
@@ -226,7 +200,7 @@ void IF10ZR3s::InitRest()
     drAuto->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     cbEnAutoDoseRate = new QCheckBox("En");
     drAuto->addWidget(cbEnAutoDoseRate);
-    lab = new QLabel("Adr:");
+    QLabel* lab = new QLabel("Adr:");
     drAuto->addWidget(lab);
     leAdrAutoDoseRate = new QLineEdit("FF");
     leAdrAutoDoseRate->setInputMask("HH");
@@ -249,7 +223,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* draRead = new QHBoxLayout();
     mdaLay->addLayout(draRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadAlarmState());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadAlarmState(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     draRead->addWidget(pb);
@@ -383,7 +357,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* draForce = new QHBoxLayout();
     mdaLay->addLayout(draForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceAlarmState(cbForceDoseRateAAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceAlarmState(cbForceDoseRateAAdr->isChecked()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     draForce->addWidget(pb);
@@ -427,7 +401,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaRead = new QHBoxLayout();
     wyaLay->addLayout(wyaRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdczytaj());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdczytaj(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaRead->addWidget(pb);
@@ -438,7 +412,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaPot = new QHBoxLayout();
     wyaLay->addLayout(wyaPot);
     pb = new QPushButton("Potwierdź");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmPotwierdz());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmPotwierdz(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaPot->addWidget(pb);
@@ -473,13 +447,13 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaTst = new QHBoxLayout();
     wyaLay->addLayout(wyaTst);
     pb = new QPushButton("Test");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmTest());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmTest(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaTst->addWidget(pb);
     wyaTst->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Zakończ test");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmEndTest());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmEndTest(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaTst->addWidget(pb);
@@ -487,13 +461,13 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaBla = new QHBoxLayout();
     wyaLay->addLayout(wyaBla);
     pb = new QPushButton("Blokuj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmBlokuj());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmBlokuj(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaBla->addWidget(pb);
     wyaBla->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Odblokuj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdblokuj());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmOdblokuj(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaBla->addWidget(pb);
@@ -501,7 +475,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaSym = new QHBoxLayout();
     wyaLay->addLayout(wyaSym);
     pb = new QPushButton("Symuluj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmSymuluj(cmbWyAlSymLvl->currentIndex()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmSymuluj(cmbWyAlSymLvl->currentIndex()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaSym->addWidget(pb);
@@ -511,7 +485,7 @@ void IF10ZR3s::InitRest()
     cmbWyAlSymLvl->addItems(t1);
     wyaSym->addWidget(cmbWyAlSymLvl);
     pb = new QPushButton("Zakończ symulacje");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKoniecSymulacji());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKoniecSymulacji(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaSym->addWidget(pb);
@@ -548,7 +522,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* wyaForce = new QHBoxLayout();
     wyaLay->addLayout(wyaForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceWyAlarm(cbForceWyAlAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceWyAlarm(cbForceWyAlAdr->isChecked()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaForce->addWidget(pb);
@@ -713,7 +687,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* dRead = new QHBoxLayout();
     dLay->addLayout(dRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDose());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDose(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     dRead->addWidget(pb);
@@ -724,7 +698,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* dSet = new QHBoxLayout();
     dLay->addLayout(dSet);
     pb = new QPushButton("Ustaw");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetDose(dsbzr3SetDose->value()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3SetDose(dsbzr3SetDose->value()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     dSet->addWidget(pb);
@@ -738,7 +712,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* dForce = new QHBoxLayout();
     dLay->addLayout(dForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDose(cbForceDoseAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceDose(cbForceDoseAdr->isChecked()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     dForce->addWidget(pb);
@@ -782,7 +756,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* estForce = new QHBoxLayout();
     esLay->addLayout(estForce);
     pb = new QPushButton("Force");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceEsts(cbForceEstsAdr->isChecked()));});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ForceEsts(cbForceEstsAdr->isChecked()), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     estForce->addWidget(pb);
@@ -826,7 +800,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* eeRead = new QHBoxLayout();
     seLay->addLayout(eeRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergy());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergy(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     eeRead->addWidget(pb);
@@ -837,12 +811,12 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* eeProbeRead = new QHBoxLayout();
     seLay->addLayout(eeProbeRead);
     pb = new QPushButton("Rst");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedEnergyProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedEnergyProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     eeProbeRead->addWidget(pb);
     pb = new QPushButton("Próbka");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergyProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedEnergyProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     eeProbeRead->addWidget(pb);
@@ -859,7 +833,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* enRead = new QHBoxLayout();
     enLay->addLayout(enRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronB());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronB(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     enRead->addWidget(pb);
@@ -870,12 +844,12 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* snProbeRead = new QHBoxLayout();
     enLay->addLayout(snProbeRead);
     pb = new QPushButton("Rst");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedNeutronBProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedNeutronBProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     snProbeRead->addWidget(pb);
     pb = new QPushButton("Próbka");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronBProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedNeutronBProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     snProbeRead->addWidget(pb);
@@ -892,7 +866,7 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* egRead = new QHBoxLayout();
     egLay->addLayout(egRead);
     pb = new QPushButton("Odczytaj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRate());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRate(), 2);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     egRead->addWidget(pb);
@@ -903,12 +877,12 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* edrProbeRead = new QHBoxLayout();
     egLay->addLayout(edrProbeRead);
     pb = new QPushButton("Rst");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedGammaDoseRateProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3RstEstimatedGammaDoseRateProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     edrProbeRead->addWidget(pb);
     pb = new QPushButton("Próbka");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRateProbe());});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadEstimatedGammaDoseRateProbe(), 2);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     edrProbeRead->addWidget(pb);
@@ -919,9 +893,6 @@ void IF10ZR3s::InitRest()
 
 void IF10ZR3s::Init()
 {
-    mainLay = new QVBoxLayout(cParent);
-    mainLay->setMargin(2);
-
     InitRest();
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -929,16 +900,9 @@ void IF10ZR3s::Init()
     LoadConfigs();
 }
 
-void IF10ZR3s::SendMessage(QByteArray arr, uint ifs)
-{
-    QList<Message> m;
-    uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    m.append(Message(to, ifs, arr));
-    emit Send(QList<Confirm>(), m);
-}
-
 void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
 {
+    IFPanel::internalFrameReaded(fr);
     if(!(*fr).isValid())
         return;
     if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
@@ -1009,12 +973,6 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
                 fsWarn->UpdateFlags(mm.mid(1));
             else if(mm.at(0)==PureMessage::wiSERVICE_c)
                 fsSerwice->UpdateFlags(mm.mid(1));
-            else if(mm.at(0)==PureMessage::wiRDCONSTo_c)
-            {
-                if(mm.size()<14)
-                    return;
-                leMagic->setText(QString("%1").arg(PureMessage::calcMagicNumber(mm.mid(3)), 16, 4, QChar('0')));
-            }
         }
     }
 }
