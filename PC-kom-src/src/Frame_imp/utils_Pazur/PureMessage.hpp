@@ -26,6 +26,8 @@ public:
     static QByteArray wkpBUILDo();
     static QByteArray wkpRESET();
 
+    static uint calcMagicNumber(QByteArray wID_IDX);
+
     static const uchar wiRDCONST_c = 0x00;
     static const uchar wiRDCONSTo_c = 0x01;
     static const uchar wiRDSECTION_c = 0x02;

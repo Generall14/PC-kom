@@ -146,6 +146,12 @@ void IF10ZR3s::InitRest()
     leMagic->setInputMask("HHHH");
     leMagic->setMaximumWidth(40);
     toAdrLay->addWidget(leMagic);
+    QPushButton* pb = new QPushButton("Oblicz");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(0), 1);});
+    pb->setMaximumWidth(MIN_PB_W/3);
+    pb->setMinimumWidth(MIN_PB_W/3);
+    toAdrLay->addWidget(pb);
+
     toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     lab = new QLabel("Adres docelowy:");
     toAdrLay->addWidget(lab);
@@ -171,7 +177,7 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* drRead = new QHBoxLayout();
     mdLay->addLayout(drRead);
-    QPushButton* pb = new QPushButton("Odczytaj");
+    pb = new QPushButton("Odczytaj");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3ReadDoseRate());});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
@@ -995,12 +1001,20 @@ void IF10ZR3s::internalFrameReaded(QSharedPointer<Frame> fr)
         else if((msg.toPureData().at(0)&0xC0)==0x40) // ifs = 1
         {
             QByteArray mm = msg.toPureData().mid(2);
+            if(mm.isEmpty())
+                return;
             if(mm.at(0)==PureMessage::wiFAULT_c)
                 fsFault->UpdateFlags(mm.mid(1));
             else if(mm.at(0)==PureMessage::wiWARN_c)
                 fsWarn->UpdateFlags(mm.mid(1));
             else if(mm.at(0)==PureMessage::wiSERVICE_c)
                 fsSerwice->UpdateFlags(mm.mid(1));
+            else if(mm.at(0)==PureMessage::wiRDCONSTo_c)
+            {
+                if(mm.size()<14)
+                    return;
+                leMagic->setText(QString("%1").arg(PureMessage::calcMagicNumber(mm.mid(3)), 16, 4, QChar('0')));
+            }
         }
     }
 }

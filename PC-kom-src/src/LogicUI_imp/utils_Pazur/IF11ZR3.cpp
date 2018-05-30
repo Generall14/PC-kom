@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
+#include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
 #include <qdebug.h>
@@ -44,6 +45,18 @@ void IF11ZR3::InitRest()
 
     QHBoxLayout* toAdrLay = new QHBoxLayout();
     mainLay->addLayout(toAdrLay);
+//    QLabel* lab = new QLabel("Magic:");
+//    toAdrLay->addWidget(lab);
+//    leMagic = new QLineEdit("0000");
+//    leMagic->setInputMask("HHHH");
+//    leMagic->setMaximumWidth(40);
+//    toAdrLay->addWidget(leMagic);
+//    QPushButton* pb = new QPushButton("Oblicz");
+//    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessage::wiRDCONST(0), 1);});
+//    pb->setMaximumWidth(MIN_PB_W/3);
+//    pb->setMinimumWidth(MIN_PB_W/3);
+//    toAdrLay->addWidget(pb);
+
     QLabel* lab = new QLabel("Adres docelowy:");
     toAdrLay->addWidget(lab);
     toAdrLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));

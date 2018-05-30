@@ -346,3 +346,20 @@ QByteArray PureMessage::wkpRESET()
     temp.append(wkpRESET_c);
     return temp;
 }
+
+/**
+ * Oblicza magiczny numer potrzebny do zapisywania danych na podstawie odczytanego wID_IDX.
+ * @param wID_IDX - dane wID_IDX (od początku, co najmniej xxx bajtów)
+ */
+uint PureMessage::calcMagicNumber(QByteArray wID_IDX)
+{
+    uint temp = 0x0000;
+    if(wID_IDX.size()<11)
+        return temp;
+    temp += wID_IDX.at(5);
+    temp += wID_IDX.at(6);
+    temp += wID_IDX.at(8);
+    temp += wID_IDX.at(9);
+    temp += wID_IDX.at(10);
+    return temp;
+}
