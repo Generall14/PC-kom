@@ -363,3 +363,43 @@ uint PureMessage::calcMagicNumber(QByteArray wID_IDX)
     temp += wID_IDX.at(10);
     return temp;
 }
+
+QByteArray PureMessage::wiRdAU()
+{
+    return wiRDSECTION_dev(0, true);
+}
+
+QByteArray PureMessage::wiRdOTOPG()
+{
+    return wiRDSECTION_dev(2, true);
+}
+
+QByteArray PureMessage::wiRdBOCW()
+{
+    return wiRDSECTION_dev(4, true);
+}
+
+QByteArray PureMessage::wiRdANWP()
+{
+    return wiRDSECTION_dev(1, true);
+}
+
+QByteArray PureMessage::wiRdBOPG()
+{
+    return wiRDSECTION_dev(3, true);
+}
+
+QByteArray PureMessage::wiRdBSPPG()
+{
+    return wiRDSECTION_dev(5, true);
+}
+
+QByteArray PureMessage::wiRdBMP()
+{
+    return wiRDSECTION_dev(6, true);
+}
+
+QByteArray PureMessage::wiRdBARP()
+{
+    return wiRDSECTION_dev(0xA, true);
+}

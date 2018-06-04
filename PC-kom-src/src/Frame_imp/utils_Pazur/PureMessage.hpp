@@ -19,6 +19,15 @@ public:
     static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
     static QByteArray wiGFDA(bool utkak, QByteArray nr);
 
+    static QByteArray wiRdAU();
+    static QByteArray wiRdOTOPG();
+    static QByteArray wiRdBOCW();
+    static QByteArray wiRdANWP();
+    static QByteArray wiRdBOPG();
+    static QByteArray wiRdBSPPG();
+    static QByteArray wiRdBMP();
+    static QByteArray wiRdBARP();
+
     static QByteArray wkpSTORE();
     static QByteArray wkpCONNECT();
     static QByteArray wkpCONNECTo(QByteArray next);

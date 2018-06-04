@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include <qDebug>
 #include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
@@ -197,11 +198,8 @@ void IF01::InitRest()
     labSpAdr->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpAdr);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdAU(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -228,11 +226,8 @@ void IF01::InitRest()
     labSpNAdr->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpNAdr);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdANWP(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -261,11 +256,8 @@ void IF01::InitRest()
     labSpOTOPG->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpOTOPG);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdOTOPG(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -290,11 +282,8 @@ void IF01::InitRest()
     labSpBOCW->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpBOCW);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdBOCW(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -319,11 +308,8 @@ void IF01::InitRest()
     labSpBOPG->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpBOPG);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdBOPG(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -348,11 +334,8 @@ void IF01::InitRest()
     labSpBSPPG->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpBSPPG);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdBSPPG(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -377,11 +360,8 @@ void IF01::InitRest()
     labSpBMP->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpBMP);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdBMP(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -406,11 +386,8 @@ void IF01::InitRest()
     labSpBARP->setAlignment(Qt::AlignRight);
     hl->addWidget(labSpBARP);
     pb = new QPushButton("Odczytaj");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiRdBARP(), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -428,19 +405,70 @@ void IF01::Init()
 void IF01::internalFrameReaded(QSharedPointer<Frame> fr)
 {
     IFPanel::internalFrameReaded(fr);
-    return;
-//    if(!(*fr).isValid())
-//        return;
-//    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
-//        return;
-//    FramePazur paz(fr->pureData());
-//    for(auto msg: paz.getMessages().getMessages())
-//    {
-//        if(msg.toPureData().at(2)==0x01)
-//        {
-//            letechACCrnd->setText(QString("%1%2").arg((uint)msg.toPureData().at(4)&0xFF, 2, 16, QChar('0'))
-//                                  .arg((uint)msg.toPureData().at(3)&0xFF, 2, 16, QChar('0')).toUpper());
-//            return;
-//        }
-//    }
+    if(!(*fr).isValid())
+        return;
+    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
+        return;
+    FramePazur paz(fr->pureData());
+    for(auto msg: paz.getMessages().getMessages())
+    {
+        QString lock = "ZABLOKOWANO", unlock = "odblokowano";
+        if((msg.toPureData().at(0)&0xC0)==0x40) // ifs = 1
+        {
+            QByteArray mm = msg.toPureData().mid(2);
+            if((mm.at(0)==0x03)&&((uchar)mm.at(1)==0x80)&&((uchar)mm.at(2)==0x80)&&((uchar)mm.at(3)==0x80)&&((uchar)mm.at(4)==0x80))
+            {
+                if(mm.size()<7)
+                    return;
+                if((uchar)mm.at(5)==0xc0)
+                    labSpAdr->setText(QString("0x%1").arg(mm.at(6)&0x3F, 2, 16, QChar('0')));
+                else if((uchar)mm.at(5)==0xc1)
+                    labSpNAdr->setText(QString("0x%1").arg(mm.at(6)&0x3F, 2, 16, QChar('0')));
+                else if((uchar)mm.at(5)==0xc2)
+                {
+                    if(mm.size()<7)
+                        return;
+                    uint tempo = 0;
+                    tempo |= mm.at(6)&0xFF;
+                    tempo |= (mm.at(7)<<8)&0x700;
+                    labSpOTOPG->setText(QString("%1 ms").arg(tempo));
+                }
+                else if((uchar)mm.at(5)==0xc3)
+                {
+                    if(mm.at(6)&0x01)
+                        labSpBOPG->setText(lock);
+                    else
+                        labSpBOPG->setText(unlock);
+                }
+                else if((uchar)mm.at(5)==0xc4)
+                {
+                    if(mm.at(6)&0x01)
+                        labSpBOCW->setText(lock);
+                    else
+                        labSpBOCW->setText(unlock);
+                }
+                else if((uchar)mm.at(5)==0xc5)
+                {
+                    if(mm.at(6)&0x01)
+                        labSpBSPPG->setText(lock);
+                    else
+                        labSpBSPPG->setText(unlock);
+                }
+                else if((uchar)mm.at(5)==0xc6)
+                {
+                    if(mm.at(6)&0x01)
+                        labSpBMP->setText(lock);
+                    else
+                        labSpBMP->setText(unlock);
+                }
+                else if((uchar)mm.at(5)==0xca)
+                {
+                    if(mm.at(6)&0x01)
+                        labSpBARP->setText(lock);
+                    else
+                        labSpBARP->setText(unlock);
+                }
+            }
+        }
+    }
 }
