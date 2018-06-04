@@ -93,17 +93,23 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
                     temp.append(", data budowania: "+_arr.mid(4));
                 else if((((uint)_arr.at(3)&0xFF)==0x02))
                 {
-                    temp.append(", FRAM raport: ");
+                    temp.append(", statystyki programu: ");
                     for(int i=4;i<_arr.size();++i)
                         temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
                 }
-                if((((uint)_arr.at(3)&0xFF)==0x03)&&(_arr.size()>=7))
+                else if((((uint)_arr.at(3)&0xFF)==0x03)&&(_arr.size()>=7))
                 {
                     uint ver = 0;
                     ver |= _arr.at(4)&0xFF;
                     ver |= (_arr.at(5)&0xFF)<<8;
                     ver |= (_arr.at(6)&0xFF)<<16;
                     temp.append(QString(", DevId: 0x%01").arg(ver&0xFFFFFF, 6, 16, QChar('0')));
+                }
+                else if((((uint)_arr.at(3)&0xFF)==0x04))
+                {
+                    temp.append(", statystyki urządzenia: ");
+                    for(int i=4;i<_arr.size();++i)
+                        temp.append(QString("0x%1 ").arg((uint)_arr.at(i)&0xFF, 2, 16, QChar('0')));
                 }
                 else
                 {
@@ -197,6 +203,11 @@ QByteArray PureMessageZR3::techRdDate()
 QByteArray PureMessageZR3::techRdFRAMFails()
 {
     return PureMessageZR3::techRDSECTION(2);
+}
+
+QByteArray PureMessageZR3::techRdFRAMDevStats()
+{
+    return PureMessageZR3::techRDSECTION(4);
 }
 
 QByteArray PureMessageZR3::techRdDevId()

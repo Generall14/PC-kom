@@ -119,8 +119,14 @@ void IF11ZR3::InitRest()
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    pb = new QPushButton("Rd FRAM r.");
+    pb = new QPushButton("Rd prog. s.");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdFRAMFails(), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    techRdsLay->addWidget(pb);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("Rd dev. s.");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdFRAMDevStats(), 3);});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
