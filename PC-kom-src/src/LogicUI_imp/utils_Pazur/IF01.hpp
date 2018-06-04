@@ -5,6 +5,7 @@
 #include <QString>
 #include <QObject>
 #include <QSharedPointer>
+#include <QLabel>
 #include "../../Utils/Restorable.hpp"
 #include <QComboBox>
 #include <QLayout>
@@ -45,6 +46,31 @@ protected:
 
     QLineEdit* lewiGFDA = nullptr;
     QCheckBox* cbwiGFDA = nullptr;
+
+
+    QLineEdit* leSpAdr = nullptr;
+    QLabel* labSpAdr = nullptr;
+
+    QLineEdit* leSpNAdr = nullptr;
+    QLabel* labSpNAdr = nullptr;
+
+    QLabel* labSpOTOPG = nullptr;
+    QSpinBox* sbSpOTOPG = nullptr;
+
+    QLabel* labSpBOCW = nullptr;
+    QCheckBox* cbSpBOCW = nullptr;
+
+    QLabel* labSpBOPG = nullptr;
+    QCheckBox* cbSpBOPG = nullptr;
+
+    QLabel* labSpBSPPG = nullptr;
+    QCheckBox* cbSpBSPPG = nullptr;
+
+    QLabel* labSpBMP = nullptr;
+    QCheckBox* cbSpBMP = nullptr;
+
+    QLabel* labSpBARP = nullptr;
+    QCheckBox* cbSpBARP = nullptr;
 };
 
 #endif

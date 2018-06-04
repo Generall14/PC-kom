@@ -1,6 +1,7 @@
 #include "IF01.hpp"
 #include <QLabel>
 #include <QPushButton>
+#include <QGroupBox>
 #include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
 #include "Utils/StaticUtils.hpp"
@@ -25,6 +26,14 @@ IF01::~IF01()
     Store("lewiWRSECTION2", lewiWRSECTION2->text());
     Store("cbwiGFDA", cbwiGFDA->isChecked());
     Store("lewiGFDA", lewiGFDA->text());
+    Store("leSpAdr", leSpAdr->text());
+    Store("leSpNAdr", leSpNAdr->text());
+    Store("sbSpOTOPG", sbSpOTOPG->value());
+    Store("cbSpBOCW", cbSpBOCW->isChecked());
+    Store("cbSpBOPG", cbSpBOPG->isChecked());
+    Store("cbSpBSPPG", cbSpBSPPG->isChecked());
+    Store("cbSpBMP", cbSpBMP->isChecked());
+    Store("cbSpBARP", cbSpBARP->isChecked());
 }
 
 void IF01::LoadConfigs()
@@ -40,6 +49,14 @@ void IF01::LoadConfigs()
     lewiWRSECTION2->setText(RestoreAsString("lewiWRSECTION2", ""));
     cbwiGFDA->setChecked(RestoreAsBool("cbwiGFDA", false));
     lewiGFDA->setText(RestoreAsString("lewiGFDA", ""));
+    leSpAdr->setText(RestoreAsString("leSpAdr", "3F"));
+    leSpNAdr->setText(RestoreAsString("leSpNAdr", "3F"));
+    sbSpOTOPG->setValue(RestoreAsInt("sbSpOTOPG", 100));
+    cbSpBOCW->setChecked(RestoreAsBool("cbSpBOCW", false));
+    cbSpBOPG->setChecked(RestoreAsBool("cbSpBOPG", false));
+    cbSpBSPPG->setChecked(RestoreAsBool("cbSpBSPPG", false));
+    cbSpBMP->setChecked(RestoreAsBool("cbSpBMP", false));
+    cbSpBARP->setChecked(RestoreAsBool("cbSpBARP", false));
 }
 
 void IF01::InitRest()
@@ -154,6 +171,249 @@ void IF01::InitRest()
     lewiWRSECTION2 = new QLineEdit("fe");
     lewiWRSECTION2->setValidator(new HexValidator(1, 0, lewiWRSECTION2));
     mainLay->addWidget(lewiWRSECTION2);
+
+    //========================= spec ===============================================================
+    uint specs = MIN_PB_W/2;
+
+    QGroupBox* gb = new QGroupBox("Adres urządzenia");
+    mainLay->addWidget(gb);
+    QHBoxLayout* hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    leSpAdr = new QLineEdit("3F");
+    leSpAdr->setInputMask("HH");
+    leSpAdr->setMaximumWidth(40);
+    hl->addWidget(leSpAdr);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpAdr = new QLabel("??");
+    labSpAdr->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpAdr);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Adres następnika");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    leSpNAdr = new QLineEdit("3F");
+    leSpNAdr->setInputMask("HH");
+    leSpNAdr->setMaximumWidth(40);
+    hl->addWidget(leSpNAdr);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpNAdr = new QLabel("??");
+    labSpNAdr->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpNAdr);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Oczekiwane tempo otrzymywania głosu");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    sbSpOTOPG = new QSpinBox();
+    sbSpOTOPG->setMinimum(0);
+    sbSpOTOPG->setMaximum(0x7FF);
+    hl->addWidget(sbSpOTOPG);
+    lab = new QLabel("ms");
+    hl->addWidget(lab);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpOTOPG = new QLabel("??");
+    labSpOTOPG->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpOTOPG);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Blokada okna włączenia");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    cbSpBOCW = new QCheckBox("En");
+    hl->addWidget(cbSpBOCW);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpBOCW = new QLabel("??");
+    labSpBOCW->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpBOCW);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Blokada odzyskiwania prawa głosu");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    cbSpBOPG = new QCheckBox("En");
+    hl->addWidget(cbSpBOPG);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpBOPG = new QLabel("??");
+    labSpBOPG->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpBOPG);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Blokada sprawdzania przekazania głosu");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    cbSpBSPPG = new QCheckBox("En");
+    hl->addWidget(cbSpBSPPG);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpBSPPG = new QLabel("??");
+    labSpBSPPG->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpBSPPG);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Blokada mechanizmu potwierdzeń");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    cbSpBMP = new QCheckBox("En");
+    hl->addWidget(cbSpBMP);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpBMP = new QLabel("??");
+    labSpBMP->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpBMP);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+
+    gb = new QGroupBox("Blokada algorytmów restrukturyzacji");
+    mainLay->addWidget(gb);
+    hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    cbSpBARP = new QCheckBox("En");
+    hl->addWidget(cbSpBARP);
+    wiWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labSpBARP = new QLabel("??");
+    labSpBARP->setAlignment(Qt::AlignRight);
+    hl->addWidget(labSpBARP);
+    pb = new QPushButton("Odczytaj");
+//    connect(pb, &QPushButton::clicked, [this](){
+//        SendMessage(PureMessage::wiWRSECTION_long(
+//                        leMagic->text().toInt(nullptr, 16),
+//                        SU::string2ByteArray(lewiWRSECTION2->text())
+//                        ), 1);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
 }
 
 void IF01::Init()
