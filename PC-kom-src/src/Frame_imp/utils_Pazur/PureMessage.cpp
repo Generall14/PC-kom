@@ -403,3 +403,75 @@ QByteArray PureMessage::wiRdBARP()
 {
     return wiRDSECTION_dev(0xA, true);
 }
+
+QByteArray PureMessage::wiWrAU(uint16_t magic, uchar adr)
+{
+    QByteArray temp;
+    temp.append(adr&0x3F);
+    return wiWRSECTION_dev(0, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrOTOPG(uint16_t magic, uint16_t tempo)
+{
+    QByteArray temp;
+    temp.append(tempo&0xFF);
+    temp.append((tempo>>8)&0x07);
+    return wiWRSECTION_dev(2, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrBOCW(uint16_t magic, bool lock)
+{
+    QByteArray temp;
+    if(lock)
+        temp.append((char)0x01);
+    else
+        temp.append((char)0x00);
+    return wiWRSECTION_dev(4, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrANWP(uint16_t magic, uchar adr)
+{
+    QByteArray temp;
+    temp.append(adr&0x3F);
+    return wiWRSECTION_dev(1, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrBOPG(uint16_t magic, bool lock)
+{
+    QByteArray temp;
+    if(lock)
+        temp.append((char)0x01);
+    else
+        temp.append((char)0x00);
+    return wiWRSECTION_dev(3, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrBSPPG(uint16_t magic, bool lock)
+{
+    QByteArray temp;
+    if(lock)
+        temp.append((char)0x01);
+    else
+        temp.append((char)0x00);
+    return wiWRSECTION_dev(5, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrBMP(uint16_t magic, bool lock)
+{
+    QByteArray temp;
+    if(lock)
+        temp.append((char)0x01);
+    else
+        temp.append((char)0x00);
+    return wiWRSECTION_dev(6, true, magic, temp);
+}
+
+QByteArray PureMessage::wiWrBARP(uint16_t magic, bool lock)
+{
+    QByteArray temp;
+    if(lock)
+        temp.append((char)0x01);
+    else
+        temp.append((char)0x00);
+    return wiWRSECTION_dev(0x0a, true, magic, temp);
+}

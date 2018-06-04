@@ -28,6 +28,15 @@ public:
     static QByteArray wiRdBMP();
     static QByteArray wiRdBARP();
 
+    static QByteArray wiWrAU(uint16_t magic, uchar adr);
+    static QByteArray wiWrOTOPG(uint16_t magic, uint16_t tempo);
+    static QByteArray wiWrBOCW(uint16_t magic, bool lock);
+    static QByteArray wiWrANWP(uint16_t magic, uchar adr);
+    static QByteArray wiWrBOPG(uint16_t magic, bool lock);
+    static QByteArray wiWrBSPPG(uint16_t magic, bool lock);
+    static QByteArray wiWrBMP(uint16_t magic, bool lock);
+    static QByteArray wiWrBARP(uint16_t magic, bool lock);
+
     static QByteArray wkpSTORE();
     static QByteArray wkpCONNECT();
     static QByteArray wkpCONNECTo(QByteArray next);

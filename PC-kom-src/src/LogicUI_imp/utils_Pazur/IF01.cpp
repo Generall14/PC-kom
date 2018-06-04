@@ -181,11 +181,11 @@ void IF01::InitRest()
     QHBoxLayout* hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrAU(
+                        leMagic->text().toInt(nullptr, 16),
+                        leSpAdr->text().toInt(nullptr, 16)&0x3F
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -209,11 +209,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrANWP(
+                        leMagic->text().toInt(nullptr, 16),
+                        leSpNAdr->text().toInt(nullptr, 16)&0x3F
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -237,11 +237,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrOTOPG(
+                        leMagic->text().toInt(nullptr, 16),
+                        sbSpOTOPG->value()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -267,11 +267,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrBOCW(
+                        leMagic->text().toInt(nullptr, 16),
+                        cbSpBOCW->isChecked()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -293,11 +293,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrBOPG(
+                        leMagic->text().toInt(nullptr, 16),
+                        cbSpBOPG->isChecked()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -319,11 +319,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrBSPPG(
+                        leMagic->text().toInt(nullptr, 16),
+                        cbSpBSPPG->isChecked()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -345,11 +345,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrBMP(
+                        leMagic->text().toInt(nullptr, 16),
+                        cbSpBMP->isChecked()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
@@ -371,11 +371,11 @@ void IF01::InitRest()
     hl = new QHBoxLayout();
     gb->setLayout(hl);
     pb = new QPushButton("Zapisz");
-//    connect(pb, &QPushButton::clicked, [this](){
-//        SendMessage(PureMessage::wiWRSECTION_long(
-//                        leMagic->text().toInt(nullptr, 16),
-//                        SU::string2ByteArray(lewiWRSECTION2->text())
-//                        ), 1);});
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessage::wiWrBARP(
+                        leMagic->text().toInt(nullptr, 16),
+                        cbSpBARP->isChecked()
+                        ), 1);});
     pb->setMaximumWidth(specs);
     pb->setMinimumWidth(specs);
     hl->addWidget(pb);
