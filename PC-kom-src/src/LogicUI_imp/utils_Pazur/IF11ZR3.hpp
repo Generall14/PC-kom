@@ -51,6 +51,7 @@ protected:
     QLabel* labTDose = nullptr;
     QLabel* labMDRate = nullptr;
     QLabel* labMUdr = nullptr;
+    QLabel* labUdr = nullptr;
 };
 
 #endif

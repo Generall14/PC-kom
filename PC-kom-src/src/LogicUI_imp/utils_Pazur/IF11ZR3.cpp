@@ -134,7 +134,8 @@ void IF11ZR3::InitRest()
                                                 labTOn->setText("?");
                                                 labVDown->setText("?");
                                                 labStarts->setText("?");
-                                                labMUdr->setText("?");});
+                                                labMUdr->setText("?");
+                                                labUdr->setText("?");});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
@@ -196,6 +197,11 @@ void IF11ZR3::InitRest()
     labs3Lay->addWidget(lab);
     labMUdr = new QLabel("?");
     labs3Lay->addWidget(labMUdr);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Liczba udarów: ");
+    labs3Lay->addWidget(lab);
+    labUdr = new QLabel("?");
+    labs3Lay->addWidget(labUdr);
 
 
     QHBoxLayout* wrIdLay = new QHBoxLayout();
@@ -281,7 +287,7 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                 }
                 case 0x04:
                 {
-                    if(mm.size()<18)
+                    if(mm.size()<20)
                         return;
                     uint ver = 0;
                     ver |= mm.at(0)&0xFF;
@@ -303,6 +309,10 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                     ver |= mm.at(16)&0xFF;
                     ver |= (mm.at(17)<<8)&0xFF00;
                     labMUdr->setText(QString::number(ver));
+                    ver = 0;
+                    ver |= mm.at(18)&0xFF;
+                    ver |= (mm.at(19)<<8)&0xFF00;
+                    labUdr->setText(QString::number(ver));
                     break;
                 }
                 default:
