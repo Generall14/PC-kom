@@ -12,6 +12,7 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QLabel>
 #include "IF_panel.hpp"
 
 class IF11ZR3 : public IFPanel, public Restorable
@@ -39,6 +40,17 @@ protected:
     QLineEdit* letechWRSECTION = nullptr;
 
     QLineEdit* letechWrId = nullptr;
+
+    QLabel* labWer = nullptr;
+    QLabel* labBuild = nullptr;
+    QLabel* labDevId = nullptr;
+
+    QLabel* labStarts = nullptr;
+    QLabel* labVDown = nullptr;
+    QLabel* labTOn = nullptr;
+    QLabel* labTDose = nullptr;
+    QLabel* labMDRate = nullptr;
+    QLabel* labMUdr = nullptr;
 };
 
 #endif

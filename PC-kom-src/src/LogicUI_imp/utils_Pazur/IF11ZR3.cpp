@@ -108,13 +108,15 @@ void IF11ZR3::InitRest()
     QHBoxLayout* techRdsLay = new QHBoxLayout();
     mainLay->addLayout(techRdsLay);
     pb = new QPushButton("Rd ver.");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdVer(), 3);});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdVer(), 3);
+                                                this->labWer->setText("?");});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Rd date.");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDate(), 3);});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDate(), 3);
+                                                this->labBuild->setText("?");});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
@@ -126,16 +128,75 @@ void IF11ZR3::InitRest()
     techRdsLay->addWidget(pb);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Rd dev. s.");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdFRAMDevStats(), 3);});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdFRAMDevStats(), 3);
+                                                labMDRate->setText("?");
+                                                labTDose->setText("?");
+                                                labTOn->setText("?");
+                                                labVDown->setText("?");
+                                                labStarts->setText("?");
+                                                labMUdr->setText("?");});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("Rd DevId");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDevId(), 3);});
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techRdDevId(), 3);
+                                                this->labDevId->setText("?");});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     techRdsLay->addWidget(pb);
+
+    QHBoxLayout* labsLay = new QHBoxLayout();
+    mainLay->addLayout(labsLay);
+    lab = new QLabel("Wersja: ");
+    labsLay->addWidget(lab);
+    labWer = new QLabel("?");
+    labsLay->addWidget(labWer);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Build: ");
+    labsLay->addWidget(lab);
+    labBuild = new QLabel("?");
+    labsLay->addWidget(labBuild);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("DevId: ");
+    labsLay->addWidget(lab);
+    labDevId = new QLabel("?");
+    labsLay->addWidget(labDevId);
+
+    QHBoxLayout* labs2Lay = new QHBoxLayout();
+    mainLay->addLayout(labs2Lay);
+    lab = new QLabel("Uruchomienia: ");
+    labs2Lay->addWidget(lab);
+    labStarts = new QLabel("?");
+    labs2Lay->addWidget(labStarts);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Zaniki napięcia: ");
+    labs2Lay->addWidget(lab);
+    labVDown = new QLabel("?");
+    labs2Lay->addWidget(labVDown);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Czas działania [min]: ");
+    labs2Lay->addWidget(lab);
+    labTOn = new QLabel("?");
+    labs2Lay->addWidget(labTOn);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Dawka: ");
+    labs2Lay->addWidget(lab);
+    labTDose = new QLabel("?");
+    labs2Lay->addWidget(labTDose);
+
+    QHBoxLayout* labs3Lay = new QHBoxLayout();
+    mainLay->addLayout(labs3Lay);
+    lab = new QLabel("Maks. moc dawki: ");
+    labs3Lay->addWidget(lab);
+    labMDRate = new QLabel("?");
+    labs3Lay->addWidget(labMDRate);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Maks. udar: ");
+    labs3Lay->addWidget(lab);
+    labMUdr = new QLabel("?");
+    labs3Lay->addWidget(labMUdr);
+
 
     QHBoxLayout* wrIdLay = new QHBoxLayout();
     mainLay->addLayout(wrIdLay);
@@ -173,11 +234,84 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
     FramePazur paz(fr->pureData());
     for(auto msg: paz.getMessages().getMessages())
     {
-        if(msg.toPureData().at(2)==0x01)
+        if((msg.toPureData().at(0)&0xC0)==0xC0) // ifs = 3
         {
-            letechACCrnd->setText(QString("%1%2").arg((uint)msg.toPureData().at(4)&0xFF, 2, 16, QChar('0'))
-                                  .arg((uint)msg.toPureData().at(3)&0xFF, 2, 16, QChar('0')).toUpper());
-            return;
+            QByteArray mm = msg.toPureData().mid(2);
+            if(mm.size()<1)
+                return;
+            if(mm.at(0)==0x01)
+            {
+                if(mm.size()<3)
+                    return;
+                letechACCrnd->setText(QString("%1%2").arg((uint)mm.at(2)&0xFF, 2, 16, QChar('0'))
+                                      .arg((uint)mm.at(1)&0xFF, 2, 16, QChar('0')).toUpper());
+                return;
+            }
+            else if((mm.at(0)&0x3F)==0x3E) // RDo
+            {
+                if(mm.size()<3)
+                    return;
+                uchar nr = mm.at(1);
+                mm = mm.mid(2);
+                switch(nr)
+                {
+                case 0x00:
+                {
+                    if(mm.size()<2)
+                        return;
+                    uint ver = 0;
+                    ver |= mm.at(0)&0xFF;
+                    ver |= (mm.at(1)<<8)&0xFF00;
+                    labWer->setText(QString::number(ver));
+                    break;
+                }
+                case 0x01:
+                    labBuild->setText(mm);
+                    break;
+                case 0x03:
+                {
+                    if(mm.size()<3)
+                        return;
+                    uint ver = 0;
+                    ver |= mm.at(0)&0xFF;
+                    ver |= (mm.at(1)<<8)&0xFF00;
+                    ver |= (mm.at(2)<<16)&0xFF0000;
+                    labDevId->setText(QString("0x%1").arg(ver&0xFFFFFF, 6, 16, QChar('0')));
+                    break;
+                }
+                case 0x04:
+                {
+                    if(mm.size()<18)
+                        return;
+                    uint ver = 0;
+                    ver |= mm.at(0)&0xFF;
+                    ver |= (mm.at(1)<<8)&0xFF00;
+                    labStarts->setText(QString::number(ver));
+                    ver = 0;
+                    ver |= mm.at(2)&0xFF;
+                    ver |= (mm.at(3)<<8)&0xFF00;
+                    labVDown->setText(QString::number(ver));
+                    ver = 0;
+                    ver |= mm.at(4)&0xFF;
+                    ver |= (mm.at(5)<<8)&0xFF00;
+                    ver |= (mm.at(6)<<16)&0xFF0000;
+                    ver |= (mm.at(7)<<24)&0xFF000000;
+                    labTOn->setText(QString::number(ver));
+                    labTDose->setText(QString::number(SU::byteArray322Float32(mm.mid(8, 4))));
+                    labMDRate->setText(QString::number(SU::byteArray322Float32(mm.mid(12, 4))));
+                    ver = 0;
+                    ver |= mm.at(16)&0xFF;
+                    ver |= (mm.at(17)<<8)&0xFF00;
+                    labMUdr->setText(QString::number(ver));
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
         }
+
+
+
     }
 }
