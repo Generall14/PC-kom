@@ -215,6 +215,11 @@ QByteArray PureMessageZR3::techRdDevId()
     return PureMessageZR3::techRDSECTION(3);
 }
 
+QByteArray PureMessageZR3::techRdRLadd()
+{
+    return PureMessageZR3::techRDSECTION(5);
+}
+
 QByteArray PureMessageZR3::techWrDevId(uint16_t magic, uint id)
 {
     QByteArray data;
@@ -222,6 +227,13 @@ QByteArray PureMessageZR3::techWrDevId(uint16_t magic, uint id)
     data.append((id>>8)&0xFF);
     data.append((id>>16)&0xFF);
     return PureMessageZR3::techWRSECTION(3, magic, data);
+}
+
+QByteArray PureMessageZR3::techWrRLadd(uint16_t magic, uint val)
+{
+    QByteArray data;
+    data.append((uchar(val))&0x1F);
+    return PureMessageZR3::techWRSECTION(5, magic, data);
 }
 
 QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, QByteArray data)

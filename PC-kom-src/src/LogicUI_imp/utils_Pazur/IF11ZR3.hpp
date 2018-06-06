@@ -52,6 +52,9 @@ protected:
     QLabel* labMDRate = nullptr;
     QLabel* labMUdr = nullptr;
     QLabel* labUdr = nullptr;
+
+    QSpinBox* sbtechRLadd = nullptr;
+    QLabel* labRLadd = nullptr;
 };
 
 #endif

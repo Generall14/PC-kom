@@ -1,6 +1,7 @@
 #include "IF11ZR3.hpp"
 #include <QLabel>
 #include <QPushButton>
+#include <QGroupBox>
 #include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
 #include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
@@ -22,6 +23,7 @@ IF11ZR3::~IF11ZR3()
     Store("letechWRSECTION", letechWRSECTION->text());
     Store("sbtechWRSECTION", sbtechWRSECTION->value());
     Store("letechWrId", letechWrId->text());
+    Store("sbtechRLadd", sbtechRLadd->value());
 }
 
 void IF11ZR3::LoadConfigs()
@@ -31,6 +33,7 @@ void IF11ZR3::LoadConfigs()
     letechWRSECTION->setText(RestoreAsString("letechWRSECTION", ""));
     sbtechWRSECTION->setValue(RestoreAsInt("sbtechWRSECTION", 0));
     letechWrId->setText(RestoreAsString("letechWrId", "000000"));
+    sbtechRLadd->setValue(RestoreAsInt("sbtechRLadd", 3));
 }
 
 void IF11ZR3::InitRest()
@@ -219,6 +222,39 @@ void IF11ZR3::InitRest()
     letechWrId->setInputMask("HHHHHH");
     letechWrId->setMaximumWidth(70);
     wrIdLay->addWidget(letechWrId);
+
+    //=====================================================
+
+    uint specs = MIN_PB_W/2;
+
+    QGroupBox* gb = new QGroupBox("Detektor udaru");
+    mainLay->addWidget(gb);
+    QHBoxLayout* hl = new QHBoxLayout();
+    gb->setLayout(hl);
+    pb = new QPushButton("Zapisz");
+    connect(pb, &QPushButton::clicked, [this](){
+        SendMessage(PureMessageZR3::techWrRLadd(
+                        leMagic->text().toInt(nullptr, 16),
+                        sbtechRLadd->value()
+                        ), 3);});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
+    sbtechRLadd = new QSpinBox();
+    sbtechRLadd->setMinimum(0);
+    sbtechRLadd->setMaximum(0x1F);
+    hl->addWidget(sbtechRLadd);
+    hl->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    labRLadd = new QLabel("??");
+    labRLadd->setAlignment(Qt::AlignRight);
+    hl->addWidget(labRLadd);
+    pb = new QPushButton("Odczytaj");
+    connect(pb, &QPushButton::clicked, [this](){
+                        SendMessage(PureMessageZR3::techRdRLadd(), 3);
+                        labRLadd->setText("?");});
+    pb->setMaximumWidth(specs);
+    pb->setMinimumWidth(specs);
+    hl->addWidget(pb);
 }
 
 void IF11ZR3::Init()
@@ -315,6 +351,9 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                     labUdr->setText(QString::number(ver));
                     break;
                 }
+                case 0x05:
+                    labRLadd->setText(QString::number(mm.at(0)));
+                    break;
                 default:
                     break;
                 }

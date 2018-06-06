@@ -21,8 +21,11 @@ public:
     static QByteArray techRdFRAMFails();
     static QByteArray techRdFRAMDevStats();
     static QByteArray techRdDevId();
+    static QByteArray techRdRLadd();
 
     static QByteArray techWrDevId(uint16_t magic, uint id);
+    static QByteArray techWrRLadd(uint16_t magic, uint val);
+
 
     static QByteArray zr3ReadDose();
     static QByteArray zr3SetDose(float dose);
