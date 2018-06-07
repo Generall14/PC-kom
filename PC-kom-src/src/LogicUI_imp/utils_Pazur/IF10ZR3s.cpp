@@ -140,7 +140,7 @@ void IF10ZR3s::InitRest()
     mainLay->addLayout(flagsLay);
     QStringList listW{"LINE_MISSING", "RELAY_CONTACT"};
     QStringList listF{"OBS_REQUEST"};
-    QStringList listS{"X"};
+    QStringList listS{"BIAS_IS_DEAD", "BIAS_SHORT"};
     fsWarn = new FlagsDisplay(flagsLay, "Warn", listW);
     fsFault = new FlagsDisplay(flagsLay, "Fault", listF);
     fsSerwice = new FlagsDisplay(flagsLay, "Service", listS);

@@ -42,7 +42,6 @@ void FlagsDisplay::Clear()
 
 void FlagsDisplay::UpdateFlags(QByteArray flags)
 {
-    qDebug() << flags;
     Clear();
     for(int byte = 0;byte<flags.size();byte++)
     {
