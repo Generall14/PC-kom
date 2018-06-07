@@ -245,7 +245,7 @@ void IF11ZR3::InitRest()
     sbtechRLadd->setMaximum(0x1F);
     hl->addWidget(sbtechRLadd);
     hl->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    labRLadd = new QLabel("??");
+    labRLadd = new QLabel("?");
     labRLadd->setAlignment(Qt::AlignRight);
     hl->addWidget(labRLadd);
     pb = new QPushButton("Odczytaj");

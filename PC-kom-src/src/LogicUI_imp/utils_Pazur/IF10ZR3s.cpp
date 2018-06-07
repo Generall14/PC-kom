@@ -60,7 +60,6 @@ IF10ZR3s::~IF10ZR3s()
     Store("cmbWyAlMax", cmbWyAlMax->currentIndex());
     Store("cmbWyAlMode", cmbWyAlMode->currentIndex());
     Store("cmbWyAlSymLvl", cmbWyAlSymLvl->currentIndex());
-    Store("cbEnKontrWyAl", cbEnKontrWyAl->isChecked());
     Store("cbObsEn", cbObsEn->isChecked());
     Store("cbObsInsEn", cbObsInsEn->isChecked());
     Store("sbObsIns", sbObsIns->value());
@@ -70,6 +69,7 @@ IF10ZR3s::~IF10ZR3s()
     Store("cbWyStTryb", cbWyStTryb->currentIndex());
     Store("sbWyStTmin", sbWyStTmin->value());
     Store("cbObsInEn", cbObsInEn->isChecked());
+    Store("sbEnKontrWyAl", sbEnKontrWyAl->currentIndex());
 
     delete fsSerwice;
     delete fsWarn;
@@ -120,7 +120,6 @@ void IF10ZR3s::LoadConfigs()
     cmbWyAlMax->setCurrentIndex(RestoreAsInt("cmbWyAlMax", 0));
     cmbWyAlMode->setCurrentIndex(RestoreAsInt("cmbWyAlMode", 0));
     cmbWyAlSymLvl->setCurrentIndex(RestoreAsInt("cmbWyAlSymLvl", 3));
-    cbEnKontrWyAl->setChecked(RestoreAsBool("cbEnKontrWyAl", true));
     cbObsEn->setChecked(RestoreAsBool("cbObsEn", true));
     cbObsInsEn->setChecked(RestoreAsBool("cbObsInsEn", true));
     sbObsIns->setValue(RestoreAsInt("sbObsIns", 0));
@@ -130,6 +129,7 @@ void IF10ZR3s::LoadConfigs()
     cbWyStTryb->setCurrentIndex(RestoreAsInt("cbWyStTryb", 2));
     sbWyStTmin->setValue(RestoreAsInt("sbWyStTmin", 2));
     cbObsInEn->setChecked(RestoreAsBool("cbObsInEn", true));
+    sbEnKontrWyAl->setCurrentIndex(RestoreAsInt("sbEnKontrWyAl", 2));
 }
 
 void IF10ZR3s::InitRest()
@@ -433,16 +433,18 @@ void IF10ZR3s::InitRest()
 
     QHBoxLayout* wyaKontrEn = new QHBoxLayout();
     wyaLay->addLayout(wyaKontrEn);
-    pb = new QPushButton("Włącz kontrole");
+    pb = new QPushButton("Ustaw typ kontroli");
     connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3WyAlarmKontrolaEn(
                                                                 leMagic->text().toInt(nullptr, 16),
-                                                                cbEnKontrWyAl->isChecked()), 1);});
+                                                                sbEnKontrWyAl->currentIndex()), 1);});
     pb->setMaximumWidth(MIN_PB_W);
     pb->setMinimumWidth(MIN_PB_W);
     wyaKontrEn->addWidget(pb);
     wyaKontrEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    cbEnKontrWyAl = new QCheckBox("Enable");
-    wyaKontrEn->addWidget(cbEnKontrWyAl);
+    sbEnKontrWyAl = new QComboBox();
+    QStringList citms = {"Brak kontroli", "Kontrola statyczna", "Kokntrola dynamiczna"};
+    sbEnKontrWyAl->addItems(citms);
+    wyaKontrEn->addWidget(sbEnKontrWyAl);
 
     QHBoxLayout* wyaTst = new QHBoxLayout();
     wyaLay->addLayout(wyaTst);

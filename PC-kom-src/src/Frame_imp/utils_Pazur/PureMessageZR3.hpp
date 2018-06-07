@@ -66,7 +66,7 @@ public:
     static QByteArray zr3WyAlarmKoniecSymulacji();
     static QByteArray zr3WyAlarmPotwierdz();
     static QByteArray zr3WyAlarmOdczytaj();
-    static QByteArray zr3WyAlarmKontrolaEn(uint16_t magic, bool en);
+    static QByteArray zr3WyAlarmKontrolaEn(uint16_t magic, uint mod);
     static QByteArray zr3ObsEn(uint16_t magic, bool en);
     static QByteArray zr3ObsNadawca(uint16_t magic, bool en, uint adr);
     static QByteArray zr3ObsInstancja(uint16_t magic, bool en, uint ins);
