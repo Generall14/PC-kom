@@ -138,10 +138,12 @@ void IF10ZR3s::InitRest()
     QHBoxLayout* flagsLay = new QHBoxLayout();
     flagsLay->setMargin(2);
     mainLay->addLayout(flagsLay);
-    QStringList list{"1", "2", "3", "4", "5", "6", "7", "8"};
-    fsWarn = new FlagsDisplay(flagsLay, "Warn", list);
-    fsFault = new FlagsDisplay(flagsLay, "Fault", list);
-    fsSerwice = new FlagsDisplay(flagsLay, "Service", list);
+    QStringList listW{"LINE_MISSING", "RELAY_CONTACT"};
+    QStringList listF{"OBS_REQUEST"};
+    QStringList listS{"X"};
+    fsWarn = new FlagsDisplay(flagsLay, "Warn", listW);
+    fsFault = new FlagsDisplay(flagsLay, "Fault", listF);
+    fsSerwice = new FlagsDisplay(flagsLay, "Service", listS);
 
     //=============================================================================================
     QGroupBox* mocDawki = new QGroupBox("Pomiar/szacowanie mocy dawki");
