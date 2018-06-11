@@ -19,13 +19,13 @@ public:
 
 protected:
     void Init();
+    void SetFlag(int nr);
 
     QLayout* cParent=nullptr;
     QString _name;
     QStringList _flags;
 
     QVector<QLabel*> labs;
-    QLabel* unknown = nullptr;
     QVBoxLayout *mlay = nullptr;
 };
 
