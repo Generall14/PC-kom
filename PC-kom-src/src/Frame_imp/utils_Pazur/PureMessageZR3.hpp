@@ -73,6 +73,8 @@ public:
     static QByteArray zr3ObsOdpytywanie(uint16_t magic, bool en, uint tempo);
     static QByteArray zr3WyStSetMode(uint16_t magic, uint tryb, uint tempo);
     static QByteArray zr3ObsInEn(uint16_t magic, bool en);
+    static QByteArray zr3Lock();
+    static QByteArray zr3Unlock();
 
 private:
     PureMessageZR3(){}
