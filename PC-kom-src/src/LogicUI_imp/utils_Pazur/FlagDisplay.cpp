@@ -14,11 +14,15 @@ FlagsDisplay::FlagsDisplay(QLayout* parent, QString name, QStringList flags):
 
 FlagsDisplay::~FlagsDisplay()
 {
-
+    delete timer;
 }
 
 void FlagsDisplay::Init()
 {
+    timer = new QTimer();
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(Clear()));
+
     QGroupBox *gb = new QGroupBox(_name);
     cParent->addWidget(gb);
     mlay = new QVBoxLayout();
@@ -42,6 +46,7 @@ void FlagsDisplay::Clear()
 
 void FlagsDisplay::UpdateFlags(QByteArray flags)
 {
+    timer->start(180000);
     Clear();
     for(int byte = 0;byte<flags.size();byte++)
     {

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include <QLabel>
+#include <QTimer>
 
 class FlagsDisplay : public QObject
 {
@@ -14,8 +15,10 @@ public:
     FlagsDisplay(QLayout* parent, QString name, QStringList flags);
     ~FlagsDisplay();
 
-    void Clear();
     void UpdateFlags(QByteArray flags);
+
+public slots:
+    void Clear();
 
 protected:
     void Init();
@@ -27,6 +30,8 @@ protected:
 
     QVector<QLabel*> labs;
     QVBoxLayout *mlay = nullptr;
+
+    QTimer* timer = nullptr;
 };
 
 #endif
