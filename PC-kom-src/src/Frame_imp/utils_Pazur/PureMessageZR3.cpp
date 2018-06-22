@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QDebug>
 #include "src/Utils/StaticUtils.hpp"
+#include "PureMessageZR3IIC.hpp"
 
 QString PureMessageZR3::desc(QByteArray _arr, bool* found)
 {
@@ -141,6 +142,24 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techWRIIC_c:
+        {
+            if(_arr.size()<6)
+                break;
+            temp.append(QString("techWRIIC, adr=0x%1, IIC: ").arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            temp.append(PureMessageZR3IIC::desc(_arr.mid(4)));
+            *found = true;
+            break;
+        }
+        case techRDIIC_C:
+        {
+            if(_arr.size()<6)
+                break;
+            temp.append(QString("techRDIIC, adr=0x%1, IIC: ").arg((uint)_arr.at(3)&0xFF, 2, 16, QChar('0')));
+            temp.append(PureMessageZR3IIC::desc(_arr.mid(4)));
+            *found = true;
+            break;
+        }
         }
         break;
     }
@@ -218,6 +237,15 @@ QByteArray PureMessageZR3::techRdDevId()
 QByteArray PureMessageZR3::techRdRLadd()
 {
     return PureMessageZR3::techRDSECTION(5);
+}
+
+QByteArray PureMessageZR3::techWRIIC(uchar adr, QByteArray dat)
+{
+    QByteArray temp;
+    temp.append(techWRIIC_c);
+    temp.append(adr);
+    temp.append(dat);
+    return temp;
 }
 
 QByteArray PureMessageZR3::techWrDevId(uint16_t magic, uint id)

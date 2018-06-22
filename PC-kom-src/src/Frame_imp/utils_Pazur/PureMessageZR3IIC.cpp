@@ -1,0 +1,69 @@
+#include "PureMessageZR3IIC.hpp"
+#include <cassert>
+#include <QDebug>
+#include "src/Utils/StaticUtils.hpp"
+
+QString PureMessageZR3IIC::desc(QByteArray _arr)
+{
+    QString temp;
+
+    if(_arr.size()<2)
+        return temp;
+
+    if(_arr.at(0)!=(_arr.size()-1))
+    {
+        temp = "Invalid iic data: ";
+        for(auto ch: _arr)
+            temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
+        return temp;
+    }
+
+    bool found = false;
+    uchar code = _arr.at(1);
+    QByteArray cmd;
+    if(_arr.size()>2)
+        cmd = _arr.mid(2);
+    switch(code)
+    {
+    case masterTEST_c:
+    {
+        if(cmd.size()!=0)
+            break;
+        temp = "masterTEST";
+        found = true;
+        break;
+    }
+    case slaveTEST_c:
+    {
+        if(cmd.size()!=0)
+            break;
+        temp = "slaveTEST";
+        found = true;
+        break;
+    }
+    default:
+        break;
+    }
+
+    if(!found)
+    {
+        temp = "Unknown iic data: ";
+        for(auto ch: _arr)
+            temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
+    }
+
+    return temp;
+}
+
+QByteArray PureMessageZR3IIC::appendSize(QByteArray dat)
+{
+    dat.insert(0, dat.size());
+    return dat;
+}
+
+QByteArray PureMessageZR3IIC::slaveTEST()
+{
+    QByteArray temp;
+    temp.append(slaveTEST_c);
+    return appendSize(temp);
+}

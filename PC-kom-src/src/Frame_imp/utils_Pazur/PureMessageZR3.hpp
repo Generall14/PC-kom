@@ -22,6 +22,7 @@ public:
     static QByteArray techRdFRAMDevStats();
     static QByteArray techRdDevId();
     static QByteArray techRdRLadd();
+    static QByteArray techWRIIC(uchar adr, QByteArray dat);
 
     static QByteArray techWrDevId(uint16_t magic, uint id);
     static QByteArray techWrRLadd(uint16_t magic, uint val);
@@ -87,6 +88,8 @@ private:
     static const uchar techRDSECTIONo_c = 0x3E;
     static const uchar techWRSECTION_c = 0x3D;
     static const uchar techRESET_c = 0x3C;
+    static const uchar techRDIIC_C = 0x3B;
+    static const uchar techWRIIC_c = 0x3A;
 };
 
 #endif
