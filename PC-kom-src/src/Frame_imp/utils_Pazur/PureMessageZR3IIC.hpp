@@ -18,7 +18,6 @@ private:
 
     static const uchar masterTEST_c = 0xFF;
 
-
     static const uchar slaveTEST_c = 0x7F;
 };
 
