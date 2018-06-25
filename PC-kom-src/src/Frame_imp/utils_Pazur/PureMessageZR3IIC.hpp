@@ -11,6 +11,7 @@ public:
     static QString desc(QByteArray _arr);
 
     static QByteArray slaveTEST();
+    static QByteArray slaveRST();
 
 private:
     PureMessageZR3IIC(){}
@@ -19,6 +20,7 @@ private:
     static const uchar masterTEST_c = 0xFF;
 
     static const uchar slaveTEST_c = 0x7F;
+    static const uchar slaveRST_c = 0x00;
 };
 
 #endif

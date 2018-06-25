@@ -263,8 +263,6 @@ void IF11ZR3::Init()
     InitRest();
     InitI2CTabs();
 
-//    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
-
     LoadConfigs();
 }
 

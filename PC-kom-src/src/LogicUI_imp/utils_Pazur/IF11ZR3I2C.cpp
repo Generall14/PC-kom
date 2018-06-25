@@ -34,7 +34,7 @@ void IF11ZR3I2c::InitRest()
     smLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("slaveRST");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-                    PureMessageZR3IIC::slaveTEST()));});
+                    PureMessageZR3IIC::slaveRST()));});
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     smLay->addWidget(pb);
