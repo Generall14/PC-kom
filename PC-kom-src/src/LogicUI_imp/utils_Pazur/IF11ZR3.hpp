@@ -25,12 +25,16 @@ public:
 public slots:
     void internalFrameReaded(QSharedPointer<Frame> fr);
 
+signals:
+    void internalFrameResend(QSharedPointer<Frame> fr);
+
 protected slots:
     void InitRest();
 
 protected:
     void Init();
     void LoadConfigs();
+    void InitI2CTabs();
 
     QLineEdit* letechACCrnd = nullptr;
 
@@ -55,6 +59,8 @@ protected:
 
     QSpinBox* sbtechRLadd = nullptr;
     QLabel* labRLadd = nullptr;
+
+    QVector<QCheckBox*> wthFlags;
 };
 
 #endif

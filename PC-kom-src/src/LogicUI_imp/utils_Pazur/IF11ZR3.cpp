@@ -8,6 +8,7 @@
 #include "Utils/StaticUtils.hpp"
 #include <qdebug.h>
 #include "Frame_imp/FramePazur.hpp"
+#include "IF11ZR3I2C.hpp"
 
 IF11ZR3::IF11ZR3(QFrame* parent):
     IFPanel(parent, "IF11ZR3base"),
@@ -260,10 +261,54 @@ void IF11ZR3::InitRest()
 void IF11ZR3::Init()
 {
     InitRest();
+    InitI2CTabs();
 
-    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+//    mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     LoadConfigs();
+}
+
+void IF11ZR3::InitI2CTabs()
+{
+    QHBoxLayout* wthLay = new QHBoxLayout();
+    mainLay->addLayout(wthLay);
+    QPushButton* pb = new QPushButton("rdFLAGS");
+    connect(pb, &QPushButton::clicked, [this](){
+                        SendMessage(PureMessageZR3::techRDSECTION(6), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    wthLay->addWidget(pb);
+    for(int i=1;i<=6;i++)
+    {
+        QCheckBox* cb = new QCheckBox("en"+QString::number(i));
+        wthLay->addWidget(cb);
+        wthFlags.append(cb);
+    }
+    pb = new QPushButton("wrFLAGS");
+    connect(pb, &QPushButton::clicked, [this](){
+        uchar tt = 0x00;
+        for(int i=0;i<6;i++)
+            tt |= wthFlags.at(i)->isChecked()?(0x01<<i):(0x00);
+        QByteArray temp; temp.append(tt);
+        SendMessage(PureMessageZR3::techWRSECTION(6,
+                    leMagic->text().toInt(nullptr, 16),
+                    temp), 3);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    wthLay->addWidget(pb);
+
+    QTabWidget* tw = new QTabWidget();
+    tw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainLay->addWidget(tw);
+
+    for(int i=1;i<=6;++i)
+    {
+        QFrame* fr = new QFrame();
+        IF11ZR3I2c* iic = new IF11ZR3I2c(fr, i);
+        connect(this, SIGNAL(internalFrameResend(QSharedPointer<Frame>)), iic, SLOT(internalFrameReaded(QSharedPointer<Frame>)));
+        connect(iic, &IF11ZR3I2c::send, [this](QByteArray arr){emit SendMessage(arr, 3);});
+        tw->addTab(fr, QString::number(i));
+    }
 }
 
 void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
@@ -271,6 +316,9 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
     IFPanel::internalFrameReaded(fr);
     if(!(*fr).isValid())
         return;
+
+    emit internalFrameResend(fr);
+
     if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
         return;
     FramePazur paz(fr->pureData());
@@ -354,13 +402,15 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                 case 0x05:
                     labRLadd->setText(QString::number(mm.at(0)));
                     break;
+                case 0x06:
+                    for(int i=0;i<6;i++)
+                        wthFlags[i]->setChecked(mm.at(0)&(0x01<<i));
+                    break;
                 default:
                     break;
                 }
             }
         }
-
-
 
     }
 }

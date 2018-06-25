@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGroupBox>
+#include "Frame_imp/utils_Pazur/PureMessageZR3IIC.hpp"
 #include "Frame_imp/utils_Pazur/PureMessageZR3.hpp"
 #include "Frame_imp/utils_Pazur/PureMessage.hpp"
 #include "Utils/ValidateHex.hpp"
@@ -10,7 +11,8 @@
 #include "Frame_imp/FramePazur.hpp"
 
 IF11ZR3I2c::IF11ZR3I2c(QFrame* parent, uint adress):
-    cParent(parent)
+    cParent(parent),
+    _adr(adress)
 {
     Init();
 }
@@ -21,6 +23,23 @@ IF11ZR3I2c::~IF11ZR3I2c()
 
 void IF11ZR3I2c::InitRest()
 {
+    QHBoxLayout* smLay = new QHBoxLayout();
+    mainLay->addLayout(smLay);
+    QPushButton* pb = new QPushButton("slaveTEST");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveTEST()));});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    smLay->addWidget(pb);
+    smLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("slaveRST");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveTEST()));});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    smLay->addWidget(pb);
+    smLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
 //    QHBoxLayout* techREQLay = new QHBoxLayout();
 //    mainLay->addLayout(techREQLay);
 //    QPushButton* pb = new QPushButton("techREQ");

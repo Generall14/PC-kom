@@ -41,29 +41,6 @@ protected:
     uint _adr;
 
     const uint MIN_PB_W = 150;
-//    QLineEdit* letechACCrnd = nullptr;
-
-//    QSpinBox* sbtechRDSECTION = nullptr;
-
-//    QSpinBox* sbtechWRSECTION = nullptr;
-//    QLineEdit* letechWRSECTION = nullptr;
-
-//    QLineEdit* letechWrId = nullptr;
-
-//    QLabel* labWer = nullptr;
-//    QLabel* labBuild = nullptr;
-//    QLabel* labDevId = nullptr;
-
-//    QLabel* labStarts = nullptr;
-//    QLabel* labVDown = nullptr;
-//    QLabel* labTOn = nullptr;
-//    QLabel* labTDose = nullptr;
-//    QLabel* labMDRate = nullptr;
-//    QLabel* labMUdr = nullptr;
-//    QLabel* labUdr = nullptr;
-
-//    QSpinBox* sbtechRLadd = nullptr;
-//    QLabel* labRLadd = nullptr;
 };
 
 #endif
