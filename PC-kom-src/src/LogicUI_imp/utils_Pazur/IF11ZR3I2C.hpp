@@ -40,6 +40,11 @@ protected:
 
     uint _adr;
 
+    QLabel* labWer = nullptr;
+    QLabel* labBuild = nullptr;
+    QLabel* labStarts = nullptr;
+    QLabel* labErrorFLags = nullptr;
+
     const uint MIN_PB_W = 150;
 };
 

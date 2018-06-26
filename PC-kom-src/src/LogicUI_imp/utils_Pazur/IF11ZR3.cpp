@@ -314,11 +314,11 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
     IFPanel::internalFrameReaded(fr);
     if(!(*fr).isValid())
         return;
+    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
+        return;
 
     emit internalFrameResend(fr);
 
-    if(((*fr).pureData().at(0)&0x3F)!=(leToAdr->text().toInt(nullptr, 16)&0x3F))
-        return;
     FramePazur paz(fr->pureData());
     for(auto msg: paz.getMessages().getMessages())
     {
@@ -350,7 +350,7 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                     uint ver = 0;
                     ver |= mm.at(0)&0xFF;
                     ver |= (mm.at(1)<<8)&0xFF00;
-                    labWer->setText(QString::number(ver));
+                    labWer->setText(QString("0x%1").arg(ver&0xFFFF, 4, 16, QChar('0')));
                     break;
                 }
                 case 0x01:

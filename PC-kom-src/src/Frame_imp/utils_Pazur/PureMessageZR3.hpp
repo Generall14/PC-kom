@@ -77,9 +77,6 @@ public:
     static QByteArray zr3Lock();
     static QByteArray zr3Unlock();
 
-private:
-    PureMessageZR3(){}
-
     static const uchar techREQ_c = 0x00;
     static const uchar techINV_c = 0x01;
     static const uchar techACC_c = 0x02;
@@ -90,6 +87,9 @@ private:
     static const uchar techRESET_c = 0x3C;
     static const uchar techRDIIC_C = 0x3B;
     static const uchar techWRIIC_c = 0x3A;
+
+private:
+    PureMessageZR3(){}
 };
 
 #endif
