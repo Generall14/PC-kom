@@ -41,6 +41,34 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
+    case slaveRDSECTION_c:
+    {
+        if(cmd.size()!=1)
+            break;
+        temp = QString("slaveRDSECTION, nr 0x%1").arg(cmd.at(0)&0xFF, 2, 16, QChar('0'));
+        found = true;
+        break;
+    }
+    case masterRDSECTIONo_c:
+    {
+        if(cmd.size()<1)
+            break;
+        temp = QString("masterRDSECTIONo, nr 0x%1, data: ").arg(cmd.at(0)&0xFF, 2, 16, QChar('0'));
+        for(auto ch: cmd.mid(1))
+            temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
+        found = true;
+        break;
+    }
+    case slaveWRSECTION_c:
+    {
+        if(cmd.size()<1)
+            break;
+        temp = QString("slaveWRSECTION, nr 0x%1, data: ").arg(cmd.at(0)&0xFF, 2, 16, QChar('0'));
+        for(auto ch: cmd.mid(1))
+            temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
+        found = true;
+        break;
+    }
     default:
         break;
     }
@@ -72,5 +100,22 @@ QByteArray PureMessageZR3IIC::slaveRST()
 {
     QByteArray temp;
     temp.append(slaveRST_c);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveRDSECTION(uint nr)
+{
+    QByteArray temp;
+    temp.append(slaveRDSECTION_c);
+    temp.append(nr);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, QByteArray data)
+{
+    QByteArray temp;
+    temp.append(slaveWRSECTION_c);
+    temp.append(nr);
+    temp.append(data);
     return appendSize(temp);
 }

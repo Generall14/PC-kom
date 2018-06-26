@@ -42,8 +42,8 @@ void IF11ZR3I2c::InitRest()
     smLay->addWidget(pb);
     smLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rdVersion");
-//    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-//                    PureMessageZR3IIC::slaveRST()));});
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(0)));});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay->addWidget(pb);
@@ -51,22 +51,22 @@ void IF11ZR3I2c::InitRest()
     QHBoxLayout* smLay2 = new QHBoxLayout();
     mainLay->addLayout(smLay2);
     pb = new QPushButton("rdBuildTime");
-//    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-//                    PureMessageZR3IIC::slaveRST()));});
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(1)));});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
     smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rdDevStats");
-//    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-//                    PureMessageZR3IIC::slaveRST()));});
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(2)));});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
     smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rdErrorFlags");
-//    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-//                    PureMessageZR3IIC::slaveRST()));});
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(3)));});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
