@@ -48,17 +48,17 @@ void IF11ZR3I2c::InitRest()
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay->addWidget(pb);
-
-    QHBoxLayout* smLay2 = new QHBoxLayout();
-    mainLay->addLayout(smLay2);
+    smLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rdBuildTime");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveRDSECTION(1)));
-                    labBuild->setText("?");});
+                    labWer->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
-    smLay2->addWidget(pb);
-    smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    smLay->addWidget(pb);
+
+    QHBoxLayout* smLay2 = new QHBoxLayout();
+    mainLay->addLayout(smLay2);
     pb = new QPushButton("rdDevStats");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveRDSECTION(2)));
@@ -71,6 +71,14 @@ void IF11ZR3I2c::InitRest()
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveRDSECTION(3)));
                     labErrorFLags->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay2->addWidget(pb);
+    smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("rCLK");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(4)));
+                    labRCLK->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
@@ -96,6 +104,14 @@ void IF11ZR3I2c::InitRest()
     labsLay->addWidget(lab);
     labErrorFLags = new QLabel("?");
     labsLay->addWidget(labErrorFLags);
+
+    QHBoxLayout* labsLay2 = new QHBoxLayout();
+    mainLay->addLayout(labsLay2);
+    lab = new QLabel("rCLK cnt: ");
+    labsLay2->addWidget(lab);
+    labRCLK = new QLabel("?");
+    labsLay2->addWidget(labRCLK);
+    labsLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 }
 
 void IF11ZR3I2c::Init()
@@ -158,6 +174,14 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                 case 3:
                 {
                     labErrorFLags->setText(QString("0b%1").arg(iicd.at(1)&0xFF, 8, 2, QChar('0')));
+                    break;
+                }
+                case 4:
+                {
+                    uint ver = 0;
+                    ver |= iicd.at(1)&0xFF;
+                    ver |= (iicd.at(2)<<8)&0xFF00;
+                    labRCLK->setText(QString::number(ver));
                     break;
                 }
                 default:
