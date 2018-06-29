@@ -112,6 +112,60 @@ void IF11ZR3I2c::InitRest()
     labRCLK = new QLabel("?");
     labsLay2->addWidget(labRCLK);
     labsLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
+    QHBoxLayout* reg1Lay = new QHBoxLayout();
+    mainLay->addLayout(reg1Lay);
+    pb = new QPushButton("Read");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(4)));
+                    sbRegThr->setValue(0);});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    reg1Lay->addWidget(pb);
+    pb = new QPushButton("Write");
+    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegThr->value()*1024.0/3.6;
+                    temp.append(val&0xFF); temp.append((val>>8)&0xFF);
+                    send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveWRSECTION(4, temp)));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    reg1Lay->addWidget(pb);
+    reg1Lay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Reg. progu wyzwalania: [V]");
+    reg1Lay->addWidget(lab);
+    sbRegThr = new QDoubleSpinBox();
+    sbRegThr->setValue(0);
+    sbRegThr->setMinimum(0);
+    sbRegThr->setMaximum(1.6);
+    sbRegThr->setDecimals(3);
+    reg1Lay->addWidget(sbRegThr);
+
+    QHBoxLayout* reg2Lay = new QHBoxLayout();
+    mainLay->addLayout(reg2Lay);
+    pb = new QPushButton("Read");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(5)));
+                    sbRegBias->setValue(0);});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    reg2Lay->addWidget(pb);
+    pb = new QPushButton("Write");
+    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegBias->value()*1024.0/3.6;
+                    temp.append(val&0xFF); temp.append((val>>8)&0xFF);
+                    send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveWRSECTION(5, temp)));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    reg2Lay->addWidget(pb);
+    reg2Lay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Reg. korekty bias: [V]");
+    reg2Lay->addWidget(lab);
+    sbRegBias = new QDoubleSpinBox();
+    sbRegBias->setValue(0);
+    sbRegBias->setMinimum(0);
+    sbRegBias->setMaximum(1.6);
+    sbRegBias->setDecimals(3);
+    reg2Lay->addWidget(sbRegBias);
 }
 
 void IF11ZR3I2c::Init()
@@ -181,7 +235,15 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     uint ver = 0;
                     ver |= iicd.at(1)&0xFF;
                     ver |= (iicd.at(2)<<8)&0xFF00;
-                    labRCLK->setText(QString::number(ver));
+                    sbRegThr->setValue(float(ver)/1024.0*3.6);
+                    break;
+                }
+                case 5:
+                {
+                    uint ver = 0;
+                    ver |= iicd.at(1)&0xFF;
+                    ver |= (iicd.at(2)<<8)&0xFF00;
+                    sbRegBias->setValue(float(ver)/1024.0*3.6);
                     break;
                 }
                 default:

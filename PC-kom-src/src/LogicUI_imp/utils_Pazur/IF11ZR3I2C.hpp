@@ -46,6 +46,9 @@ protected:
     QLabel* labErrorFLags = nullptr;
     QLabel* labRCLK = nullptr;
 
+    QDoubleSpinBox* sbRegThr = nullptr;
+    QDoubleSpinBox* sbRegBias = nullptr;
+
     const uint MIN_PB_W = 150;
 };
 
