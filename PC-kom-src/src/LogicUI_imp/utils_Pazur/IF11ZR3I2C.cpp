@@ -52,7 +52,7 @@ void IF11ZR3I2c::InitRest()
     pb = new QPushButton("rdBuildTime");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveRDSECTION(1)));
-                    labWer->setText("?");});
+                    labBuild->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay->addWidget(pb);
@@ -77,7 +77,7 @@ void IF11ZR3I2c::InitRest()
     smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rCLK");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-                    PureMessageZR3IIC::slaveRDSECTION(4)));
+                    PureMessageZR3IIC::slaveRDSECTION(6)));
                     labRCLK->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
@@ -123,7 +123,7 @@ void IF11ZR3I2c::InitRest()
     pb->setMinimumWidth(smallMIN_PB_W);
     reg1Lay->addWidget(pb);
     pb = new QPushButton("Write");
-    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegThr->value()*1024.0/3.6;
+    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegThr->value()*1024.0/1.5;
                     temp.append(val&0xFF); temp.append((val>>8)&0xFF);
                     send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveWRSECTION(4, temp)));});
@@ -150,7 +150,7 @@ void IF11ZR3I2c::InitRest()
     pb->setMinimumWidth(smallMIN_PB_W);
     reg2Lay->addWidget(pb);
     pb = new QPushButton("Write");
-    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegBias->value()*1024.0/3.6;
+    connect(pb, &QPushButton::clicked, [this](){QByteArray temp; uint val = sbRegBias->value()*1024.0/1.5;
                     temp.append(val&0xFF); temp.append((val>>8)&0xFF);
                     send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveWRSECTION(5, temp)));});
@@ -235,7 +235,7 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     uint ver = 0;
                     ver |= iicd.at(1)&0xFF;
                     ver |= (iicd.at(2)<<8)&0xFF00;
-                    sbRegThr->setValue(float(ver)/1024.0*3.6);
+                    sbRegThr->setValue(float(ver)/1024.0*1.5);
                     break;
                 }
                 case 5:
@@ -243,7 +243,15 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     uint ver = 0;
                     ver |= iicd.at(1)&0xFF;
                     ver |= (iicd.at(2)<<8)&0xFF00;
-                    sbRegBias->setValue(float(ver)/1024.0*3.6);
+                    sbRegBias->setValue(float(ver)/1024.0*1.5);
+                    break;
+                }
+                case 6:
+                {
+                    uint ver = 0;
+                    ver |= iicd.at(1)&0xFF;
+                    ver |= (iicd.at(2)<<8)&0xFF00;
+                    labRCLK->setText(QString::number(ver));
                     break;
                 }
                 default:
