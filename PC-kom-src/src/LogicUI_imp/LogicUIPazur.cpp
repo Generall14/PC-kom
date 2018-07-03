@@ -29,12 +29,15 @@ LogicUIPazur::~LogicUIPazur()
     Store("cbIncrement", cbIncrement->isChecked());
     Store("cbKwitowanie", cbKwitowanie->isChecked());
     Store("cbAutoConfirm", cbAutoConfirm->isChecked());
+    Store("chATen", chATen->isChecked());
+    Store("sbATperiod", sbATperiod->value());
 
     delete _pure;
     delete _if00;
     delete _if01;
     delete _if11;
     delete _if10;
+    delete tmAT;
 }
 
 void LogicUIPazur::LoadConfigs()
@@ -46,6 +49,8 @@ void LogicUIPazur::LoadConfigs()
     cbIncrement->setChecked(RestoreAsBool("cbIncrement", true));
     cbKwitowanie->setChecked(RestoreAsBool("cbKwitowanie", false));
     cbAutoConfirm->setChecked(RestoreAsBool("cbAutoConfirm", false));
+    chATen->setChecked(RestoreAsBool("chATen", false));
+    sbATperiod->setValue(RestoreAsFloat("sbATperiod", 1.0));
 }
 
 void LogicUIPazur::Init()
@@ -55,6 +60,10 @@ void LogicUIPazur::Init()
 
     InitGlobals();
     InitTabs();
+
+    tmAT = new QTimer();
+    tmAT->setSingleShot(false);
+    connect(tmAT, &QTimer::timeout, [this](){Send(QList<Confirm>(), QList<Message>(), cbKwitowanie->isChecked());});
 
     LoadConfigs();
 }
@@ -102,6 +111,21 @@ void LogicUIPazur::InitGlobals()
     idLay->addWidget(sbId);
     cbIncrement = new QCheckBox("Autoinkrementacja");
     idLay->addWidget(cbIncrement);
+
+    QHBoxLayout* ATLay = new QHBoxLayout();
+    mainGlobalne->addLayout(ATLay);
+    chATen = new QCheckBox("Automatuczne kręcenie tokena");
+    connect(chATen, SIGNAL(toggled(bool)), this, SLOT(ATUpdate()));
+    ATLay->addWidget(chATen);
+    ATLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Okres: [s]");
+    ATLay->addWidget(lab);
+    sbATperiod = new QDoubleSpinBox();
+    sbATperiod->setMinimum(0.5);
+    sbATperiod->setMaximum(60);
+    sbATperiod->setSingleStep(0.5);
+    connect(sbATperiod, SIGNAL(valueChanged(double)), this, SLOT(ATUpdate()));
+    ATLay->addWidget(sbATperiod);
 
     cbFast = new QCheckBox("Marker wymuszenia szybkiego obiegu");
     cbFast->setMinimumWidth(350);
@@ -173,15 +197,26 @@ void LogicUIPazur::InitTabs()
 void LogicUIPazur::Connected()
 {
     tw->setEnabled(true);
+    ATUpdate();
 }
 
 void LogicUIPazur::Disconnected()
 {
     tw->setEnabled(false);
+    tmAT->stop();
+}
+
+void LogicUIPazur::ATUpdate()
+{
+    if(chATen->isChecked())
+        tmAT->start(sbATperiod->value()*1000);
+    else
+        tmAT->stop();
 }
 
 void LogicUIPazur::FrameReaded(QSharedPointer<Frame> fr)
 {
+    ATUpdate();
     emit internalFrameReaded(fr);
     if(!cbAutoConfirm->isChecked())
         return;
@@ -210,6 +245,7 @@ void LogicUIPazur::FrameReaded(QSharedPointer<Frame> fr)
 
 void LogicUIPazur::Send(QList<Confirm> c, QList<Message> m, bool kwitowanie)
 {
+    ATUpdate();
     if(!kwitowanie)
         cbKwitowanie->isChecked();
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;

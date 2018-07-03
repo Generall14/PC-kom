@@ -41,6 +41,8 @@ protected slots:
 
     void Send(QList<Confirm> c, QList<Message> m, bool kwitowanie = false);
 
+    void ATUpdate();
+
 protected:
     void LoadConfigs();
     QVBoxLayout* mainLay = nullptr;
@@ -52,6 +54,10 @@ protected:
     QCheckBox* cbIncrement = nullptr;
     QCheckBox* cbKwitowanie = nullptr;
     QCheckBox* cbAutoConfirm = nullptr;
+
+    QCheckBox* chATen = nullptr;
+    QDoubleSpinBox* sbATperiod = nullptr;
+    QTimer* tmAT = nullptr;
 
     QTabWidget* tw = nullptr;
     Pure* _pure = nullptr;
