@@ -250,7 +250,8 @@ void LogicUIPazur::Send(QList<Confirm> c, QList<Message> m, bool kwitowanie)
         cbKwitowanie->isChecked();
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    FramePazur* t = new FramePazur(from, to, sbId->value(), cbFast->isChecked(), c, m, kwitowanie);
+    bool fast = cbFast->isChecked() | !m.isEmpty();
+    FramePazur* t = new FramePazur(from, to, sbId->value(), fast, c, m, kwitowanie);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())
     {
