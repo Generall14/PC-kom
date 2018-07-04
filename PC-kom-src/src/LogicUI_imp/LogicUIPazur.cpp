@@ -216,6 +216,8 @@ void LogicUIPazur::ATUpdate()
 
 void LogicUIPazur::FrameReaded(QSharedPointer<Frame> fr)
 {
+    if(fr->pureData().size()>4)
+        fastcnt = 3;
     ATUpdate();
     emit internalFrameReaded(fr);
     if(!cbAutoConfirm->isChecked())
@@ -250,7 +252,11 @@ void LogicUIPazur::Send(QList<Confirm> c, QList<Message> m, bool kwitowanie)
         cbKwitowanie->isChecked();
     uchar from = leMyAdr->text().toInt(nullptr, 16)&0x3F;
     uchar to = leToAdr->text().toInt(nullptr, 16)&0x3F;
-    bool fast = cbFast->isChecked() | !m.isEmpty();
+    if(!m.isEmpty())
+        fastcnt = 3;
+    if(fastcnt)
+        fastcnt--;
+    bool fast = cbFast->isChecked() | fastcnt;
     FramePazur* t = new FramePazur(from, to, sbId->value(), fast, c, m, kwitowanie);
     emit WriteFrame(QSharedPointer<Frame>(Factory::newFrame(t->pureData())));
     if(cbIncrement->isChecked())

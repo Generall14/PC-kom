@@ -66,6 +66,8 @@ protected:
     IF11ZR3* _if11 = nullptr;
     IF10ZR3s* _if10 = nullptr;
 
+    int fastcnt=0;
+
 signals:
     void internalFrameReaded(QSharedPointer<Frame> fr);
 };
