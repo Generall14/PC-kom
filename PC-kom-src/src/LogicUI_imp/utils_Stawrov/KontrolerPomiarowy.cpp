@@ -32,6 +32,7 @@ KontrolerPomiarowy::~KontrolerPomiarowy()
     Store("rozniczkowanie", rozniczkowanie->isChecked());
     Store("leOFFSET", leOFFSET->text());
     Store("leTRIGGER", leTRIGGER->text());
+    Store("leKANALY", leKANALY->text());
 }
 
 void KontrolerPomiarowy::LoadConfigs()
@@ -44,6 +45,7 @@ void KontrolerPomiarowy::LoadConfigs()
     rozniczkowanie->setChecked(RestoreAsBool("rozniczkowanie", false));
     leOFFSET->setText(RestoreAsString("leOFFSET", "0000"));
     leTRIGGER->setText(RestoreAsString("leTRIGGER", "0000"));
+    leKANALY->setText(RestoreAsString("leKANALY", "0010 0020"));
 }
 
 void KontrolerPomiarowy::InitRest()
@@ -137,6 +139,29 @@ void KontrolerPomiarowy::InitRest()
     connect(leTRIGGER, SIGNAL(returnPressed()), btnGOT, SLOT(click()));
     connect(leOFFSET, SIGNAL(returnPressed()), btnGOT, SLOT(click()));
     groupBoxKonfiguracjaGOT->addWidget(btnGOT);
+
+    QFrame* groupBoxKAN = new QFrame();
+    groupBoxKAN->setToolTip("Konfiguracja kanałów (max 12?). Każda wartość określa górną granicę wysokości\n"
+                            "impulsu (według ADC, 12 bit?) który będzie zaliczony do tego kanału. Każdy \n"
+                            "mierzony impuls jest dodawany ostatniego kanału w którego zakresie się zmieści.\n"
+                            "Odcięcie od dołu jest ustawione przez trigger. Przykładowo, jeżeli podano kanały\n"
+                            "0010 0020 to w pierwszym kanale znajdą się impulsy z zakresu trigger-0010, w \n"
+                            "drugim z zakresu 0011-0020. Zaznaczenie opcji \"Ignoruj pierwszy kanał\" \n"
+                            "spowoduje programowe odrzucenie pierwszego kanału.");
+    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
+    mainLay->addWidget(groupBoxKAN);
+    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
+    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
+    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
+    QLabel* kanl = new QLabel("Kanały:");
+    groupBoxKonfiguracjaKAN1->addWidget(kanl);
+    leKANALY = new QLineEdit("0666 AAAA");
+    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
+    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
+    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
+    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
+    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
+    connect(leKANALY, SIGNAL(returnPressed()), btnKAN, SLOT(click()));
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
@@ -266,5 +291,36 @@ void KontrolerPomiarowy::makeSET_GAIN_OFFSET_AND_TRIGGER()
     temp.append((offval>>8)&0xFF);
     temp.append(trival&0xFF);
     temp.append((trival>>8)&0xFF);
+    emit Send(temp);
+}
+
+void KontrolerPomiarowy::makeSET_CHANNELS()
+{
+    QList<int> values;
+    QString inString = leKANALY->text();
+    if(inString.at(0)==' ')
+        inString.remove(0, 1);
+    if(inString.at(inString.size()-1)==' ')
+        inString.remove(inString.size()-1, 1);
+    QStringList vals = inString.split(' ');
+    values.clear();
+    for(QString str: vals)
+        values.append(str.toInt(nullptr, 16));
+    if(values.isEmpty())
+    {
+        emit Error("Brak zakresów");
+        return;
+    }
+
+    QByteArray temp;
+    temp.append(0x01);
+    temp.append(myAdr);
+    temp.append(values.size());
+
+    for(int i: values)
+    {
+        temp.append(i&0xFF);
+        temp.append((i>>8)&0xFF);
+    }
     emit Send(temp);
 }

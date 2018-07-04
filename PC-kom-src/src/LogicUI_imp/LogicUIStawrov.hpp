@@ -48,6 +48,8 @@ private slots:
     void RemoveTab();
     void AddTab(QString adr);
 
+    void TimeoutUpdate();
+
 protected:
     void InitTests();
     void LoadConfigs();
@@ -67,11 +69,13 @@ protected:
     QLabel* channelsLabel = nullptr;
     QLineEdit* fileAdr = nullptr;
 
-    QLineEdit* leKANALY = nullptr;
-
     QLineEdit* lekAdr = nullptr;
 
     QCheckBox* cbIgnoreFirst = nullptr;
+
+    QCheckBox* cbAutoSynch = nullptr;
+    QSpinBox* sbSynch = nullptr;
+    QTimer* synchTimer = nullptr;
 
     bool modeFromSizes = true;
     QStringList gnam;

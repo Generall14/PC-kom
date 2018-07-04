@@ -29,6 +29,7 @@ private slots:
     void ograniczHV(QString);
     void makeSET_HIGH_VOLTAGE();
     void makeSET_GAIN_OFFSET_AND_TRIGGER();
+    void makeSET_CHANNELS();
 
 protected:
     void Init();
@@ -46,6 +47,8 @@ protected:
     QCheckBox* ograniczenie = nullptr;
     QCheckBox* rozniczkowanie = nullptr;
     QComboBox* kcbox = nullptr;
+
+    QLineEdit* leKANALY = nullptr;
 
     QStringList gnam;
     QMap<QString, uchar> gval;

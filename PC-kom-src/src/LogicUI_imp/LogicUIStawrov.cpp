@@ -28,6 +28,10 @@ LogicUIStawrov::LogicUIStawrov(QFrame* parent):
     meanTimer = new QTimer();
     meanTimer->setSingleShot(true);
     connect(meanTimer, SIGNAL(timeout()), this, SLOT(TimeoutedMean()));
+
+    synchTimer = new QTimer();
+    connect(synchTimer, &QTimer::timeout, [this](){QByteArray a;a.append(char(0x02));a.append(char(0xFF));PackAndSend(a);});
+    //fdsfa
 }
 
 LogicUIStawrov::~LogicUIStawrov()
@@ -38,10 +42,11 @@ LogicUIStawrov::~LogicUIStawrov()
     Store("Data", leData->text());
     Store("FileLog", fileAdr->text());
     Store("lekAdr", lekAdr->text());
-    Store("leKANALY", leKANALY->text());
     Store("sbseconds", sbseconds->value());
     Store("cbIgnoreFirst", cbIgnoreFirst->isChecked());
     Store("leNewAdr", leNewAdr->text());
+    Store("cbAutoSynch", cbAutoSynch->isChecked());
+    Store("sbSynch", sbSynch->value());
 
     QStringList tabs;
     for(int i=0;i<tw->count();++i)
@@ -50,6 +55,7 @@ LogicUIStawrov::~LogicUIStawrov()
 
     delete logg;
     delete meanTimer;
+    delete synchTimer;
 }
 
 void LogicUIStawrov::Init()
@@ -62,6 +68,7 @@ void LogicUIStawrov::Init()
     LoadConfigs();
 
     logg->setIgnoringFirstChannel(cbIgnoreFirst->isChecked());
+    TimeoutUpdate();
 }
 
 void LogicUIStawrov::InitTests()
@@ -187,8 +194,8 @@ void LogicUIStawrov::InitTests()
     mainAllLay->addLayout(groupBoxKonfiguracja22);
     QPushButton* btns = new QPushButton("SYNCH_AND_START");
     btns->setToolTip(ttyy);
-    btns->setEnabled(false);
-    connect(btns, &QPushButton::clicked, [this](){QByteArray a;a.append(char(0x02));PackAndSend(a);});
+//    btns->setEnabled(false);
+    connect(btns, &QPushButton::clicked, [this](){QByteArray a;a.append(char(0x02));a.append(char(0xFF));PackAndSend(a);});
     groupBoxKonfiguracja22->addWidget(btns);
     btns = new QPushButton("RESET_MASTER");
     btns->setEnabled(false);
@@ -205,28 +212,42 @@ void LogicUIStawrov::InitTests()
     lekAdr->setValidator(new HexValidator(1, 1, lekAdr));
     groupBoxKonfiguracja22->addWidget(lekAdr);
 
-    QFrame* groupBoxKAN = new QFrame();
-    groupBoxKAN->setToolTip("Konfiguracja kanałów (max 12?). Każda wartość określa górną granicę wysokości\n"
-                            "impulsu (według ADC, 12 bit?) który będzie zaliczony do tego kanału. Każdy \n"
-                            "mierzony impuls jest dodawany ostatniego kanału w którego zakresie się zmieści.\n"
-                            "Odcięcie od dołu jest ustawione przez trigger. Przykładowo, jeżeli podano kanały\n"
-                            "0010 0020 to w pierwszym kanale znajdą się impulsy z zakresu trigger-0010, w \n"
-                            "drugim z zakresu 0011-0020. Zaznaczenie opcji \"Ignoruj pierwszy kanał\" \n"
-                            "spowoduje programowe odrzucenie pierwszego kanału.");
-    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
-    mainAllLay->addWidget(groupBoxKAN);
-    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
-    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
-    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
-    QLabel* kanl = new QLabel("Kanały:");
-    groupBoxKonfiguracjaKAN1->addWidget(kanl);
-    leKANALY = new QLineEdit("0666 AAAA");
-    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
-    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
-    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
-    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
-    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
-    connect(leKANALY, SIGNAL(returnPressed()), btnKAN, SLOT(click()));
+    QHBoxLayout* groupBoxKonfiguracja33 = new QHBoxLayout();
+    mainAllLay->addLayout(groupBoxKonfiguracja33);
+    cbAutoSynch = new QCheckBox("Automatyczna synchronizacja co ");
+    connect(cbAutoSynch, SIGNAL(toggled(bool)), this, SLOT(TimeoutUpdate()));
+    groupBoxKonfiguracja33->addWidget(cbAutoSynch);
+    sbSynch = new QSpinBox();
+    sbSynch->setMinimum(1);
+    sbSynch->setMaximum(30);
+    connect(sbSynch, SIGNAL(valueChanged(int)), this, SLOT(TimeoutUpdate()));
+    groupBoxKonfiguracja33->addWidget(sbSynch);
+    QLabel* tl23xx = new QLabel("minut.");
+    groupBoxKonfiguracja33->addWidget(tl23xx);
+    groupBoxKonfiguracja33->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+//    QFrame* groupBoxKAN = new QFrame();
+//    groupBoxKAN->setToolTip("Konfiguracja kanałów (max 12?). Każda wartość określa górną granicę wysokości\n"
+//                            "impulsu (według ADC, 12 bit?) który będzie zaliczony do tego kanału. Każdy \n"
+//                            "mierzony impuls jest dodawany ostatniego kanału w którego zakresie się zmieści.\n"
+//                            "Odcięcie od dołu jest ustawione przez trigger. Przykładowo, jeżeli podano kanały\n"
+//                            "0010 0020 to w pierwszym kanale znajdą się impulsy z zakresu trigger-0010, w \n"
+//                            "drugim z zakresu 0011-0020. Zaznaczenie opcji \"Ignoruj pierwszy kanał\" \n"
+//                            "spowoduje programowe odrzucenie pierwszego kanału.");
+//    groupBoxKAN->setFrameShape(QFrame::StyledPanel);
+//    mainAllLay->addWidget(groupBoxKAN);
+//    QVBoxLayout* groupBoxKonfiguracjaKAN = new QVBoxLayout(groupBoxKAN);
+//    QHBoxLayout* groupBoxKonfiguracjaKAN1 = new QHBoxLayout();
+//    groupBoxKonfiguracjaKAN->addLayout(groupBoxKonfiguracjaKAN1);
+//    QLabel* kanl = new QLabel("Kanały:");
+//    groupBoxKonfiguracjaKAN1->addWidget(kanl);
+//    leKANALY = new QLineEdit("0666 AAAA");
+//    leKANALY->setValidator(new HexValidator(2, 12, leKANALY));
+//    groupBoxKonfiguracjaKAN->addWidget(leKANALY);
+//    QPushButton* btnKAN = new QPushButton("SET_CHANNELS");
+//    connect(btnKAN, SIGNAL(clicked(bool)), this, SLOT(makeSET_CHANNELS()));
+//    groupBoxKonfiguracjaKAN1->addWidget(btnKAN);
+//    connect(leKANALY, SIGNAL(returnPressed()), btnKAN, SLOT(click()));
 
     //=======================Grupa kontrolery pomiarowe===========================================
     QGroupBox* groupBoxPomiarowe = new QGroupBox("Kontrolery pomiarowe");
@@ -268,10 +289,11 @@ void LogicUIStawrov::LoadConfigs()
     fileAdr->setText(RestoreAsString("FileLog", "defaultFileName.txt"));
     leData->setText(RestoreAsString("Data", "ff aa 55"));
     lekAdr->setText(RestoreAsString("lekAdr", "FF"));
-    leKANALY->setText(RestoreAsString("leKANALY", "0666 AAAA"));
     sbseconds->setValue(RestoreAsInt("sbseconds", 12));
     cbIgnoreFirst->setChecked(RestoreAsBool("cbIgnoreFirst", false));
     leNewAdr->setText(RestoreAsString("leNewAdr", "FF"));
+    cbAutoSynch->setChecked(RestoreAsBool("cbAutoSynch", false));
+    sbSynch->setValue(RestoreAsInt("sbSynch", 10));
 
     QStringList tablist = RestoreAsQStringList("tabs", QStringList());
     for(auto aadr: tablist)
@@ -283,6 +305,7 @@ void LogicUIStawrov::Connected()
     btn->setEnabled(true);
     cParent->setEnabled(true);
     StopMeaning();
+    TimeoutUpdate();
 }
 
 void LogicUIStawrov::Disconnected()
@@ -290,6 +313,7 @@ void LogicUIStawrov::Disconnected()
     btn->setEnabled(false);
     cParent->setEnabled(false);
     StopMeaning();
+    synchTimer->stop();
 }
 
 void LogicUIStawrov::FrameReaded(QSharedPointer<Frame> frame)
@@ -358,7 +382,7 @@ void LogicUIStawrov::setChannels(int s)
 void LogicUIStawrov::makeSET_CHANNELS()
 {
     QList<int> values;
-    QString inString = leKANALY->text();
+    QString inString;// = leKANALY->text();
     if(inString.at(0)==' ')
         inString.remove(0, 1);
     if(inString.at(inString.size()-1)==' ')
@@ -480,4 +504,12 @@ void LogicUIStawrov::AddTab(QString adr)
     connect(kp, SIGNAL(Send(QByteArray)), this, SLOT(PackAndSend(QByteArray)));
     tw->addTab(fr, numstr);
     btnremove->setEnabled(true);
+}
+
+void LogicUIStawrov::TimeoutUpdate()
+{
+    if(cbAutoSynch->isChecked())
+        synchTimer->start(sbSynch->value()*1000*60);
+    else
+        synchTimer->stop();
 }
