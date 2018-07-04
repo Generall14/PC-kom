@@ -26,6 +26,8 @@ STawrovLogger::~STawrovLogger()
 void STawrovLogger::Reset(QString fileName)
 {
     fileName = fileName.insert(0, "Pomiary/");
+    if(!fileName.endsWith(".txt"))
+        fileName.append(".txt");
 
     logFile.setFileName(fileName);
     if(logFile.exists())
