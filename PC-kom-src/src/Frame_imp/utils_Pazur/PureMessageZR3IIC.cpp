@@ -69,6 +69,22 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
+    case 0x03:
+    {
+        if(cmd.size()<6)
+            break;
+        uint total = 0, cnt = 0;
+        total |= cmd.at(0)&0xFF;
+        total |= (cmd.at(1)<<8)&0xFF00;
+        total |= (cmd.at(2)<<16)&0xFF0000;
+        total |= (cmd.at(3)<<24)&0xFF000000;
+        cnt |= cmd.at(4)&0xFF;
+        cnt |= (cmd.at(5)<<8)&0xFF00;
+        float freq = (float)cnt/(float)total/125e-9/2;
+        temp = QString("MES = %1 Hz, cnt %2, thole: %3").arg(freq).arg(cnt).arg(total);
+        found = true;
+        break;
+    }
     default:
         break;
     }
