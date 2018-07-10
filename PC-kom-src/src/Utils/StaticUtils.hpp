@@ -33,7 +33,7 @@ public:
 
     static float byteArray2f5_11(QByteArray b);
 
-    static QString displayFloat(float f, uint precision = 2);
+    static QString displayFloat(float f, uint precision = 2, char format='g');
 
 private:
     union FI;

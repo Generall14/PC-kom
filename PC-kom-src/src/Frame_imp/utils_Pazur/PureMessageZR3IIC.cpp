@@ -80,8 +80,9 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         total |= (cmd.at(3)<<24)&0xFF000000;
         cnt |= cmd.at(4)&0xFF;
         cnt |= (cmd.at(5)<<8)&0xFF00;
-        float freq = (float)cnt/(float)total/125e-9/2;
-        temp = QString("MES = %1 Hz, cnt %2, thole: %3").arg(freq).arg(cnt).arg(total);
+        float freq = (float)total/(float)cnt*125e-9;
+        temp = "MES = "+SU::displayFloat(freq, 2, 'f');
+        temp += QString("s, cnt %1, thole: %2").arg(cnt).arg(total);
         found = true;
         break;
     }

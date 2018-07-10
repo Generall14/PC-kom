@@ -197,7 +197,7 @@ float SU::byteArray322Float32(QByteArray b)
     return temp.f;
 }
 
-QString SU::displayFloat(float f, uint precision)
+QString SU::displayFloat(float f, uint precision, char format)
 {
     float s = 1;
     if(f<0)
@@ -240,7 +240,7 @@ QString SU::displayFloat(float f, uint precision)
         f *= 1e3;
     }
     f *= s;
-    return QString::number(f, 'g', precision)+" "+pre;
+    return QString::number(f, format, precision)+" "+pre;
 }
 
 float SU::byteArray2f5_11(QByteArray b)
