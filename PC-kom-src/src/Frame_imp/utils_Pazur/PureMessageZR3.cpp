@@ -881,3 +881,11 @@ QByteArray PureMessageZR3::zr3Unlock()
     temp.append(0x01);
     return temp;
 }
+
+QByteArray PureMessageZR3::zr3LockStatus()
+{
+    QByteArray temp;
+    temp.append(0x83);
+    temp.append(0x01);
+    return temp;
+}

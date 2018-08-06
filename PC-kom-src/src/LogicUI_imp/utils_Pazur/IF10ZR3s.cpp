@@ -913,6 +913,11 @@ void IF10ZR3s::InitRest()
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     blSeet->addWidget(pb);
+    pb = new QPushButton("Status");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3LockStatus(), 2);});
+    pb->setMaximumWidth(MIN_PB_W/2);
+    pb->setMinimumWidth(MIN_PB_W/2);
+    blSeet->addWidget(pb);
     blSeet->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 }
 
