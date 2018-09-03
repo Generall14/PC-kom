@@ -71,35 +71,33 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
     }
     case 0x03:
     {
-        if(cmd.size()<12)
+        if(cmd.size()<5)
             break;
-        uint total = 0, cnt = 0;
-        total |= cmd.at(0)&0xFF;
-        total |= (cmd.at(1)<<8)&0xFF00;
-        total |= (cmd.at(2)<<16)&0xFF0000;
-        total |= (cmd.at(3)<<24)&0xFF000000;
-        cnt |= cmd.at(4)&0xFF;
-        cnt |= (cmd.at(5)<<8)&0xFF00;
-        uint totalImp = 0, cntImp = 0;
-        totalImp |= cmd.at(6)&0xFF;
-        totalImp |= (cmd.at(7)<<8)&0xFF00;
-        totalImp |= (cmd.at(8)<<16)&0xFF0000;
-        totalImp |= (cmd.at(9)<<24)&0xFF000000;
-        cntImp |= cmd.at(10)&0xFF;
-        cntImp |= (cmd.at(11)<<8)&0xFF00;
-        float freq = (float)total/(float)cnt*125e-9;
-        float timp = (float)totalImp/(float)cntImp*125e-9;
-        temp = "MES = "+SU::displayFloat(freq, 2, 'f');
-        temp += "s / "+SU::displayFloat(timp, 2, 'f');
-        temp += QString("s, cntHole %1, tHole: %2, cntImp %3, tImp %4 |||").arg(cnt).arg(total).arg(cntImp).arg(totalImp);
-        cmd = cmd.mid(12);
-        while(cmd.size()>1)
+//        uint total = 0, cnt = 0;
+//        total |= cmd.at(0)&0xFF;
+//        total |= (cmd.at(1)<<8)&0xFF00;
+//        total |= (cmd.at(2)<<16)&0xFF0000;
+//        total |= (cmd.at(3)<<24)&0xFF000000;
+//        cnt |= cmd.at(4)&0xFF;
+//        cnt |= (cmd.at(5)<<8)&0xFF00;
+//        uint totalImp = 0, cntImp = 0;
+//        totalImp |= cmd.at(6)&0xFF;
+//        totalImp |= (cmd.at(7)<<8)&0xFF00;
+//        totalImp |= (cmd.at(8)<<16)&0xFF0000;
+//        totalImp |= (cmd.at(9)<<24)&0xFF000000;
+//        cntImp |= cmd.at(10)&0xFF;
+//        cntImp |= (cmd.at(11)<<8)&0xFF00;
+//        float freq = (float)total/(float)cnt*125e-9;
+//        float timp = (float)totalImp/(float)cntImp*125e-9;
+//        temp = "MES = "+SU::displayFloat(freq, 2, 'f');
+//        temp += "s / "+SU::displayFloat(timp, 2, 'f');
+//        temp += QString("s, cntHole %1, tHole: %2, cntImp %3, tImp %4 |||").arg(cnt).arg(total).arg(cntImp).arg(totalImp);
+//        cmd = cmd.mid(12);
+        temp += QString("hist|||");
+        while(cmd.size()>0)
         {
-            uint val = 0;
-            val |= cmd.at(0)&0xFF;
-            val |= (cmd.at(1)<<8)&0xFF00;
-            cmd = cmd.mid(2);
-            temp += QString(" %1 |").arg(val);
+            temp += QString(" %1 |").arg(cmd.at(0)&0xFF);
+            cmd = cmd.mid(1);
         }
         temp += "||";
         found = true;
