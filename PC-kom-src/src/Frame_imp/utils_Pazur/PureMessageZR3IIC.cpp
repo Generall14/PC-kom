@@ -71,30 +71,27 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
     }
     case 0x03:
     {
-        if(cmd.size()<5)
-            break;
-//        uint total = 0, cnt = 0;
-//        total |= cmd.at(0)&0xFF;
-//        total |= (cmd.at(1)<<8)&0xFF00;
-//        total |= (cmd.at(2)<<16)&0xFF0000;
-//        total |= (cmd.at(3)<<24)&0xFF000000;
-//        cnt |= cmd.at(4)&0xFF;
-//        cnt |= (cmd.at(5)<<8)&0xFF00;
-//        uint totalImp = 0, cntImp = 0;
-//        totalImp |= cmd.at(6)&0xFF;
-//        totalImp |= (cmd.at(7)<<8)&0xFF00;
-//        totalImp |= (cmd.at(8)<<16)&0xFF0000;
-//        totalImp |= (cmd.at(9)<<24)&0xFF000000;
-//        cntImp |= cmd.at(10)&0xFF;
-//        cntImp |= (cmd.at(11)<<8)&0xFF00;
-//        float freq = (float)total/(float)cnt*125e-9;
-//        float timp = (float)totalImp/(float)cntImp*125e-9;
-//        temp = "MES = "+SU::displayFloat(freq, 2, 'f');
-//        temp += "s / "+SU::displayFloat(timp, 2, 'f');
-//        temp += QString("s, cntHole %1, tHole: %2, cntImp %3, tImp %4 |||").arg(cnt).arg(total).arg(cntImp).arg(totalImp);
-//        cmd = cmd.mid(12);
+//        if(cmd.size()<5)
+//            break;
+        uint totalImp = 0, cntImp = 0;
+        totalImp |= cmd.at(5)&0xFF;
+        totalImp |= (cmd.at(6)<<8)&0xFF00;
+        totalImp |= (cmd.at(7)<<16)&0xFF0000;
+        totalImp |= (cmd.at(8)<<24)&0xFF000000;
+        cntImp |= cmd.at(9)&0xFF;
+        cntImp |= (cmd.at(10)<<8)&0xFF00;
+        float timp = (float)totalImp/(float)cntImp*125e-9;
+        temp += "imp: "+SU::displayFloat(timp, 2, 'f')+"s ("+QString::number(cntImp)+"), ";
+        uint64_t ftg2=0;
+        ftg2 |= cmd.at(11)&0xFF;
+        ftg2 |= (cmd.at(12)<<8)&0xFF00;
+        ftg2 |= (cmd.at(13)<<16)&0xFF0000;
+        ftg2 |= (cmd.at(14)<<24)&0xFF000000;
+        ftg2 |= (cmd.at(15)<<32)&0xFF00000000;
+        ftg2 |= (cmd.at(16)<<40)&0xFF0000000000;
+        temp += "fTg2: "+SU::displayFloat(float(ftg2)/128.0/8*125e-9, 2, 'f')+"s, ";
         temp += QString("hist|||");
-        while(cmd.size()>0)
+        for(int u=0;u<5;++u)
         {
             temp += QString(" %1 |").arg(cmd.at(0)&0xFF);
             cmd = cmd.mid(1);
