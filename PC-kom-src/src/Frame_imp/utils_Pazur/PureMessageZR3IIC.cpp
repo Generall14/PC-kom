@@ -90,6 +90,19 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         ftg2 |= (cmd.at(15)<<32)&0xFF00000000;
         ftg2 |= (cmd.at(16)<<40)&0xFF0000000000;
         temp += "fTg2: "+SU::displayFloat(float(ftg2)/128.0/8*125e-9, 2, 'f')+"s, ";
+        uint64_t MSM_sTG = 0, MSM_nTG = 0;
+        MSM_sTG |= cmd.at(17)&0xFF;
+        MSM_sTG |= (cmd.at(18)<<8)&0xFF00;
+        MSM_sTG |= (cmd.at(19)<<16)&0xFF0000;
+        MSM_sTG |= (cmd.at(20)<<24)&0xFF000000;
+        MSM_sTG |= (cmd.at(21)<<32)&0xFF00000000;
+        MSM_sTG |= (cmd.at(22)<<40)&0xFF0000000000;
+        MSM_nTG |= cmd.at(23)&0xFF;
+        MSM_nTG |= (cmd.at(24)<<8)&0xFF00;
+        MSM_nTG |= (cmd.at(25)<<16)&0xFF0000;
+        MSM_nTG |= (cmd.at(26)<<24)&0xFF000000;
+        float thole = (float)MSM_sTG/(float)MSM_nTG*125e-9;
+        temp += "hole: "+SU::displayFloat(thole, 2, 'f')+"s ("+QString::number(MSM_nTG)+"), ";
         temp += QString("hist|||");
         for(int u=0;u<5;++u)
         {

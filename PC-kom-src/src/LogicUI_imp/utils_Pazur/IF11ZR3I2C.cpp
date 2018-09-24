@@ -289,7 +289,7 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     uint ver = 0;
                     ver |= iicd.at(1)&0xFF;
                     ver |= (iicd.at(2)<<8)&0xFF00;
-                    labRCLK->setText(QString::number(ver));
+                    labRCLK->setText(QString::number(float(ver)/32));
                     break;
                 }
                 default:
