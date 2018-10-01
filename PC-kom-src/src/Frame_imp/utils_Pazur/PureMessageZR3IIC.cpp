@@ -3,6 +3,29 @@
 #include <QDebug>
 #include "src/Utils/StaticUtils.hpp"
 
+QString getWho(char b, QString temp)
+{
+    temp += "[ ";
+    if(b&(0x01<<0))
+        temp += "Tg1 ";
+    if(b&(0x01<<1))
+        temp += "Tg2 ";
+    if(b&(0x01<<2))
+        temp += "Tg3 ";
+    if(b&(0x01<<3))
+        temp += "Tg8 ";
+    if(b&(0x01<<4))
+        temp += "fTg1 ";
+    if(b&(0x01<<5))
+        temp += "fTg2 ";
+    if(b&(0x01<<6))
+        temp += "Tgx ";
+    temp += "]";
+    //if(b)
+        qDebug() << temp;
+    return temp;
+}
+
 QString PureMessageZR3IIC::desc(QByteArray _arr)
 {
     QString temp;
@@ -101,6 +124,8 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         MSM_nTG |= (cmd.at(24)<<8)&0xFF00;
         MSM_nTG |= (cmd.at(25)<<16)&0xFF0000;
         MSM_nTG |= (cmd.at(26)<<24)&0xFF000000;
+        temp += getWho(cmd.at(27), " Rise");
+        temp += getWho(cmd.at(28), " Fall");
         float thole = (float)MSM_sTG/(float)MSM_nTG*125e-9;
         temp += "hole: "+SU::displayFloat(thole, 2, 'f')+"s ("+QString::number(MSM_nTG)+"), ";
         temp += QString("hist|||");
