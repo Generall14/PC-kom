@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QDebug>
 #include "src/Utils/StaticUtils.hpp"
+#include "Quantile.hpp"
 
 QString getWho(char b, QString temp)
 {
@@ -135,6 +136,27 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
             cmd = cmd.mid(1);
         }
         temp += "||";
+        found = true;
+        break;
+    }
+    case 0x04:
+    {
+        float wpri = SU::byteArray322Float32(cmd.mid(0, 4));
+        float wsec = SU::byteArray322Float32(cmd.mid(4, 4));
+        float rng = SU::byteArray322Float32(cmd.mid(10, 4));
+        uint chng = 0, nr = 0;
+        nr |= cmd.at(8)&0xFF;
+        nr |= (cmd.at(9)<<8)&0xFF00;
+        chng |= cmd.at(14)&0xFF;
+        chng |= (cmd.at(15)<<8)&0xFF00;
+
+        temp += "Wpri: "+Quantile::makeStringB(wpri, nr, "Sv");
+        temp += ", Wsec: "+Quantile::makeStringB(wsec, nr, "Sv");
+        temp += ", Nr: "+QString::number(nr);
+        temp += ", Rng: "+SU::displayFloat(rng, 2, 'f');
+        temp += ", Chng: "+QString::number(chng);
+        temp += ","+getWho(cmd.at(16), " Rise")+getWho(cmd.at(17), " Fall");
+
         found = true;
         break;
     }
