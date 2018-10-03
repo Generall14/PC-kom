@@ -15,6 +15,8 @@ public:
     static QByteArray slaveRDSECTION(uint nr);
     static QByteArray slaveWRSECTION(uint nr, QByteArray data);
     static QByteArray slaveCALL();
+    static QByteArray slaveLOCK();
+    static QByteArray slaveUNLOCK();
 
     static const uchar masterTEST_c = 0xFF;
     static const uchar masterRDSECTIONo_c = 0x81;

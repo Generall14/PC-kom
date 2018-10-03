@@ -181,6 +181,22 @@ void IF11ZR3I2c::InitRest()
     reg2Lay->addWidget(sbADCBias);
     connect(sbADCBias, SIGNAL(valueChanged(int)), this, SLOT(UpdBiasPWM(int)));
 
+    QHBoxLayout* lockLay = new QHBoxLayout();
+    mainLay->addLayout(lockLay);
+    pb = new QPushButton("Lock");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveLOCK()));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    lockLay->addWidget(pb);
+    pb = new QPushButton("Unlock");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveUNLOCK()));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    lockLay->addWidget(pb);
+    lockLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
     QHBoxLayout* callLay = new QHBoxLayout();
     mainLay->addLayout(callLay);
     pb = new QPushButton("Call");

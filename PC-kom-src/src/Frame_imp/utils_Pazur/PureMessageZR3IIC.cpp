@@ -240,3 +240,17 @@ QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, QByteArray data)
     temp.append(data);
     return appendSize(temp);
 }
+
+QByteArray PureMessageZR3IIC::slaveLOCK()
+{
+    QByteArray temp;
+    temp.push_back(0xFF);
+    return slaveWRSECTION(13, temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveUNLOCK()
+{
+    QByteArray temp;
+    temp.push_back(char(0x00));
+    return slaveWRSECTION(13, temp);
+}
