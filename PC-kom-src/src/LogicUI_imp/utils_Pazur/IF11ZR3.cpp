@@ -73,6 +73,15 @@ void IF11ZR3::InitRest()
     techRSTLay->addWidget(pb);
     techRSTLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
+    QHBoxLayout* techCALLLay = new QHBoxLayout();
+    mainLay->addLayout(techCALLLay);
+    pb = new QPushButton("techCALL");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techCALL(), 3);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techCALLLay->addWidget(pb);
+    techCALLLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
     QHBoxLayout* techRDSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(techRDSECTIONLay);
     pb = new QPushButton("techRDSECTION");

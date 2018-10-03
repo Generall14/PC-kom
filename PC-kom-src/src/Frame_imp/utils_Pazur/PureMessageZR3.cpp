@@ -160,6 +160,37 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
             *found = true;
             break;
         }
+        case techRET_c:
+        {
+            if(_arr.size()<13)
+                break;
+            uint16_t val = 0;
+            val = _arr.at(3);
+            val |= (_arr.at(4)<<8)&0xFF00;
+            temp = QString("techRET, R12: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+            val = _arr.at(5);
+            val |= (_arr.at(6)<<8)&0xFF00;
+            temp += QString("R13: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+            val = _arr.at(7);
+            val |= (_arr.at(8)<<8)&0xFF00;
+            temp += QString("R14: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+            val = _arr.at(9);
+            val |= (_arr.at(10)<<8)&0xFF00;
+            temp += QString("R15: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+            val = _arr.at(11);
+            val |= (_arr.at(12)<<8)&0xFF00;
+            temp += QString("SR: 0x%1").arg(val&0xFFFF, 4, 16, QChar('0'));
+            *found = true;
+            break;
+        }
+        case techCALL_c:
+        {
+            if(_arr.size()!=3)
+                break;
+            temp.append(QString("techCALL"));
+            *found = true;
+            break;
+        }
         }
         break;
     }
@@ -279,6 +310,13 @@ QByteArray PureMessageZR3::techRESET()
 {
     QByteArray temp;
     temp.append(techRESET_c);
+    return temp;
+}
+
+QByteArray PureMessageZR3::techCALL()
+{
+    QByteArray temp;
+    temp.append(techCALL_c);
     return temp;
 }
 

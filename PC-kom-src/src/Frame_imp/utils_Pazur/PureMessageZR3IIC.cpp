@@ -22,7 +22,7 @@ QString getWho(char b, QString temp)
     if(b&(0x01<<6))
         temp += "Tgx ";
     temp += "]";
-    //if(b)
+    if(b)
         qDebug() << temp;
     return temp;
 }
@@ -90,6 +90,29 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         temp = QString("slaveWRSECTION, nr 0x%1, data: ").arg(cmd.at(0)&0xFF, 2, 16, QChar('0'));
         for(auto ch: cmd.mid(1))
             temp.append(QString("0x%1 ").arg(ch&0xFF, 2, 16, QChar('0')));
+        found = true;
+        break;
+    }
+    case masterRET_c:
+    {
+        if(cmd.size()<10)
+            break;
+        uint16_t val = 0;
+        val = cmd.at(0);
+        val |= (cmd.at(1)<<8)&0xFF00;
+        temp = QString("slaveRET, R12: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+        val = cmd.at(2);
+        val |= (cmd.at(3)<<8)&0xFF00;
+        temp += QString("R13: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+        val = cmd.at(4);
+        val |= (cmd.at(5)<<8)&0xFF00;
+        temp += QString("R14: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+        val = cmd.at(6);
+        val |= (cmd.at(7)<<8)&0xFF00;
+        temp += QString("R15: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
+        val = cmd.at(8);
+        val |= (cmd.at(9)<<8)&0xFF00;
+        temp += QString("SR: 0x%1").arg(val&0xFFFF, 4, 16, QChar('0'));
         found = true;
         break;
     }
@@ -191,6 +214,13 @@ QByteArray PureMessageZR3IIC::slaveRST()
 {
     QByteArray temp;
     temp.append(slaveRST_c);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveCALL()
+{
+    QByteArray temp;
+    temp.append(slaveCALL_c);
     return appendSize(temp);
 }
 

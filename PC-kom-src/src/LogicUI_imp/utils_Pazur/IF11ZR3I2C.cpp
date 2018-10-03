@@ -180,6 +180,16 @@ void IF11ZR3I2c::InitRest()
     sbADCBias->setMaximum(1023);
     reg2Lay->addWidget(sbADCBias);
     connect(sbADCBias, SIGNAL(valueChanged(int)), this, SLOT(UpdBiasPWM(int)));
+
+    QHBoxLayout* callLay = new QHBoxLayout();
+    mainLay->addLayout(callLay);
+    pb = new QPushButton("Call");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveCALL()));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    callLay->addWidget(pb);
+    callLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 }
 
 void IF11ZR3I2c::Init()
