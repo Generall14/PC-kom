@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT			+= core gui
+#QT			+= charts
 QT			+= serialport
 
 CONFIG += c++11
@@ -93,7 +94,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_Pazur/IF_panel.cpp \
     src/Frame_imp/utils_Pazur/PureMessageZR3IIC.cpp \
     src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.cpp \
-    src/Frame_imp/utils_Pazur/Quantile.cpp
+    src/Frame_imp/utils_Pazur/Quantile.cpp \
+    src/Utils/DisplayMes.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -170,7 +172,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_Pazur/IF_panel.hpp \
     src/Frame_imp/utils_Pazur/PureMessageZR3IIC.hpp \
     src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.hpp \
-    src/Frame_imp/utils_Pazur/Quantile.hpp
+    src/Frame_imp/utils_Pazur/Quantile.hpp \
+    src/Utils/DisplayMes.hpp
 
 DISTFILES += \
     configs.xml \
