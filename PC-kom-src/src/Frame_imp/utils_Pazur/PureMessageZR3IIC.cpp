@@ -213,7 +213,7 @@ QByteArray PureMessageZR3IIC::slaveTEST()
 QByteArray PureMessageZR3IIC::slaveRST()
 {
     QByteArray temp;
-    temp.append(slaveRST_c);
+    temp.append((char)slaveRST_c);
     return appendSize(temp);
 }
 

@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QFrame>
+#include <QLayout>
+#include <QLabel>
 
 class DisplayMes : public QObject
 {
@@ -10,9 +12,15 @@ class DisplayMes : public QObject
 public:
     DisplayMes(QFrame* parent);
 
-    void feed(QString val, uint cnt, QString low, QString high);
+    void feed(double val, uint cnt, double low, double high, QString unit);
 private:
     QFrame* cParent = nullptr;
+    QVBoxLayout* mainLay = nullptr;
+
+    QLabel* _nr = nullptr;
+    QLabel* _val = nullptr;
+    QLabel* _min = nullptr;
+    QLabel* _max = nullptr;
 
     void init();
 };

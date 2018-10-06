@@ -204,7 +204,7 @@ QString PureMessageZR3::desc(QByteArray _arr, bool* found)
 QByteArray PureMessageZR3::techREQ(uint16_t magic)
 {
     QByteArray temp;
-    temp.append(techREQ_c);
+    temp.append((char)techREQ_c);
     temp.append(magic&0xFF);
     temp.append((magic>>8)&0xFF);
     temp.append(0x70);

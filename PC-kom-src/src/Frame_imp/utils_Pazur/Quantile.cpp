@@ -41,7 +41,7 @@ Quantile::q Quantile::get(unsigned int N)
     uint min = 100e6, idx = 0;
     for(uint i=0;i<size;i++)
     {
-        uint diff = abs(N-_q[i].N);
+        uint diff = abs(int(N-_q[i].N));
         if(diff<min)
         {
             min = diff;
