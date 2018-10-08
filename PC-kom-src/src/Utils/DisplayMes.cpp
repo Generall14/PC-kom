@@ -2,6 +2,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QToolButton>
+#include <QDebug>
 #include "StaticUtils.hpp"
 
 DisplayMes::DisplayMes(QFrame* parent):

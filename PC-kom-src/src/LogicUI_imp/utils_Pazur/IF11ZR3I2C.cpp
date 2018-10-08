@@ -10,6 +10,8 @@
 #include <qdebug.h>
 #include "Frame_imp/FramePazur.hpp"
 #include "src/Utils/DisplayMes.hpp"
+#include "src/Frame_imp/utils_Pazur/Quantile.hpp"
+#include "src/Frame_imp/utils_Pazur/PureMessageZR3IIC.hpp"
 
 IF11ZR3I2c::IF11ZR3I2c(QFrame* parent, uint adress):
     cParent(parent),
@@ -210,8 +212,7 @@ void IF11ZR3I2c::InitRest()
 
     QFrame* ffr = new QFrame();
     mainLay->addWidget(ffr);
-    DisplayMes* disp = new DisplayMes(ffr);
-    disp->feed(100e-6, 1500, 80e-6, 115e-6, "Sv");
+    disp = new DisplayMes(ffr);
 }
 
 void IF11ZR3I2c::Init()
@@ -326,6 +327,31 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                 }
                 default:
                     break;
+                }
+            }
+            else if(code==0x04)
+            {
+                float wpri = SU::byteArray322Float32(iicd.mid(0, 4));
+                //float wsec = SU::byteArray322Float32(cmd.mid(4, 4));
+                //float rng = SU::byteArray322Float32(cmd.mid(10, 4));
+                uint /*chng = 0, */nr = 0;
+                nr |= iicd.at(8)&0xFF;
+                nr |= (iicd.at(9)<<8)&0xFF00;
+                //chng |= cmd.at(14)&0xFF;
+                //chng |= (cmd.at(15)<<8)&0xFF00;
+                disp->feed(wpri, nr, wpri*Quantile::getLow(nr), wpri*Quantile::getHigh(nr), "Sv");
+
+
+
+                QFile lastFile("vals.txt");
+                if(lastFile.open(QIODevice::Append | QIODevice::Text | QIODevice::WriteOnly))
+                {
+                    QTextStream out(&lastFile);
+                    out << SU::displayFloat(wpri, 2, 'f') << "Sv\tNr: " << QString::number(nr);
+                    if(iicd.at(16)||iicd.at(17))
+                        out << "\t" << PureMessageZR3IIC::getWho(iicd.at(16), " Rise") << PureMessageZR3IIC::getWho(iicd.at(17), " Fall");
+                    out << "\n";
+                    lastFile.close();
                 }
             }
         }

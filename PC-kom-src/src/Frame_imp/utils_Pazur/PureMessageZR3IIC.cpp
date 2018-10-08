@@ -4,7 +4,7 @@
 #include "src/Utils/StaticUtils.hpp"
 #include "Quantile.hpp"
 
-QString getWho(char b, QString temp)
+QString PureMessageZR3IIC::getWho(char b, QString temp)
 {
     temp += "[ ";
     if(b&(0x01<<0))

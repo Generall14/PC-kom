@@ -28,6 +28,8 @@ public:
     static const uchar slaveWRSECTION_c = 0x02;
     static const uchar slaveCALL_c = 0x03;
 
+    static QString getWho(char b, QString temp);
+
 private:
     PureMessageZR3IIC(){}
     static QByteArray appendSize(QByteArray dat);

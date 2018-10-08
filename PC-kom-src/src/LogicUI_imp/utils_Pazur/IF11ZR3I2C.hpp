@@ -15,6 +15,8 @@
 #include <QLabel>
 #include "IF_panel.hpp"
 
+class DisplayMes;
+
 class IF11ZR3I2c : public QObject
 {
     Q_OBJECT
@@ -55,6 +57,8 @@ protected:
     QSpinBox* sbADCThr = nullptr;
     QDoubleSpinBox* sbRegBias = nullptr;
     QSpinBox* sbADCBias = nullptr;
+
+    DisplayMes* disp = nullptr;
 
     const uint MIN_PB_W = 150;
 
