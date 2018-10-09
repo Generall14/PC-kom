@@ -13,7 +13,7 @@ public:
     static QByteArray slaveTEST();
     static QByteArray slaveRST();
     static QByteArray slaveRDSECTION(uint nr);
-    static QByteArray slaveWRSECTION(uint nr, QByteArray data);
+    static QByteArray slaveWRSECTION(uint nr, const QByteArray& data);
     static QByteArray slaveCALL();
     static QByteArray slaveLOCK();
     static QByteArray slaveUNLOCK();

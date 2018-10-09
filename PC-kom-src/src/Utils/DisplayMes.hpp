@@ -12,7 +12,7 @@ class DisplayMes : public QObject
 public:
     DisplayMes(QFrame* parent);
 
-    void feed(double val, uint cnt, double low, double high, QString unit);
+    void feed(float val, uint cnt, float low, float high, QString unit);
 private:
     QFrame* cParent = nullptr;
     QVBoxLayout* mainLay = nullptr;

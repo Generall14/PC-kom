@@ -1,7 +1,7 @@
 #include "Message.hpp"
 #include "PureMessage.hpp"
 
-Message::Message(QByteArray arr):
+Message::Message(const QByteArray& arr):
     _dat(arr)
 {
     if(arr.size()<2)
@@ -22,7 +22,7 @@ Message::Message(QByteArray arr):
     _isValid = true;
 }
 
-Message::Message(char adr, char ifs, QByteArray dat, char x)
+Message::Message(char adr, char ifs, const QByteArray& dat, char x)
 {
     _isValid = false;
     if(dat.size()>0x3F)

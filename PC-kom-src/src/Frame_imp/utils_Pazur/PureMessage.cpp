@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "PureMessageZR3.hpp"
 
-PureMessage::PureMessage(QByteArray arr):
+PureMessage::PureMessage(const QByteArray& arr):
     _arr(arr)
 {
     assert(arr.size()>=2);
@@ -239,7 +239,7 @@ QByteArray PureMessage::wiRDSECTION_dev(uint nr, bool prot)
     return temp;
 }
 
-QByteArray PureMessage::wiRDSECTION_long(QByteArray nr)
+QByteArray PureMessage::wiRDSECTION_long(const QByteArray& nr)
 {
     QByteArray temp;
     temp.append(wiRDSECTION_c);
@@ -252,7 +252,7 @@ QByteArray PureMessage::wiRDSECTION_long(QByteArray nr)
     return temp;
 }
 
-QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data)
+QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, const QByteArray& data)
 {
     QByteArray temp;
     temp.append(wiWRSECTION_c);
@@ -267,7 +267,7 @@ QByteArray PureMessage::wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByt
     return temp;
 }
 
-QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data)
+QByteArray PureMessage::wiWRSECTION_long(const QByteArray& nr, uint16_t magic, const QByteArray& data)
 {
     QByteArray temp;
     temp.append(wiWRSECTION_c);
@@ -283,7 +283,7 @@ QByteArray PureMessage::wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArr
     return temp;
 }
 
-QByteArray PureMessage::wiGFDA(bool utkak, QByteArray nr)
+QByteArray PureMessage::wiGFDA(bool utkak, const QByteArray& nr)
 {
     QByteArray temp;
     temp.append(wiGFDA_c);
@@ -316,7 +316,7 @@ QByteArray PureMessage::wkpCONNECT()
     return temp;
 }
 
-QByteArray PureMessage::wkpCONNECTo(QByteArray next)
+QByteArray PureMessage::wkpCONNECTo(const QByteArray& next)
 {
     if(next.isEmpty())
         return QByteArray();
@@ -351,7 +351,7 @@ QByteArray PureMessage::wkpRESET()
  * Oblicza magiczny numer potrzebny do zapisywania danych na podstawie odczytanego wID_IDX.
  * @param wID_IDX - dane wID_IDX (od początku, co najmniej xxx bajtów)
  */
-uint PureMessage::calcMagicNumber(QByteArray wID_IDX)
+uint PureMessage::calcMagicNumber(const QByteArray& wID_IDX)
 {
     uint temp = 0x0000;
     if(wID_IDX.size()<11)

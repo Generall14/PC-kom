@@ -11,7 +11,7 @@ DisplayMes::DisplayMes(QFrame* parent):
     init();
 }
 
-void DisplayMes::feed(double val, uint cnt, double low, double high, QString unit)
+void DisplayMes::feed(float val, uint cnt, float low, float high, QString unit)
 {
     _nr->setText(QString::number(cnt));
     _val->setText(SU::displayFloat(val, 2, 'f')+unit);

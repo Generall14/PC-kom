@@ -8,16 +8,16 @@
 class PureMessage
 {
 public:
-    PureMessage(QByteArray arr); // pelen zakres danych (adres i rozmiar tez)
+    PureMessage(const QByteArray& arr); // pelen zakres danych (adres i rozmiar tez)
 
     QString desc() const;
 
     static QByteArray wiRDCONST(uint offset); // same dane wlasciwe (bez bajtow adresu i rozmiaru)
     static QByteArray wiRDSECTION_dev(uint nr, bool prot);
-    static QByteArray wiRDSECTION_long(QByteArray nr);
-    static QByteArray wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, QByteArray data);
-    static QByteArray wiWRSECTION_long(QByteArray nr, uint16_t magic, QByteArray data);
-    static QByteArray wiGFDA(bool utkak, QByteArray nr);
+    static QByteArray wiRDSECTION_long(const QByteArray& nr);
+    static QByteArray wiWRSECTION_dev(uint nr, bool prot, uint16_t magic, const QByteArray& data);
+    static QByteArray wiWRSECTION_long(const QByteArray& nr, uint16_t magic, const QByteArray& data);
+    static QByteArray wiGFDA(bool utkak, const QByteArray& nr);
 
     static QByteArray wiRdAU();
     static QByteArray wiRdOTOPG();
@@ -39,12 +39,12 @@ public:
 
     static QByteArray wkpSTORE();
     static QByteArray wkpCONNECT();
-    static QByteArray wkpCONNECTo(QByteArray next);
+    static QByteArray wkpCONNECTo(const QByteArray& next);
     static QByteArray wkpBUILD();
     static QByteArray wkpBUILDo();
     static QByteArray wkpRESET();
 
-    static uint calcMagicNumber(QByteArray wID_IDX);
+    static uint calcMagicNumber(const QByteArray& wID_IDX);
 
     static const uchar wiRDCONST_c = 0x00;
     static const uchar wiRDCONSTo_c = 0x01;

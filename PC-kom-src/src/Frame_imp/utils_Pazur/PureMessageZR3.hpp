@@ -8,12 +8,12 @@
 class PureMessageZR3
 {
 public:
-    static QString desc(QByteArray _arr, bool* found=nullptr);
+    static QString desc(const QByteArray& _arr, bool* found=nullptr);
 
     static QByteArray techREQ(uint16_t magic);
     static QByteArray techACC(uint16_t magic, uint16_t rnd);
     static QByteArray techRDSECTION(uint nr);
-    static QByteArray techWRSECTION(uint nr, uint16_t magic, QByteArray data);
+    static QByteArray techWRSECTION(uint nr, uint16_t magic, const QByteArray& data);
     static QByteArray techRESET();
     static QByteArray techCALL();
 
@@ -23,7 +23,7 @@ public:
     static QByteArray techRdFRAMDevStats();
     static QByteArray techRdDevId();
     static QByteArray techRdRLadd();
-    static QByteArray techWRIIC(uchar adr, QByteArray dat);
+    static QByteArray techWRIIC(uchar adr, const QByteArray& dat);
 
     static QByteArray techWrDevId(uint16_t magic, uint id);
     static QByteArray techWrRLadd(uint16_t magic, uint val);

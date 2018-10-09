@@ -7,8 +7,8 @@
 class Message
 {
 public:
-    Message(QByteArray arr);
-    Message(char adr, char ifs, QByteArray dat, char x=0x00);
+    Message(const QByteArray& arr);
+    Message(char adr, char ifs, const QByteArray& dat, char x=0x00);
 
     QString toQString() const;
     QByteArray toPureData() const;

@@ -87,14 +87,13 @@ QString Messages::toQString() const
         }
         else
         {
-            for(auto a: _msgs)
+            for(const auto& a: _msgs)
                 temp.push_back("\n\t( "+a.toQString()+" )");
         }
         temp.append("\n]");
         return temp;
     }
-    else
-        return "";
+    return "";
 }
 
 QByteArray Messages::toPureData() const

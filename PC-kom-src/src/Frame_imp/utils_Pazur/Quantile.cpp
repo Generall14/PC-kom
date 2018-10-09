@@ -51,7 +51,7 @@ Quantile::q Quantile::get(unsigned int N)
     return _q[idx];
 }
 
-QString Quantile::makeString(double val, unsigned int N, QString unit)
+QString Quantile::makeString(float val, unsigned int N, const QString& unit)
 {
     QString temp="(";
 
@@ -61,7 +61,7 @@ QString Quantile::makeString(double val, unsigned int N, QString unit)
     return temp;
 }
 
-QString Quantile::makeStringB(double val, unsigned int N, QString unit)
+QString Quantile::makeStringB(float val, unsigned int N, const QString& unit)
 {
     QString temp=SU::displayFloat(val, 2, 'f')+unit+"(+";
     temp += QString::number((getHigh(N)-1)*100, 'f', 2)+"%, -";

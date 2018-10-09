@@ -2,11 +2,7 @@
 #include <QDebug>
 #include "Utils/CRC.hpp"
 
-Confirms::Confirms()
-{
-}
-
-Confirms::Confirms(QByteArray dat, uint cnt):
+Confirms::Confirms(const QByteArray& dat, uint cnt):
     _dat(dat)
 {
     if(cnt==0)
@@ -14,14 +10,14 @@ Confirms::Confirms(QByteArray dat, uint cnt):
         isEmpty = true;
         return;
     }
-    if((uint)dat.size()!=cnt+1)
+    if(uint(dat.size())!=cnt+1)
     {
         isValid = false;
         errorMessage = " Invalid data length";
         return;
     }
     uchar crc = CRC::crc8(dat.mid(0, dat.size()-1));
-    if(crc!=(uchar)dat.at(dat.size()-1))
+    if(crc!=uchar(dat.at(dat.size()-1)))
     {
         isValid = false;
         errorMessage = " Invalid crc";
@@ -46,7 +42,7 @@ Confirms::Confirms(QList<Confirm> cfs):
     for(auto a: cfs)
         _dat.append(a.toPureData());
     uchar crc = CRC::crc8(_dat);
-    _dat.append(crc);
+    _dat.append(char(crc));
 }
 
 QString Confirms::toQString() const
@@ -68,8 +64,7 @@ QString Confirms::toQString() const
         temp.append("\n]");
         return temp;
     }
-    else
-        return "";
+    return "";
 }
 
 QByteArray Confirms::toPureData() const

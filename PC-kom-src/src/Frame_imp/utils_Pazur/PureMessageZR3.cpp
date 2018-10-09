@@ -4,7 +4,7 @@
 #include "src/Utils/StaticUtils.hpp"
 #include "PureMessageZR3IIC.hpp"
 
-QString PureMessageZR3::desc(QByteArray _arr, bool* found)
+QString PureMessageZR3::desc(const QByteArray& _arr, bool* found)
 {
     QString temp;
     *found = false;
@@ -270,7 +270,7 @@ QByteArray PureMessageZR3::techRdRLadd()
     return PureMessageZR3::techRDSECTION(5);
 }
 
-QByteArray PureMessageZR3::techWRIIC(uchar adr, QByteArray dat)
+QByteArray PureMessageZR3::techWRIIC(uchar adr, const QByteArray& dat)
 {
     QByteArray temp;
     temp.append(techWRIIC_c);
@@ -295,7 +295,7 @@ QByteArray PureMessageZR3::techWrRLadd(uint16_t magic, uint val)
     return PureMessageZR3::techWRSECTION(5, magic, data);
 }
 
-QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, QByteArray data)
+QByteArray PureMessageZR3::techWRSECTION(uint nr, uint16_t magic, const QByteArray& data)
 {
     QByteArray temp;
     temp.append(techWRSECTION_c);

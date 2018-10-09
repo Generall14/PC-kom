@@ -43,7 +43,7 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
     }
 
     bool found = false;
-    uchar code = _arr.at(1);
+    uchar code = uchar(_arr.at(1));
     QByteArray cmd;
     if(_arr.size()>2)
         cmd = _arr.mid(2);
@@ -118,39 +118,37 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
     }
     case 0x03:
     {
-//        if(cmd.size()<5)
-//            break;
         uint totalImp = 0, cntImp = 0;
         totalImp |= cmd.at(5)&0xFF;
         totalImp |= (cmd.at(6)<<8)&0xFF00;
         totalImp |= (cmd.at(7)<<16)&0xFF0000;
-        totalImp |= (cmd.at(8)<<24)&0xFF000000;
+        totalImp |= (uint64_t(cmd.at(8))<<24)&0xFF000000;
         cntImp |= cmd.at(9)&0xFF;
         cntImp |= (cmd.at(10)<<8)&0xFF00;
-        float timp = (float)totalImp/(float)cntImp*125e-9;
+        float timp = float(totalImp)/float(cntImp)*float(125e-9);
         temp += "imp: "+SU::displayFloat(timp, 2, 'f')+"s ("+QString::number(cntImp)+"), ";
         uint64_t ftg2=0;
         ftg2 |= cmd.at(11)&0xFF;
         ftg2 |= (cmd.at(12)<<8)&0xFF00;
         ftg2 |= (cmd.at(13)<<16)&0xFF0000;
-        ftg2 |= (cmd.at(14)<<24)&0xFF000000;
-        ftg2 |= (cmd.at(15)<<32)&0xFF00000000;
-        ftg2 |= (cmd.at(16)<<40)&0xFF0000000000;
-        temp += "fTg2: "+SU::displayFloat(float(ftg2)/128.0/8*125e-9, 2, 'f')+"s, ";
+        ftg2 |= (uint64_t(cmd.at(14))<<24)&0xFF000000;
+        ftg2 |= (uint64_t(cmd.at(15))<<32)&0xFF00000000;
+        ftg2 |= (uint64_t(cmd.at(16))<<40)&0xFF0000000000;
+        temp += "fTg2: "+SU::displayFloat(float(ftg2)/float(128.0/8*125e-9), 2, 'f')+"s, ";
         uint64_t MSM_sTG = 0, MSM_nTG = 0;
         MSM_sTG |= cmd.at(17)&0xFF;
         MSM_sTG |= (cmd.at(18)<<8)&0xFF00;
         MSM_sTG |= (cmd.at(19)<<16)&0xFF0000;
-        MSM_sTG |= (cmd.at(20)<<24)&0xFF000000;
-        MSM_sTG |= (cmd.at(21)<<32)&0xFF00000000;
-        MSM_sTG |= (cmd.at(22)<<40)&0xFF0000000000;
+        MSM_sTG |= (uint64_t(cmd.at(20))<<24)&0xFF000000;
+        MSM_sTG |= (uint64_t(cmd.at(21))<<32)&0xFF00000000;
+        MSM_sTG |= (uint64_t(cmd.at(22))<<40)&0xFF0000000000;
         MSM_nTG |= cmd.at(23)&0xFF;
         MSM_nTG |= (cmd.at(24)<<8)&0xFF00;
         MSM_nTG |= (cmd.at(25)<<16)&0xFF0000;
-        MSM_nTG |= (cmd.at(26)<<24)&0xFF000000;
+        MSM_nTG |= (uint64_t(cmd.at(26))<<24)&0xFF000000;
         temp += getWho(cmd.at(27), " Rise");
         temp += getWho(cmd.at(28), " Fall");
-        float thole = (float)MSM_sTG/(float)MSM_nTG*125e-9;
+        float thole = float(MSM_sTG)/float(MSM_nTG)*float(125e-9);
         temp += "hole: "+SU::displayFloat(thole, 2, 'f')+"s ("+QString::number(MSM_nTG)+"), ";
         temp += QString("hist|||");
         for(int u=0;u<5;++u)
@@ -199,7 +197,7 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
 
 QByteArray PureMessageZR3IIC::appendSize(QByteArray dat)
 {
-    dat.insert(0, dat.size());
+    dat.insert(0, char(dat.size()));
     return dat;
 }
 
@@ -213,7 +211,7 @@ QByteArray PureMessageZR3IIC::slaveTEST()
 QByteArray PureMessageZR3IIC::slaveRST()
 {
     QByteArray temp;
-    temp.append((char)slaveRST_c);
+    temp.append(char(slaveRST_c));
     return appendSize(temp);
 }
 
@@ -228,15 +226,15 @@ QByteArray PureMessageZR3IIC::slaveRDSECTION(uint nr)
 {
     QByteArray temp;
     temp.append(slaveRDSECTION_c);
-    temp.append(nr);
+    temp.append(char(nr));
     return appendSize(temp);
 }
 
-QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, QByteArray data)
+QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, const QByteArray& data)
 {
     QByteArray temp;
     temp.append(slaveWRSECTION_c);
-    temp.append(nr);
+    temp.append(char(nr));
     temp.append(data);
     return appendSize(temp);
 }
@@ -244,7 +242,7 @@ QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, QByteArray data)
 QByteArray PureMessageZR3IIC::slaveLOCK()
 {
     QByteArray temp;
-    temp.push_back(0xFF);
+    temp.push_back(char(0xFF));
     return slaveWRSECTION(13, temp);
 }
 

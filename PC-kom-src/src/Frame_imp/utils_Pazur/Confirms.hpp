@@ -9,9 +9,9 @@
 class Confirms
 {
 public:
-    Confirms(QByteArray dat, uint cnt);
+    Confirms(const QByteArray& dat, uint cnt);
     Confirms(QList<Confirm> cfs);
-    Confirms();
+    Confirms()=default;
 
     QString toQString() const;
     QByteArray toPureData() const;
