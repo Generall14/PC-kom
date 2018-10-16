@@ -134,7 +134,7 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         ftg2 |= (uint64_t(cmd.at(14))<<24)&0xFF000000;
         ftg2 |= (uint64_t(cmd.at(15))<<32)&0xFF00000000;
         ftg2 |= (uint64_t(cmd.at(16))<<40)&0xFF0000000000;
-        temp += "fTg2: "+SU::displayFloat(float(ftg2)/float(128.0/8*125e-9), 2, 'f')+"s, ";
+        temp += "fTg2: "+SU::displayFloat(ftg2*125e-9/128.0, 2, 'f')+"s, ";
         uint64_t MSM_sTG = 0, MSM_nTG = 0;
         MSM_sTG |= cmd.at(17)&0xFF;
         MSM_sTG |= (cmd.at(18)<<8)&0xFF00;
@@ -165,13 +165,15 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         float wpri = SU::byteArray322Float32(cmd.mid(0, 4));
         float wsec = SU::byteArray322Float32(cmd.mid(4, 4));
         float rng = SU::byteArray322Float32(cmd.mid(10, 4));
+        float ene = SU::byteArray322Float32(cmd.mid(18, 4))*1000;
         uint chng = 0, nr = 0;
         nr |= cmd.at(8)&0xFF;
         nr |= (cmd.at(9)<<8)&0xFF00;
         chng |= cmd.at(14)&0xFF;
         chng |= (cmd.at(15)<<8)&0xFF00;
 
-        temp += "Wpri: "+Quantile::makeStringB(wpri, nr, "Sv");
+        temp += "Energy: "+SU::displayFloat(ene, 2, 'f')+"eV";
+        temp += ", Wpri: "+Quantile::makeStringB(wpri, nr, "Sv");
         temp += ", Wsec: "+Quantile::makeStringB(wsec, nr, "Sv");
         temp += ", Nr: "+QString::number(nr);
         temp += ", Rng: "+SU::displayFloat(rng, 2, 'f');
