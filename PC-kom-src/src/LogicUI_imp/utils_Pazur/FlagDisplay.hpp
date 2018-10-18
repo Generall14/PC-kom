@@ -19,6 +19,7 @@ public:
 
 public slots:
     void Clear();
+    void UpdTimer();
 
 protected:
     void Init();
@@ -31,7 +32,11 @@ protected:
     QVector<QLabel*> labs;
     QVBoxLayout *mlay = nullptr;
 
+    QLabel* labTimer = nullptr;
+    int intTimer = 0;
+
     QTimer* timer = nullptr;
+    QTimer* timer2 = nullptr;
 };
 
 #endif
