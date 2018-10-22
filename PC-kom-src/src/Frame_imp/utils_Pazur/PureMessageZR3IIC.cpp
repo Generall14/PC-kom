@@ -160,17 +160,17 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
-    case 0x04:
+    case masterMES:
     {
         float wpri = SU::byteArray322Float32(cmd.mid(0, 4));
         float wsec = SU::byteArray322Float32(cmd.mid(4, 4));
-        float rng = SU::byteArray322Float32(cmd.mid(10, 4));
-        float ene = SU::byteArray322Float32(cmd.mid(18, 4))*1000;
+        float rng = SU::byteArray322Float32(cmd.mid(8, 4));
+        float ene = SU::byteArray322Float32(cmd.mid(12, 4))*1000;
         uint chng = 0, nr = 0;
-        nr |= cmd.at(8)&0xFF;
-        nr |= (cmd.at(9)<<8)&0xFF00;
-        chng |= cmd.at(14)&0xFF;
-        chng |= (cmd.at(15)<<8)&0xFF00;
+        nr |= cmd.at(16)&0xFF;
+        nr |= (cmd.at(17)<<8)&0xFF00;
+        chng |= cmd.at(18)&0xFF;
+        chng |= (cmd.at(19)<<8)&0xFF00;
 
         temp += "Energy: "+SU::displayFloat(ene, 2, 'f')+"eV";
         temp += ", Wpri: "+Quantile::makeStringB(wpri, nr, "Sv");
@@ -178,7 +178,7 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         temp += ", Nr: "+QString::number(nr);
         temp += ", Rng: "+SU::displayFloat(rng, 2, 'f');
         temp += ", Chng: "+QString::number(chng);
-        temp += ","+getWho(cmd.at(16), " Rise")+getWho(cmd.at(17), " Fall");
+        temp += ","+getWho(cmd.at(20), " Rise")+getWho(cmd.at(21), " Fall");
 
         found = true;
         break;
