@@ -139,8 +139,7 @@ void IF10ZR3s::InitRest()
     flagsLay->setMargin(2);
     mainLay->addLayout(flagsLay);
     QStringList listW{"LINE_MISSING", "RELAY_CONTACT"};
-    QStringList listF{"OBS_REQUEST", "DESC_SEG_CRC", "PP1_FAILED", "PP2_FAILED", "PP3_FAILED", "PP4_FAILED",
-                      "PP5_FAILED", "PP6_FAILED"};
+    QStringList listF{"OBS_REQUEST", "DESC_SEG_CRC", "SOME_PP_FAILED"};
     QStringList listS{"BIAS_IS_DEAD", "BIAS_SHORT", "CODE_SEG_CRC", "CONST_SEG_CRC", "ALL_PPs_FAILED"};
     fsWarn = new FlagsDisplay(flagsLay, "Warn", listW);
     fsFault = new FlagsDisplay(flagsLay, "Fault", listF);
@@ -1013,8 +1012,8 @@ QString IF10ZR3s::ReadMeasure(QByteArray dat, QString unit)
         return "ERROR";
     QString text = SU::displayFloat(SU::byteArray322Float32(dat.mid(0, 4)), 3)+unit;
     text.append(QString(" +%1\% -%2\%")
-                .arg(int(SU::byteArray2f5_11(dat.mid(4, 2))*100))
                 .arg(int(SU::byteArray2f5_11(dat.mid(6, 2))*100))
+                .arg(int(SU::byteArray2f5_11(dat.mid(4, 2))*100))
                 );
     if(dat.at(8)&0x01)
         text.append(" !DGZ!");

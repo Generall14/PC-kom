@@ -178,7 +178,6 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         temp += ", Nr: "+QString::number(nr);
         temp += ", Rng: "+SU::displayFloat(rng, 2, 'f');
         temp += ", Chng: "+QString::number(chng);
-        temp += ","+getWho(cmd.at(20), " Rise")+getWho(cmd.at(21), " Fall");
 
         found = true;
         break;
