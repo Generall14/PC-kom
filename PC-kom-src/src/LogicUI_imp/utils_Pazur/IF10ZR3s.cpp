@@ -139,7 +139,7 @@ void IF10ZR3s::InitRest()
     flagsLay->setMargin(2);
     mainLay->addLayout(flagsLay);
     QStringList listW{"LINE_MISSING", "RELAY_CONTACT"};
-    QStringList listF{"OBS_REQUEST", "DESC_SEG_CRC", "SOME_PP_FAILED"};
+    QStringList listF{"OBS_REQUEST", "DESC_SEG_CRC", "SOME_PP_FAILED", "LOST_DOSE", "PRI_MES", "ENE_MES", "NEU_MES", "GAM_MES"};
     QStringList listS{"BIAS_IS_DEAD", "BIAS_SHORT", "CODE_SEG_CRC", "CONST_SEG_CRC", "ALL_PPs_FAILED"};
     fsWarn = new FlagsDisplay(flagsLay, "Warn", listW);
     fsFault = new FlagsDisplay(flagsLay, "Fault", listF);
