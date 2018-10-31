@@ -100,8 +100,8 @@ uint64_t SU::byteArray2Int48(QByteArray b)
     if(b.size()<6)
         return -1;
     uint64_t i=0;
-    i |= ((uint64_t)(b.at(0)&0xFF))<<40;
-    i |= ((uint64_t)(b.at(1)&0xFF))<<32;
+    i |= (uint64_t(b.at(0)&0xFF))<<40;
+    i |= (uint64_t(b.at(1)&0xFF))<<32;
     i |= (b.at(2)&0xFF)<<24;
     i |= (b.at(3)&0xFF)<<16;
     i |= (b.at(4)&0xFF)<<8;
@@ -109,9 +109,39 @@ uint64_t SU::byteArray2Int48(QByteArray b)
     return i;
 }
 
+uint64_t SU::byteArray2Int64le(QByteArray b)
+{
+    if(b.size()<8)
+        return -1;
+    uint64_t i=0;
+    i |= (b.at(0)&0xFF)<<0;
+    i |= (b.at(1)&0xFF)<<8;
+    i |= (b.at(2)&0xFF)<<16;
+    i |= (uint64_t(b.at(3)&0xFF))<<24;
+    i |= (uint64_t(b.at(4)&0xFF))<<32;
+    i |= (uint64_t(b.at(5)&0xFF))<<40;
+    i |= (uint64_t(b.at(6)&0xFF))<<48;
+    i |= (uint64_t(b.at(7)&0xFF))<<56;
+    return i;
+}
+
 QByteArray SU::int48ToByteArray(long long i)
 {
     QByteArray temp;
+    temp.append((i>>40)&0xFF);
+    temp.append((i>>32)&0xFF);
+    temp.append((i>>24)&0xFF);
+    temp.append((i>>16)&0xFF);
+    temp.append((i>>8)&0xFF);
+    temp.append((i>>0)&0xFF);
+    return temp;
+}
+
+QByteArray SU::int64ToByteArray(long long i)
+{
+    QByteArray temp;
+    temp.append((i>>56)&0xFF);
+    temp.append((i>>48)&0xFF);
     temp.append((i>>40)&0xFF);
     temp.append((i>>32)&0xFF);
     temp.append((i>>24)&0xFF);

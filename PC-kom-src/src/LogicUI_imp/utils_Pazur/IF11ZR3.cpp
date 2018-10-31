@@ -378,7 +378,7 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                 }
                 case 0x04:
                 {
-                    if(mm.size()<20)
+                    if(mm.size()<24)
                         return;
                     uint ver = 0;
                     ver |= mm.at(0)&0xFF;
@@ -394,15 +394,15 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                     ver |= (mm.at(6)<<16)&0xFF0000;
                     ver |= (mm.at(7)<<24)&0xFF000000;
                     labTOn->setText(QString::number(ver));
-                    labTDose->setText(QString::number(SU::byteArray322Float32(mm.mid(8, 4))));
-                    labMDRate->setText(QString::number(SU::byteArray322Float32(mm.mid(12, 4))));
+                    labTDose->setText(SU::displayFloat(float(SU::byteArray2Int64le(mm.mid(8, 8)))*1e-15, 2, 'f')+"Sv");
+                    labMDRate->setText(SU::displayFloat(SU::byteArray322Float32(mm.mid(16, 4)), 2, 'f')+"Sv/h");
                     ver = 0;
-                    ver |= mm.at(16)&0xFF;
-                    ver |= (mm.at(17)<<8)&0xFF00;
+                    ver |= mm.at(20)&0xFF;
+                    ver |= (mm.at(21)<<8)&0xFF00;
                     labMUdr->setText(QString::number(ver));
                     ver = 0;
-                    ver |= mm.at(18)&0xFF;
-                    ver |= (mm.at(19)<<8)&0xFF00;
+                    ver |= mm.at(22)&0xFF;
+                    ver |= (mm.at(23)<<8)&0xFF00;
                     labUdr->setText(QString::number(ver));
                     break;
                 }

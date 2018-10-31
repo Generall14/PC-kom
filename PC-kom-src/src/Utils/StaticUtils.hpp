@@ -22,6 +22,9 @@ public:
     static uint64_t byteArray2Int48(QByteArray b);
     static QByteArray int48ToByteArray(long long i);
 
+    static uint64_t byteArray2Int64le(QByteArray b);
+    static QByteArray int64ToByteArray(long long i);
+
     static bool byteArray2bool(QByteArray b);
     static QByteArray boolToByteArray(bool b);
 
