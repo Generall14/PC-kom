@@ -145,6 +145,7 @@ void IF11ZR3::InitRest()
                                                 labMDRate->setText("?");
                                                 labTDose->setText("?");
                                                 labTOn->setText("?");
+                                                labLoc->setText("?");
                                                 labVDown->setText("?");
                                                 labStarts->setText("?");
                                                 labMUdr->setText("?");
@@ -215,6 +216,11 @@ void IF11ZR3::InitRest()
     labs3Lay->addWidget(lab);
     labUdr = new QLabel("?");
     labs3Lay->addWidget(labUdr);
+    techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Czas lokalny [min]: ");
+    labs3Lay->addWidget(lab);
+    labLoc = new QLabel("?");
+    labs3Lay->addWidget(labLoc);
 
 
     QHBoxLayout* wrIdLay = new QHBoxLayout();
@@ -404,6 +410,10 @@ void IF11ZR3::internalFrameReaded(QSharedPointer<Frame> fr)
                     ver |= mm.at(22)&0xFF;
                     ver |= (mm.at(23)<<8)&0xFF00;
                     labUdr->setText(QString::number(ver));
+                    ver = 0;
+                    ver |= mm.at(24)&0xFF;
+                    ver |= (mm.at(25)<<8)&0xFF00;
+                    labLoc->setText(QString::number(ver));
                     break;
                 }
                 case 0x05:
