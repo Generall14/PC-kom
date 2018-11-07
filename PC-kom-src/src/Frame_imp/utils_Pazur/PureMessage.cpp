@@ -356,11 +356,11 @@ uint PureMessage::calcMagicNumber(const QByteArray& wID_IDX)
     uint temp = 0x0000;
     if(wID_IDX.size()<11)
         return temp;
-    temp += wID_IDX.at(5);
-    temp += wID_IDX.at(6);
-    temp += wID_IDX.at(8);
-    temp += wID_IDX.at(9);
-    temp += wID_IDX.at(10);
+    temp += uchar(wID_IDX.at(5));
+    temp += uchar(wID_IDX.at(6));
+    temp += uchar(wID_IDX.at(8));
+    temp += uchar(wID_IDX.at(9));
+    temp += uchar(wID_IDX.at(10));
     return temp;
 }
 
