@@ -116,8 +116,10 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
-    case 0x03:
+    case masterDBG_c:
     {
+        if(cmd.size()<27)
+            break;
         uint totalImp = 0, cntImp = 0;
         totalImp |= cmd.at(5)&0xFF;
         totalImp |= (cmd.at(6)<<8)&0xFF00;
@@ -146,8 +148,6 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         MSM_nTG |= (cmd.at(24)<<8)&0xFF00;
         MSM_nTG |= (cmd.at(25)<<16)&0xFF0000;
         MSM_nTG |= (uint64_t(cmd.at(26))<<24)&0xFF000000;
-        temp += getWho(cmd.at(27), " Rise");
-        temp += getWho(cmd.at(28), " Fall");
         float thole = float(MSM_sTG)/float(MSM_nTG)*float(125e-9);
         temp += "hole: "+SU::displayFloat(thole, 2, 'f')+"s ("+QString::number(MSM_nTG)+"), ";
         temp += QString("hist|||");
@@ -162,6 +162,8 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
     }
     case masterMES:
     {
+        if(cmd.size()<20)
+            break;
         float wpri = SU::byteArray322Float32(cmd.mid(0, 4));
         float wsec = SU::byteArray322Float32(cmd.mid(4, 4));
         float rng = SU::byteArray322Float32(cmd.mid(8, 4));

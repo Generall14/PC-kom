@@ -58,6 +58,9 @@ protected:
     QDoubleSpinBox* sbRegBias = nullptr;
     QSpinBox* sbADCBias = nullptr;
 
+    QSpinBox* sbtechRDSECTION = nullptr;
+    QLineEdit* letechWRSECTION = nullptr;
+
     DisplayMes* disp = nullptr;
 
     const uint MIN_PB_W = 150;

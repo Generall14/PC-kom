@@ -145,6 +145,41 @@ void IF11ZR3I2c::InitRest()
     QFrame* ffr = new QFrame();
     mainLay->addWidget(ffr);
     disp = new DisplayMes(ffr);
+
+    QHBoxLayout* techRDSECTIONLay = new QHBoxLayout();
+    mainLay->addLayout(techRDSECTIONLay);
+    pb = new QPushButton("RDSECTION");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr, PureMessageZR3IIC::slaveRDSECTION(
+                                                                                   sbtechRDSECTION->value())));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techRDSECTIONLay->addWidget(pb);
+    pb = new QPushButton("wiWRSECTION(dev)");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                                                                               PureMessageZR3IIC::slaveWRSECTION(
+                                                                                   sbtechRDSECTION->value(),
+                                                                                   SU::string2ByteArray(letechWRSECTION->text())
+                                                                                   )));});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techRDSECTIONLay->addWidget(pb);
+    techRDSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Nr:");
+    techRDSECTIONLay->addWidget(lab);
+    sbtechRDSECTION = new QSpinBox();
+    sbtechRDSECTION->setMaximum(0x3F);
+    sbtechRDSECTION->setMinimum(0);
+    techRDSECTIONLay->addWidget(sbtechRDSECTION);
+
+    QHBoxLayout* techWRSECTIONLay = new QHBoxLayout();
+    mainLay->addLayout(techWRSECTIONLay);
+
+    techWRSECTIONLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Nr:");
+    techWRSECTIONLay->addWidget(lab);
+    letechWRSECTION = new QLineEdit("fe");
+    letechWRSECTION->setValidator(new HexValidator(1, 0, letechWRSECTION));
+    mainLay->addWidget(letechWRSECTION);
 }
 
 void IF11ZR3I2c::Init()
