@@ -75,9 +75,6 @@ public:
     static QByteArray zr3ObsOdpytywanie(uint16_t magic, bool en, uint tempo);
     static QByteArray zr3WyStSetMode(uint16_t magic, uint tryb, uint tempo);
     static QByteArray zr3ObsInEn(uint16_t magic, bool en);
-    static QByteArray zr3Lock();
-    static QByteArray zr3Unlock();
-    static QByteArray zr3LockStatus();
 
     static const uchar techREQ_c = 0x00;
     static const uchar techINV_c = 0x01;

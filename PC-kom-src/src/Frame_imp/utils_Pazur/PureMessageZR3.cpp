@@ -903,27 +903,3 @@ QByteArray PureMessageZR3::zr3WyAlarmOdczytaj()
     temp.append(0x51);
     return temp;
 }
-
-QByteArray PureMessageZR3::zr3Lock()
-{
-    QByteArray temp;
-    temp.append(0x80);
-    temp.append(0x01);
-    return temp;
-}
-
-QByteArray PureMessageZR3::zr3Unlock()
-{
-    QByteArray temp;
-    temp.append(0x81);
-    temp.append(0x01);
-    return temp;
-}
-
-QByteArray PureMessageZR3::zr3LockStatus()
-{
-    QByteArray temp;
-    temp.append(0x83);
-    temp.append(0x01);
-    return temp;
-}

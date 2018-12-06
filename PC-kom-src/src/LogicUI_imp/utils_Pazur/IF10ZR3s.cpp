@@ -893,31 +893,6 @@ void IF10ZR3s::InitRest()
     edrProbeRead->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     labEstimatedGammaDoseRateProbe = new QLabel("-");
     edrProbeRead->addWidget(labEstimatedGammaDoseRateProbe);
-
-    //=============================================================================================
-    QGroupBox* blokada = new QGroupBox("Blokada");
-    mainLay->addWidget(blokada);
-    QVBoxLayout* blLay = new QVBoxLayout(blokada);
-    blLay->setMargin(2);
-
-    QHBoxLayout* blSeet = new QHBoxLayout();
-    blLay->addLayout(blSeet);
-    pb = new QPushButton("Blokuj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3Lock(), 2);});
-    pb->setMaximumWidth(MIN_PB_W/2);
-    pb->setMinimumWidth(MIN_PB_W/2);
-    blSeet->addWidget(pb);
-    pb = new QPushButton("Odblokuj");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3Unlock(), 2);});
-    pb->setMaximumWidth(MIN_PB_W/2);
-    pb->setMinimumWidth(MIN_PB_W/2);
-    blSeet->addWidget(pb);
-    pb = new QPushButton("Status");
-    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::zr3LockStatus(), 2);});
-    pb->setMaximumWidth(MIN_PB_W/2);
-    pb->setMinimumWidth(MIN_PB_W/2);
-    blSeet->addWidget(pb);
-    blSeet->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 }
 
 void IF10ZR3s::Init()
