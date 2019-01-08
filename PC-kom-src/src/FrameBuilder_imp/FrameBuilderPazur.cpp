@@ -5,7 +5,7 @@
 #include <cassert>
 #include <stdint.h>
 #include <QMutexLocker>
-#include "../Utils/CRC.hpp"
+#include "../Utils/PazurCRC.hpp"
 
 FrameBuilderPazur::FrameBuilderPazur():
     FrameBuilder()
@@ -46,9 +46,7 @@ void FrameBuilderPazur::ByteReaded(QByteArray ba)
         assert(potentialFrame.size()<5);
         if(potentialFrame.size()==4)
         {
-            uint8_t crca = (potentialFrame.at(3)>>2)&0x1f;
-            uint8_t crcb = CRC::crc5(potentialFrame.mid(0, 3));
-            if(crca==crcb)
+            if(PazurCRC::CheckCRC5(potentialFrame))
             {
                 if(!trash.isEmpty())
                 {

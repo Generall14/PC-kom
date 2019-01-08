@@ -101,7 +101,8 @@ SOURCES += main.cpp\
     src/Frame_imp/utils_Pazur/PureMessageZR3IIC.cpp \
     src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.cpp \
     src/Frame_imp/utils_Pazur/Quantile.cpp \
-    src/Utils/DisplayMes.cpp
+    src/Utils/DisplayMes.cpp \
+    src/Utils/PazurCRC.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -179,7 +180,8 @@ HEADERS  += mainwindow.h \
     src/Frame_imp/utils_Pazur/PureMessageZR3IIC.hpp \
     src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.hpp \
     src/Frame_imp/utils_Pazur/Quantile.hpp \
-    src/Utils/DisplayMes.hpp
+    src/Utils/DisplayMes.hpp \
+    src/Utils/PazurCRC.hpp
 
 DISTFILES += \
     configs.xml \

@@ -7,6 +7,7 @@
 #include <Frame.hpp>
 #include <Factory.hpp>
 #include "Utils/GlobalXmlFile.hpp"
+#include "Utils/PazurCRC.hpp"
 
 int main(int argc, char *argv[])
 {

@@ -18,7 +18,7 @@ Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
         errorMessage = " Invalid data length";
         return;
     }
-    uint16_t crc = CRC::crc10(dat.mid(0, dat.size()-1), 0x155^id);
+    uint16_t crc = CRC::crc10(dat.mid(0, dat.size()-1), 0x2AA^id);
     uchar crch = (crc>>8)&0x03;
     uchar crcl = crc&0xFF;
     if((crcl!=(uchar)dat.at(dat.size()-1))||(crch!=(uchar)addcrc))
@@ -63,7 +63,7 @@ Messages::Messages(QList<Message> msgs, uchar id):
 
     for(auto a: msgs)
         _dat.append(a.toPureData());
-    uint16_t crc = CRC::crc10(_dat, 0x155^id);
+    uint16_t crc = CRC::crc10(_dat, 0x2AA^id);
 
     _addcrc = (crc>>8)&0x03;
     uchar crcl = crc&0xFF;

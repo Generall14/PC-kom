@@ -1,5 +1,5 @@
 #include "FramePazur.hpp"
-#include "../Utils/CRC.hpp"
+#include "../Utils/PazurCRC.hpp"
 #include <stdint.h>
 #include <assert.h>
 #include <QDebug>
@@ -57,11 +57,11 @@ FramePazur::FramePazur(uchar from, uchar to, uchar id, bool fast, QList<Confirm>
     pck.append(temp);
 
     temp = 0x00;
-    uchar crc5 = CRC::crc5(pck.mid(0, 3));
-    temp |= (crc5<<2)&0x7C;
     temp |= _crc10add&0x03;
     temp |= (_id<<6)&0x80;
     pck.append(temp);
+
+    PazurCRC::AppendCRC5(pck);
 
     pck.append(_cfs.toPureData());
     if(_dataSize>1)
@@ -111,11 +111,7 @@ bool FramePazur::isHeaderOk()
 {
     if(pck.size()<4)
         return false;
-    uint8_t crca = ((pck.at(3)&0x7C)>>2);
-    uint8_t crcb = CRC::crc5(pck.mid(0, 3))&0x1F;
-    if(crca!=crcb)
-        return false;
-    return true;
+    return PazurCRC::CheckCRC5(pck);
 }
 
 void FramePazur::parse()
