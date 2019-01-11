@@ -9,7 +9,7 @@
 class Messages
 {
 public:
-    Messages(QByteArray dat, int siz, char addcrc, char id);
+    Messages(QByteArray dat, int siz, char addcrc, uint id);
     Messages(QList<Message> msgs, uchar id);
     Messages();
 

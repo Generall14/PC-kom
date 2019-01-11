@@ -2,7 +2,7 @@
 #include <QDebug>
 #include "Utils/CRC.hpp"
 
-Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
+Messages::Messages(QByteArray dat, int siz, char addcrc, uint id):
     _dat(dat),
     _addcrc(addcrc)
 {
@@ -18,6 +18,10 @@ Messages::Messages(QByteArray dat, int siz, char addcrc, char id):
         errorMessage = " Invalid data length";
         return;
     }
+    id <<= 7;
+    if(id&0x80)
+        id |= 0x0200;
+    id &= 0x0300;
     uint16_t crc = CRC::crc10(dat.mid(0, dat.size()-1), 0x2AA^id);
     uchar crch = (crc>>8)&0x03;
     uchar crcl = crc&0xFF;
@@ -61,6 +65,10 @@ Messages::Messages(QList<Message> msgs, uchar id):
         return;
     }
 
+    id <<= 7;
+    if(id&0x80)
+        id |= 0x0200;
+    id &= 0x0300;
     for(auto a: msgs)
         _dat.append(a.toPureData());
     uint16_t crc = CRC::crc10(_dat, 0x2AA^id);

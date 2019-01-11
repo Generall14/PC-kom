@@ -314,7 +314,7 @@ void IF11ZR3::InitI2CTabs()
     tw->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLay->addWidget(tw);
 
-    for(int i=1;i<=6;++i)
+    for(int i=1;i<=8;++i)
     {
         QFrame* fr = new QFrame();
         IF11ZR3I2c* iic = new IF11ZR3I2c(fr, i);
