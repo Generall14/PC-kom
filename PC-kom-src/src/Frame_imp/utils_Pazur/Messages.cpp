@@ -53,7 +53,7 @@ Messages::Messages(QByteArray dat, int siz, char addcrc, uint id):
     isValid = true;
 }
 
-Messages::Messages(QList<Message> msgs, uchar id):
+Messages::Messages(QList<Message> msgs, uint id):
     _msgs(msgs)
 {
     _dat.clear();
@@ -64,7 +64,6 @@ Messages::Messages(QList<Message> msgs, uchar id):
         _dat.append(0xFF);
         return;
     }
-
     id <<= 7;
     if(id&0x80)
         id |= 0x0200;
