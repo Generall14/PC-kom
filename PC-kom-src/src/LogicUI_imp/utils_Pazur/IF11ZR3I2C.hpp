@@ -34,11 +34,6 @@ protected slots:
     void Init();
     void InitRest();
 
-    void UpdThrPWM(int v);
-    void UpdBiasPWM(int v);
-    void UpdThrPWM(double v);
-    void UpdBiasPWM(double v);
-
 protected:
     QFrame* cParent=nullptr;
     QVBoxLayout* mainLay = nullptr;
@@ -52,11 +47,6 @@ protected:
     QLabel* labStarts = nullptr;
     QLabel* labErrorFLags = nullptr;
     QLabel* labRCLK = nullptr;
-
-    QDoubleSpinBox* sbRegThr = nullptr;
-    QSpinBox* sbADCThr = nullptr;
-    QDoubleSpinBox* sbRegBias = nullptr;
-    QSpinBox* sbADCBias = nullptr;
 
     QSpinBox* sbtechRDSECTION = nullptr;
     QLineEdit* letechWRSECTION = nullptr;

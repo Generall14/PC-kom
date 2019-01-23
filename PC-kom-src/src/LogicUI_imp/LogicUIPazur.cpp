@@ -121,9 +121,9 @@ void LogicUIPazur::InitGlobals()
     lab = new QLabel("Okres: [s]");
     ATLay->addWidget(lab);
     sbATperiod = new QDoubleSpinBox();
-    sbATperiod->setMinimum(0.5);
+    sbATperiod->setMinimum(0.1);
     sbATperiod->setMaximum(60);
-    sbATperiod->setSingleStep(0.5);
+    sbATperiod->setSingleStep(0.1);
     connect(sbATperiod, SIGNAL(valueChanged(double)), this, SLOT(ATUpdate()));
     ATLay->addWidget(sbATperiod);
 
