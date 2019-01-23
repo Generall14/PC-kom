@@ -268,7 +268,8 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     QTextStream out(&lastFile);
                     out << SU::displayFloat(wpri, 2, 'f') << "Sv/h\tNr: " << QString::number(nr);
                     if(iicd.at(16)||iicd.at(17))
-                        out << "\t" << PureMessageZR3IIC::getWho(iicd.at(16), " Rise") << PureMessageZR3IIC::getWho(iicd.at(17), " Fall");
+                        out << "\t" << PureMessageZR3IIC::getWho(iicd.at(16), QString::number(_adr)+" Rise")
+                            << PureMessageZR3IIC::getWho(iicd.at(17), QString::number(_adr)+" Fall");
                     out << "\n";
                     lastFile.close();
                 }
