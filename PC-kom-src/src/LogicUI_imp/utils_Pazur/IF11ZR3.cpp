@@ -82,6 +82,15 @@ void IF11ZR3::InitRest()
     techCALLLay->addWidget(pb);
     techCALLLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
+    QHBoxLayout* techPALSYLay = new QHBoxLayout();
+    mainLay->addLayout(techPALSYLay);
+    pb = new QPushButton("techPALSY");
+    connect(pb, &QPushButton::clicked, [this](){SendMessage(PureMessageZR3::techPALSY(), 3);});
+    pb->setMaximumWidth(MIN_PB_W);
+    pb->setMinimumWidth(MIN_PB_W);
+    techPALSYLay->addWidget(pb);
+    techPALSYLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+
     QHBoxLayout* techRDSECTIONLay = new QHBoxLayout();
     mainLay->addLayout(techRDSECTIONLay);
     pb = new QPushButton("techRDSECTION");
@@ -190,7 +199,7 @@ void IF11ZR3::InitRest()
     labVDown = new QLabel("?");
     labs2Lay->addWidget(labVDown);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Czas działania [min]: ");
+    lab = new QLabel("Czas działania [sek]: ");
     labs2Lay->addWidget(lab);
     labTOn = new QLabel("?");
     labs2Lay->addWidget(labTOn);
@@ -217,7 +226,7 @@ void IF11ZR3::InitRest()
     labUdr = new QLabel("?");
     labs3Lay->addWidget(labUdr);
     techRdsLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    lab = new QLabel("Czas lokalny [min]: ");
+    lab = new QLabel("Czas lokalny [sek]: ");
     labs3Lay->addWidget(lab);
     labLoc = new QLabel("?");
     labs3Lay->addWidget(labLoc);

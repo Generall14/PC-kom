@@ -65,6 +65,14 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
+    case slavePALSY_c:
+    {
+        if(cmd.size()!=0)
+            break;
+        temp = "slavePALSY";
+        found = true;
+        break;
+    }
     case slaveRDSECTION_c:
     {
         if(cmd.size()!=1)
@@ -225,6 +233,13 @@ QByteArray PureMessageZR3IIC::slaveCALL()
     return appendSize(temp);
 }
 
+QByteArray PureMessageZR3IIC::slavePALSY()
+{
+    QByteArray temp;
+    temp.append(slavePALSY_c);
+    return appendSize(temp);
+}
+
 QByteArray PureMessageZR3IIC::slaveRDSECTION(uint nr)
 {
     QByteArray temp;
@@ -240,18 +255,4 @@ QByteArray PureMessageZR3IIC::slaveWRSECTION(uint nr, const QByteArray& data)
     temp.append(char(nr));
     temp.append(data);
     return appendSize(temp);
-}
-
-QByteArray PureMessageZR3IIC::slaveLOCK()
-{
-    QByteArray temp;
-    temp.push_back(char(0xFF));
-    return slaveWRSECTION(13, temp);
-}
-
-QByteArray PureMessageZR3IIC::slaveUNLOCK()
-{
-    QByteArray temp;
-    temp.push_back(char(0x00));
-    return slaveWRSECTION(13, temp);
 }

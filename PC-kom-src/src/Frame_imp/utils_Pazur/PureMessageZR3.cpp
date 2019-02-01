@@ -142,6 +142,14 @@ QString PureMessageZR3::desc(const QByteArray& _arr, bool* found)
             *found = true;
             break;
         }
+        case techPALSY_c:
+        {
+            if(_arr.size()!=3)
+                break;
+            temp.append(QString("techPALSY"));
+            *found = true;
+            break;
+        }
         case techWRIIC_c:
         {
             if(_arr.size()<6)
@@ -317,6 +325,13 @@ QByteArray PureMessageZR3::techCALL()
 {
     QByteArray temp;
     temp.append(techCALL_c);
+    return temp;
+}
+
+QByteArray PureMessageZR3::techPALSY()
+{
+    QByteArray temp;
+    temp.append(techPALSY_c);
     return temp;
 }
 

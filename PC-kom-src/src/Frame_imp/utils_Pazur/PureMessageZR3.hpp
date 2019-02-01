@@ -16,6 +16,7 @@ public:
     static QByteArray techWRSECTION(uint nr, uint16_t magic, const QByteArray& data);
     static QByteArray techRESET();
     static QByteArray techCALL();
+    static QByteArray techPALSY();
 
     static QByteArray techRdVer();
     static QByteArray techRdDate();
@@ -88,6 +89,7 @@ public:
     static const uchar techWRIIC_c = 0x3A;
     static const uchar techCALL_c = 0x39;
     static const uchar techRET_c = 0x38;
+    static const uchar techPALSY_c = 0x37;
 
 private:
     PureMessageZR3(){}

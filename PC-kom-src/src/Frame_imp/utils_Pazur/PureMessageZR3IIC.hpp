@@ -15,8 +15,7 @@ public:
     static QByteArray slaveRDSECTION(uint nr);
     static QByteArray slaveWRSECTION(uint nr, const QByteArray& data);
     static QByteArray slaveCALL();
-    static QByteArray slaveLOCK();
-    static QByteArray slaveUNLOCK();
+    static QByteArray slavePALSY();
 
     static const uchar masterTEST_c = 0xFF;
     static const uchar masterRDSECTIONo_c = 0x81;
@@ -29,6 +28,7 @@ public:
     static const uchar slaveRDSECTION_c = 0x01;
     static const uchar slaveWRSECTION_c = 0x02;
     static const uchar slaveCALL_c = 0x03;
+    static const uchar slavePALSY_c = 0x05;
 
     static QString getWho(char b, QString temp);
 
