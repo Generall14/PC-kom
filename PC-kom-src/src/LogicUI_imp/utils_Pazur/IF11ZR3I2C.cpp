@@ -78,13 +78,39 @@ void IF11ZR3I2c::InitRest()
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
     smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
-    pb = new QPushButton("rCLK");
+    pb = new QPushButton("rdCLK");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
                     PureMessageZR3IIC::slaveRDSECTION(6)));
                     labRCLK->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay2->addWidget(pb);
+    smLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("rdOffset");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(18)));
+                    labOffset->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay2->addWidget(pb);
+
+    QHBoxLayout* smLay3 = new QHBoxLayout();
+    mainLay->addLayout(smLay3);
+    pb = new QPushButton("rdZero");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(19)));
+                    labZero->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay3->addWidget(pb);
+    smLay3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("rdCurrent");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRDSECTION(20)));
+                    labCurrent->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay3->addWidget(pb);
 
     QHBoxLayout* labsLay = new QHBoxLayout();
     mainLay->addLayout(labsLay);
@@ -115,6 +141,20 @@ void IF11ZR3I2c::InitRest()
     labRCLK = new QLabel("?");
     labsLay2->addWidget(labRCLK);
     labsLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Offset: ");
+    labsLay2->addWidget(lab);
+    labOffset = new QLabel("?");
+    labsLay2->addWidget(labOffset);
+    labsLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Zero: ");
+    labsLay2->addWidget(lab);
+    labZero = new QLabel("?");
+    labsLay2->addWidget(labZero);
+    labsLay2->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    lab = new QLabel("Current: ");
+    labsLay2->addWidget(lab);
+    labCurrent = new QLabel("?");
+    labsLay2->addWidget(labCurrent);
 
     QHBoxLayout* callLay = new QHBoxLayout();
     mainLay->addLayout(callLay);
@@ -238,6 +278,38 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     ver |= iicd.at(1)&0xFF;
                     ver |= (iicd.at(2)<<8)&0xFF00;
                     labRCLK->setText(QString::number(float(ver)/32));
+                    break;
+                }
+                case 18:
+                {
+                    int off = 0;
+                    off |= iicd.at(1)&0xFF;
+                    off |= (iicd.at(2)<<8)&0xFF00;
+                    off &= 0x3FF;
+                    float val = float(off)*1.5/0x3FF;
+                    if(off&0x200)
+                        val = val - 1.5;
+                    labOffset->setText("0x"+QString::number(off, 16)+"/" + QString::number(val)+" V");
+                    break;
+                }
+                case 19:
+                {
+                    int off = 0;
+                    off |= iicd.at(1)&0xFF;
+                    off |= (iicd.at(2)<<8)&0xFF00;
+                    off &= 0x3FF;
+                    float val = float(off)*1.5/0x3FF/64;
+                    labZero->setText(QString::number(val)+" V");
+                    break;
+                }
+                case 20:
+                {
+                    int off = 0;
+                    off |= iicd.at(1)&0xFF;
+                    off |= (iicd.at(2)<<8)&0xFF00;
+                    off &= 0x3FF;
+                    float val = float(off)*1.5/0x3FF/16;
+                    labCurrent->setText(QString::number(val)+" V");
                     break;
                 }
                 default:

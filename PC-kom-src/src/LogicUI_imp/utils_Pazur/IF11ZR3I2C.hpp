@@ -47,6 +47,9 @@ protected:
     QLabel* labStarts = nullptr;
     QLabel* labErrorFLags = nullptr;
     QLabel* labRCLK = nullptr;
+    QLabel* labOffset = nullptr;
+    QLabel* labZero = nullptr;
+    QLabel* labCurrent = nullptr;
 
     QSpinBox* sbtechRDSECTION = nullptr;
     QLineEdit* letechWRSECTION = nullptr;
