@@ -297,8 +297,9 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     int off = 0;
                     off |= iicd.at(1)&0xFF;
                     off |= (iicd.at(2)<<8)&0xFF00;
+                    off /= 64;
                     off &= 0x3FF;
-                    float val = float(off)*1.5/0x3FF/64;
+                    float val = float(off)*1.5/0x3FF;
                     labZero->setText(QString::number(val)+" V");
                     break;
                 }
@@ -307,8 +308,9 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     int off = 0;
                     off |= iicd.at(1)&0xFF;
                     off |= (iicd.at(2)<<8)&0xFF00;
+                    off /= 16;
                     off &= 0x3FF;
-                    float val = float(off)*1.5/0x3FF/16;
+                    float val = float(off)*1.5/0x3FF;
                     labCurrent->setText(QString::number(val)+" V");
                     break;
                 }
