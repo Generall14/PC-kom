@@ -111,6 +111,22 @@ void IF11ZR3I2c::InitRest()
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     smLay3->addWidget(pb);
+    smLay3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("rdHist");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveGET_DBG_DAT()));
+                    labHIST->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay3->addWidget(pb);
+    smLay3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    pb = new QPushButton("rstHist");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveRST_HIST()));
+                    labHIST->setText("?");});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    smLay3->addWidget(pb);
 
     QHBoxLayout* labsLay = new QHBoxLayout();
     mainLay->addLayout(labsLay);
@@ -155,6 +171,18 @@ void IF11ZR3I2c::InitRest()
     labsLay2->addWidget(lab);
     labCurrent = new QLabel("?");
     labsLay2->addWidget(labCurrent);
+
+    QHBoxLayout* labsLay3 = new QHBoxLayout();
+    mainLay->addLayout(labsLay3);
+    lab = new QLabel("hist: ");
+    labsLay3->addWidget(lab);
+    labHIST = new QLabel("?");
+    labsLay3->addWidget(labHIST);
+    labsLay3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+//    lab = new QLabel("Offset: ");
+//    labsLay3->addWidget(lab);
+//    labOffset = new QLabel("?");
+//    labsLay3->addWidget(labOffset);
 
     QHBoxLayout* callLay = new QHBoxLayout();
     mainLay->addLayout(callLay);
@@ -297,7 +325,6 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     int off = 0;
                     off |= iicd.at(1)&0xFF;
                     off |= (iicd.at(2)<<8)&0xFF00;
-                    off /= 64;
                     off &= 0x3FF;
                     float val = float(off)*1.5/0x3FF;
                     labZero->setText(QString::number(val)+" V");
@@ -318,6 +345,21 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     break;
                 }
             }
+            else if(code==PureMessageZR3IIC::masterDBG_c)
+            {
+                qDebug()<<"aaaaaaaaaaaaaaaaa";
+                if(iicd.size()<6)
+                    break;
+                QString temp = "|||";
+                for(int u=0;u<5;++u)
+                {
+                    temp += QString(" %1 |").arg(iicd.at(0)&0xFF);
+                    iicd = iicd.mid(1);
+                }
+                temp += "||";
+                labHIST->setText(temp);
+                break;
+            }
             else if(code==0x84)
             {
                 float wpri = SU::byteArray322Float32(iicd.mid(0, 4));
@@ -331,9 +373,9 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                 {
                     QTextStream out(&lastFile);
                     out << SU::displayFloat(wpri, 2, 'f') << "Sv/h\tNr: " << QString::number(nr);
-                    if(iicd.at(16)||iicd.at(17))
-                        out << "\t" << PureMessageZR3IIC::getWho(iicd.at(16), QString::number(_adr)+" Rise")
-                            << PureMessageZR3IIC::getWho(iicd.at(17), QString::number(_adr)+" Fall");
+                    if(iicd.at(18)||iicd.at(19))
+                        out << "\t" << PureMessageZR3IIC::getWho(iicd.at(18), QString::number(_adr)+" Rise")
+                            << PureMessageZR3IIC::getWho(iicd.at(19), QString::number(_adr)+" Fall");
                     out << "\n";
                     lastFile.close();
                 }

@@ -50,6 +50,7 @@ protected:
     QLabel* labOffset = nullptr;
     QLabel* labZero = nullptr;
     QLabel* labCurrent = nullptr;
+    QLabel* labHIST = nullptr;
 
     QSpinBox* sbtechRDSECTION = nullptr;
     QLineEdit* letechWRSECTION = nullptr;

@@ -106,19 +106,19 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         if(cmd.size()<10)
             break;
         uint16_t val = 0;
-        val = cmd.at(0);
+        val = cmd.at(0)&0xFF;
         val |= (cmd.at(1)<<8)&0xFF00;
         temp = QString("slaveRET, R12: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
-        val = cmd.at(2);
+        val = cmd.at(2)&0xFF;
         val |= (cmd.at(3)<<8)&0xFF00;
         temp += QString("R13: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
-        val = cmd.at(4);
+        val = cmd.at(4)&0xFF;
         val |= (cmd.at(5)<<8)&0xFF00;
         temp += QString("R14: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
-        val = cmd.at(6);
+        val = cmd.at(6)&0xFF;
         val |= (cmd.at(7)<<8)&0xFF00;
         temp += QString("R15: 0x%1, ").arg(val&0xFFFF, 4, 16, QChar('0'));
-        val = cmd.at(8);
+        val = cmd.at(8)&0xFF;
         val |= (cmd.at(9)<<8)&0xFF00;
         temp += QString("SR: 0x%1").arg(val&0xFFFF, 4, 16, QChar('0'));
         found = true;
@@ -237,6 +237,20 @@ QByteArray PureMessageZR3IIC::slavePALSY()
 {
     QByteArray temp;
     temp.append(slavePALSY_c);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveGET_DBG_DAT()
+{
+    QByteArray temp;
+    temp.append(slaveGET_DBG_DAT_c);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveRST_HIST()
+{
+    QByteArray temp;
+    temp.append(slaveRST_HIST_c);
     return appendSize(temp);
 }
 
