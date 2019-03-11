@@ -254,6 +254,15 @@ QByteArray PureMessageZR3IIC::slaveRST_HIST()
     return appendSize(temp);
 }
 
+QByteArray PureMessageZR3IIC::slaveMES_RST(uint16_t D)
+{
+    QByteArray temp;
+    temp.append(slaveMES_RST_c);
+    temp.append(D&0xFF);
+    temp.append((D>>8)&0xFF);
+    return appendSize(temp);
+}
+
 QByteArray PureMessageZR3IIC::slaveRDSECTION(uint nr)
 {
     QByteArray temp;

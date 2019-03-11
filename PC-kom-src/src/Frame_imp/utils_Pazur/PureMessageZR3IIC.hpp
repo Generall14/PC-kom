@@ -18,6 +18,7 @@ public:
     static QByteArray slavePALSY();
     static QByteArray slaveGET_DBG_DAT();
     static QByteArray slaveRST_HIST();
+    static QByteArray slaveMES_RST(uint16_t D);
 
     static const uchar masterTEST_c = 0xFF;
     static const uchar masterRDSECTIONo_c = 0x81;
@@ -30,6 +31,7 @@ public:
     static const uchar slaveRDSECTION_c = 0x01;
     static const uchar slaveWRSECTION_c = 0x02;
     static const uchar slaveCALL_c = 0x03;
+    static const uchar slaveMES_RST_c = 0x04;
     static const uchar slavePALSY_c = 0x05;
     static const uchar slaveGET_DBG_DAT_c = 0x07;
     static const uchar slaveRST_HIST_c = 0x08;

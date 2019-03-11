@@ -198,6 +198,18 @@ void IF11ZR3I2c::InitRest()
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
     callLay->addWidget(pb);
+    pb = new QPushButton("MES_RST_UP");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveMES_RST(0x1234)));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    callLay->addWidget(pb);
+    pb = new QPushButton("MES_RST_DOWN");
+    connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
+                    PureMessageZR3IIC::slaveMES_RST(-1)));});
+    pb->setMaximumWidth(smallMIN_PB_W);
+    pb->setMinimumWidth(smallMIN_PB_W);
+    callLay->addWidget(pb);
     callLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
 
     QFrame* ffr = new QFrame();
@@ -347,7 +359,6 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
             }
             else if(code==PureMessageZR3IIC::masterDBG_c)
             {
-                qDebug()<<"aaaaaaaaaaaaaaaaa";
                 if(iicd.size()<6)
                     break;
                 QString temp = "|||";
