@@ -300,7 +300,7 @@ void IF11ZR3::InitI2CTabs()
     pb->setMaximumWidth(MIN_PB_W/2);
     pb->setMinimumWidth(MIN_PB_W/2);
     wthLay->addWidget(pb);
-    for(int i=1;i<=6;i++)
+    for(int i=1;i<=8;i++)
     {
         QCheckBox* cb = new QCheckBox("en"+QString::number(i));
         wthLay->addWidget(cb);
@@ -309,7 +309,7 @@ void IF11ZR3::InitI2CTabs()
     pb = new QPushButton("wrFLAGS");
     connect(pb, &QPushButton::clicked, [this](){
         uchar tt = 0x00;
-        for(int i=0;i<6;i++)
+        for(int i=0;i<8;i++)
             tt |= wthFlags.at(i)->isChecked()?(0x01<<i):(0x00);
         QByteArray temp; temp.append(tt);
         SendMessage(PureMessageZR3::techWRSECTION(6,
