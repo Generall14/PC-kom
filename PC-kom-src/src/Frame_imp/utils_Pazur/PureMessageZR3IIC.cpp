@@ -188,6 +188,7 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         temp += ", Nr: "+QString::number(nr);
         temp += ", Rng: "+SU::displayFloat(rng, 2, 'f');
         temp += ", Chng: "+QString::number(chng);
+        temp.append(QString(", State: 0x%1 ").arg(cmd.at(20)&0xFF, 2, 16, QChar('0')));
 
         found = true;
         break;

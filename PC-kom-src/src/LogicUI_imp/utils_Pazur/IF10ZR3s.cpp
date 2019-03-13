@@ -444,7 +444,7 @@ void IF10ZR3s::InitRest()
     wyaKontrEn->addWidget(pb);
     wyaKontrEn->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     sbEnKontrWyAl = new QComboBox();
-    QStringList citms = {"Brak kontroli", "Kontrola statyczna", "Kokntrola dynamiczna"};
+    QStringList citms = {"Brak kontroli", "Kontrola statyczna", "Kontrola dynamiczna"};
     sbEnKontrWyAl->addItems(citms);
     wyaKontrEn->addWidget(sbEnKontrWyAl);
 
