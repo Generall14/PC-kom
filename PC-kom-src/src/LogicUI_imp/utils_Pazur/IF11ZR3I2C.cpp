@@ -114,7 +114,7 @@ void IF11ZR3I2c::InitRest()
     smLay3->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
     pb = new QPushButton("rdHist");
     connect(pb, &QPushButton::clicked, [this](){send(PureMessageZR3::techWRIIC(_adr,
-                    PureMessageZR3IIC::slaveGET_DBG_DAT()));
+                    PureMessageZR3IIC::slaveGET_HIST()));
                     labHIST->setText("?");});
     pb->setMaximumWidth(smallMIN_PB_W);
     pb->setMinimumWidth(smallMIN_PB_W);
@@ -357,15 +357,18 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                     break;
                 }
             }
-            else if(code==PureMessageZR3IIC::masterDBG_c)
+            else if(code==PureMessageZR3IIC::masterHIST_c)
             {
-                if(iicd.size()<6)
+                if(iicd.size()<10)
                     break;
-                QString temp = "|||";
+                QString temp = QString("hist|||");
                 for(int u=0;u<5;++u)
                 {
-                    temp += QString(" %1 |").arg(iicd.at(0)&0xFF);
-                    iicd = iicd.mid(1);
+                    uint v = 0;
+                    v |= iicd.at(0);
+                    v |= (iicd.at(1)<<8)&0xFF00;
+                    temp += QString(" %1 |").arg((float(v))/256.0);
+                    iicd = iicd.mid(2);
                 }
                 temp += "||";
                 labHIST->setText(temp);

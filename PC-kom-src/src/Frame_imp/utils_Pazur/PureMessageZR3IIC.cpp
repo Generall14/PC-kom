@@ -193,6 +193,23 @@ QString PureMessageZR3IIC::desc(QByteArray _arr)
         found = true;
         break;
     }
+    case masterHIST_c:
+    {
+        if(cmd.size()<10)
+            break;
+        temp = QString("hist|||");
+        for(int u=0;u<5;++u)
+        {
+            uint v = 0;
+            v |= cmd.at(0);
+            v |= (cmd.at(1)<<8)&0xFF00;
+            temp += QString(" %1 |").arg((float(v))/256.0);
+            cmd = cmd.mid(2);
+        }
+        temp += "||";
+        found = true;
+        break;
+    }
     default:
         break;
     }
@@ -252,6 +269,13 @@ QByteArray PureMessageZR3IIC::slaveRST_HIST()
 {
     QByteArray temp;
     temp.append(slaveRST_HIST_c);
+    return appendSize(temp);
+}
+
+QByteArray PureMessageZR3IIC::slaveGET_HIST()
+{
+    QByteArray temp;
+    temp.append(slaveGET_HIST_c);
     return appendSize(temp);
 }
 
