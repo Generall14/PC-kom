@@ -365,9 +365,9 @@ void IF11ZR3I2c::internalFrameReaded(QSharedPointer<Frame> fr)
                 for(int u=0;u<5;++u)
                 {
                     uint v = 0;
-                    v |= iicd.at(0);
+                    v |= iicd.at(0)&0xFF;
                     v |= (iicd.at(1)<<8)&0xFF00;
-                    temp += QString(" %1 |").arg((float(v))/256.0);
+                    temp += " " + QString::number((float(v))/256.0, 'f', 2) + " |";
                     iicd = iicd.mid(2);
                 }
                 temp += "||";
