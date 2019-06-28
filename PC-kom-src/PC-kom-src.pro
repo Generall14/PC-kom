@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT			+= core gui
-#QT			+= charts
 QT			+= serialport
 
 # The following define makes your compiler emit warnings if you use
@@ -27,6 +26,7 @@ DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 INCLUDEPATH += \
     ./src/
 
+LIBS += -lpugixml
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -71,36 +71,14 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_SG1/WorkerManager.cpp \
     src/LogicUI_imp/utils_SG1/WorkerRead.cpp \
     src/LogicUI_imp/utils_SG1/WorkerWrite.cpp \
-    src/Utils/pugixml.cpp \
     src/LogicUI_imp/LogicUITerminal.cpp \
     src/FrameBuilder_imp/FrameBuilderTerminal.cpp \
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.cpp \
     src/Utils/CRC.cpp \
-    src/FrameBuilder_imp/FrameBuilderPazur.cpp \
-    src/Frame_imp/FramePazur.cpp \
     src/Mendium_imp/MendiumEcho.cpp \
-    src/Frame_imp/utils_Pazur/Confirm.cpp \
-    src/Frame_imp/utils_Pazur/Confirms.cpp \
-    src/Frame_imp/utils_Pazur/Message.cpp \
-    src/Frame_imp/utils_Pazur/Messages.cpp \
-    src/LogicUI_imp/LogicUIPazur.cpp \
-    src/LogicUI_imp/utils_Pazur/ConfsPacket.cpp \
     src/Utils/HexItemDelegate.cpp \
-    src/LogicUI_imp/utils_Pazur/MsgPacket.cpp \
     src/Utils/GlobalXmlFile.cpp \
-    src/LogicUI_imp/utils_Pazur/Pure.cpp \
-    src/Frame_imp/utils_Pazur/PureMessage.cpp \
-    src/LogicUI_imp/utils_Pazur/IF01.cpp \
-    src/LogicUI_imp/utils_Pazur/IF00.cpp \
-    src/LogicUI_imp/utils_Pazur/IF11ZR3.cpp \
-    src/Frame_imp/utils_Pazur/PureMessageZR3.cpp \
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.cpp \
-    src/LogicUI_imp/utils_Pazur/IF10ZR3s.cpp \
-    src/LogicUI_imp/utils_Pazur/FlagDisplay.cpp \
-    src/LogicUI_imp/utils_Pazur/IF_panel.cpp \
-    src/Frame_imp/utils_Pazur/PureMessageZR3IIC.cpp \
-    src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.cpp \
-    src/Frame_imp/utils_Pazur/Quantile.cpp \
     src/Utils/DisplayMes.cpp \
     src/Utils/PazurCRC.cpp
 
@@ -149,37 +127,14 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_SG1/WorkerManager.hpp \
     src/LogicUI_imp/utils_SG1/WorkerRead.hpp \
     src/LogicUI_imp/utils_SG1/WorkerWrite.hpp \
-    src/Utils/pugiconfig.hpp \
-    src/Utils/pugixml.hpp \
     src/LogicUI_imp/LogicUITerminal.hpp \
     src/FrameBuilder_imp/FrameBuilderTerminal.hpp \
     src/LogicUI_imp/utils_Terminal/Terminal_SendSection.hpp \
     src/Utils/CRC.hpp \
-    src/FrameBuilder_imp/FrameBuilderPazur.hpp \
-    src/Frame_imp/FramePazur.hpp \
     src/Mendium_imp/MendiumEcho.hpp \
-    src/Frame_imp/utils_Pazur/Confirm.hpp \
-    src/Frame_imp/utils_Pazur/Confirms.hpp \
-    src/Frame_imp/utils_Pazur/Message.hpp \
-    src/Frame_imp/utils_Pazur/Messages.hpp \
-    src/LogicUI_imp/LogicUIPazur.hpp \
-    src/LogicUI_imp/utils_Pazur/ConfsPacket.hpp \
     src/Utils/HexItemDelegate.hpp \
-    src/LogicUI_imp/utils_Pazur/MsgPacket.hpp \
     src/Utils/GlobalXmlFile.hpp \
-    src/LogicUI_imp/utils_Pazur/Pure.hpp \
-    src/Frame_imp/utils_Pazur/PureMessage.hpp \
-    src/LogicUI_imp/utils_Pazur/IF01.hpp \
-    src/LogicUI_imp/utils_Pazur/IF00.hpp \
-    src/LogicUI_imp/utils_Pazur/IF11ZR3.hpp \
-    src/Frame_imp/utils_Pazur/PureMessageZR3.hpp \
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.hpp \
-    src/LogicUI_imp/utils_Pazur/IF10ZR3s.hpp \
-    src/LogicUI_imp/utils_Pazur/FlagDisplay.hpp \
-    src/LogicUI_imp/utils_Pazur/IF_panel.hpp \
-    src/Frame_imp/utils_Pazur/PureMessageZR3IIC.hpp \
-    src/LogicUI_imp/utils_Pazur/IF11ZR3I2C.hpp \
-    src/Frame_imp/utils_Pazur/Quantile.hpp \
     src/Utils/DisplayMes.hpp \
     src/Utils/PazurCRC.hpp
 

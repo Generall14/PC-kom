@@ -1,6 +1,6 @@
 #include "Factory.hpp"
 
-#include "Utils/pugixml.hpp"
+#include "pugixml.hpp"
 #include <QFile>
 #include <exception>
 #include <string>
@@ -10,7 +10,6 @@
 #include "Frame_imp/FrameTransparent.hpp"
 #include "Frame_imp/FrameSG1.hpp"
 #include "Frame_imp/FrameStawrov.hpp"
-#include "Frame_imp/FramePazur.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -25,13 +24,11 @@
 #include "LogicUI_imp/LogicUISG-1.hpp"
 #include "LogicUI_imp/LogicUIStawrov.hpp"
 #include "LogicUI_imp/LogicUITerminal.hpp"
-#include "LogicUI_imp/LogicUIPazur.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 #include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
 #include "FrameBuilder_imp/FrameBuilderTerminal.hpp"
-#include "FrameBuilder_imp/FrameBuilderPazur.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -73,8 +70,6 @@ Frame* Factory::newFrame(QByteArray ba)
         return new FrameStawrov(ba);
     else if(_frame=="FrameTransparent")
         return new FrameTransparent(ba);
-    else if(_frame=="FramePazur")
-        return new FramePazur(ba);
     else
         Factory::terminate("Invalid _frame specifier: \"" + _frame + "\".");
 
@@ -111,8 +106,6 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return new LogicUIStawrov(fr);
     else if(_logicUi=="LogicUITerminal")
         return new LogicUITerminal(fr);
-    else if(_logicUi=="LogicUIPazur")
-        return new LogicUIPazur(fr);
     else
         Factory::terminate("Invalid _logicUi specifier: \"" + _logicUi + "\".");
 
@@ -153,8 +146,6 @@ FrameBuilder* Factory::newFrameBuilder()
         return new FrameBuilderStawrov();
     else if(_frameBuilder=="FrameBuilderTerminal")
         return new FrameBuilderTerminal();
-    else if(_frameBuilder=="FrameBuilderPazur")
-        return new FrameBuilderPazur();
     else
         Factory::terminate("Invalid _frameBuilder specifier: \"" + _frameBuilder + "\".");
 
