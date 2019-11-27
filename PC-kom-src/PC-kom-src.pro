@@ -81,7 +81,8 @@ SOURCES += main.cpp\
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.cpp \
     src/Utils/DisplayMes.cpp \
     src/Utils/PazurCRC.cpp \
-    src/LogicUI_imp/LogicUISProt.cpp
+    src/LogicUI_imp/LogicUISProt.cpp \
+    src/LogicUI_imp/utils_SProt/SProtPure.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -138,7 +139,8 @@ HEADERS  += mainwindow.h \
     src/LogicUI_imp/utils_Stawrov/KontrolerPomiarowy.hpp \
     src/Utils/DisplayMes.hpp \
     src/Utils/PazurCRC.hpp \
-    src/LogicUI_imp/LogicUISProt.hpp
+    src/LogicUI_imp/LogicUISProt.hpp \
+    src/LogicUI_imp/utils_SProt/SProtPure.hpp
 
 DISTFILES += \
     configs.xml \

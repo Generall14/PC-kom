@@ -4,11 +4,7 @@
 #include <QDebug>
 #include <QGroupBox>
 #include <QSpacerItem>
-#include "utils_SG1/DataCollector.hpp"
-#include "utils_SG1/WorkerRead.hpp"
-#include "utils_SG1/WorkerWrite.hpp"
-#include "utils_SG1/Worker.hpp"
-#include "utils_SG1/WorkerManager.hpp"
+#include "utils_SProt/SProtPure.hpp"
 
 LogicUISProt::LogicUISProt(QFrame* parent):
     LogicUI(parent)
@@ -27,37 +23,35 @@ void LogicUISProt::Init()
     QTabWidget* tw = new QTabWidget();
     mainLay->addWidget(tw);
 
-//    errorLabel = new QLabel("");
-//    standardPalette = errorLabel->palette();
-//    errorPalette = standardPalette;
-//    errorPalette.setColor(QPalette::WindowText, Qt::black);
-//    errorPalette.setColor(QPalette::Window, Qt::red);
-//    errorLabel->setAutoFillBackground(true);
-//    cParent->setAutoFillBackground(true);
-//    mainLay->addWidget(errorLabel);
+    pureFrame = new QFrame();
+    tw->addTab(pureFrame, "Pure");
+    auto tabPure = QSharedPointer<LogicUI>(new SProtPure(pureFrame));
+    tabs.append(tabPure);
 
-//    dbgFrame = new QFrame();
-//    tw->addTab(dbgFrame, "Debug");
-//    InitDebug();
+    for(QSharedPointer<LogicUI> tab: tabs)
+    {
+        connect(this, &LogicUISProt::iConnected, tab.data(), &LogicUI::Connected);
+        connect(this, &LogicUISProt::iDisconnected, tab.data(), &LogicUI::Disconnected);
+        connect(this, &LogicUISProt::iFrameReaded, tab.data(), &LogicUI::FrameReaded);
+        connect(tab.data(), &LogicUI::WriteFrame, this, &LogicUISProt::WriteFrame);
+        connect(tab.data(), &LogicUI::WritePureData, this, &LogicUISProt::WritePureData);
 
-//    calFrame = new QFrame();
-//    tw->addTab(calFrame, "Kalibracja");
-//    InitCal();
+        tab->Init();
+    }
+    Disconnected();
 }
 
 void LogicUISProt::Connected()
 {
-//    dbgFrame->setEnabled(true);
-//    calFrame->setEnabled(true);
+    emit iConnected();
 }
 
 void LogicUISProt::Disconnected()
 {
-//    dbgFrame->setEnabled(false);
-//    calFrame->setEnabled(false);
+    emit iDisconnected();
 }
 
 void LogicUISProt::FrameReaded(QSharedPointer<Frame> frame)
 {
-
+    emit iFrameReaded(frame);
 }

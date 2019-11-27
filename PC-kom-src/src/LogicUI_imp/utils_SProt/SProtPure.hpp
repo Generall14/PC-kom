@@ -1,8 +1,8 @@
-#ifndef LOGICUISPROT_HPP
-#define LOGICUISPROT_HPP
+#ifndef SPROTPURE_HPP
+#define SPROTPURE_HPP
 
 #include <QFrame>
-#include "../LogicUI.hpp"
+#include "../../LogicUI.hpp"
 #include <QPushButton>
 #include <QTabWidget>
 #include <QFrame>
@@ -15,15 +15,13 @@
 #include <QListWidget>
 #include <QComboBox>
 #include <QTabWidget>
-#include "../Factory.hpp"
+#include <QLineEdit>
 
-class SProtPure;
-
-class LogicUISProt : public LogicUI
+class SProtPure : public LogicUI
 {
     Q_OBJECT
 public:
-    LogicUISProt(QFrame* parent);
+    SProtPure(QFrame* parent);
 
     virtual void Init();
 
@@ -33,17 +31,15 @@ public slots:
     virtual void FrameReaded(QSharedPointer<Frame> frame);
 
 protected slots:
-
+    void sendData();
 
 protected:
-    QFrame* pureFrame = nullptr;
+    QLineEdit* lecmd = nullptr;
+    QLineEdit* ledata = nullptr;
 
-    QVector<QSharedPointer<LogicUI> > tabs;
 
 signals:
-    void iFrameReaded(QSharedPointer<Frame> frame);
-    void iDisconnected();
-    void iConnected();
+
 };
 
 #endif
