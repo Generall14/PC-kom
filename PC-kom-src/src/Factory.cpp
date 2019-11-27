@@ -31,6 +31,7 @@
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
 #include "FrameBuilder_imp/FrameBuilderStawrov.hpp"
 #include "FrameBuilder_imp/FrameBuilderTerminal.hpp"
+#include "FrameBuilder_imp/FrameBuilderSProt.hpp"
 
 #include "LogUI_imp/LogUIEmpty.hpp"
 #include "LogUI_imp/LogUITerm.hpp"
@@ -152,6 +153,8 @@ FrameBuilder* Factory::newFrameBuilder()
         return new FrameBuilderStawrov();
     else if(_frameBuilder=="FrameBuilderTerminal")
         return new FrameBuilderTerminal();
+    else if(_frameBuilder=="FrameBuilderSProt")
+        return new FrameBuilderSProt();
     else
         Factory::terminate("Invalid _frameBuilder specifier: \"" + _frameBuilder + "\".");
 

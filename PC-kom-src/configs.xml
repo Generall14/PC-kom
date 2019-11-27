@@ -21,7 +21,7 @@
 		<fake Mendium="MendiumEcho" />
 	</universal_set>
         <sprot_set>
-                <Implementations Frame="FrameSProt" FrameBuilder="FrameBuilderTerminal" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUISProt" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
+                <Implementations Frame="FrameSProt" FrameBuilder="FrameBuilderSProt" LogFile="LogFileDefault" LogFormater="LogFormaterHtml" LogicUI="LogicUISProt" LogUI="LogUITerm" MediumUI="MediumUiRS" Mendium="MendiumRS" />
                 <Descriptions Ico="ikona.ico" Name="Terminal" Descrioption="Uniwersalny terminal portu szeregowego." />
                 <fake Mendium="MendiumEcho" />
         </sprot_set>
