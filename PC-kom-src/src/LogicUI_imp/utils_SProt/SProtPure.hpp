@@ -16,12 +16,14 @@
 #include <QComboBox>
 #include <QTabWidget>
 #include <QLineEdit>
+#include "../../Utils/Restorable.hpp"
 
-class SProtPure : public LogicUI
+class SProtPure : public LogicUI, public Restorable
 {
     Q_OBJECT
 public:
     SProtPure(QFrame* parent);
+    ~SProtPure();
 
     virtual void Init();
 
@@ -37,6 +39,7 @@ protected:
     QLineEdit* lecmd = nullptr;
     QLineEdit* ledata = nullptr;
 
+    void restore();
 
 signals:
 

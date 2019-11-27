@@ -9,9 +9,22 @@
 #include "../../Frame_imp/FrameSProt.hpp"
 
 SProtPure::SProtPure(QFrame* parent):
-    LogicUI(parent)
+    LogicUI(parent),
+    Restorable("SProtPure")
 {
     Desc::description = "SProtPure";
+}
+
+SProtPure::~SProtPure()
+{
+    Store("lecmd", lecmd->text());
+    Store("ledata", ledata->text());
+}
+
+void SProtPure::restore()
+{
+    lecmd->setText(RestoreAsString("lecmd", "000"));
+    ledata->setText(RestoreAsString("ledata", "61 62 63"));
 }
 
 void SProtPure::Init()
@@ -53,7 +66,19 @@ void SProtPure::Init()
     layBoxData->addWidget(btns);
     connect(btns, &QPushButton::clicked, this, &SProtPure::sendData);
 
+
+    QHBoxLayout* layhello = new QHBoxLayout();
+    mainLay->addLayout(layhello);
+
+    layhello->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    btns = new QPushButton("Hello");
+    layhello->addWidget(btns);
+    connect(btns, &QPushButton::clicked, this, [&](){emit WriteFrame(FrameSProt::hello());});
+
+
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    restore();
 }
 
 void SProtPure::Connected()
