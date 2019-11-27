@@ -10,6 +10,7 @@
 #include "Frame_imp/FrameTransparent.hpp"
 #include "Frame_imp/FrameSG1.hpp"
 #include "Frame_imp/FrameStawrov.hpp"
+#include "Frame_imp/FrameSProt.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -71,6 +72,8 @@ Frame* Factory::newFrame(QByteArray ba)
         return new FrameStawrov(ba);
     else if(_frame=="FrameTransparent")
         return new FrameTransparent(ba);
+    else if(_frame=="FrameSProt")
+        return new FrameSProt(ba);
     else
         Factory::terminate("Invalid _frame specifier: \"" + _frame + "\".");
 

@@ -82,7 +82,8 @@ SOURCES += main.cpp\
     src/Utils/DisplayMes.cpp \
     src/Utils/PazurCRC.cpp \
     src/LogicUI_imp/LogicUISProt.cpp \
-    src/LogicUI_imp/utils_SProt/SProtPure.cpp
+    src/LogicUI_imp/utils_SProt/SProtPure.cpp \
+    src/Frame_imp/FrameSProt.cpp
 
 HEADERS  += mainwindow.h \
     src/Factory.hpp \
@@ -140,7 +141,8 @@ HEADERS  += mainwindow.h \
     src/Utils/DisplayMes.hpp \
     src/Utils/PazurCRC.hpp \
     src/LogicUI_imp/LogicUISProt.hpp \
-    src/LogicUI_imp/utils_SProt/SProtPure.hpp
+    src/LogicUI_imp/utils_SProt/SProtPure.hpp \
+    src/Frame_imp/FrameSProt.hpp
 
 DISTFILES += \
     configs.xml \

@@ -36,7 +36,7 @@ protected slots:
 
 
 protected:
-    QFrame* pureFrame = nullptr;
+    QTabWidget* tw = nullptr;
 
     QVector<QSharedPointer<LogicUI> > tabs;
 

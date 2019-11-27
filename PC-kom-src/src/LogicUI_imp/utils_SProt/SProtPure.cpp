@@ -6,6 +6,7 @@
 #include <QSpacerItem>
 #include "../../Utils/ValidateHex.hpp"
 #include "../../Utils/StaticUtils.hpp"
+#include "../../Frame_imp/FrameSProt.hpp"
 
 SProtPure::SProtPure(QFrame* parent):
     LogicUI(parent)
@@ -74,5 +75,6 @@ void SProtPure::FrameReaded(QSharedPointer<Frame> frame)
 
 void SProtPure::sendData()
 {
-    emit WritePureData(SU::string2ByteArray(ledata->text()));
+    emit WriteFrame(QSharedPointer<Frame>(new FrameSProt(lecmd->text().toInt(nullptr, 16), SU::string2ByteArray(ledata->text()))));
+//    emit WritePureData(SU::string2ByteArray(ledata->text()));
 }

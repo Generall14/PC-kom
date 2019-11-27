@@ -20,10 +20,10 @@ void LogicUISProt::Init()
     QVBoxLayout* mainLay = new QVBoxLayout(cParent);
     mainLay->setMargin(2);
 
-    QTabWidget* tw = new QTabWidget();
+    tw = new QTabWidget();
     mainLay->addWidget(tw);
 
-    pureFrame = new QFrame();
+    QFrame* pureFrame = new QFrame();
     tw->addTab(pureFrame, "Pure");
     auto tabPure = QSharedPointer<LogicUI>(new SProtPure(pureFrame));
     tabs.append(tabPure);
@@ -43,11 +43,13 @@ void LogicUISProt::Init()
 
 void LogicUISProt::Connected()
 {
+    tw->setEnabled(true);
     emit iConnected();
 }
 
 void LogicUISProt::Disconnected()
 {
+    tw->setEnabled(false);
     emit iDisconnected();
 }
 
