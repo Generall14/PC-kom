@@ -28,6 +28,10 @@ private:
 
     static const uint16_t CMD_HELLO = 0x100;
     static const uint16_t CMD_RHELLO = 0x000;
+    static const uint16_t CMD_GETSEC = 0x101;
+    static const uint16_t CMD_REGETSEC = 0x001;
+    static const uint16_t CMD_SETSEC = 0x102;
+    static const uint16_t CMD_RESETSEC = 0x002;
 };
 
 #endif

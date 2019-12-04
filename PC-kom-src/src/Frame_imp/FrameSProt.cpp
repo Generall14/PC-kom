@@ -49,6 +49,32 @@ QString FrameSProt::toQString()
         return "Hello";
     case CMD_RHELLO:
         return "ReHello, desc: \""+package()+"\"";
+    case CMD_GETSEC:
+    {
+        uint16_t offset = package().at(2)<<8 | package().at(1);
+        uint8_t num = package().at(0);
+        return QString("GetSec, num: 0x%1, offset: 0x%2").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'));
+    }
+    case CMD_REGETSEC:
+    {
+        uint16_t offset = package().at(2)<<8 | package().at(1);
+        uint8_t num = package().at(0);
+        return QString("ReGetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+SU::byteArray2String(package().mid(3))+"]";
+    }
+    case CMD_SETSEC:
+    {
+        uint16_t offset = package().at(2)<<8 | package().at(1);
+        uint8_t num = package().at(0);
+        return QString("SetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+SU::byteArray2String(package().mid(3))+"]";
+    }
+    case CMD_RESETSEC:
+    {
+        QMap<uint8_t, QString> smap = {{0, "Ok"}, {1, "ReadOnly"}, {2, "OutOfRange"}, {3, "UnknownSec"}};
+        uint16_t offset = package().at(2)<<8 | package().at(1);
+        uint8_t num = package().at(0);
+        uint8_t status = package().at(3);
+        return QString("ReSetSec, num: 0x%1, offset: 0x%2, status: ").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+smap.value(status, QString::number(status));
+    }
     default:
     {
         return QString("Unknown command, cmd: 0x%1, bytes: %2, data: [ ").arg(cmd(), 3, 16, QChar('0')).arg(bytes())+SU::byteArray2String(package())+"]";
