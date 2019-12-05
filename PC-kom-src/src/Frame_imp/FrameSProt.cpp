@@ -149,7 +149,7 @@ QString FrameSProt::printSection(uint8_t num, QByteArray data, uint16_t offset)
     case SEC_SYSTIME:
         name = "SysTime";
         if(data.size()==4 && !offset)
-            payload = "time: "+QString::number(SU::byteArray2Int32_LE(data))+" us";
+            payload = "time: "+QString::number((uint)SU::byteArray2Int32_LE(data))+" us";
         break;
     default:
         name = "UnknownSec";

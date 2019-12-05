@@ -7,7 +7,7 @@
 class SU
 {
 public:
-    // Integers to Byte Array
+    // Integers and Byte Arrays
     static int byteArray2Int32_BE(QByteArray b);
     static QByteArray int32ToByteArray_BE(int i);
     static int byteArray2Int32_LE(QByteArray b);
