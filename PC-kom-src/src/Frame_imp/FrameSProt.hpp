@@ -21,6 +21,8 @@ public:
     QByteArray package();
 
     static QSharedPointer<Frame> hello();
+    static QSharedPointer<Frame> setSec(uint8_t number, uint16_t offset, QByteArray data);
+    static QSharedPointer<Frame> getSec(uint8_t number, uint16_t offset);
 
 private:
     bool valid = false;

@@ -122,6 +122,23 @@ QSharedPointer<Frame> FrameSProt::hello()
     return QSharedPointer<Frame>(new FrameSProt(CMD_HELLO));
 }
 
+QSharedPointer<Frame> FrameSProt::setSec(uint8_t number, uint16_t offset, QByteArray data)
+{
+    QByteArray payload;
+    payload.append(number);
+    payload.append(SU::int16ToByteArray_LE(offset));
+    payload.append(data);
+    return QSharedPointer<Frame>(new FrameSProt(CMD_SETSEC, payload));
+}
+
+QSharedPointer<Frame> FrameSProt::getSec(uint8_t number, uint16_t offset)
+{
+    QByteArray payload;
+    payload.append(number);
+    payload.append(SU::int16ToByteArray_LE(offset));
+    return QSharedPointer<Frame>(new FrameSProt(CMD_GETSEC, payload));
+}
+
 QString FrameSProt::printSection(uint8_t num, QByteArray data, uint16_t offset)
 {
     QString name, payload;

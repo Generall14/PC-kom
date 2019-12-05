@@ -158,10 +158,15 @@ void SProtPure::sendData()
 
 void SProtPure::setSec()
 {
-
+    uint8_t nr = lesecnr->text().toInt(nullptr, 16);
+    uint8_t offset = lesecoff->text().toInt(nullptr, 16);
+    QByteArray payload = SU::string2ByteArray(ledatas->text());
+    emit WriteFrame(FrameSProt::setSec(nr, offset, payload));
 }
 
 void SProtPure::getSec()
 {
-
+    uint8_t nr = lesecnr->text().toInt(nullptr, 16);
+    uint8_t offset = lesecoff->text().toInt(nullptr, 16);
+    emit WriteFrame(FrameSProt::getSec(nr, offset));
 }

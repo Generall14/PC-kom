@@ -7,19 +7,26 @@
 class SU
 {
 public:
+    // Integers to Byte Array
+    static int byteArray2Int32_BE(QByteArray b);
+    static QByteArray int32ToByteArray_BE(int i);
+    static int byteArray2Int32_LE(QByteArray b);
+    static QByteArray int32ToByteArray_LE(int i);
+
+    static int byteArray2Int16_BE(QByteArray b);
+    static QByteArray int16ToByteArray_BE(int i);
+    static int byteArray2Int16_LE(QByteArray b);
+    static QByteArray int16ToByteArray_LE(int i);
+
+
+
+
+
     static float float24to32(QByteArray b);
     static QByteArray float32to24(float f);
 
     static float byteArray2Float32(QByteArray b);
     static QByteArray float32toByteArray(float f);
-
-    static int byteArray2Int16(QByteArray b);
-    static QByteArray int16ToByteArray(int i);
-
-    static int byteArray2Int32_BE(QByteArray b);
-    static QByteArray int32ToByteArray_BE(int i);
-    static int byteArray2Int32_LE(QByteArray b);
-    static QByteArray int32ToByteArray_LE(int i);
 
     static uint64_t byteArray2Int48(QByteArray b);
     static QByteArray int48ToByteArray(long long i);
