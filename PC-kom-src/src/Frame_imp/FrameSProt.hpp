@@ -32,6 +32,10 @@ private:
     static const uint16_t CMD_REGETSEC = 0x001;
     static const uint16_t CMD_SETSEC = 0x102;
     static const uint16_t CMD_RESETSEC = 0x002;
+
+    QString printSection(uint8_t num, QByteArray data, uint16_t offset);
+    static const uint8_t SEC_TESTSEC = 0x00;
+    static const uint8_t SEC_SYSTIME = 0x01;
 };
 
 #endif

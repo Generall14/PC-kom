@@ -59,13 +59,13 @@ QString FrameSProt::toQString()
     {
         uint16_t offset = package().at(2)<<8 | package().at(1);
         uint8_t num = package().at(0);
-        return QString("ReGetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+SU::byteArray2String(package().mid(3))+"]";
+        return QString("ReGetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+printSection(num, package().mid(3), offset)+"]";
     }
     case CMD_SETSEC:
     {
         uint16_t offset = package().at(2)<<8 | package().at(1);
         uint8_t num = package().at(0);
-        return QString("SetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+SU::byteArray2String(package().mid(3))+"]";
+        return QString("SetSec, num: 0x%1, offset: 0x%2, data: [").arg(num, 2, 16, QChar('0')).arg(offset, 4, 16, QChar('0'))+printSection(num, package().mid(3), offset)+"]";
     }
     case CMD_RESETSEC:
     {
@@ -120,4 +120,25 @@ QByteArray FrameSProt::package()
 QSharedPointer<Frame> FrameSProt::hello()
 {
     return QSharedPointer<Frame>(new FrameSProt(CMD_HELLO));
+}
+
+QString FrameSProt::printSection(uint8_t num, QByteArray data, uint16_t offset)
+{
+    QString name, payload;
+    switch (num) {
+    case SEC_TESTSEC:
+        name = "TestSec";
+        break;
+    case SEC_SYSTIME:
+        name = "SysTime";
+        if(data.size()==4 && !offset)
+            payload = "time: "+QString::number(SU::byteArray2Int32_LE(data))+" us";
+        break;
+    default:
+        name = "UnknownSec";
+        break;
+    }
+    if(payload.isEmpty())
+        payload = SU::byteArray2String(data);
+    return QString(name+" | "+payload+" | ");
 }

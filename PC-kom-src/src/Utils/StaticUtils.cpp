@@ -73,7 +73,7 @@ QByteArray SU::int16ToByteArray(int i)
     return temp;
 }
 
-int SU::byteArray2Int32(QByteArray b)
+int SU::byteArray2Int32_BE(QByteArray b)
 {
     if(b.size()<4)
         return -1;
@@ -85,13 +85,35 @@ int SU::byteArray2Int32(QByteArray b)
     return i;
 }
 
-QByteArray SU::int32ToByteArray(int i)
+QByteArray SU::int32ToByteArray_BE(int i)
 {
     QByteArray temp;
     temp.append((i>>24)&0xFF);
     temp.append((i>>16)&0xFF);
     temp.append((i>>8)&0xFF);
     temp.append((i>>0)&0xFF);
+    return temp;
+}
+
+int SU::byteArray2Int32_LE(QByteArray b)
+{
+    if(b.size()<4)
+        return -1;
+    int i=0;
+    i |= (b.at(3)&0xFF)<<24;
+    i |= (b.at(2)&0xFF)<<16;
+    i |= (b.at(1)&0xFF)<<8;
+    i |= (b.at(0)&0xFF)<<0;
+    return i;
+}
+
+QByteArray SU::int32ToByteArray_LE(int i)
+{
+    QByteArray temp;
+    temp.append((i>>0)&0xFF);
+    temp.append((i>>8)&0xFF);
+    temp.append((i>>16)&0xFF);
+    temp.append((i>>24)&0xFF);
     return temp;
 }
 

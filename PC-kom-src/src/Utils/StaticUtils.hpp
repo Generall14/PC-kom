@@ -16,8 +16,10 @@ public:
     static int byteArray2Int16(QByteArray b);
     static QByteArray int16ToByteArray(int i);
 
-    static int byteArray2Int32(QByteArray b);
-    static QByteArray int32ToByteArray(int i);
+    static int byteArray2Int32_BE(QByteArray b);
+    static QByteArray int32ToByteArray_BE(int i);
+    static int byteArray2Int32_LE(QByteArray b);
+    static QByteArray int32ToByteArray_LE(int i);
 
     static uint64_t byteArray2Int48(QByteArray b);
     static QByteArray int48ToByteArray(long long i);
