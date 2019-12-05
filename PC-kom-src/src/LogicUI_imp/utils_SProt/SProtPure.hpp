@@ -34,10 +34,15 @@ public slots:
 
 protected slots:
     void sendData();
+    void setSec();
+    void getSec();
 
 protected:
     QLineEdit* lecmd = nullptr;
     QLineEdit* ledata = nullptr;
+    QLineEdit* ledatas = nullptr;
+    QLineEdit* lesecnr = nullptr;
+    QLineEdit* lesecoff = nullptr;
 
     void restore();
 

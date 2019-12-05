@@ -19,12 +19,18 @@ SProtPure::~SProtPure()
 {
     Store("lecmd", lecmd->text());
     Store("ledata", ledata->text());
+    Store("ledatas", ledatas->text());
+    Store("lesecnr", lesecnr->text());
+    Store("lesecoff", lesecoff->text());
 }
 
 void SProtPure::restore()
 {
     lecmd->setText(RestoreAsString("lecmd", "000"));
     ledata->setText(RestoreAsString("ledata", "61 62 63"));
+    ledatas->setText(RestoreAsString("ledatas", "61 62 63"));
+    lesecnr->setText(RestoreAsString("lesecnr", "01"));
+    lesecoff->setText(RestoreAsString("lesecoff", "0000"));
 }
 
 void SProtPure::Init()
@@ -67,6 +73,53 @@ void SProtPure::Init()
     connect(btns, &QPushButton::clicked, this, &SProtPure::sendData);
 
 
+    QGroupBox* groupBoxDataSec = new QGroupBox("Data sections");
+    mainLay->addWidget(groupBoxDataSec);
+    QVBoxLayout* dataSMainLay = new QVBoxLayout(groupBoxDataSec);
+
+
+    QHBoxLayout* layBoxDataS0 = new QHBoxLayout();
+    dataSMainLay->addLayout(layBoxDataS0);
+
+    lab = new QLabel("Data:");
+    layBoxDataS0->addWidget(lab);
+
+    ledatas = new QLineEdit("FF");
+    ledatas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    ledatas->setValidator(new HexValidator(1, 20, ledata));
+    layBoxDataS0->addWidget(ledatas);
+
+
+    QHBoxLayout* layBoxDataS = new QHBoxLayout();
+    dataSMainLay->addLayout(layBoxDataS);
+
+    lab = new QLabel("Number:");
+    layBoxDataS->addWidget(lab);
+
+    lesecnr = new QLineEdit("FF");
+    lesecnr->setMaximumWidth(50);
+    lesecnr->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    lesecnr->setValidator(new HexValidator(1, 1, lesecnr));
+    layBoxDataS->addWidget(lesecnr);
+
+    lab = new QLabel("offset:");
+    layBoxDataS->addWidget(lab);
+
+    lesecoff = new QLineEdit("FF");
+    lesecoff->setMaximumWidth(50);
+    lesecoff->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    lesecoff->setValidator(new HexValidator(2, 1, lesecoff));
+    layBoxDataS->addWidget(lesecoff);
+
+    layBoxDataS->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding));
+    btns = new QPushButton("Set Data");
+    layBoxDataS->addWidget(btns);
+    connect(btns, &QPushButton::clicked, this, &SProtPure::setSec);
+    btns = new QPushButton("Get Data");
+    layBoxDataS->addWidget(btns);
+    connect(btns, &QPushButton::clicked, this, &SProtPure::getSec);
+
+
     QHBoxLayout* layhello = new QHBoxLayout();
     mainLay->addLayout(layhello);
 
@@ -101,5 +154,14 @@ void SProtPure::FrameReaded(QSharedPointer<Frame> frame)
 void SProtPure::sendData()
 {
     emit WriteFrame(QSharedPointer<Frame>(new FrameSProt(lecmd->text().toInt(nullptr, 16), SU::string2ByteArray(ledata->text()))));
-//    emit WritePureData(SU::string2ByteArray(ledata->text()));
+}
+
+void SProtPure::setSec()
+{
+
+}
+
+void SProtPure::getSec()
+{
+
 }
