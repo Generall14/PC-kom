@@ -30,7 +30,7 @@ QByteArray SU::float32to24(float f)
     return temp;
 }
 
-float SU::byteArray2Float32(QByteArray b)
+float SU::byteArray2Float32_BE(QByteArray b)
 {
     if(b.size()<4)
         return -1;
@@ -43,7 +43,7 @@ float SU::byteArray2Float32(QByteArray b)
     return con.f;
 }
 
-QByteArray SU::float32toByteArray(float f)
+QByteArray SU::float32toByteArray_BE(float f)
 {
     QByteArray temp;
     FI con;
@@ -236,10 +236,7 @@ QString SU::byteArray2String(QByteArray arr)
     return str;
 }
 
-/**
- * Zamienia float32 na ciąg bajtów (little endian).
- */
-QByteArray SU::float322ByteArray(float f)
+QByteArray SU::float32toByteArray_LE(float f)
 {
     SU::FI temp;
     temp.f = f;
@@ -251,10 +248,7 @@ QByteArray SU::float322ByteArray(float f)
     return ta;
 }
 
-/**
- * Odczytuje ciąg bajtów (little endian) i zamienia je na float32.
- */
-float SU::byteArray322Float32(QByteArray b)
+float SU::byteArray2Float32_LE(QByteArray b)
 {
     if(b.size()!=4)
         return -1.0;

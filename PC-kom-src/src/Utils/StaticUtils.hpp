@@ -22,11 +22,36 @@ public:
 
 
 
+
+
+
+
+
+
+
+
+
+    // Floats and Byte Arrays
+    static float byteArray2Float32_BE(QByteArray b);
+    static QByteArray float32toByteArray_BE(float f);
+    static float byteArray2Float32_LE(QByteArray b);
+    static QByteArray float32toByteArray_LE(float f);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     static float float24to32(QByteArray b);
     static QByteArray float32to24(float f);
-
-    static float byteArray2Float32(QByteArray b);
-    static QByteArray float32toByteArray(float f);
 
     static uint64_t byteArray2Int48(QByteArray b);
     static QByteArray int48ToByteArray(long long i);
@@ -39,9 +64,6 @@ public:
 
     static QByteArray string2ByteArray(QString str);
     static QString byteArray2String(QByteArray arr);
-
-    static QByteArray float322ByteArray(float f);
-    static float byteArray322Float32(QByteArray b);
 
     static float byteArray2f5_11(QByteArray b);
 
