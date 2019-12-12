@@ -151,6 +151,19 @@ QString FrameSProt::printSection(uint8_t num, QByteArray data, uint16_t offset)
         if(data.size()==4 && !offset)
             payload = "time: "+QString::number((uint)SU::byteArray2Int32_LE(data))+" us";
         break;
+    case SEC_VERSION:
+        name = "Version";
+        if(data.size()==4 && !offset)
+            payload = QString("%1.%2.%3").arg(uint(data[0])).arg(uint(data[1])).arg(SU::byteArray2Int16_LE(data.mid(2)));
+        break;
+    case SEC_COMMITID:
+        name = "CommitId";
+        payload = data;
+        break;
+    case SEC_COMMITDATE:
+        name = "CommitDate";
+        payload = data;
+        break;
     default:
         name = "UnknownSec";
         break;

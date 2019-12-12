@@ -38,6 +38,9 @@ private:
     QString printSection(uint8_t num, QByteArray data, uint16_t offset);
     static const uint8_t SEC_TESTSEC = 0x00;
     static const uint8_t SEC_SYSTIME = 0x01;
+    static const uint8_t SEC_VERSION = 0x02;
+    static const uint8_t SEC_COMMITID = 0x03;
+    static const uint8_t SEC_COMMITDATE = 0x04;
 };
 
 #endif
