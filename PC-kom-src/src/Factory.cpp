@@ -11,6 +11,7 @@
 #include "Frame_imp/FrameSG1.hpp"
 #include "Frame_imp/FrameStawrov.hpp"
 #include "Frame_imp/FrameSProt.hpp"
+#include "Frame_imp/FrameSLA.hpp"
 
 #include "MediumUI_imp/MediumUIEmpty.hpp"
 #include "MediumUI_imp/MediumUIRS.hpp"
@@ -26,6 +27,7 @@
 #include "LogicUI_imp/LogicUIStawrov.hpp"
 #include "LogicUI_imp/LogicUITerminal.hpp"
 #include "LogicUI_imp/LogicUISProt.hpp"
+#include "LogicUI_imp/LogicUISLA.hpp"
 
 #include "FrameBuilder_imp/FrameBuilderEmpty.hpp"
 #include "FrameBuilder_imp/FrameBuilderSG1.hpp"
@@ -75,6 +77,8 @@ Frame* Factory::newFrame(QByteArray ba)
         return new FrameTransparent(ba);
     else if(_frame=="FrameSProt")
         return new FrameSProt(ba);
+    else if(_frame=="FrameSLA")
+        return new FrameSLA(ba);
     else
         Factory::terminate("Invalid _frame specifier: \"" + _frame + "\".");
 
@@ -113,6 +117,8 @@ LogicUI* Factory::newLogicUI(QFrame *fr)
         return new LogicUITerminal(fr);
     else if(_logicUi=="LogicUISProt")
         return new LogicUISProt(fr);
+    else if(_logicUi=="LogicUISLA")
+        return new LogicUISLA(fr);
     else
         Factory::terminate("Invalid _logicUi specifier: \"" + _logicUi + "\".");
 

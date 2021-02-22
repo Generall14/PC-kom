@@ -33,6 +33,8 @@ SOURCES += main.cpp\
     src/Factory.cpp \
     src/Frame.cpp \
     src/Frame_imp/FrameEmpty.cpp \
+    src/Frame_imp/FrameSLA.cpp \
+    src/LogicUI_imp/LogicUISLA.cpp \
     src/MediumUI.cpp \
     src/MediumUI_imp/MediumUIEmpty.cpp \
     src/MediumUI_imp/MediumUIRS.cpp \
@@ -90,6 +92,8 @@ HEADERS  += mainwindow.h \
     src/Factory.hpp \
     src/Frame.hpp \
     src/Frame_imp/FrameEmpty.hpp \
+    src/Frame_imp/FrameSLA.hpp \
+    src/LogicUI_imp/LogicUISLA.hpp \
     src/MediumUI.hpp \
     src/MediumUI_imp/MediumUIEmpty.hpp \
     src/MediumUI_imp/MediumUIRS.hpp \
