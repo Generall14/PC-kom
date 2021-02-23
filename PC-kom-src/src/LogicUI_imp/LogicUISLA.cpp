@@ -96,6 +96,30 @@ void LogicUISLA::BuildGUI()
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabOff()));
     secBtnLay->addWidget(btn);
 
+    //=======================Grupa wideotraker====================================================
+    QGroupBox* groupBoxTrack = new QGroupBox("Tracker");
+    mainLay->addWidget(groupBoxTrack);
+    QVBoxLayout* mainTrackLay = new QVBoxLayout(groupBoxTrack);
+
+
+    QHBoxLayout* thBtnLay = new QHBoxLayout();
+    mainTrackLay->addLayout(thBtnLay);
+    thBtnLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Maximum));
+    btn = new QPushButton("XXX");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabOn()));
+    thBtnLay->addWidget(btn);
+
+//    btn = new QPushButton("Stab mid");
+//    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabMid()));
+//    thBtnLay->addWidget(btn);
+
+//    btn = new QPushButton("Stab off");
+//    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabOff()));
+//    thBtnLay->addWidget(btn);
+
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
