@@ -90,8 +90,35 @@ QSharedPointer<Frame> FrameSLA::setStabilizationParameters(SLASetStabilizationPa
     return QSharedPointer<Frame>(new FrameSLA(CMD_SET_STABILIZATION_PARAMETERS, temp));
 }
 
+QSharedPointer<Frame> FrameSLA::setSystemValue(SLASetSystemValue_t params)
+{
+    QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
+    return QSharedPointer<Frame>(new FrameSLA(CMD_SET_SYSTEM_VALUE, temp));
+}
+
+QSharedPointer<Frame> FrameSLA::setTrackingParameters(SLASetTrackingParameters_t params)
+{
+    QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
+    return QSharedPointer<Frame>(new FrameSLA(CMD_SET_TRACKING_PARAMETERS, temp));
+}
+
 QSharedPointer<Frame> FrameSLA::stabilizationBias(SLAStabilizationBias_t params)
 {
     QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
     return QSharedPointer<Frame>(new FrameSLA(CMD_STABILIZATION_BIAS, temp));
+}
+
+QSharedPointer<Frame> FrameSLA::startTracking(SLAStartTracking_t params)
+{
+    QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
+    return QSharedPointer<Frame>(new FrameSLA(CMD_START_TRACKING, temp));
+}
+
+QSharedPointer<Frame> FrameSLA::stopTracking(uint8_t cameraId)
+{
+    SLAStopTracking_t temp;
+    memset(temp.bytes, 0u, sizeof(temp));
+    temp.val.cameraIndex = cameraId;
+    QByteArray array((const char*)temp.bytes, sizeof(temp.bytes)/sizeof(temp.bytes[0]));
+    return QSharedPointer<Frame>(new FrameSLA(CMD_STOP_TRACKING, array));
 }

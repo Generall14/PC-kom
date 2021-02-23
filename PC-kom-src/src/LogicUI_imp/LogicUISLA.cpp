@@ -72,6 +72,11 @@ void LogicUISLA::BuildGUI()
     connect(btn, &QPushButton::clicked, [&](){emit WriteFrame(FrameSLA::resetStabilizationParameters(CameraId()));});
     firstBBtnLay->addWidget(btn);
 
+    btn = new QPushButton("Demo");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(DemoMode()));
+    firstBBtnLay->addWidget(btn);
+
     //=======================Grupa stabilizacja===================================================
     QGroupBox* groupBoxStab = new QGroupBox("Stabilizacja");
     mainLay->addWidget(groupBoxStab);
@@ -105,20 +110,15 @@ void LogicUISLA::BuildGUI()
     QHBoxLayout* thBtnLay = new QHBoxLayout();
     mainTrackLay->addLayout(thBtnLay);
     thBtnLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Maximum));
-    btn = new QPushButton("XXX");
+    btn = new QPushButton("Start");
     btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabOn()));
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StartTracking()));
     thBtnLay->addWidget(btn);
 
-//    btn = new QPushButton("Stab mid");
-//    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabMid()));
-//    thBtnLay->addWidget(btn);
-
-//    btn = new QPushButton("Stab off");
-//    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-//    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StabOff()));
-//    thBtnLay->addWidget(btn);
+    btn = new QPushButton("Stop");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btn, &QPushButton::clicked, [&](){emit WriteFrame(FrameSLA::stopTracking(CameraId()));});
+    thBtnLay->addWidget(btn);
 
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -192,4 +192,36 @@ void LogicUISLA::StabOff()
 void LogicUISLA::GetStabilizationBias()
 {
     emit WriteFrame(FrameSLA::getParameters(FrameSLA::PARAM_ID_STABILIZATION_BIAS, CameraId()));
+}
+
+void LogicUISLA::StartTracking()
+{
+    SLASetTrackingParameters_t tempt;
+    memset(tempt.bytes, 0u, sizeof(tempt));
+    tempt.val.cameraIndex = CameraId();
+    tempt.val.objectSize = 40u;
+    tempt.val.mode = 0x22u;
+    tempt.val.maxMisses = 0x2du;
+    tempt.val.nearVal = 0x0041u;
+    emit WriteFrame(FrameSLA::setTrackingParameters(tempt));
+
+
+    SLAStartTracking_t temp;
+    memset(temp.bytes, 0u, sizeof(temp));
+    temp.val.cameraIndex = CameraId();
+    temp.val.col=390;
+    temp.val.row=280;
+    temp.val.width=40;
+    temp.val.height=40;
+    temp.val.flags=1;
+    emit WriteFrame(FrameSLA::startTracking(temp));
+}
+
+void LogicUISLA::DemoMode()
+{
+    SLASetSystemValue_t temp;
+    memset(temp.bytes, 0u, sizeof(temp));
+    temp.val.systemValue = FrameSLA::SYSTEM_VALUE_DEMO_MODE;
+    temp.val.value0 = 1;
+    emit WriteFrame(FrameSLA::setSystemValue(temp));
 }

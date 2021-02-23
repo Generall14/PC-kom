@@ -25,6 +25,8 @@ public slots:
     void StabMid();
     void StabOff();
     void GetStabilizationBias();
+    void StartTracking();
+    void DemoMode();
 
 protected:
     void BuildGUI();
