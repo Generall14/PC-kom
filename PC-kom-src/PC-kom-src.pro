@@ -26,10 +26,9 @@ DEFINES += GIT_VERSION=\\\"$$GIT_VERSION\\\"
 INCLUDEPATH += \
     ./src/
 
-LIBS += -lpugixml
-
 SOURCES += main.cpp\
         mainwindow.cpp \
+    pugixml.cpp \
     src/Factory.cpp \
     src/Frame.cpp \
     src/Frame_imp/FrameEmpty.cpp \
@@ -89,6 +88,8 @@ SOURCES += main.cpp\
     src/FrameBuilder_imp/FrameBuilderSProt.cpp
 
 HEADERS  += mainwindow.h \
+    pugiconfig.hpp \
+    pugixml.hpp \
     src/Factory.hpp \
     src/Frame.hpp \
     src/Frame_imp/FrameEmpty.hpp \
