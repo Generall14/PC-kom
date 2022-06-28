@@ -27,6 +27,9 @@ public slots:
     void GetStabilizationBias();
     void StartTracking();
     void DemoMode();
+    void StartReporting();
+    void StopReporting();
+    void TestT();
 
 protected:
     void BuildGUI();

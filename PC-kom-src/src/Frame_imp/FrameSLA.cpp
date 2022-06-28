@@ -47,6 +47,31 @@ uint8_t FrameSLA::calc_crc()
     return crc;
 }
 
+QString FrameSLA::toQString()
+{
+    QString ret = FrameTransparent::toQString();
+    if(pck.size()>3)
+    {
+        switch(pck.at(3))
+        {
+        case CMD_TRACKING_POSITION:
+            if(pck.size()>=29)
+            {
+                uint16_t trackingCol = (pck.at(4)&0xffu) | ((pck.at(5)&0xff)<<8);
+                uint16_t trackingRow = (pck.at(6)&0xffu) | ((pck.at(7)&0xff)<<8);
+                int16_t mCol = (pck.at(8)&0xffu) | ((pck.at(9)&0xff)<<8);
+                int16_t mRow = (pck.at(10)&0xffu) | ((pck.at(11)&0xff)<<8);
+                uint8_t conv = pck.at(16)&0x7fu;
+                ret = QString("Tracking position %1:%2 -: %3:%4, %5\%").arg(trackingCol).arg(trackingRow).arg(mCol).arg(mRow).arg(conv);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    return ret;
+}
+
 QSharedPointer<Frame> FrameSLA::getVersionNumber()
 {
     return QSharedPointer<Frame>(new FrameSLA(CMD_GET_VERSION_NUMBER));
@@ -94,6 +119,12 @@ QSharedPointer<Frame> FrameSLA::setSystemValue(SLASetSystemValue_t params)
 {
     QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
     return QSharedPointer<Frame>(new FrameSLA(CMD_SET_SYSTEM_VALUE, temp));
+}
+
+QSharedPointer<Frame> FrameSLA::coordinatingReportingMode(SLACoordinateReportingMode_t params)
+{
+    QByteArray temp((const char*)params.bytes, sizeof(params.bytes)/sizeof(params.bytes[0]));
+    return QSharedPointer<Frame>(new FrameSLA(CMD_COORDINATE_REPORTING_MODE, temp));
 }
 
 QSharedPointer<Frame> FrameSLA::setTrackingParameters(SLASetTrackingParameters_t params)

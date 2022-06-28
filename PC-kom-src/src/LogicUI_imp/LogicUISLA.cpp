@@ -120,6 +120,21 @@ void LogicUISLA::BuildGUI()
     connect(btn, &QPushButton::clicked, [&](){emit WriteFrame(FrameSLA::stopTracking(CameraId()));});
     thBtnLay->addWidget(btn);
 
+    btn = new QPushButton("Start report");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StartReporting()));
+    thBtnLay->addWidget(btn);
+
+    btn = new QPushButton("Stop report");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(StopReporting()));
+    thBtnLay->addWidget(btn);
+
+    btn = new QPushButton("TestT");
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    connect(btn, SIGNAL(clicked(bool)), this, SLOT(TestT()));
+    thBtnLay->addWidget(btn);
+
 
     mainLay->addSpacerItem(new QSpacerItem(2, 2, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
@@ -199,21 +214,20 @@ void LogicUISLA::StartTracking()
     SLASetTrackingParameters_t tempt;
     memset(tempt.bytes, 0u, sizeof(tempt));
     tempt.val.cameraIndex = CameraId();
-    tempt.val.objectSize = 40u;
-    tempt.val.mode = 0x22u;
+    tempt.val.objectSize = 80;
+    tempt.val.mode = 0x68u;//inteligent assist
     tempt.val.maxMisses = 0x2du;
-    tempt.val.nearVal = 0x0041u;
+    tempt.val.nearVal = 0x00ffu;
     emit WriteFrame(FrameSLA::setTrackingParameters(tempt));
-
 
     SLAStartTracking_t temp;
     memset(temp.bytes, 0u, sizeof(temp));
     temp.val.cameraIndex = CameraId();
-    temp.val.col=390;
-    temp.val.row=280;
-    temp.val.width=40;
-    temp.val.height=40;
-    temp.val.flags=1;
+    temp.val.col=320;
+    temp.val.row=240;
+    temp.val.width=00;
+    temp.val.height=00;
+    temp.val.flags=6;
     emit WriteFrame(FrameSLA::startTracking(temp));
 }
 
@@ -225,3 +239,29 @@ void LogicUISLA::DemoMode()
     temp.val.value0 = 1;
     emit WriteFrame(FrameSLA::setSystemValue(temp));
 }
+
+void LogicUISLA::StartReporting()
+{
+    SLACoordinateReportingMode_t temp;
+    memset(temp.bytes, 0u, sizeof(temp));
+    temp.val.framePeriod = 10u;
+    temp.val.flags = 1u;
+    temp.val.cameraIdx = CameraId();
+    emit WriteFrame(FrameSLA::coordinatingReportingMode(temp));
+}
+
+void LogicUISLA::StopReporting()
+{
+    SLACoordinateReportingMode_t temp;
+    memset(temp.bytes, 0u, sizeof(temp));
+    temp.val.framePeriod = 00u;
+    temp.val.flags = 0u;
+    temp.val.cameraIdx = CameraId();
+    emit WriteFrame(FrameSLA::coordinatingReportingMode(temp));
+}
+
+void LogicUISLA::TestT()
+{
+}
+
+

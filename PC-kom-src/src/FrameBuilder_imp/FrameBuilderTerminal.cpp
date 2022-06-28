@@ -4,7 +4,7 @@
 #include <QDebug>
 
 uint FrameBuilderTerminal::_timeoutMs = 100;
-uint FrameBuilderTerminal::_countTo = 10;
+uint FrameBuilderTerminal::_countTo = 100;
 
 FrameBuilderTerminal::FrameBuilderTerminal():
     FrameBuilder()
@@ -34,10 +34,10 @@ void FrameBuilderTerminal::ByteReaded(QByteArray ba)
         QByteArray temp = recievedbuf.left(size);
         emit FrameReaded(QSharedPointer<Frame>(Factory::newFrame(temp)));
         recievedbuf.remove(0, size);
-
-        if(recievedbuf.length()>0)
-            timer->start(getTimeoutMs());
     }
+
+    if(recievedbuf.length()>0)
+        timer->start(getTimeoutMs());
 }
 
 void FrameBuilderTerminal::FrameWrite(QSharedPointer<Frame> fr)

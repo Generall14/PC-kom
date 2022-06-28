@@ -32,7 +32,7 @@ void MediumUiRS::Init()
     portBox->setEditable(true);
     portSelectionLayout->addWidget(portBox);
 
-    QStringList pred = {"1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200"};
+    QStringList pred = {"1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "460800", "921600"};
     speedBox = new QComboBox();
     speedBox->addItems(pred);
     speedBox->setCurrentIndex(4);

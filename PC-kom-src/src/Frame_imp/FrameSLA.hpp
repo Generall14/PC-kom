@@ -68,6 +68,17 @@ typedef union
 {
     struct
     {
+        uint8_t framePeriod;
+        uint16_t flags;
+        uint8_t cameraIdx;
+    } val;
+    uint8_t bytes[sizeof(val)];
+} SLACoordinateReportingMode_t ;
+
+typedef union
+{
+    struct
+    {
         uint8_t reserved1;
         uint8_t reserved2;
         uint8_t reserved3;
@@ -108,8 +119,11 @@ public:
     static QSharedPointer<Frame> stopTracking(uint8_t cameraId);
     static QSharedPointer<Frame> getParameters(uint8_t id, uint8_t payload0=0u, uint8_t payload1=0u, uint8_t payload2=0u);
     static QSharedPointer<Frame> setSystemValue(SLASetSystemValue_t params);
+    static QSharedPointer<Frame> coordinatingReportingMode(SLACoordinateReportingMode_t params);
     static QSharedPointer<Frame> setTrackingParameters(SLASetTrackingParameters_t params);
     static QSharedPointer<Frame> stabilizationBias(SLAStabilizationBias_t params);
+
+    virtual QString toQString();
 
     static const uint16_t PARAM_ID_STABILIZATION_BIAS = 0x9FU;
     static const uint16_t SYSTEM_VALUE_DEMO_MODE = 0x01U;
@@ -122,6 +136,8 @@ private:
     static const uint16_t CMD_RESET_STABILIZATION_PARAMETERS = 0x04U;
     static const uint16_t CMD_START_TRACKING = 0x08U;
     static const uint16_t CMD_STOP_TRACKING = 0x09U;
+    static const uint16_t CMD_COORDINATE_REPORTING_MODE = 0x0BU;
+    static const uint16_t CMD_TRACKING_POSITION = 0x43U;
     static const uint16_t CMD_SET_TRACKING_PARAMETERS = 0x0CU;
     static const uint16_t CMD_GET_PARAMETERS = 0x28U;
     static const uint16_t CMD_SET_SYSTEM_VALUE = 0x92U;
