@@ -246,7 +246,7 @@ bool Factory::IsFake()
 }
 
 /**
- * Konfiguruje iplementacje na podstawie plików set.cfg (wskazanie zestawu) i configs.xml (zestawy).
+ * Konfiguruje implementacje na podstawie plików set.cfg (wskazanie zestawu) i configs.xml (zestawy).
  * @param setName - wskazana nazwa zestawu, jeżeli ciąg jest pusty zestaw zostanie odczytany z pliku set.cfg.
  */
 void Factory::LoadConfig(QString setName) throw(std::runtime_error)

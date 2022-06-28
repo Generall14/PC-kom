@@ -7,6 +7,7 @@
 #include <Frame.hpp>
 #include <Factory.hpp>
 #include "Utils/GlobalXmlFile.hpp"
+#include <QInputDialog>
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,13 @@ int main(int argc, char *argv[])
 
     try
     {
+//        QStringList ttt = {"sdfs", "fdsfgg"};
+//        bool ok;
+//        QInputDialog::getItem(0, "fdsfds", "Podaj nową nazwę", ttt, 0, false, &ok);
+//        if(!ok)
+//        {
+//            return 0;
+//        }//TODO
         Factory::LoadConfig(set);
     }
     catch (std::runtime_error ex)
